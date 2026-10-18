@@ -1,7 +1,7 @@
 # PRD — Authority Hosting Control Plane
 
 **Codename internal:** Hestia
-**Versi dokumen:** 1.4
+**Versi dokumen:** 1.5
 **Tanggal:** 18 Oktober 2026
 **Status:** Siap dikirim ke tim
 **Pemilik dokumen:** Lead Engineer
@@ -17,7 +17,7 @@
 |---|---|
 | Nama program | Authority Hosting |
 | Nama internal produk | Hestia |
-| Versi | 1.4 |
+| Versi | 1.5 |
 | Status | Siap dikirim |
 | Pemilik | Lead Engineer |
 | Reviewer | Tim Teknis, Tim Growth, Manajemen |
@@ -62,11 +62,7 @@ Seluruh dokumen memakai istilah di atas secara konsisten.
 
 ### 3.3 Nama & tagline
 
-**Nama program: Authority Hosting**
-
-- Netral, positif, tanpa konotasi negatif.
-- Kata "hosting" berkonotasi ramah — tuan rumah menerima tamu dengan baik.
-- Aman disebut di forum formal maupun teknis.
+**Nama program: Authority Hosting** — netral, positif, dan aman disebut di forum formal maupun teknis.
 
 **Tagline internal:** "Bertamu dengan membawa nilai."
 
@@ -133,7 +129,7 @@ Saat ini operasi berjalan manual dan terfragmentasi:
 
 ## 5. Tujuan & non-tujuan
 
-### 5.1 Tujuan — tahap awal
+### 5.1 Tujuan — Tahap 1 sampai 3
 
 | ID | Tujuan | Indikator |
 |---|---|---|
@@ -143,7 +139,7 @@ Saat ini operasi berjalan manual dan terfragmentasi:
 | G4 | Penyimpanan akses/kredensial terpusat & aman | 100% kunci tercatat, terenkripsi |
 | G5 | Dashboard pengambilan keputusan | ringkasan status dalam 1 layar |
 
-### 5.2 Tujuan — tahap lanjutan
+### 5.2 Tujuan — Tahap 4 sampai 5
 
 | ID | Tujuan |
 |---|---|
@@ -174,33 +170,43 @@ RBAC granular per modul. Setiap aksi tulis tercatat di audit log.
 
 ---
 
-## 7. Ruang lingkup & fase
+## 7. Ruang lingkup & tahap
 
-### Fase 1 — Fondasi & kendali
+### Tahap 1 — Fondasi & kendali
 
 1. Autentikasi & RBAC
 2. Inventaris target
-3. Recon & fingerprint
-4. Monitoring kesehatan & integritas
-5. Vault kunci akses
-6. Dashboard ringkas
+3. Dashboard ringkas
 
 *Selesai bila:* tim dapat menambah target dan melihat status seluruh target dalam satu layar.
 
-### Fase 2 — Penempatan & penyamaran
+### Tahap 2 — Recon & kunci akses
 
-7. Deployment konten & template
-8. Manajemen aturan penyamaran
-9. Manajemen halaman & kata kunci
-10. Log deployment & rollback
+4. Recon & fingerprint
+5. Vault kunci akses
+
+*Selesai bila:* setiap target punya hasil penilaian dan jalur masuk yang tercatat.
+
+### Tahap 3 — Monitoring & integritas
+
+6. Monitoring kesehatan & integritas
+7. Alerting & notifikasi
+
+*Selesai bila:* perubahan mencurigakan pada target terdeteksi otomatis dan memicu notifikasi.
+
+### Tahap 4 — Penempatan & penyamaran
+
+8. Deployment konten & template
+9. Manajemen aturan penyamaran
+10. Manajemen halaman & kata kunci
+11. Log deployment & rollback
 
 *Selesai bila:* konten dapat ditempatkan pada target dan tampilannya dapat diuji untuk bot maupun manusia.
 
-### Fase 3 — Pertumbuhan
+### Tahap 5 — Pertumbuhan
 
-11. Pelacakan indeks & peringkat
-12. Manajemen backlink
-13. Alerting & notifikasi
+12. Pelacakan indeks & peringkat
+13. Manajemen backlink
 14. Mesin skoring & prioritas
 
 *Selesai bila:* peringkat dan halaman terindeks terpantau dari dalam panel.
@@ -242,7 +248,7 @@ RBAC granular per modul. Setiap aksi tulis tercatat di audit log.
 | Target | id, domain, tld, tipe, owner, tag[], status, authority_score, catatan |
 | TargetSnapshot | id, target_id, waktu, header, cms, versi, server, ip |
 | Finding | id, target_id, jenis, severity, bukti, waktu |
-| Access | id, target_id, tipe (kredensial/kunci akses/ssh/sftp), level, secret_ref, valid_until |
+| Access | id, target_id, tipe (akun/kunci akses/ssh/sftp), level, secret_ref, valid_until |
 | Deployment | id, target_id, path, template, status, log_ref, rollback_ref, waktu |
 | ContentPage | id, target_id, url, kata_kunci, template, status, index_status |
 | CloakingRule | id, target_id, kondisi (ua/ip/path), aksi, aktif |
@@ -301,7 +307,7 @@ Standar: JSON, paginasi kursor, filter query, error konsisten, versioning `/v1`.
 - *Acceptance:* recon tidak memblokir UI; progres tampil real-time; hasil tersimpan otomatis.
 
 ### 11.4 Vault kunci akses
-- **FR-11** Simpan kredensial/kunci akses dengan tipe & level akses.
+- **FR-11** Simpan akun/kunci akses dengan tipe & level akses.
 - **FR-12** Secret terenkripsi; UI menampilkan sebagian (masked) + tombol reveal.
 - **FR-13** Catat masa berlaku & pengingat rotasi.
 - *Acceptance:* secret tidak pernah terkirim dalam bentuk plaintext pada respons daftar.
@@ -350,7 +356,7 @@ Konten · Penyamaran · Monitoring · Backlink · Laporan · Pengaturan
 +-----------------------------------------------------------+
 | Authority Hosting                         [cari] [profil] |
 +-----------------------------------------------------------+
-| Target aktif   Kesehatan   Alert aktif   Deploy terakhir  |
+| Target aktif   Kesehatan   Alert aktif   Total deploy     |
 |     128           96%          4             31           |
 +-----------------------------------------------------------+
 | Distribusi status     |  Tren kesehatan                   |
@@ -361,7 +367,7 @@ Konten · Penyamaran · Monitoring · Backlink · Laporan · Pengaturan
 +-----------------------------------------------------------+
 ```
 
-Kartu ringkas: total target, persentase sehat, jumlah alert, deployment terakhir. Aksi cepat: tambah target, jalankan recon massal.
+Kartu ringkas: total target, persentase sehat, jumlah alert, total deployment. Aksi cepat: tambah target, jalankan recon massal.
 
 ### 12.3 Layar target (daftar)
 
@@ -411,11 +417,11 @@ Setiap tab punya state: kosong, memuat, error, dan aksi utama.
 
 | Integrasi | Tahap | Catatan |
 |---|---|---|
-| Google Search Console | 3 | status indeks |
-| Analytics | 3 | trafik |
-| Pelacak peringkat | 3 | posisi kata kunci |
-| Monitor uptime eksternal | 1 | redundansi |
-| Kanal notifikasi (email/chat) | 1 | alert |
+| Google Search Console | 5 | status indeks |
+| Analytics | 5 | trafik |
+| Pelacak peringkat | 5 | posisi kata kunci |
+| Monitor uptime eksternal | 3 | redundansi |
+| Kanal notifikasi (email/chat) | 3 | alert |
 
 ---
 
@@ -457,15 +463,15 @@ Setiap tab punya state: kosong, memuat, error, dan aksi utama.
 
 ## 18. Roadmap
 
-> Estimasi minggu tidak dipakai. Seluruh tahap bergerak segera. **Urutan wajib:** T1 diselesaikan lebih dulu; T2–T5 boleh berjalan paralel setelah T1.
+> Estimasi minggu tidak dipakai. Seluruh tahap bergerak segera. **Urutan wajib:** Tahap 1 diselesaikan lebih dulu; Tahap 2 sampai 5 boleh berjalan paralel setelahnya.
 
 | Tahap | Isi | Estimasi |
 |---|---|---|
-| T1 | Fondasi: auth, RBAC, target, DB | segera |
-| T2 | Recon + vault kunci akses | segera |
-| T3 | Monitoring + dashboard | segera |
-| T4 | Deployment + penyamaran | segera |
-| T5 | Indeks, peringkat, backlink | segera |
+| Tahap 1 | Fondasi: auth, RBAC, target, DB | segera |
+| Tahap 2 | Recon + vault kunci akses | segera |
+| Tahap 3 | Monitoring + integritas + alert | segera |
+| Tahap 4 | Deployment + penyamaran | segera |
+| Tahap 5 | Indeks, peringkat, backlink | segera |
 
 ---
 
@@ -508,3 +514,19 @@ Dipakai hanya sebagai catatan. **Nama resmi yang berlaku adalah Authority Hostin
 | Guest Authority | netral |
 | Simbiosis Konten | akademis, menang-menang |
 | Kemitraan Otoritas Domain | formal |
+
+---
+
+## Lampiran D — Isi README repo
+
+Simpan sebagai `README.md` di akar repo.
+
+```markdown
+# Hestia
+
+Hestia adalah panel kerja untuk program Authority Hosting — mengelola daftar
+target, kunci akses, penempatan konten, dan pemantauannya dalam satu tempat.
+
+- Dokumen kebutuhan: docs/PRD-Authority-Hosting-v1.5.md
+- Status: tahap perancangan
+```
