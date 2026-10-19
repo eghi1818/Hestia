@@ -7,11 +7,16 @@
 | P-03 | Commit prototipe dashboard ke repo | agen | SELESAI |
 | P-04 | Kembalikan modul Penyamaran di UI | agen | menunggu |
 | P-05 | Seragamkan istilah UI: "kredensial" ke "kunci akses" | agen | menunggu |
-| P-06 | Isi docs/CONTEXT.md | agen | menunggu |
-| P-07 | Buat GOAL.md | agen | menunggu |
-| P-08 | Buat docs/EKSPERIMEN.md | agen | menunggu |
+| P-06 | Isi docs/CONTEXT.md | agen | SELESAI |
+| P-07 | Buat GOAL.md | agen | SELESAI |
+| P-08 | Buat docs/EKSPERIMEN.md | agen | SELESAI |
 | P-09 | Backend minimal + basis data | agen | SELESAI |
 | P-10 | Sambungkan dashboard ke API | agen | SELESAI |
 | P-11 | Simpan target dari UI | agen | SELESAI |
 | P-12 | Ganti data contoh yang tersisa | agen | menunggu |
 | P-13 | Jalankan eksperimen E1 | agen | menunggu |
+| P-14 | Bangun /api/kandidat + tab dashboard | agen | menunggu |
+| P-15 | Bersihkan tabel clientlog berkala | agen | menunggu |
+| P-16 | Naikkan kandidat terbaik menjadi target | agen | menunggu |
+| P-17 | Jalankan eksperimen E1 (crawl dari benih) | agen | menunggu |
+| P-18 | Sumber discovery keempat (crt.sh pulih / crawl benih) | agen | menunggu |

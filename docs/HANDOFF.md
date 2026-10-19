@@ -1,8 +1,8 @@
 # SERAH-TERIMA - SEO V1.0
 chat ini: SEO V1.0  |  lanjutan bila gagal: SEO V1.1
-waktu: 2026-10-19 14:50:56 WIB
+waktu: 2026-10-19 15:29:13 WIB
 repo: /Users/eghi/Documents/REPO/Hestia   cabang: main
-commit terakhir: 1313d93 S-13g: bedah rapiddns + sumber ketiga subdomain.center
+commit terakhir: 79dcd50 H-07: rapikan panduan folder + urutan segarkan
 gate: LULUS   layanan(8787): 200
 python: Python 3.9.6   (ingat: 3.9, pakai Optional[str])
 
@@ -12,7 +12,7 @@ python: Python 3.9.6   (ingat: 3.9, pakai Optional[str])
 3) Tulis: "Baca SERAH-TERIMA ini sampai habis, lanjut dari bagian 8."
 
 ## 1. STATUS
-- gate: LULUS | layanan: 200 | commit: 1313d93 S-13g: bedah rapiddns + sumber ketiga subdomain.center
+- gate: LULUS | layanan: 200 | commit: 79dcd50 H-07: rapikan panduan folder + urutan segarkan
 - kandidat: 317
 - target  : 10
 
@@ -70,15 +70,13 @@ python: Python 3.9.6   (ingat: 3.9, pakai Optional[str])
 ## 7. EKOR BUKTI
 ```
 git log -5:
+79dcd50 H-07: rapikan panduan folder + urutan segarkan
+78e6567 H-06: rapikan panduan folder unggah + segarkan
 1313d93 S-13g: bedah rapiddns + sumber ketiga subdomain.center
 3492c80 S-13f: pulihkan izin eksekusi, backfill jenis, gate cek mode, verify desa.id
 2731b32 S-13e: perbaiki conn() + gate kompilasi tools/*.py; sapu sch/mil/desa
-8a0a855 S-13d: discover_web gabung sumber + paginasi, kolom jenis, sapu sch/mil/desa
-f8e0c27 H-05: folder unggah siap-pakai untuk chat baru di Desktop
 status:
- M docs/steps/S-13g.md
- M tools/siapkan_newchat.sh
-?? docs/steps/H-06.md
+ M docs/steps/H-07.md
 ```
 
 ## 8. LANGKAH BERIKUT - TEPAT

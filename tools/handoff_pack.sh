@@ -35,8 +35,8 @@ echo "gate: $GATE   layanan(8787): $SVC"
 echo "python: $(python3 -V 2>&1)   (ingat: 3.9, pakai Optional[str])"
 echo
 echo "## 0. CARA PAKAI"
-echo "1) Lampirkan ONBOARDING_PROMPT.txt + SESSION_STATE.md di chat baru bernama $NAMA V$VER_NEXT."
-echo "2) Jalankan: bash tools/resume.sh  lalu tempel keluarannya."
+echo "1) Buat chat baru bernama $NAMA V$VER_NEXT. Unggah SELURUH isi ~/Desktop/HESTIA-RESUME."
+echo "2) Pesan pertama: tempel isi 1-ONBOARDING-PROMPT.txt apa adanya."
 echo "3) Tulis: \"Baca SERAH-TERIMA ini sampai habis, lanjut dari bagian 8.\""
 echo
 echo "## 1. STATUS"
