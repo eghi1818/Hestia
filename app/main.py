@@ -25,6 +25,7 @@ class TargetMasuk(BaseModel):
     catatan: str = ""
 
 class TargetUbah(BaseModel):
+    domain: Optional[str] = None
     tipe: Optional[str] = None
     status: Optional[str] = None
     owner: Optional[str] = None
@@ -90,8 +91,11 @@ def ubah_target(tid: int, u: TargetUbah):
         return ambil(tid)
     kolom.append("updated_at = datetime('now')")
     nilai.append(tid)
-    with db.conn() as c:
-        c.execute("UPDATE targets SET " + ", ".join(kolom) + " WHERE id = ?", nilai)
+    try:
+        with db.conn() as c:
+            c.execute("UPDATE targets SET " + ", ".join(kolom) + " WHERE id = ?", nilai)
+    except sqlite3.IntegrityError:
+        raise HTTPException(409, "domain sudah dipakai target lain")
     return ambil(tid)
 
 @app.delete("/api/targets/{tid}", status_code=204)
@@ -134,5 +138,78 @@ def lihat_client(batas: int = 30):
     with db.conn() as c:
         rows = c.execute(
             "SELECT * FROM clientlog ORDER BY id DESC LIMIT ?", (batas,)
+        ).fetchall()
+    return [dict(r) for r in rows]
+
+
+# --- recon: sentuhan pertama ke domain target ---
+with db.conn() as _c:
+    _c.executescript("""
+    CREATE TABLE IF NOT EXISTS recon (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      target_id INTEGER NOT NULL,
+      waktu TEXT NOT NULL DEFAULT (datetime('now')),
+      http_status INTEGER,
+      server TEXT DEFAULT '',
+      content_type TEXT DEFAULT '',
+      redirect TEXT DEFAULT '',
+      ms INTEGER,
+      judul TEXT DEFAULT '',
+      catatan TEXT DEFAULT ''
+    );
+    """)
+
+def _ambil(domain, skema="https"):
+    """Satu request saja. Kembalikan dict hasil."""
+    import urllib.request, urllib.error, time, re
+    url = skema + "://" + domain
+    req = urllib.request.Request(url, headers={
+        "User-Agent": "Hestia/0.1 (+panel internal)",
+        "Accept": "text/html,application/xhtml+xml",
+    })
+    mulai = time.time()
+    try:
+        with urllib.request.urlopen(req, timeout=10) as r:
+            isi = r.read(60000).decode("utf-8", "ignore")
+            return {
+                "http_status": r.status,
+                "server": r.headers.get("Server", ""),
+                "content_type": r.headers.get("Content-Type", ""),
+                "redirect": "",
+                "ms": int((time.time() - mulai) * 1000),
+                "judul": (re.search(r"<title[^>]*>(.*?)</title>", isi, re.S | re.I).group(1).strip()[:120]
+                          if re.search(r"<title[^>]*>(.*?)</title>", isi, re.S | re.I) else ""),
+                "catatan": "",
+            }
+    except urllib.error.HTTPError as e:
+        return {"http_status": e.code, "server": e.headers.get("Server", ""),
+                "content_type": e.headers.get("Content-Type", ""), "redirect": "",
+                "ms": int((time.time() - mulai) * 1000), "judul": "",
+                "catatan": "HTTPError"}
+    except Exception as e:
+        return {"http_status": 0, "server": "", "content_type": "", "redirect": "",
+                "ms": int((time.time() - mulai) * 1000), "judul": "",
+                "catatan": type(e).__name__ + ": " + str(e)[:80]}
+
+@app.post("/api/targets/{tid}/recon")
+def recon_target(tid: int, skema: str = "https"):
+    t = ambil(tid)
+    hasil = _ambil(t["domain"], skema)
+    with db.conn() as c:
+        cur = c.execute(
+            "INSERT INTO recon (target_id,http_status,server,content_type,redirect,ms,judul,catatan)"
+            " VALUES (?,?,?,?,?,?,?,?)",
+            (tid, hasil["http_status"], hasil["server"], hasil["content_type"],
+             hasil["redirect"], hasil["ms"], hasil["judul"], hasil["catatan"]))
+        rid = cur.lastrowid
+    with db.conn() as c:
+        r = c.execute("SELECT * FROM recon WHERE id = ?", (rid,)).fetchone()
+    return dict(r)
+
+@app.get("/api/targets/{tid}/recon")
+def lihat_recon(tid: int):
+    with db.conn() as c:
+        rows = c.execute(
+            "SELECT * FROM recon WHERE target_id = ? ORDER BY id DESC LIMIT 20", (tid,)
         ).fetchall()
     return [dict(r) for r in rows]
