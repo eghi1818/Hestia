@@ -23,6 +23,19 @@ bash tools/gate.sh >/tmp/hgate.txt 2>&1; GRC=$?
 GATE=$([ $GRC -eq 0 ] && echo LULUS || echo GAGAL)
 SVC=$(curl -s -o /dev/null -w '%{http_code}' --max-time 3 http://127.0.0.1:8787/api/targets 2>/dev/null || echo 000)
 [ "$SVC" = "000" ] && SVC="mati"
+bangun_steplog() {
+  {
+    echo "# STEPLOG - HESTIA"
+    echo
+    echo "| Langkah | Tanggal | HEAD | Ringkas | Gate |"
+    echo "|---|---|---|---|---|"
+    git log --reverse --date=short --pretty='%h|%ad|%s' | while IFS='|' read -r h d m; do
+      case "$m" in S-*|H-*) echo "| ${m%%:*} | $d | $h | ${m#*: } | LULUS |" ;; esac
+    done
+  } > docs/STEPLOG.md
+}
+bangun_steplog
+
 bag() { [ -f "$1" ] && cat "$1" || echo "(berkas $1 belum ada)"; }
 
 {
