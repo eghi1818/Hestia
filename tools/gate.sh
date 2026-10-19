@@ -61,6 +61,7 @@ echo
 echo "== gate: sintaks python =="
 if [ -f app/main.py ] ; then
   if .venv/bin/python -m py_compile app/main.py 2>/dev/null ; then
+for _f in tools/*.py; do python3 -m py_compile "$_f" >/dev/null 2>&1 || { echo "  GAGAL kompilasi: $_f"; exit 1; }; done
     echo "  ok      app/main.py bisa dikompilasi"
   else
     echo "  GAGAL   app/main.py tidak bisa dikompilasi" ; fail=1

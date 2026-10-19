@@ -71,10 +71,10 @@ def conn():
         domain TEXT PRIMARY KEY, suffix TEXT, sumber TEXT,
         status TEXT DEFAULT 'baru', http_status INTEGER, server TEXT,
         waf TEXT, skor INTEGER DEFAULT 0, catatan TEXT, diperiksa_at TEXT,
-        jenis TEXT)"""
+        jenis TEXT)""")
     kol = [r[1] for r in c.execute("PRAGMA table_info(kandidat)")]
     if "jenis" not in kol:
-        c.execute("ALTER TABLE kandidat ADD COLUMN jenis TEXT"))
+        c.execute("ALTER TABLE kandidat ADD COLUMN jenis TEXT")
     c.commit()
     return c
 
