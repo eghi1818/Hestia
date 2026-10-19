@@ -1,10 +1,14 @@
 /* live.js - sambungan Hestia ke API.
    Menempel dari luar: index.html milik desain tidak dibongkar.
-   Dua tugas: tampilkan data nyata, dan simpan target baru ke basis data.
 
-   Catatan penting: tombol "Simpan target" TIDAK punya id - ia memakai
-   onclick="addTarget()". Karena addTarget adalah function declaration di
-   skrip klasik, ia hidup di window dan bisa ditimpa langsung. */
+   Tiga tugas:
+     1. tampilkan data nyata dari /api/targets
+     2. simpan target baru lewat POST /api/targets
+     3. lapor balik ke /api/clientlog supaya bukti bisa dibaca dari terminal
+
+   Catatan: tombol Simpan target tidak punya id, ia memakai onclick="addTarget()".
+   Karena addTarget adalah function declaration di skrip klasik, ia hidup di window
+   dan bisa ditimpa langsung. */
 (function () {
   "use strict";
 
@@ -18,6 +22,14 @@
   function val(id) {
     var e = document.getElementById(id);
     return e && typeof e.value === "string" ? e.value.trim() : "";
+  }
+
+  function lapor(peristiwa, rincian) {
+    try {
+      fetch("/api/clientlog?peristiwa=" + encodeURIComponent(peristiwa) +
+            "&rincian=" + encodeURIComponent(rincian || ""), { method: "POST" })
+        .catch(function () {});
+    } catch (e) { /* jangan ganggu tampilan */ }
   }
 
   function keBentukLokal(r) {
@@ -81,20 +93,26 @@
         if (typeof renderTargets === "function") { renderTargets(); }
         isiKpi(rows);
         pasangPenanda("data nyata - " + rows.length + " target");
+        lapor("dimuat", "target=" + rows.length + " badge=ada");
         return rows;
       })
       .catch(function (e) {
         console.warn("[live] gagal tarik data:", e);
         pasangPenanda("API tidak terjangkau", true);
+        lapor("gagal-muat", e.message);
       });
   }
 
   function simpan() {
     var domain = val("fDomain");
-    if (!domain) { kabar("Domain masih kosong"); return; }
-    var tipe = val("fType") || "lain";
-    var badan = { domain: domain, tipe: tipe, owner: val("fOwner"),
-                  tags: val("fTags"), catatan: val("fNote") };
+    if (!domain) { kabar("Domain masih kosong"); lapor("kosong", "domain kosong"); return; }
+    var badan = {
+      domain: domain,
+      tipe: val("fType") || "lain",
+      owner: val("fOwner"),
+      tags: val("fTags"),
+      catatan: val("fNote")
+    };
 
     fetch("/api/targets", {
       method: "POST",
@@ -111,11 +129,13 @@
         var fd = document.getElementById("fDomain");
         if (fd) { fd.value = ""; }
         kabar("Target tersimpan ke basis data");
+        lapor("tersimpan", badan.domain);
         return tarik();
       })
       .catch(function (e) {
         console.warn("[live] gagal simpan:", e);
         kabar("Gagal simpan: " + e.message);
+        lapor("gagal-simpan", badan.domain + " :: " + e.message);
       });
   }
 

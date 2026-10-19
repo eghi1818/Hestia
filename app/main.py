@@ -109,3 +109,30 @@ def beranda():
 def live_js():
     return FileResponse(ROOT / "dashboard" / "live.js",
                         media_type="application/javascript")
+
+
+# --- catatan dari sisi klien, untuk membuktikan uji di browser ---
+with db.conn() as _c:
+    _c.executescript("""
+    CREATE TABLE IF NOT EXISTS clientlog (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      waktu TEXT NOT NULL DEFAULT (datetime('now')),
+      peristiwa TEXT NOT NULL,
+      rincian TEXT NOT NULL DEFAULT ''
+    );
+    """)
+
+@app.post("/api/clientlog", status_code=201)
+def catat_client(peristiwa: str, rincian: str = ""):
+    with db.conn() as c:
+        c.execute("INSERT INTO clientlog (peristiwa, rincian) VALUES (?, ?)",
+                  (peristiwa, rincian))
+    return {"ok": True}
+
+@app.get("/api/clientlog")
+def lihat_client(batas: int = 30):
+    with db.conn() as c:
+        rows = c.execute(
+            "SELECT * FROM clientlog ORDER BY id DESC LIMIT ?", (batas,)
+        ).fetchall()
+    return [dict(r) for r in rows]
