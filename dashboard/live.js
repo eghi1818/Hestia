@@ -232,6 +232,25 @@
   }
   window.angkat = angkat;
 
+  function periksaKandidat() {
+    var b = document.getElementById("kandPeriksa");
+    if (b) { b.disabled = true; b.textContent = "memeriksa..."; }
+    fetch("/api/kandidat/periksa?limit=5", { method: "POST" })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        lapor("kandidat-diperiksa", JSON.stringify(d.ringkas));
+        if (window.toast) window.toast("diperiksa " + d.diperiksa + " kandidat");
+        muatKandidat();
+      })
+      .catch(function (e) { lapor("kandidat-periksa-gagal", String(e)); })
+      .finally(function () {
+        if (b) { b.disabled = false; b.textContent = "Periksa 5 baru"; }
+      });
+  }
+  window.periksaKandidat = periksaKandidat;
+
+
+
   window.muatKandidat = muatKandidat;
 
   function pasangKandidat() {

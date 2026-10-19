@@ -263,3 +263,31 @@ def api_kandidat(suffix: Optional[str] = None, status: Optional[str] = None,
         a + [limit, offset])]
     k.close()
     return {"total": tot, "limit": limit, "offset": offset, "item": rows}
+
+
+@app.post("/api/kandidat/periksa")
+def api_kandidat_periksa(limit: int = 5, suffix: Optional[str] = None):
+    import sys as _sys, os as _os
+    from datetime import datetime as _dt
+    _t = _os.path.join(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))), "tools")
+    if _t not in _sys.path:
+        _sys.path.insert(0, _t)
+    import scrape
+    c = scrape.conn()
+    q, a = "SELECT domain,suffix FROM kandidat WHERE status='baru'", []
+    if suffix:
+        q += " AND suffix=?"; a.append(suffix)
+    q += " ORDER BY domain LIMIT ?"
+    a.append(max(1, min(limit, 20)))
+    baris = c.execute(q, a).fetchall()
+    ringkas = {}
+    for r in baris:
+        h = scrape.verify_one(r["domain"]); h["suffix"] = r["suffix"]
+        c.execute("""UPDATE kandidat SET status=?,http_status=?,server=?,waf=?,skor=?,
+                     catatan=?,diperiksa_at=? WHERE domain=?""",
+                  (h["status"], h["http_status"], h["server"], h["waf"], scrape.skor(h),
+                   h.get("catatan"), _dt.now().isoformat(timespec="seconds"), r["domain"]))
+        c.commit()
+        ringkas[h["status"]] = ringkas.get(h["status"], 0) + 1
+    c.close()
+    return {"diperiksa": len(baris), "ringkas": ringkas}
