@@ -174,8 +174,8 @@
   /* --- tab Kandidat: baca hasil sapuan --- */
   function lapor(a, r) {
     try {
-      fetch("/api/clientlog", { method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ aksi: a, rincian: r }) });
+      fetch("/api/clientlog?peristiwa=" + encodeURIComponent(a)
+            + "&rincian=" + encodeURIComponent(r || ""), { method: "POST" });
     } catch (e) {}
   }
 
