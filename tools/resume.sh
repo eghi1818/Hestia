@@ -9,7 +9,7 @@ echo "TRACK  : behind=$1 ahead=$2"
 echo "DIRTY  : $(git status --porcelain | wc -l | tr -d ' ') file"
 git status --porcelain | head -n 8
 echo "-- 3 langkah terakhir --"
-grep -E '^\| S-[0-9]+' docs/STEPLOG.md | tail -n 3
+grep -E '^\| (S|H)-[0-9]' docs/STEPLOG.md | tail -n 3
 echo "-- langkah berikut (HANDOFF bagian 8) --"
 awk '/^#{1,4}[[:space:]]*8[.)[:space:]]/{f=1;next} f&&/^#{1,4}[[:space:]]*[0-9]+[.)[:space:]]/{exit} f' docs/HANDOFF.md | head -n 12
 echo "-- bukti terbaru --"
