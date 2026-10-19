@@ -225,8 +225,8 @@
                              tipe: "Situs sendiri", tags: "sapuan",
                              catatan: "diangkat dari kandidat" })
     }).then(function (r) {
-      if (r.status === 201) { lapor("kandidat-diangkat", domain); muatKandidat(); }
-      else if (r.status === 409) { lapor("kandidat-sudah-ada", domain); }
+      if (r.status === 201) { lapor("kandidat-diangkat", domain); if (window.toast) window.toast(domain + " diangkat menjadi target"); muatKandidat(); }
+      else if (r.status === 409) { lapor("kandidat-sudah-ada", domain); if (window.toast) window.toast(domain + " sudah menjadi target"); }
       else { lapor("kandidat-angkat-gagal", domain + " http=" + r.status); }
     }).catch(function (e) { lapor("kandidat-angkat-gagal", String(e)); });
   }
