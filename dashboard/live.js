@@ -187,14 +187,14 @@
     var url = "/api/kandidat?limit=200";
     if (q) url += "&q=" + encodeURIComponent(q);
     if (st) url += "&status=" + encodeURIComponent(st);
-    body.innerHTML = '<tr><td colspan="7" style="padding:10px;color:var(--muted)">memuat...</td></tr>';
+    body.innerHTML = '<tr><td colspan="8" style="padding:10px;color:var(--muted)">memuat...</td></tr>';
     fetch(url).then(function (r) { return r.json(); }).then(function (d) {
       var info = document.getElementById("kandInfo");
       if (info) info.textContent = "menampilkan " + d.item.length + " dari " + d.total + " kandidat";
       var nb = document.getElementById("navKandCount");
       if (nb) nb.textContent = d.total;
       if (!d.item.length) {
-        body.innerHTML = '<tr><td colspan="7" style="padding:10px;color:var(--muted)">belum ada kandidat</td></tr>';
+        body.innerHTML = '<tr><td colspan="8" style="padding:10px;color:var(--muted)">belum ada kandidat</td></tr>';
         return;
       }
       var sel = "padding:7px 8px;border-bottom:1px solid #232833";
@@ -207,14 +207,31 @@
           + '<td style="' + sel + '">' + (k.http_status || "-") + "</td>"
           + '<td style="' + sel + '">' + k.skor + "</td>"
           + '<td style="' + sel + '">' + (k.waf || "-") + "</td>"
+          + '<td style="' + sel + '"><button class="btn btn-ghost btn-sm" '
+          + "onclick=\"angkat('" + k.domain + "')\">jadikan target</button></td>"
           + "</tr>";
       }).join("");
       lapor("kandidat-dimuat", "total=" + d.total);
     }).catch(function (e) {
-      body.innerHTML = '<tr><td colspan="7" style="padding:10px;color:var(--red)">gagal: ' + e + "</td></tr>";
+      body.innerHTML = '<tr><td colspan="8" style="padding:10px;color:var(--red)">gagal: ' + e + "</td></tr>";
       lapor("kandidat-gagal", String(e));
     });
   }
+
+  function angkat(domain) {
+    fetch("/api/targets", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ domain: domain, owner: "sapuan",
+                             tipe: "Situs sendiri", tags: "sapuan",
+                             catatan: "diangkat dari kandidat" })
+    }).then(function (r) {
+      if (r.status === 201) { lapor("kandidat-diangkat", domain); muatKandidat(); }
+      else if (r.status === 409) { lapor("kandidat-sudah-ada", domain); }
+      else { lapor("kandidat-angkat-gagal", domain + " http=" + r.status); }
+    }).catch(function (e) { lapor("kandidat-angkat-gagal", String(e)); });
+  }
+  window.angkat = angkat;
+
   window.muatKandidat = muatKandidat;
 
   function pasangKandidat() {
