@@ -214,9 +214,12 @@
     });
   }
   window.muatKandidat = muatKandidat;
+  document.addEventListener("click", function (e) {
+    var t = (e.target && e.target.closest) ? e.target.closest('[data-page="kandidat"]') : null;
+    if (t) muatKandidat();
+  });
   document.addEventListener("DOMContentLoaded", function () {
-    var n = document.querySelector('[data-page="kandidat"]');
-    if (n) n.addEventListener("click", muatKandidat);
+    if (document.getElementById("kandBody")) lapor("kandidat-siap", "penanganan terpasang");
   });
 
 })();
