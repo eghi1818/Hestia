@@ -4,6 +4,7 @@ set -u
 cd "$(dirname "$0")/.." || exit 1
 MSG="${1:?pesan commit wajib}"
 if bash tools/gate.sh; then
+  bash tools/stempel.sh >/dev/null 2>&1
   git add -A
   git commit -m "$MSG" || true
   git push
