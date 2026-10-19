@@ -200,6 +200,21 @@ def discover_web(suf, limit=0):
     return hasil
 
 
+def ambil_html(domain, timeout=12):
+    """Ambil HTML dengan fallback http, sama seperti verify_one."""
+    for skema in ("https", "http"):
+        try:
+            req = urllib.request.Request(skema + "://" + domain, headers=HDR)
+            try:
+                with urllib.request.urlopen(req, timeout=timeout) as r:
+                    return r.read(400000).decode("utf-8", "ignore")
+            except urllib.error.HTTPError as e:
+                return e.read(400000).decode("utf-8", "ignore")
+        except Exception:
+            continue
+    return None
+
+
 def discover_seed(suf, timeout=12):
     daftar = [s for s in SEEDS if s.endswith("." + suf)] or SEEDS
     out = set(daftar)
@@ -341,26 +356,25 @@ def cmd_crawl(a):
     c.execute("""CREATE TABLE IF NOT EXISTS tautan(
         dari TEXT, ke TEXT, dibuat TEXT, PRIMARY KEY(dari,ke))""")
     q = ("SELECT domain FROM kandidat WHERE status IN ('hidup','alih','dijaga')"
-         " AND (dicrawl IS NULL OR dicrawl=0)")
+         " AND (dicrawl IS NULL OR dicrawl=0")
+    if a.ulang:
+        q += " OR dicrawl=2"
+    q += ")"
     arg = []
     if a.suffix:
         q += " AND suffix=?"; arg.append(a.suffix)
     q += " ORDER BY skor DESC LIMIT ?"; arg.append(a.batas)
     sumber = [r["domain"] for r in c.execute(q, arg)]
-    print("crawl lapis berikutnya: %d domain (jeda %ss)" % (len(sumber), a.jeda))
+    print("crawl: %d domain (jeda %ss)" % (len(sumber), a.jeda))
     ketemu = set()
+    gagal = 0
     now = datetime.now(timezone.utc).isoformat(timespec="seconds")
     for d in sumber:
-        html = ""
-        try:
-            req = urllib.request.Request("https://" + d, headers=HDR)
-            with urllib.request.urlopen(req, timeout=12) as r:
-                html = r.read(400000).decode("utf-8", "ignore")
-        except urllib.error.HTTPError as e:
-            html = e.read(400000).decode("utf-8", "ignore")
-        except Exception as e:
-            print("  %-42s gagal %s" % (d, type(e).__name__))
-            c.execute("UPDATE kandidat SET dicrawl=1 WHERE domain=?", (d,)); c.commit()
+        html = ambil_html(d)
+        if html is None:
+            gagal += 1
+            c.execute("UPDATE kandidat SET dicrawl=2 WHERE domain=?", (d,)); c.commit()
+            print("  %-42s gagal (dicoba lagi nanti)" % d)
             time.sleep(a.jeda); continue
         dapat = set(m.lower() for m in DOM_RE.findall(html))
         for t in dapat:
@@ -372,9 +386,9 @@ def cmd_crawl(a):
         print("  %-42s +%d (total %d)" % (d, len(baru), len(ketemu)))
         time.sleep(a.jeda)
     n = simpan(c, ketemu, "crawl")
-    print("kandidat baru: %d  total: %d  tautan tercatat: %d" % (
+    print("kandidat baru: %d  total: %d  tautan: %d  gagal: %d" % (
         n, c.execute("SELECT count(*) FROM kandidat").fetchone()[0],
-        c.execute("SELECT count(*) FROM tautan").fetchone()[0]))
+        c.execute("SELECT count(*) FROM tautan").fetchone()[0], gagal))
 
 
 def cmd_export(a):
@@ -397,6 +411,7 @@ def main():
     cr.add_argument("--suffix")
     cr.add_argument("--batas", type=int, default=25)
     cr.add_argument("--jeda", type=float, default=1.0)
+    cr.add_argument("--ulang", action="store_true", default=False)
     cr.set_defaults(f=cmd_crawl)
     m = sub.add_parser("map"); m.set_defaults(f=cmd_map)
     e = sub.add_parser("export"); e.add_argument("--out", default="kandidat.csv"); e.set_defaults(f=cmd_export)
