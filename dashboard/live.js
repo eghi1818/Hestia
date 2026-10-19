@@ -178,10 +178,11 @@
             + "&rincian=" + encodeURIComponent(r || ""), { method: "POST" });
     } catch (e) {}
   }
+  lapor("live-versi", "kandidat-tab");
 
   function muatKandidat() {
     var body = document.getElementById("kandBody");
-    if (!body) return;
+    if (!body) { lapor("kandidat-tanpa-wadah", "kandBody tidak ada"); return; }
     var q = val("kandCari"), st = val("kandStatus");
     var url = "/api/kandidat?limit=200";
     if (q) url += "&q=" + encodeURIComponent(q);
@@ -211,15 +212,23 @@
       lapor("kandidat-dimuat", "total=" + d.total);
     }).catch(function (e) {
       body.innerHTML = '<tr><td colspan="7" style="padding:10px;color:var(--red)">gagal: ' + e + "</td></tr>";
+      lapor("kandidat-gagal", String(e));
     });
   }
   window.muatKandidat = muatKandidat;
+
+  function pasangKandidat() {
+    if (!document.getElementById("kandBody")) return;
+    lapor("kandidat-siap", "penanganan terpasang");
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", pasangKandidat);
+  } else {
+    pasangKandidat();
+  }
   document.addEventListener("click", function (e) {
     var t = (e.target && e.target.closest) ? e.target.closest('[data-page="kandidat"]') : null;
     if (t) muatKandidat();
-  });
-  document.addEventListener("DOMContentLoaded", function () {
-    if (document.getElementById("kandBody")) lapor("kandidat-siap", "penanganan terpasang");
   });
 
 })();
