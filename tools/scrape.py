@@ -147,6 +147,22 @@ def _web_rapiddns(suf, limit=0, max_hal=5):
     return out
 
 
+def _web_sdcenter(suf):
+    out = set()
+    try:
+        url = "https://api.subdomain.center/?domain=" + suf
+        with urllib.request.urlopen(urllib.request.Request(url, headers=HDR), timeout=45) as r:
+            data = json.load(r)
+        for n in data:
+            n = str(n).strip().lower().rstrip(".")
+            if n.endswith("." + suf) and "*" not in n:
+                out.add(n)
+    except Exception as e:
+        print("    sdcenter gagal: %s" % e)
+    print("    sdcenter: %d" % len(out))
+    return out
+
+
 def _web_hackertarget(suf):
     out = set()
     try:
@@ -166,6 +182,7 @@ def _web_hackertarget(suf):
 
 def discover_web(suf, limit=0):
     hasil = _web_rapiddns(suf, limit)
+    hasil |= _web_sdcenter(suf)
     if not (limit and len(hasil) >= limit):
         hasil |= _web_hackertarget(suf)
     print("    gabungan web: %d" % len(hasil))
