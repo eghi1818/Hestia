@@ -39,9 +39,10 @@ LALU:
 PANTANGAN
  - Jangan unggah folder repo. Cukup berkas di folder ini.
  - Jangan sunting berkas di folder ini; dihasilkan ulang oleh skrip di atas.
- - Naikkan versi SEBELUM mulai kerja di chat baru, bukan sesudah.
- - Jangan lupa: bash tools/handoff_pack.sh --naik sebelum menutup sesi.
+ - Naikkan versi TEPAT saat pindah, sekali saja, lewat perintah di atas.
+ - Jangan menyentuh tools/handoff_pack.sh secara langsung; sudah dipanggil skrip ini.
 
+Repo: /Users/eghi/Documents/REPO/Hestia  (terminal dibutuhkan)
 Folder ini: $TUJUAN
 Dibuat   : $(date '+%Y-%m-%d %H:%M:%S %Z')
 TXT
