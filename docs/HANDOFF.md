@@ -1,8 +1,8 @@
 # SERAH-TERIMA - SEO V1.0
 chat ini: SEO V1.0  |  lanjutan bila gagal: SEO V1.1
-waktu: 2026-10-19 14:05:42 WIB
+waktu: 2026-10-19 14:10:35 WIB
 repo: /Users/eghi/Documents/REPO/Hestia   cabang: main
-commit terakhir: d5c650c H-02/H-03: berkas ketahanan sesi + generator serah-terima yang benar
+commit terakhir: c21014c H-04: perbaiki hitung basis pada generator serah-terima
 gate: LULUS   layanan(8787): 200
 python: Python 3.9.6   (ingat: 3.9, pakai Optional[str])
 
@@ -12,7 +12,7 @@ python: Python 3.9.6   (ingat: 3.9, pakai Optional[str])
 3) Tulis: "Baca SERAH-TERIMA ini sampai habis, lanjut dari bagian 8."
 
 ## 1. STATUS
-- gate: LULUS | layanan: 200 | commit: d5c650c H-02/H-03: berkas ketahanan sesi + generator serah-terima yang benar
+- gate: LULUS | layanan: 200 | commit: c21014c H-04: perbaiki hitung basis pada generator serah-terima
 - kandidat: 76
 - target  : 10
 
@@ -70,15 +70,15 @@ python: Python 3.9.6   (ingat: 3.9, pakai Optional[str])
 ## 7. EKOR BUKTI
 ```
 git log -5:
+c21014c H-04: perbaiki hitung basis pada generator serah-terima
 d5c650c H-02/H-03: berkas ketahanan sesi + generator serah-terima yang benar
 cb3a6e7 S-12: PATCH domain field + guard 409; probe lapisan penjaga WAF
 80404ca milestone: data nyata dari browser terbukti, 10 target terkelola
 1e97d81 chore: pasang perekam klik untuk diagnosis
-835081d feat: laporan balik browser lewat clientlog
 status:
- M docs/steps/H-03.md
- M tools/handoff_pack.sh
-?? docs/steps/H-04.md
+ M Makefile
+ M docs/steps/H-04.md
+?? tools/siapkan_newchat.sh
 ```
 
 ## 8. LANGKAH BERIKUT - TEPAT
