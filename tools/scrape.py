@@ -38,6 +38,10 @@ def suffix_of(d):
     return None
 
 
+def jenis_of(d, suf):
+    return "akar" if d.count(".") == suf.count(".") + 1 else "sub"
+
+
 def db_path():
     p = os.environ.get("HESTIA_DB")
     if p:
@@ -66,7 +70,11 @@ def conn():
     c.execute("""CREATE TABLE IF NOT EXISTS kandidat(
         domain TEXT PRIMARY KEY, suffix TEXT, sumber TEXT,
         status TEXT DEFAULT 'baru', http_status INTEGER, server TEXT,
-        waf TEXT, skor INTEGER DEFAULT 0, catatan TEXT, diperiksa_at TEXT)""")
+        waf TEXT, skor INTEGER DEFAULT 0, catatan TEXT, diperiksa_at TEXT,
+        jenis TEXT)"""
+    kol = [r[1] for r in c.execute("PRAGMA table_info(kandidat)")]
+    if "jenis" not in kol:
+        c.execute("ALTER TABLE kandidat ADD COLUMN jenis TEXT"))
     c.commit()
     return c
 
@@ -80,8 +88,8 @@ def simpan(c, domains, sumber):
         s = suffix_of(d)
         if not s:
             continue
-        cur = c.execute("INSERT OR IGNORE INTO kandidat(domain,suffix,sumber) VALUES(?,?,?)",
-                        (d, s, sumber))
+        cur = c.execute("INSERT OR IGNORE INTO kandidat(domain,suffix,sumber,jenis) VALUES(?,?,?,?)",
+                        (d, s, sumber, jenis_of(d, s)))
         if cur.rowcount:
             n += 1
     c.commit()
@@ -119,8 +127,28 @@ def discover_crt(suf, limit, timeout=60):
         print("    bentuk gagal: %s -> %s" % (b, sebab))
     raise RuntimeError("crt.sh gagal (%s)" % sebab)
 
-def discover_web(suf, limit=0):
-    hasil = set()
+def _web_rapiddns(suf, limit=0, max_hal=5):
+    out = set()
+    for hal in range(1, max_hal + 1):
+        try:
+            url = "https://rapiddns.io/subdomain/%s?full=1&page=%d" % (suf, hal)
+            with urllib.request.urlopen(urllib.request.Request(url, headers=HDR), timeout=45) as r:
+                html = r.read(1500000).decode("utf-8", "ignore")
+        except Exception as e:
+            print("    rapiddns hal %d gagal: %s" % (hal, e))
+            break
+        dapat = set(m.lower() for m in DOM_RE.findall(html) if m.lower().endswith("." + suf))
+        tambah = len(dapat - out)
+        out |= dapat
+        print("    rapiddns hal %d: +%d (total %d)" % (hal, tambah, len(out)))
+        if not tambah or (limit and len(out) >= limit):
+            break
+        time.sleep(1)
+    return out
+
+
+def _web_hackertarget(suf):
+    out = set()
     try:
         url = "https://api.hackertarget.com/hostsearch/?q=" + suf
         with urllib.request.urlopen(urllib.request.Request(url, headers=HDR), timeout=30) as r:
@@ -129,35 +157,18 @@ def discover_web(suf, limit=0):
             for baris in txt.splitlines():
                 h = baris.split(",")[0].strip().lower()
                 if h.endswith("." + suf):
-                    hasil.add(h)
-        print("    hackertarget: %d" % len(hasil))
+                    out.add(h)
     except Exception as e:
         print("    hackertarget gagal: %s" % e)
-    if not hasil:
-        try:
-            url = ("https://api.certspotter.com/v1/issuances?domain=%s"
-                   "&include_subdomains=true&expand=dns_names" % suf)
-            with urllib.request.urlopen(urllib.request.Request(url, headers=HDR), timeout=45) as r:
-                data = json.load(r)
-            for row in data:
-                for n in row.get("dns_names", []):
-                    n = n.strip().lower()
-                    if n.endswith("." + suf) and "*" not in n:
-                        hasil.add(n)
-            print("    certspotter: %d" % len(hasil))
-        except Exception as e:
-            print("    certspotter gagal: %s" % e)
-    if not hasil:
-        try:
-            url = "https://rapiddns.io/subdomain/%s?full=1" % suf
-            with urllib.request.urlopen(urllib.request.Request(url, headers=HDR), timeout=45) as r:
-                html = r.read(900000).decode("utf-8", "ignore")
-            for m in DOM_RE.findall(html):
-                if m.lower().endswith("." + suf):
-                    hasil.add(m.lower())
-            print("    rapiddns: %d" % len(hasil))
-        except Exception as e:
-            print("    rapiddns gagal: %s" % e)
+    print("    hackertarget: %d" % len(out))
+    return out
+
+
+def discover_web(suf, limit=0):
+    hasil = _web_rapiddns(suf, limit)
+    if not (limit and len(hasil) >= limit):
+        hasil |= _web_hackertarget(suf)
+    print("    gabungan web: %d" % len(hasil))
     return hasil
 
 
@@ -275,6 +286,11 @@ def cmd_map(a):
         print("%-10s%7d%8d%8d%7d%7d" % (s, t, d.get("hidup", 0), d.get("dijaga", 0),
                                         d.get("alih", 0), d.get("mati", 0)))
     print("-" * 54)
+    ak = c.execute("SELECT suffix, jenis, count(*) n FROM kandidat GROUP BY suffix, jenis").fetchall()
+    if ak:
+        print("sebaran jenis:")
+        for r in ak:
+            print("   %-9s %-5s %d" % (r["suffix"], r["jenis"] or "?", r["n"]))
     top = c.execute("""SELECT domain,status,skor,waf FROM kandidat
                        WHERE status IN ('hidup','dijaga','alih')
                        ORDER BY skor DESC LIMIT 15""").fetchall()
