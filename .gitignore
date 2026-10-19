@@ -14,3 +14,9 @@ tmp/
 
 # berkas hasil rakitan
 docs/RESUME-PACK.md
+
+# python dan data lokal
+.venv/
+__pycache__/
+data/
+.out/
