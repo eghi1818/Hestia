@@ -93,7 +93,8 @@
     var domain = val("fDomain");
     if (!domain) { kabar("Domain masih kosong"); return; }
     var tipe = val("fType") || "lain";
-    var badan = { domain: domain, tipe: tipe, owner: val("fOwner") };
+    var badan = { domain: domain, tipe: tipe, owner: val("fOwner"),
+                  tags: val("fTags"), catatan: val("fNote") };
 
     fetch("/api/targets", {
       method: "POST",
