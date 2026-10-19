@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Gerbang verifikasi Hestia v4. rc=0 berarti boleh commit.
+# Gerbang verifikasi Hestia v5. rc=0 berarti boleh commit.
 set -uo pipefail
 cd "$(dirname "$0")/.."
 fail=0
@@ -30,10 +30,15 @@ done
 echo
 echo "== gate: integrasi live.js dengan index.html =="
 if [ -f dashboard/live.js ] && [ -f dashboard/index.html ] ; then
-  ids=$(grep -oE 'getElementById\("[A-Za-z0-9_-]+"\)' dashboard/live.js 2>/dev/null \
+  # tangkap rujukan literal, baik lewat getElementById("x") maupun val("x")
+  ids=$(grep -oE '(getElementById|val)\("[A-Za-z0-9_-]+"\)' dashboard/live.js 2>/dev/null \
         | sed 's/.*("//; s/")$//' | sort -u)
-  if [ -z "$ids" ] ; then echo "  (tidak ada rujukan elemen)" ; fi
+  if [ -z "$ids" ] ; then
+    echo "  PERINGATAN tidak ada rujukan elemen yang terdeteksi" ; fail=1
+  fi
+  jumlah=0
   for id in $ids ; do
+    jumlah=$((jumlah + 1))
     case "$id" in liveBadge) echo "  lewat   #$id (dibuat live.js)" ; continue ;; esac
     if grep -q "id=\"$id\"" dashboard/index.html ; then
       echo "  ok      #$id"
@@ -41,6 +46,7 @@ if [ -f dashboard/live.js ] && [ -f dashboard/index.html ] ; then
       echo "  HILANG  #$id dirujuk live.js tapi tidak ada di index.html" ; fail=1
     fi
   done
+  echo "  total rujukan diperiksa: $jumlah"
 fi
 
 echo
