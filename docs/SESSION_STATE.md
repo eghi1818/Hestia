@@ -1,19 +1,18 @@
-# SESSION_STATE - HESTIA
+# HESTIA - Status Sesi (kanonik, ~20 baris)
 
-Posisi terakhir : TONGGAK - data nyata dari browser terbukti (S-04 s/d S-09)
-HEAD            : (diisi saat commit)
-Langkah terakhir: S-10 tambah target jadi 10, catat tonggak
-Langkah berikut : ganti data contoh yang tersisa, lalu jalankan E1
-
-## Peta salinan
-- PRD            : docs/PRD-Authority-Hosting-v1.5.md
-- SOP            : docs/SOP-NEW-CHAT.md
-- Aturan         : docs/ONBOARDING_PROMPT.txt
-- Pending        : docs/PENDING.md
-- Riwayat eskalasi: docs/CHAT-LOG.md
-- Riwayat langkah: docs/STEPLOG.md
-
-## Kondisi
-- Dashboard     : 127.0.0.1:8787, daftar target SUDAH data nyata
-- Backend       : FastAPI + SQLite, target CRUD jalan
-- Basis data    : data/hestia.db, tabel targets + clientlog
+- Diperbarui     : S-13
+- Chat           : SEO (naik ke SEO V1.1, V1.2, dst bila chat gagal)
+- HEAD           : lihat output tools/resume.sh (jangan simpan hash di sini)
+- Branch         : main (tracking origin/main)
+- Gate           : LULUS pada commit terakhir
+- Layanan        : FastAPI :8787 (start: bash tools/serve.sh)
+- Smoke          : jalankan bash tools/smoke.sh
+- Langkah terakhir: S-13 modul scrape (discovery crt/web/seed, verifikasi, peta)
+- Item berikutnya : 1) /api/kandidat + tab dashboard  2) bersihkan tabel clientlog
+                    3) naikkan kandidat terbaik jadi target  4) E1 crawl dari benih
+- Blocker        : crt.sh 502 (ada cadangan rapiddns + hackertarget); izin internet belum penuh
+- Temuan terbuka : data palsu dashboard (kredensial, deployment, konten, backlink, audit, grafik)
+- Basis          : targets (nyata), kandidat (sapuan), clientlog (jejak peramban)
+- Konvensi bukti : docs/steps/S-xx.md
+- Lampiran sesi  : docs/ONBOARDING_PROMPT.txt + docs/SESSION_STATE.md + output tools/resume.sh
+- Titik aman     : commit terakhir yang gate-nya LULUS (lihat resume.sh)
