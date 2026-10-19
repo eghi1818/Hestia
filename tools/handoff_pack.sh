@@ -41,8 +41,8 @@ echo "3) Tulis: \"Baca SERAH-TERIMA ini sampai habis, lanjut dari bagian 8.\""
 echo
 echo "## 1. STATUS"
 echo "- gate: $GATE | layanan: $SVC | commit: $HEAD"
-echo "- kandidat: $(python3 -c \"import sqlite3;print(sqlite3.connect('data/hestia.db').execute('select count(*) from kandidat').fetchone()[0])\" 2>/dev/null || echo '?')"
-echo "- target  : $(python3 -c \"import sqlite3;print(sqlite3.connect('data/hestia.db').execute('select count(*) from targets').fetchone()[0])\" 2>/dev/null || echo '?')"
+echo "- kandidat: $(python3 -c 'import sqlite3;print(sqlite3.connect("data/hestia.db").execute("select count(*) from kandidat").fetchone()[0])' 2>/dev/null || echo '?')" 
+echo "- target  : $(python3 -c 'import sqlite3;print(sqlite3.connect("data/hestia.db").execute("select count(*) from targets").fetchone()[0])' 2>/dev/null || echo '?')" 
 echo
 echo "## 2. SUDAH SELESAI - JANGAN DIULANG"
 echo '```'
