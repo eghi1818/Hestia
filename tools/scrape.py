@@ -14,6 +14,9 @@ import argparse, csv, json, os, re, socket, sqlite3, sys, time
 import urllib.error, urllib.request
 from datetime import datetime, timezone
 
+INFRA = {"mail", "cpanel", "webmail", "autoconfig", "autodiscover", "smtp",
+         "pop", "imap", "ftp", "ns", "ns1", "ns2", "ns3", "dns", "dns1", "dns2",
+         "cp", "cp1", "cp2", "cp01", "cp02", "cdn", "api", "mx", "mx1", "mx2"}
 SUFFIX = ["go.id", "desa.id", "mil.id", "ac.id", "sch.id"]
 BOBOT = {"go.id": 30, "desa.id": 15, "mil.id": 25, "ac.id": 20, "sch.id": 20}
 SKOR_STATUS = {"hidup": 50, "alih": 35, "dijaga": 40}
@@ -36,6 +39,10 @@ def suffix_of(d):
         if d.endswith("." + s):
             return s
     return None
+
+
+def infra_of(d):
+    return 1 if d.split(".")[0].lower() in INFRA else 0
 
 
 def jenis_of(d, suf):
@@ -71,10 +78,12 @@ def conn():
         domain TEXT PRIMARY KEY, suffix TEXT, sumber TEXT,
         status TEXT DEFAULT 'baru', http_status INTEGER, server TEXT,
         waf TEXT, skor INTEGER DEFAULT 0, catatan TEXT, diperiksa_at TEXT,
-        jenis TEXT)""")
+        jenis TEXT, infra INTEGER DEFAULT 0)""")
     kol = [r[1] for r in c.execute("PRAGMA table_info(kandidat)")]
     if "jenis" not in kol:
         c.execute("ALTER TABLE kandidat ADD COLUMN jenis TEXT")
+    if "infra" not in kol:
+        c.execute("ALTER TABLE kandidat ADD COLUMN infra INTEGER DEFAULT 0")
     c.commit()
     return c
 
@@ -88,8 +97,8 @@ def simpan(c, domains, sumber):
         s = suffix_of(d)
         if not s:
             continue
-        cur = c.execute("INSERT OR IGNORE INTO kandidat(domain,suffix,sumber,jenis) VALUES(?,?,?,?)",
-                        (d, s, sumber, jenis_of(d, s)))
+        cur = c.execute("INSERT OR IGNORE INTO kandidat(domain,suffix,sumber,jenis,infra) VALUES(?,?,?,?,?)",
+                        (d, s, sumber, jenis_of(d, s), infra_of(d)))
         if cur.rowcount:
             n += 1
     c.commit()
@@ -309,7 +318,7 @@ def cmd_map(a):
         for r in ak:
             print("   %-9s %-5s %d" % (r["suffix"], r["jenis"] or "?", r["n"]))
     top = c.execute("""SELECT domain,status,skor,waf FROM kandidat
-                       WHERE status IN ('hidup','dijaga','alih')
+                       WHERE status IN ('hidup','dijaga','alih') AND infra=0
                        ORDER BY skor DESC LIMIT 15""").fetchall()
     if top:
         print("PRIORITAS:")

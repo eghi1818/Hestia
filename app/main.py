@@ -249,12 +249,14 @@ def api_kandidat_ringkas():
 @app.get("/api/kandidat")
 def api_kandidat(suffix: Optional[str] = None, status: Optional[str] = None,
                  jenis: Optional[str] = None, q: Optional[str] = None,
-                 limit: int = 100, offset: int = 0):
+                 limit: int = 100, offset: int = 0,
+                 tanpa_infra: bool = False):
     w, a = [], []
     if suffix: w.append("suffix=?"); a.append(suffix)
     if status: w.append("status=?"); a.append(status)
     if jenis: w.append("jenis=?"); a.append(jenis)
     if q: w.append("domain LIKE ?"); a.append("%" + q + "%")
+    if tanpa_infra: w.append("infra=0")
     where = (" WHERE " + " AND ".join(w)) if w else ""
     k = _db_kandidat()
     tot = k.execute("SELECT count(*) FROM kandidat" + where, a).fetchone()[0]
