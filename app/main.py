@@ -1,6 +1,9 @@
-"""Hestia API. Satu origin: /api untuk data, / untuk dashboard."""
+"""Hestia API. Satu origin: /api untuk data, / untuk dashboard.
+Kompatibel Python 3.8+ (memakai Optional, bukan sintaks pipa)."""
 import sqlite3
 from pathlib import Path
+from typing import List, Optional
+
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
@@ -22,11 +25,11 @@ class TargetMasuk(BaseModel):
     catatan: str = ""
 
 class TargetUbah(BaseModel):
-    tipe: str | None = None
-    status: str | None = None
-    owner: str | None = None
-    tags: str | None = None
-    catatan: str | None = None
+    tipe: Optional[str] = None
+    status: Optional[str] = None
+    owner: Optional[str] = None
+    tags: Optional[str] = None
+    catatan: Optional[str] = None
 
 def ambil(tid: int) -> dict:
     with db.conn() as c:
@@ -42,13 +45,14 @@ def health():
     return {"ok": True, "service": "hestia", "targets": n}
 
 @app.get("/api/targets")
-def daftar_target(status: str | None = None, q: str | None = None):
-    sql, arg = "SELECT * FROM targets", []
+def daftar_target(status: Optional[str] = None, q: Optional[str] = None) -> List[dict]:
+    sql = "SELECT * FROM targets"
+    arg = []
     if status:
-        sql += " AND status = ?" if "WHERE" in sql else " WHERE status = ?"
+        sql += " WHERE status = ?"
         arg.append(status)
     if q:
-        sql += " AND domain LIKE ?" if "WHERE" in sql else " WHERE domain LIKE ?"
+        sql += " AND domain LIKE ?" if status else " WHERE domain LIKE ?"
         arg.append("%" + q + "%")
     sql += " ORDER BY id DESC"
     with db.conn() as c:
@@ -79,7 +83,7 @@ def ubah_target(tid: int, u: TargetUbah):
     if u.status is not None and u.status not in STATUS_SAH:
         raise HTTPException(400, "status tidak dikenal: " + u.status)
     kolom, nilai = [], []
-    for k, v in u.model_dump(exclude_none=True).items():
+    for k, v in u.dict(exclude_none=True).items():
         kolom.append(k + " = ?")
         nilai.append(v)
     if not kolom:

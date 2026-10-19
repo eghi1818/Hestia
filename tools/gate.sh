@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Gerbang verifikasi Hestia v2. rc=0 berarti boleh commit.
+# Gerbang verifikasi Hestia v3. rc=0 berarti boleh commit.
 set -uo pipefail
 cd "$(dirname "$0")/.."
 fail=0
@@ -22,7 +22,6 @@ for d in dashboard web app ; do
     for f in $found ; do team="$team $f" ; done
   fi
 done
-if [ -z "$team" ]; then echo "  (tidak ada berkas tim)"; fi
 for f in $team ; do
   n=$(grep -ciE 'parasite|reframing' "$f" 2>/dev/null || true) ; [ -z "$n" ] && n=0
   if [ "$n" -eq 0 ]; then echo "  bersih  $f" ; else echo "  BOCOR   $f ($n baris)" ; fail=1 ; fi
@@ -37,10 +36,32 @@ for f in GOAL.md docs/CONTEXT.md docs/EKSPERIMEN.md docs/ONBOARDING_PROMPT.txt d
 done
 
 echo
-echo "== gate: layanan dashboard =="
+echo "== gate: sintaks python =="
+if [ -f app/main.py ] ; then
+  if .venv/bin/python -m py_compile app/main.py 2>/dev/null ; then
+    echo "  ok      app/main.py bisa dikompilasi"
+  else
+    echo "  GAGAL   app/main.py tidak bisa dikompilasi" ; fail=1
+  fi
+fi
+
+echo
+echo "== gate: layanan dashboard (fail-closed) =="
 code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 3 http://127.0.0.1:8787/ 2>/dev/null || true)
 [ -z "$code" ] && code=000
-echo "  http $code"
+api=$(curl -s -o /dev/null -w '%{http_code}' --max-time 3 http://127.0.0.1:8787/api/health 2>/dev/null || true)
+[ -z "$api" ] && api=000
+echo "  /            http $code"
+echo "  /api/health  http $api"
+if [ -f app/main.py ] ; then
+  if [ "$code" = "200" ] && [ "$api" = "200" ] ; then
+    echo "  layanan HIDUP"
+  elif [ "${HESTIA_ALLOW_DOWN:-0}" = "1" ] ; then
+    echo "  layanan MATI (diizinkan lewat HESTIA_ALLOW_DOWN=1)"
+  else
+    echo "  layanan MATI" ; fail=1
+  fi
+fi
 
 echo
 if [ "$fail" -eq 0 ]; then echo "GATE: LULUS" ; exit 0 ; else echo "GATE: GAGAL" ; exit 1 ; fi
