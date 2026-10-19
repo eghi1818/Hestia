@@ -139,6 +139,25 @@
       });
   }
 
+  // --- perekam: catat klik supaya kita tidak menebak ---
+  document.addEventListener("click", function (ev) {
+    var el = ev.target;
+    while (el && el.tagName !== "BUTTON" && el.tagName !== "A") { el = el.parentElement; }
+    if (!el) { return; }
+    var teks = (el.textContent || "").trim().replace(/\s+/g, " ").slice(0, 40);
+    if (/tambah|simpan|target/i.test(teks)) { lapor("klik", teks); }
+  }, true);
+  window.__hestia_klik = true;
+
+  if (typeof window.openModal === "function" && !window.__hestia_openModal) {
+    var _bukaAsli = window.openModal;
+    window.openModal = function () {
+      lapor("modal-dibuka", String(arguments[0] || ""));
+      return _bukaAsli.apply(this, arguments);
+    };
+    window.__hestia_openModal = true;
+  }
+
   window.__hestia_refresh = tarik;
   window.__hestia_simpan = simpan;
   window.addTarget = simpan;
