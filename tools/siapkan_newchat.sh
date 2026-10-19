@@ -32,12 +32,9 @@ PINDAH (saat chat gagal):
 
 LALU:
  1. Buat chat baru. NAMA CHAT: $NAMA V$VER_NEXT
- 2. Lampirkan berkas 1 dan 2 dari folder ini.
- 3. Jalankan: bash tools/resume.sh
-    lalu tempel SELURUH keluarannya ke chat.
-    (berkas 3-KELUARAN-RESUME.txt = cadangan bila mau diunggah)
- 4. Pesan pertama: tempel isi berkas 1 di antara dua garis, apa adanya.
- 5. Kalau agent masih ragu, lampirkan 4-SERAH-TERIMA-lengkap.md.
+ 2. Lampirkan SELURUH isi folder ini (berkas 1, 2, 3, 4).
+ 3. Pesan pertama: tempel isi berkas 1 di antara dua garis, apa adanya.
+ 4. Kalau agent masih ragu, suruh ia membaca berkas 4.
 
 PANTANGAN
  - Jangan unggah folder repo. Cukup berkas di folder ini.
