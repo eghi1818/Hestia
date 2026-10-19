@@ -213,3 +213,53 @@ def lihat_recon(tid: int):
             "SELECT * FROM recon WHERE target_id = ? ORDER BY id DESC LIMIT 20", (tid,)
         ).fetchall()
     return [dict(r) for r in rows]
+
+
+# ---------- kandidat (hasil sapuan) ----------
+def _db_kandidat():
+    import sqlite3, os
+    p = os.environ.get("HESTIA_DB")
+    if not p:
+        try:
+            from app import db as _d
+            for at in ("DB_PATH", "PATH", "DB", "DBFILE"):
+                v = getattr(_d, at, None)
+                if isinstance(v, str) and v:
+                    p = v
+                    break
+        except Exception:
+            pass
+    c = sqlite3.connect(p or "data/hestia.db")
+    c.row_factory = sqlite3.Row
+    return c
+
+
+@app.get("/api/kandidat/ringkas")
+def api_kandidat_ringkas():
+    k = _db_kandidat()
+    tot = k.execute("SELECT count(*) FROM kandidat").fetchone()[0]
+    per = [dict(r) for r in k.execute(
+        "SELECT suffix,status,count(*) n FROM kandidat GROUP BY suffix,status")]
+    jen = [dict(r) for r in k.execute(
+        "SELECT suffix,jenis,count(*) n FROM kandidat GROUP BY suffix,jenis")]
+    k.close()
+    return {"total": tot, "per_suffix_status": per, "per_suffix_jenis": jen}
+
+
+@app.get("/api/kandidat")
+def api_kandidat(suffix: Optional[str] = None, status: Optional[str] = None,
+                 jenis: Optional[str] = None, q: Optional[str] = None,
+                 limit: int = 100, offset: int = 0):
+    w, a = [], []
+    if suffix: w.append("suffix=?"); a.append(suffix)
+    if status: w.append("status=?"); a.append(status)
+    if jenis: w.append("jenis=?"); a.append(jenis)
+    if q: w.append("domain LIKE ?"); a.append("%" + q + "%")
+    where = (" WHERE " + " AND ".join(w)) if w else ""
+    k = _db_kandidat()
+    tot = k.execute("SELECT count(*) FROM kandidat" + where, a).fetchone()[0]
+    rows = [dict(r) for r in k.execute(
+        "SELECT * FROM kandidat" + where + " ORDER BY skor DESC, domain LIMIT ? OFFSET ?",
+        a + [limit, offset])]
+    k.close()
+    return {"total": tot, "limit": limit, "offset": offset, "item": rows}
