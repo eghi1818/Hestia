@@ -31,3 +31,10 @@ E8 tujuan: tahu target yang sudah dihuni pihak lain. Cara: periksa jejak.
 E9 tujuan: tentukan cara mengambil nilai. Cara: bandingkan tiga model.
 E10 tujuan: tahu bagian yang layak diotomasi. Cara: otomasi satu langkah.
 E11 tujuan: tahu dampak bila target dibersihkan. Cara: pantau target terkait.
+
+## E1 (jalan)
+- Hipotesis: domain pemerintah saling menaut, sehingga crawl dari domain hidup
+  menghasilkan kandidat baru yang tidak terjangkau crt.sh/rapiddns/hackertarget.
+- Bukti awal: 96 kandidat bersumber 'crawl'.
+- Catatan: crt.sh tumbang (502), rapiddns kosong untuk sch.id/mil.id,
+  hackertarget dibatasi 50 per kueri.

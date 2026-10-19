@@ -317,6 +317,37 @@ def cmd_map(a):
             print("  %3d  %-42s%-8s%s" % (r["skor"], r["domain"], r["status"], r["waf"] or ""))
 
 
+def cmd_crawl(a):
+    c = conn()
+    q = "SELECT domain FROM kandidat WHERE status IN ('hidup','alih','dijaga')"
+    arg = []
+    if a.suffix:
+        q += " AND suffix=?"; arg.append(a.suffix)
+    q += " ORDER BY skor DESC LIMIT ?"; arg.append(a.batas)
+    sumber = [r["domain"] for r in c.execute(q, arg)]
+    print("crawl dari %d domain hidup (jeda %ss)" % (len(sumber), a.jeda))
+    ketemu = set()
+    for d in sumber:
+        try:
+            req = urllib.request.Request("https://" + d, headers=HDR)
+            with urllib.request.urlopen(req, timeout=12) as r:
+                html = r.read(400000).decode("utf-8", "ignore")
+        except urllib.error.HTTPError as e:
+            html = e.read(400000).decode("utf-8", "ignore")
+        except Exception as e:
+            print("  %-42s gagal %s" % (d, type(e).__name__))
+            time.sleep(a.jeda)
+            continue
+        dapat = set(m.lower() for m in DOM_RE.findall(html))
+        baru = dapat - ketemu
+        ketemu |= dapat
+        print("  %-42s +%d (total %d)" % (d, len(baru), len(ketemu)))
+        time.sleep(a.jeda)
+    n = simpan(c, ketemu, "crawl")
+    print("kandidat baru: %d  (total di basis: %d)" % (
+        n, c.execute("SELECT count(*) FROM kandidat").fetchone()[0]))
+
+
 def cmd_export(a):
     c = conn()
     with open(a.out, "w", newline="") as f:
@@ -333,6 +364,11 @@ def main():
     sub = p.add_subparsers(dest="cmd", required=True)
     d = sub.add_parser("discover"); d.add_argument("--suffix"); d.add_argument("--source", default="auto", choices=["auto", "crt", "web", "seed"]); d.add_argument("--limit", type=int, default=0); d.set_defaults(f=cmd_discover)
     v = sub.add_parser("verify"); v.add_argument("--suffix"); v.add_argument("--limit", type=int, default=20); v.add_argument("--sleep", type=float, default=1.0); v.set_defaults(f=cmd_verify)
+    cr = sub.add_parser("crawl")
+    cr.add_argument("--suffix")
+    cr.add_argument("--batas", type=int, default=25)
+    cr.add_argument("--jeda", type=float, default=1.0)
+    cr.set_defaults(f=cmd_crawl)
     m = sub.add_parser("map"); m.set_defaults(f=cmd_map)
     e = sub.add_parser("export"); e.add_argument("--out", default="kandidat.csv"); e.set_defaults(f=cmd_export)
     a = p.parse_args()
