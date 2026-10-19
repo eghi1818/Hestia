@@ -249,6 +249,37 @@
   }
   window.periksaKandidat = periksaKandidat;
 
+  function pantauPeriksa() {
+    var t = setInterval(function () {
+      fetch("/api/kandidat/periksa-status").then(function (r) { return r.json(); })
+        .then(function (st) {
+          var info = document.getElementById("kandInfo");
+          if (info) info.textContent = "memeriksa " + st.selesai + " / " + st.target
+            + "   " + JSON.stringify(st.ringkas);
+          if (!st.jalan) {
+            clearInterval(t);
+            lapor("periksa-massal-selesai", JSON.stringify(st.ringkas));
+            if (window.toast) window.toast("periksa selesai: " + st.selesai + " domain");
+            muatKandidat();
+          }
+        });
+    }, 2000);
+  }
+
+  function periksaMassal() {
+    fetch("/api/kandidat/periksa-latar?limit=50", { method: "POST" })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        lapor("periksa-massal-mulai", JSON.stringify(d));
+        if (window.toast) window.toast("periksa massal dimulai");
+        pantauPeriksa();
+      })
+      .catch(function (e) { lapor("periksa-massal-gagal", String(e)); });
+  }
+  window.periksaMassal = periksaMassal;
+
+
+
 
 
   window.muatKandidat = muatKandidat;

@@ -4,7 +4,7 @@ import sqlite3
 from pathlib import Path
 from typing import List, Optional
 
-from fastapi import FastAPI, HTTPException
+from fastapi import BackgroundTasks, FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
@@ -291,3 +291,52 @@ def api_kandidat_periksa(limit: int = 5, suffix: Optional[str] = None):
         ringkas[h["status"]] = ringkas.get(h["status"], 0) + 1
     c.close()
     return {"diperiksa": len(baris), "ringkas": ringkas}
+
+
+# ---------- periksa massal di latar belakang ----------
+_PS = {"jalan": False, "selesai": 0, "target": 0, "ringkas": {}}
+
+
+def _jalankan_periksa(limit, suffix):
+    import sys as _sys, os as _os, time as _t
+    from datetime import datetime as _dt
+    _t2 = _os.path.join(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))), "tools")
+    if _t2 not in _sys.path:
+        _sys.path.insert(0, _t2)
+    import scrape
+    _PS.update({"jalan": True, "selesai": 0, "target": 0, "ringkas": {}})
+    try:
+        c = scrape.conn()
+        q, a = "SELECT domain,suffix FROM kandidat WHERE status='baru'", []
+        if suffix:
+            q += " AND suffix=?"; a.append(suffix)
+        q += " ORDER BY skor DESC, domain LIMIT ?"
+        a.append(max(1, min(limit, 500)))
+        baris = c.execute(q, a).fetchall()
+        _PS["target"] = len(baris)
+        for r in baris:
+            h = scrape.verify_one(r["domain"]); h["suffix"] = r["suffix"]
+            c.execute("""UPDATE kandidat SET status=?,http_status=?,server=?,waf=?,skor=?,
+                         catatan=?,diperiksa_at=? WHERE domain=?""",
+                      (h["status"], h["http_status"], h["server"], h["waf"], scrape.skor(h),
+                       h.get("catatan"), _dt.now().isoformat(timespec="seconds"), r["domain"]))
+            c.commit()
+            _PS["selesai"] += 1
+            _PS["ringkas"][h["status"]] = _PS["ringkas"].get(h["status"], 0) + 1
+            _t.sleep(0.6)
+        c.close()
+    finally:
+        _PS["jalan"] = False
+
+
+@app.post("/api/kandidat/periksa-latar")
+def api_periksa_latar(bg: BackgroundTasks, limit: int = 50, suffix: Optional[str] = None):
+    if _PS["jalan"]:
+        return {"sudah_jalan": True, "status": _PS}
+    bg.add_task(_jalankan_periksa, limit, suffix)
+    return {"mulai": True, "limit": limit}
+
+
+@app.get("/api/kandidat/periksa-status")
+def api_periksa_status():
+    return _PS
