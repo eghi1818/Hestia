@@ -103,3 +103,9 @@ def hapus_target(tid: int):
 @app.get("/")
 def beranda():
     return FileResponse(ROOT / "dashboard" / "index.html")
+
+
+@app.get("/live.js")
+def live_js():
+    return FileResponse(ROOT / "dashboard" / "live.js",
+                        media_type="application/javascript")
