@@ -1,6 +1,10 @@
 /* live.js - sambungan Hestia ke API.
    Menempel dari luar: index.html milik desain tidak dibongkar.
-   Dua tugas: tampilkan data nyata, dan simpan target baru ke basis data. */
+   Dua tugas: tampilkan data nyata, dan simpan target baru ke basis data.
+
+   Catatan penting: tombol "Simpan target" TIDAK punya id - ia memakai
+   onclick="addTarget()". Karena addTarget adalah function declaration di
+   skrip klasik, ia hidup di window dan bisa ditimpa langsung. */
 (function () {
   "use strict";
 
@@ -11,9 +15,9 @@
 
   function judul(s) { return LABEL[s] || s; }
 
-  function nilai(id, cadangan) {
+  function val(id) {
     var e = document.getElementById(id);
-    return e && typeof e.value === "string" ? e.value.trim() : (cadangan || "");
+    return e && typeof e.value === "string" ? e.value.trim() : "";
   }
 
   function keBentukLokal(r) {
@@ -39,15 +43,20 @@
     return Math.round((sehat / rows.length) * 100);
   }
 
-  function pasangPenanda(teks, warna) {
+  function kabar(teks) {
+    if (typeof toast === "function") { toast(teks); }
+    else { console.log("[live] " + teks); }
+  }
+
+  function pasangPenanda(teks, merah) {
     var lama = document.getElementById("liveBadge");
     if (lama) { lama.remove(); }
     var b = document.createElement("div");
     b.id = "liveBadge";
     b.textContent = teks;
     b.style.cssText = "display:inline-block;font-size:11px;padding:3px 9px;border-radius:999px;" +
-      "margin:6px 0;border:1px solid " + (warna || "rgba(74,222,128,.35)") + ";" +
-      "color:" + (warna ? "#fca5a5" : "#4ade80") + ";background:rgba(127,127,127,.10)";
+      "margin:6px 0;border:1px solid " + (merah ? "rgba(248,113,113,.5)" : "rgba(74,222,128,.35)") + ";" +
+      "color:" + (merah ? "#fca5a5" : "#4ade80") + ";background:rgba(127,127,127,.10)";
     var host = document.getElementById("page-dashboard");
     if (host) { host.insertBefore(b, host.firstChild); }
   }
@@ -72,25 +81,20 @@
         if (typeof renderTargets === "function") { renderTargets(); }
         isiKpi(rows);
         pasangPenanda("data nyata - " + rows.length + " target");
-        console.log("[live] " + rows.length + " target dari API");
         return rows;
       })
       .catch(function (e) {
         console.warn("[live] gagal tarik data:", e);
-        pasangPenanda("API tidak terjangkau", "rgba(248,113,113,.5)");
+        pasangPenanda("API tidak terjangkau", true);
       });
   }
 
   function simpan() {
-    var domain = nilai("fDomain");
-    if (!domain) { return; }
-    var badan = {
-      domain: domain,
-      tipe: nilai("selType", "lain") || "lain",
-      owner: nilai("fOwner"),
-      tags: nilai("fTags"),
-      catatan: nilai("fNote")
-    };
+    var domain = val("fDomain");
+    if (!domain) { kabar("Domain masih kosong"); return; }
+    var tipe = val("fType") || val("selType") || "lain";
+    var badan = { domain: domain, tipe: tipe, owner: val("fOwner") };
+
     fetch("/api/targets", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -102,28 +106,24 @@
         return r.json();
       })
       .then(function () {
-        if (typeof closeModal === "function") { closeModal(); }
-        console.log("[live] tersimpan:", badan.domain);
+        if (typeof closeModal === "function") { closeModal("modalTarget"); }
+        var fd = document.getElementById("fDomain");
+        if (fd) { fd.value = ""; }
+        kabar("Target tersimpan ke basis data");
         return tarik();
       })
       .catch(function (e) {
         console.warn("[live] gagal simpan:", e);
-        window.alert("Gagal simpan: " + e.message);
+        kabar("Gagal simpan: " + e.message);
       });
   }
 
   window.__hestia_refresh = tarik;
   window.__hestia_simpan = simpan;
+  window.addTarget = simpan;
+  console.log("[live] window.addTarget ditimpa");
 
-  function pasang() {
-    var btn = document.getElementById("btnAddTarget");
-    if (!btn || btn.__live) { return; }
-    btn.__live = true;
-    btn.addEventListener("click", function () { setTimeout(simpan, 0); }, true);
-    console.log("[live] pengait simpan terpasang");
-  }
-
-  function mulai() { pasang(); tarik(); }
+  function mulai() { tarik(); }
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", mulai);

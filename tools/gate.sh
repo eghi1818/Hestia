@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Gerbang verifikasi Hestia v3. rc=0 berarti boleh commit.
+# Gerbang verifikasi Hestia v4. rc=0 berarti boleh commit.
 set -uo pipefail
 cd "$(dirname "$0")/.."
 fail=0
@@ -26,6 +26,22 @@ for f in $team ; do
   n=$(grep -ciE 'parasite|reframing' "$f" 2>/dev/null || true) ; [ -z "$n" ] && n=0
   if [ "$n" -eq 0 ]; then echo "  bersih  $f" ; else echo "  BOCOR   $f ($n baris)" ; fail=1 ; fi
 done
+
+echo
+echo "== gate: integrasi live.js dengan index.html =="
+if [ -f dashboard/live.js ] && [ -f dashboard/index.html ] ; then
+  ids=$(grep -oE 'getElementById\("[A-Za-z0-9_-]+"\)' dashboard/live.js 2>/dev/null \
+        | sed 's/.*("//; s/")$//' | sort -u)
+  if [ -z "$ids" ] ; then echo "  (tidak ada rujukan elemen)" ; fi
+  for id in $ids ; do
+    case "$id" in liveBadge) echo "  lewat   #$id (dibuat live.js)" ; continue ;; esac
+    if grep -q "id=\"$id\"" dashboard/index.html ; then
+      echo "  ok      #$id"
+    else
+      echo "  HILANG  #$id dirujuk live.js tapi tidak ada di index.html" ; fail=1
+    fi
+  done
+fi
 
 echo
 echo "== gate: dokumen internal (boleh memuat istilah) =="
