@@ -1,9 +1,9 @@
 # SESSION_STATE - HESTIA
 
-Posisi terakhir : SOP dan gerbang terpasang, menunggu dokumen prioritas 1
+Posisi terakhir : TONGGAK - data nyata dari browser terbukti (S-04 s/d S-09)
 HEAD            : (diisi saat commit)
-Langkah terakhir: pasang SOP + tools + gerbang
-Langkah berikut : buat docs/CONTEXT.md, GOAL.md, docs/EKSPERIMEN.md
+Langkah terakhir: S-10 tambah target jadi 10, catat tonggak
+Langkah berikut : ganti data contoh yang tersisa, lalu jalankan E1
 
 ## Peta salinan
 - PRD            : docs/PRD-Authority-Hosting-v1.5.md
@@ -14,6 +14,6 @@ Langkah berikut : buat docs/CONTEXT.md, GOAL.md, docs/EKSPERIMEN.md
 - Riwayat langkah: docs/STEPLOG.md
 
 ## Kondisi
-- Dashboard     : prototipe di 127.0.0.1:8787, masih data palsu
-- Backend       : belum ada
-- Basis data    : belum ada
+- Dashboard     : 127.0.0.1:8787, daftar target SUDAH data nyata
+- Backend       : FastAPI + SQLite, target CRUD jalan
+- Basis data    : data/hestia.db, tabel targets + clientlog
