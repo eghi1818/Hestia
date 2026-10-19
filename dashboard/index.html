@@ -256,6 +256,7 @@ tbody tr:last-child td{border-bottom:none}
       <button class="nav-item active" data-page="dashboard"><span class="ico">▦</span> Dashboard</button>
       <button class="nav-item" data-page="target"><span class="ico">◎</span> Target <span class="badge gray" id="navTargetCount">8</span></button>
       <button class="nav-item" data-page="recon"><span class="ico">🔍</span> Recon</button>
+      <button class="nav-item" data-page="kandidat"><span class="ico">🧭</span> Kandidat <span class="badge gray" id="navKandCount">0</span></button>
       <button class="nav-item" data-page="kredensial"><span class="ico">🔑</span> Kredensial <span class="badge" id="navAlertBadge">4</span></button>
       <div class="nav-label">Operasi</div>
       <button class="nav-item" data-page="deployment"><span class="ico">🚀</span> Deployment</button>
@@ -521,6 +522,38 @@ tbody tr:last-child td{border-bottom:none}
       </section>
 
       <!-- ========== PAGE: KREDENSIAL ========== -->
+      <section class="page" id="page-kandidat">
+        <div class="page-head">
+          <div>
+            <div class="page-title">Kandidat</div>
+            <div class="page-desc">Hasil sapuan domain dari Certificate Transparency dan sumber publik. Status 403 dihitung hidup-dijaga, bukan mati.</div>
+          </div>
+          <div class="actions">
+            <button class="btn btn-ghost" onclick="muatKandidat()">Muat ulang</button>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:10px">
+          <input id="kandCari" placeholder="cari domain..." style="padding:7px 10px;border-radius:8px;border:1px solid #2a2f3a;background:#161a22;color:#e6e8ee;font-size:13px">
+          <select id="kandStatus" style="padding:7px 10px;border-radius:8px;border:1px solid #2a2f3a;background:#161a22;color:#e6e8ee;font-size:13px">
+            <option value="">semua status</option>
+            <option>hidup</option><option>dijaga</option><option>alih</option><option>mati</option><option>galat</option><option>baru</option>
+          </select>
+          <button class="btn btn-primary btn-sm" onclick="muatKandidat()">Saring</button>
+        </div>
+        <div id="kandInfo" style="font-size:12px;color:var(--muted);margin-bottom:8px"></div>
+        <table style="width:100%;border-collapse:collapse;font-size:13px">
+          <thead><tr>
+            <th style="text-align:left;padding:7px 8px;color:var(--muted)">Domain</th>
+            <th style="text-align:left;padding:7px 8px;color:var(--muted)">Akhiran</th>
+            <th style="text-align:left;padding:7px 8px;color:var(--muted)">Jenis</th>
+            <th style="text-align:left;padding:7px 8px;color:var(--muted)">Status</th>
+            <th style="text-align:left;padding:7px 8px;color:var(--muted)">HTTP</th>
+            <th style="text-align:left;padding:7px 8px;color:var(--muted)">Skor</th>
+            <th style="text-align:left;padding:7px 8px;color:var(--muted)">Penjaga</th>
+          </tr></thead>
+          <tbody id="kandBody"></tbody>
+        </table>
+      </section>
       <section class="page" id="page-kredensial">
         <div class="page-head">
           <div>

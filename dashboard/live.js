@@ -170,4 +170,53 @@
   } else {
     mulai();
   }
+
+  /* --- tab Kandidat: baca hasil sapuan --- */
+  function lapor(a, r) {
+    try {
+      fetch("/api/clientlog", { method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ aksi: a, rincian: r }) });
+    } catch (e) {}
+  }
+
+  function muatKandidat() {
+    var body = document.getElementById("kandBody");
+    if (!body) return;
+    var q = val("kandCari"), st = val("kandStatus");
+    var url = "/api/kandidat?limit=200";
+    if (q) url += "&q=" + encodeURIComponent(q);
+    if (st) url += "&status=" + encodeURIComponent(st);
+    body.innerHTML = '<tr><td colspan="7" style="padding:10px;color:var(--muted)">memuat...</td></tr>';
+    fetch(url).then(function (r) { return r.json(); }).then(function (d) {
+      var info = document.getElementById("kandInfo");
+      if (info) info.textContent = "menampilkan " + d.item.length + " dari " + d.total + " kandidat";
+      var nb = document.getElementById("navKandCount");
+      if (nb) nb.textContent = d.total;
+      if (!d.item.length) {
+        body.innerHTML = '<tr><td colspan="7" style="padding:10px;color:var(--muted)">belum ada kandidat</td></tr>';
+        return;
+      }
+      var sel = "padding:7px 8px;border-bottom:1px solid #232833";
+      body.innerHTML = d.item.map(function (k) {
+        return "<tr>"
+          + '<td style="' + sel + '">' + k.domain + "</td>"
+          + '<td style="' + sel + '">' + k.suffix + "</td>"
+          + '<td style="' + sel + '">' + (k.jenis || "-") + "</td>"
+          + '<td style="' + sel + '">' + k.status + "</td>"
+          + '<td style="' + sel + '">' + (k.http_status || "-") + "</td>"
+          + '<td style="' + sel + '">' + k.skor + "</td>"
+          + '<td style="' + sel + '">' + (k.waf || "-") + "</td>"
+          + "</tr>";
+      }).join("");
+      lapor("kandidat-dimuat", "total=" + d.total);
+    }).catch(function (e) {
+      body.innerHTML = '<tr><td colspan="7" style="padding:10px;color:var(--red)">gagal: ' + e + "</td></tr>";
+    });
+  }
+  window.muatKandidat = muatKandidat;
+  document.addEventListener("DOMContentLoaded", function () {
+    var n = document.querySelector('[data-page="kandidat"]');
+    if (n) n.addEventListener("click", muatKandidat);
+  });
+
 })();
