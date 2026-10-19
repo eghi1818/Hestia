@@ -84,6 +84,8 @@ def conn():
         c.execute("ALTER TABLE kandidat ADD COLUMN jenis TEXT")
     if "infra" not in kol:
         c.execute("ALTER TABLE kandidat ADD COLUMN infra INTEGER DEFAULT 0")
+    if "dicrawl" not in kol:
+        c.execute("ALTER TABLE kandidat ADD COLUMN dicrawl INTEGER DEFAULT 0")
     c.commit()
     return c
 
@@ -317,6 +319,14 @@ def cmd_map(a):
         print("sebaran jenis:")
         for r in ak:
             print("   %-9s %-5s %d" % (r["suffix"], r["jenis"] or "?", r["n"]))
+    try:
+        pin = c.execute("SELECT dari, count(*) n FROM tautan GROUP BY dari ORDER BY n DESC LIMIT 8").fetchall()
+        if pin:
+            print("pintu masuk teratas (paling banyak membuka domain lain):")
+            for r in pin:
+                print("   %3d  %s" % (r["n"], r["dari"]))
+    except Exception:
+        pass
     top = c.execute("""SELECT domain,status,skor,waf FROM kandidat
                        WHERE status IN ('hidup','dijaga','alih') AND infra=0
                        ORDER BY skor DESC LIMIT 15""").fetchall()
@@ -328,15 +338,20 @@ def cmd_map(a):
 
 def cmd_crawl(a):
     c = conn()
-    q = "SELECT domain FROM kandidat WHERE status IN ('hidup','alih','dijaga')"
+    c.execute("""CREATE TABLE IF NOT EXISTS tautan(
+        dari TEXT, ke TEXT, dibuat TEXT, PRIMARY KEY(dari,ke))""")
+    q = ("SELECT domain FROM kandidat WHERE status IN ('hidup','alih','dijaga')"
+         " AND (dicrawl IS NULL OR dicrawl=0)")
     arg = []
     if a.suffix:
         q += " AND suffix=?"; arg.append(a.suffix)
     q += " ORDER BY skor DESC LIMIT ?"; arg.append(a.batas)
     sumber = [r["domain"] for r in c.execute(q, arg)]
-    print("crawl dari %d domain hidup (jeda %ss)" % (len(sumber), a.jeda))
+    print("crawl lapis berikutnya: %d domain (jeda %ss)" % (len(sumber), a.jeda))
     ketemu = set()
+    now = datetime.now(timezone.utc).isoformat(timespec="seconds")
     for d in sumber:
+        html = ""
         try:
             req = urllib.request.Request("https://" + d, headers=HDR)
             with urllib.request.urlopen(req, timeout=12) as r:
@@ -345,16 +360,21 @@ def cmd_crawl(a):
             html = e.read(400000).decode("utf-8", "ignore")
         except Exception as e:
             print("  %-42s gagal %s" % (d, type(e).__name__))
-            time.sleep(a.jeda)
-            continue
+            c.execute("UPDATE kandidat SET dicrawl=1 WHERE domain=?", (d,)); c.commit()
+            time.sleep(a.jeda); continue
         dapat = set(m.lower() for m in DOM_RE.findall(html))
+        for t in dapat:
+            if t != d:
+                c.execute("INSERT OR IGNORE INTO tautan(dari,ke,dibuat) VALUES(?,?,?)", (d, t, now))
         baru = dapat - ketemu
         ketemu |= dapat
+        c.execute("UPDATE kandidat SET dicrawl=1 WHERE domain=?", (d,)); c.commit()
         print("  %-42s +%d (total %d)" % (d, len(baru), len(ketemu)))
         time.sleep(a.jeda)
     n = simpan(c, ketemu, "crawl")
-    print("kandidat baru: %d  (total di basis: %d)" % (
-        n, c.execute("SELECT count(*) FROM kandidat").fetchone()[0]))
+    print("kandidat baru: %d  total: %d  tautan tercatat: %d" % (
+        n, c.execute("SELECT count(*) FROM kandidat").fetchone()[0],
+        c.execute("SELECT count(*) FROM tautan").fetchone()[0]))
 
 
 def cmd_export(a):
