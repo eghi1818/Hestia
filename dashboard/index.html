@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hestia — Panel Authority Hosting</title>
+<style>
+:root{
+  --bg:#0b0e14; --bg2:#0f1420; --panel:#141a29; --panel2:#1a2135;
+  --line:#232c44; --line2:#2c3854;
+  --text:#e8ecf6; --muted:#8b94ad; --faint:#5c6579;
+  --accent:#f4a259; --accent2:#ffbe7a;
+  --green:#4ade80; --green-bg:rgba(74,222,128,.12);
+  --yellow:#fbbf24; --yellow-bg:rgba(251,191,36,.12);
+  --red:#f87171; --red-bg:rgba(248,113,113,.12);
+  --blue:#60a5fa; --blue-bg:rgba(96,165,250,.12);
+  --gray:#94a3b8; --gray-bg:rgba(148,163,184,.12);
+  --radius:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,select{font-family:inherit}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:#2c3854;border-radius:4px}
+::-webkit-scrollbar-track{background:transparent}
+
+/* ============ LAYOUT ============ */
+.app{display:flex;min-height:100vh}
+.sidebar{width:236px;background:var(--bg2);border-right:1px solid var(--line);position:fixed;top:0;bottom:0;left:0;display:flex;flex-direction:column;z-index:50;transition:transform .25s}
+.main{flex:1;margin-left:236px;display:flex;flex-direction:column;min-height:100vh}
+
+/* ============ SIDEBAR ============ */
+.brand{display:flex;align-items:center;gap:11px;padding:20px 18px 16px}
+.brand-logo{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#f4a259,#e76f51);display:flex;align-items:center;justify-content:center;font-size:19px;box-shadow:0 4px 14px rgba(244,162,89,.25)}
+.brand-name{font-size:17px;font-weight:700;letter-spacing:.2px}
+.brand-sub{font-size:10.5px;color:var(--muted);letter-spacing:.6px;text-transform:uppercase;margin-top:1px}
+.nav{padding:6px 12px;flex:1;overflow-y:auto}
+.nav-label{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase;padding:14px 10px 6px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8.5px 11px;border-radius:9px;font-size:13.5px;color:var(--muted);width:100%;text-align:left;transition:all .15s;margin-bottom:1px}
+.nav-item:hover{background:var(--panel);color:var(--text)}
+.nav-item.active{background:linear-gradient(90deg,rgba(244,162,89,.14),rgba(244,162,89,.05));color:var(--accent2);font-weight:600}
+.nav-item .ico{width:19px;text-align:center;font-size:15px;flex-shrink:0}
+.nav-item .badge{margin-left:auto;background:var(--red-bg);color:var(--red);font-size:10.5px;font-weight:700;padding:1.5px 7px;border-radius:20px}
+.nav-item .badge.gray{background:var(--gray-bg);color:var(--gray)}
+.sidebar-foot{padding:14px;border-top:1px solid var(--line)}
+.user-card{display:flex;align-items:center;gap:10px;padding:9px;border-radius:10px;background:var(--panel);border:1px solid var(--line)}
+.avatar{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#60a5fa,#8b5cf6);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12.5px;flex-shrink:0}
+.user-card .nm{font-size:12.5px;font-weight:600}
+.user-card .rl{font-size:10.5px;color:var(--muted)}
+
+/* ============ TOPBAR ============ */
+.topbar{display:flex;align-items:center;gap:14px;padding:14px 26px;border-bottom:1px solid var(--line);background:rgba(11,14,20,.85);backdrop-filter:blur(12px);position:sticky;top:0;z-index:40}
+.hamburger{display:none;font-size:19px;color:var(--muted);padding:4px 8px;border-radius:8px}
+.hamburger:hover{background:var(--panel)}
+.searchbox{flex:1;max-width:420px;position:relative}
+.searchbox input{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:9px 12px 9px 36px;font-size:13px;color:var(--text);outline:none;transition:border .15s}
+.searchbox input:focus{border-color:var(--accent)}
+.searchbox .si{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.icon-btn{width:36px;height:36px;border-radius:10px;background:var(--panel);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:15px;position:relative;transition:all .15s}
+.icon-btn:hover{border-color:var(--line2);background:var(--panel2)}
+.icon-btn .dot{position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid var(--bg2)}
+
+/* ============ CONTENT ============ */
+.content{padding:24px 26px 60px;flex:1}
+.page{display:none;animation:fadeIn .25s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.page-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:22px;flex-wrap:wrap}
+.page-title{font-size:21px;font-weight:700;letter-spacing:.2px}
+.page-desc{font-size:13px;color:var(--muted);margin-top:4px;max-width:640px;line-height:1.5}
+.page-head .actions{margin-left:auto;display:flex;gap:9px;flex-wrap:wrap}
+
+/* ============ BUTTONS ============ */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 15px;border-radius:10px;font-size:13px;font-weight:600;transition:all .15s;border:1px solid transparent}
+.btn-primary{background:linear-gradient(135deg,#f4a259,#e98a3f);color:#1a1207;box-shadow:0 3px 12px rgba(244,162,89,.28)}
+.btn-primary:hover{filter:brightness(1.07);box-shadow:0 4px 16px rgba(244,162,89,.4)}
+.btn-primary:active{transform:translateY(1px)}
+.btn-ghost{background:var(--panel);border-color:var(--line);color:var(--text)}
+.btn-ghost:hover{border-color:var(--line2);background:var(--panel2)}
+.btn-danger{background:var(--red-bg);color:var(--red);border-color:rgba(248,113,113,.25)}
+.btn-danger:hover{background:rgba(248,113,113,.2)}
+.btn-sm{padding:6px 11px;font-size:12px;border-radius:8px}
+.btn:disabled{opacity:.45;cursor:not-allowed;filter:none;box-shadow:none}
+
+/* ============ CARDS & GRID ============ */
+.grid{display:grid;gap:16px}
+.kpis{grid-template-columns:repeat(4,1fr);margin-bottom:18px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 19px;position:relative;overflow:hidden;transition:border .2s,transform .2s}
+.kpi:hover{border-color:var(--line2);transform:translateY(-2px)}
+.kpi .k-ico{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:13px}
+.kpi .k-val{font-size:26px;font-weight:750;letter-spacing:-.4px}
+.kpi .k-lbl{font-size:12px;color:var(--muted);margin-top:3px}
+.kpi .k-trend{position:absolute;top:18px;right:18px;font-size:11.5px;font-weight:700;padding:3px 8px;border-radius:20px}
+.trend-up{background:var(--green-bg);color:var(--green)}
+.trend-down{background:var(--red-bg);color:var(--red)}
+.trend-flat{background:var(--gray-bg);color:var(--gray)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.card-head{display:flex;align-items:center;gap:10px;padding:16px 19px;border-bottom:1px solid var(--line)}
+.card-title{font-size:14.5px;font-weight:650}
+.card-head .right{margin-left:auto;display:flex;gap:7px;align-items:center}
+.card-body{padding:18px 19px}
+.two-col{grid-template-columns:1.1fr .9fr;margin-bottom:18px}
+
+/* ============ BADGES ============ */
+.badge-st{display:inline-flex;align-items:center;gap:6px;padding:3.5px 10px;border-radius:20px;font-size:11.5px;font-weight:600;white-space:nowrap}
+.badge-st::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor}
+.st-aktif{background:var(--green-bg);color:var(--green)}
+.st-rusak{background:var(--red-bg);color:var(--red)}
+.st-kandidat{background:var(--blue-bg);color:var(--blue)}
+.st-analisis{background:var(--yellow-bg);color:var(--yellow)}
+.st-nonaktif{background:var(--gray-bg);color:var(--gray)}
+.st-bersih{background:rgba(139,148,173,.14);color:#b7c0d4}
+.sev-kritis{background:var(--red-bg);color:var(--red)}
+.sev-warning{background:var(--yellow-bg);color:var(--yellow)}
+.sev-info{background:var(--blue-bg);color:var(--blue)}
+.tier{font-size:11px;font-weight:700;padding:2.5px 8px;border-radius:6px}
+.t1{background:rgba(244,162,89,.15);color:var(--accent2)}
+.t2{background:var(--blue-bg);color:var(--blue)}
+.t3{background:var(--gray-bg);color:var(--gray)}
+
+/* ============ TABLE ============ */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:11px 16px;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;border-bottom:1px solid var(--line);white-space:nowrap;cursor:pointer;user-select:none}
+th:hover{color:var(--text)}
+td{padding:12.5px 16px;border-bottom:1px solid var(--line);vertical-align:middle}
+tbody tr{transition:background .12s}
+tbody tr:hover{background:rgba(255,255,255,.025)}
+tbody tr:last-child td{border-bottom:none}
+.dom{font-weight:600;letter-spacing:.1px}
+.dom .sub{display:block;font-size:11px;color:var(--muted);font-weight:400;margin-top:2px}
+.score{display:flex;align-items:center;gap:9px}
+.score-bar{width:52px;height:5px;border-radius:3px;background:var(--line);overflow:hidden;flex-shrink:0}
+.score-fill{height:100%;border-radius:3px}
+.acts{display:flex;gap:5px;justify-content:flex-end}
+.act-btn{width:29px;height:29px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted);border:1px solid transparent;transition:all .13s}
+.act-btn:hover{background:var(--panel2);color:var(--text);border-color:var(--line2)}
+
+/* ============ FORM / FILTER ============ */
+.filterbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:14px 19px;border-bottom:1px solid var(--line)}
+.inp,.sel{background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:8px 12px;font-size:13px;color:var(--text);outline:none;transition:border .15s}
+.inp:focus,.sel:focus{border-color:var(--accent)}
+.inp::placeholder{color:var(--faint)}
+.field{margin-bottom:15px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px}
+.field .inp,.field .sel{width:100%}
+
+/* ============ MISC ============ */
+.empty{padding:44px 20px;text-align:center}
+.empty .e-ico{font-size:34px;margin-bottom:12px;opacity:.6}
+.empty .e-t{font-size:14.5px;font-weight:650;margin-bottom:6px}
+.empty .e-d{font-size:12.5px;color:var(--muted);margin-bottom:16px}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--panel2);border:1px solid var(--line2);border-radius:12px;padding:13px 18px;font-size:13px;box-shadow:0 12px 32px rgba(0,0,0,.4);z-index:200;display:none;align-items:center;gap:10px;animation:modalIn .2s}
+.toast.show{display:flex}
+.progressbar{height:6px;border-radius:4px;background:var(--line);overflow:hidden}
+.progressbar .fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px;transition:width .4s}
+.hp-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}
+.hp-row:last-child{border-bottom:none}
+.hp-row .hp-name{width:180px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hp-row .hp-bar{flex:1}
+.hp-row .hp-val{width:150px;text-align:right;font-size:12px;color:var(--muted);flex-shrink:0}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:9px 16px;font-size:13px}
+.kv .k{color:var(--muted)}
+.kv .v{font-weight:550}
+.tagchip{display:inline-block;font-size:11px;padding:2.5px 9px;border-radius:14px;background:var(--panel2);border:1px solid var(--line);color:var(--muted);margin:2px 3px 2px 0}
+.pagination{display:flex;gap:6px;align-items:center;justify-content:flex-end;padding:13px 19px;font-size:12.5px;color:var(--muted)}
+.pagination button{width:29px;height:29px;border-radius:8px;border:1px solid var(--line);color:var(--muted);font-size:12px;display:flex;align-items:center;justify-content:center}
+.pagination button:hover{border-color:var(--line2);color:var(--text)}
+.pagination button.cur{background:var(--accent);border-color:var(--accent);color:#1a1207;font-weight:700}
+
+/* ============ LISTS / TIMELINE ============ */
+.alert-item{display:flex;gap:13px;padding:14px 19px;border-bottom:1px solid var(--line);align-items:flex-start;transition:background .12s}
+.alert-item:hover{background:rgba(255,255,255,.02)}
+.alert-item:last-child{border-bottom:none}
+.alert-ico{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.alert-item .a-title{font-size:13px;font-weight:600}
+.alert-item .a-meta{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.45}
+.alert-item .a-act{margin-left:auto;flex-shrink:0}
+.timeline{position:relative;padding-left:26px}
+.timeline::before{content:'';position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--line);border-radius:2px}
+.tl-item{position:relative;padding-bottom:20px}
+.tl-item:last-child{padding-bottom:0}
+.tl-item::before{content:'';position:absolute;left:-24px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--panel2);border:2.5px solid var(--accent)}
+.tl-item.gray::before{border-color:var(--gray)}
+.tl-item.green::before{border-color:var(--green)}
+.tl-item.red::before{border-color:var(--red)}
+.tl-title{font-size:13px;font-weight:600}
+.tl-meta{font-size:11.5px;color:var(--muted);margin-top:2px;line-height:1.5}
+
+/* ============ TABS ============ */
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin-bottom:20px;overflow-x:auto}
+.tab{padding:10px 16px;font-size:13px;font-weight:600;color:var(--muted);border-bottom:2.5px solid transparent;white-space:nowrap;transition:all .15s;border-radius:8px 8px 0 0}
+.tab:hover{color:var(--text);background:var(--panel)}
+.tab.active{color:var(--accent2);border-bottom-color:var(--accent)}
+.tabpane{display:none}
+.tabpane.active{display:block;animation:fadeIn .2s}
+
+/* ============ MODAL ============ */
+.modal-ov{position:fixed;inset:0;background:rgba(5,8,14,.72);backdrop-filter:blur(4px);z-index:100;display:none;align-items:flex-start;justify-content:center;padding:60px 20px 40px;overflow-y:auto}
+.modal-ov.open{display:flex}
+.modal{background:var(--panel);border:1px solid var(--line2);border-radius:18px;width:100%;max-width:520px;box-shadow:0 24px 64px rgba(0,0,0,.5);animation:modalIn .22s ease}
+@keyframes modalIn{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+.modal-head{display:flex;align-items:center;padding:18px 22px;border-bottom:1px solid var(--line)}
+.modal-title{font-size:15.5px;font-weight:700}
+.modal-close{margin-left:auto;width:30px;height:30px;border-radius:8px;color:var(--muted);font-size:15px;display:flex;align-items:center;justify-content:center}
+.modal-close:hover{background:var(--panel2);color:var(--text)}
+.modal-body{padding:20px 22px}
+.modal-foot{display:flex;justify-content:flex-end;gap:9px;padding:15px 22px;border-top:1px solid var(--line)}
+
+/* ============ SECRET / REVEAL ============ */
+.secret-row{display:flex;align-items:center;gap:8px}
+.secret-txt{font-family:'SF Mono',ui-monospace,Menlo,monospace;font-size:12px;background:var(--bg2);border:1px solid var(--line);padding:6px 10px;border-radius:8px;letter-spacing:.5px;min-width:150px}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:1100px){
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .two-col{grid-template-columns:1fr}
+}
+@media(max-width:860px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.5)}
+  .main{margin-left:0}
+  .hamburger{display:block}
+  .content{padding:18px 16px 50px}
+  .topbar{padding:12px 16px}
+  .page-head .actions{margin-left:0;width:100%}
+  .hp-row .hp-name{width:120px}
+  .hp-row .hp-val{width:110px}
+}
+@media(max-width:560px){
+  .kpis{grid-template-columns:1fr}
+  .kv{grid-template-columns:120px 1fr}
+  .searchbox{max-width:none}
+}
+.sidebar-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:45;display:none}
+.sidebar-backdrop.show{display:block}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-logo">🔥</div>
+      <div>
+        <div class="brand-name">Hestia</div>
+        <div class="brand-sub">Authority Hosting</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <div class="nav-label">Utama</div>
+      <button class="nav-item active" data-page="dashboard"><span class="ico">▦</span> Dashboard</button>
+      <button class="nav-item" data-page="target"><span class="ico">◎</span> Target <span class="badge gray" id="navTargetCount">8</span></button>
+      <button class="nav-item" data-page="recon"><span class="ico">🔍</span> Recon</button>
+      <button class="nav-item" data-page="kredensial"><span class="ico">🔑</span> Kredensial <span class="badge" id="navAlertBadge">4</span></button>
+      <div class="nav-label">Operasi</div>
+      <button class="nav-item" data-page="deployment"><span class="ico">🚀</span> Deployment</button>
+      <button class="nav-item" data-page="konten"><span class="ico">📄</span> Konten</button>
+      <button class="nav-item" data-page="monitoring"><span class="ico">📡</span> Monitoring</button>
+      <button class="nav-item" data-page="backlink"><span class="ico">🔗</span> Backlink</button>
+      <div class="nav-label">Analitik</div>
+      <button class="nav-item" data-page="laporan"><span class="ico">📊</span> Laporan</button>
+      <button class="nav-item" data-page="audit"><span class="ico">🧾</span> Audit Log</button>
+      <button class="nav-item" data-page="pengaturan"><span class="ico">⚙️</span> Pengaturan</button>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="user-card">
+        <div class="avatar">EG</div>
+        <div>
+          <div class="nm">Eghi</div>
+          <div class="rl">Owner · MFA aktif</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <!-- ================= MAIN ================= -->
+  <div class="main">
+    <div class="topbar">
+      <button class="hamburger" id="hamburger">☰</button>
+      <div class="searchbox">
+        <span class="si">⌕</span>
+        <input type="text" id="globalSearch" placeholder="Cari domain, halaman, deployment…  (⌘K)">
+      </div>
+      <div class="topbar-right">
+        <button class="icon-btn" title="Notifikasi" onclick="go('monitoring')">🔔<span class="dot"></span></button>
+        <button class="icon-btn" title="Dokumentasi PRD" onclick="toast('Dokumen PRD: docs/PRD-Authority-Hosting-v1.5.md')">📘</button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ========== PAGE: DASHBOARD ========== -->
+      <section class="page active" id="page-dashboard">
+        <div class="page-head">
+          <div>
+            <div class="page-title">Dashboard</div>
+            <div class="page-desc">Ringkasan satu layar untuk seluruh aset situs pada program Authority Hosting. Pemantauan mencakup situs milik sendiri atau yang dikelola dengan izin.</div>
+          </div>
+          <div class="actions">
+            <button class="btn btn-ghost" onclick="openModal('modalRecon')">🔍 Recon massal</button>
+            <button class="btn btn-primary" onclick="openModal('modalTarget')">+ Tambah target</button>
+          </div>
+        </div>
+
+        <div class="grid kpis">
+          <div class="kpi">
+            <div class="k-ico" style="background:var(--blue-bg)">◎</div>
+            <div class="k-val">128</div>
+            <div class="k-lbl">Target aktif</div>
+            <span class="k-trend trend-up">▲ 6,4%</span>
+          </div>
+          <div class="kpi">
+            <div class="k-ico" style="background:var(--green-bg)">♥</div>
+            <div class="k-val">96%</div>
+            <div class="k-lbl">Kesehatan rata-rata</div>
+            <span class="k-trend trend-up">▲ 1,2%</span>
+          </div>
+          <div class="kpi">
+            <div class="k-ico" style="background:var(--red-bg)">⚠</div>
+            <div class="k-val">4</div>
+            <div class="k-lbl">Alert aktif</div>
+            <span class="k-trend trend-down">▼ 2</span>
+          </div>
+          <div class="kpi">
+            <div class="k-ico" style="background:rgba(244,162,89,.13)">🚀</div>
+            <div class="k-val">31</div>
+            <div class="k-lbl">Total deployment</div>
+            <span class="k-trend trend-flat">— 0</span>
+          </div>
+        </div>
+
+        <div class="grid two-col">
+          <div class="card">
+            <div class="card-head">
+              <div class="card-title">Distribusi status target</div>
+              <div class="right"><button class="btn btn-ghost btn-sm" onclick="go('target')">Lihat semua</button></div>
+            </div>
+            <div class="card-body">
+              <div class="chart-wrap"><svg id="barChart" viewBox="0 0 560 240" width="100%" style="display:block"></svg></div>
+              <div class="legend">
+                <span><i style="background:var(--green)"></i> Aktif</span>
+                <span><i style="background:var(--blue)"></i> Kandidat</span>
+                <span><i style="background:var(--yellow)"></i> Dianalisis</span>
+                <span><i style="background:var(--red)"></i> Rusak</span>
+                <span><i style="background:var(--gray)"></i> Nonaktif</span>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head">
+              <div class="card-title">Tren kesehatan — 30 hari</div>
+              <div class="right"><span class="badge-st st-aktif">96% saat ini</span></div>
+            </div>
+            <div class="card-body">
+              <div class="chart-wrap"><svg id="lineChart" viewBox="0 0 560 240" width="100%" style="display:block"></svg></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">Alert terbaru</div>
+            <div class="right"><button class="btn btn-ghost btn-sm" onclick="go('monitoring')">Semua alert</button></div>
+          </div>
+          <div id="dashAlerts"></div>
+        </div>
+      </section>
+
+      <!-- ========== PAGE: TARGET ========== -->
+      <section class="page" id="page-target">
+        <div class="page-head">
+          <div>
+            <div class="page-title">Inventaris Target</div>
+            <div class="page-desc">Satu sumber kebenaran untuk seluruh situs yang dikelola. Status siklus: kandidat → dianalisis → aktif → rusak → dibersihkan → nonaktif.</div>
+          </div>
+          <div class="actions">
+            <button class="btn btn-ghost" onclick="toast('Impor CSV: demo — pada versi backend, unggah CSV hingga 500 baris')">⬆ Impor CSV</button>
+            <button class="btn btn-primary" onclick="openModal('modalTarget')">+ Tambah target</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="filterbar">
+            <input class="inp" id="tgtSearch" placeholder="Cari domain…" style="width:220px" oninput="renderTargets()">
+            <select class="sel" id="tgtStatus" onchange="renderTargets()">
+              <option value="">Semua status</option>
+              <option>Aktif</option><option>Kandidat</option><option>Dianalisis</option>
+              <option>Rusak</option><option>Dibersihkan</option><option>Nonaktif</option>
+            </select>
+            <select class="sel" id="tgtType" onchange="renderTargets()">
+              <option value="">Semua tipe</option>
+              <option>Pemerintah</option><option>Akademia</option><option>Media</option><option>Organisasi</option>
+            </select>
+            <div style="margin-left:auto;display:flex;gap:8px">
+              <button class="btn btn-ghost btn-sm" onclick="bulkRecon()">🔍 Recon terpilih</button>
+              <button class="btn btn-ghost btn-sm" onclick="toast('Ekspor CSV dibuat (demo)')">⬇ Ekspor</button>
+            </div>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr>
+                <th style="width:34px"><input type="checkbox" id="chkAll" onchange="toggleAll(this)"></th>
+                <th onclick="sortTbl('domain')">Domain ⇅</th>
+                <th>Tipe</th>
+                <th onclick="sortTbl('status')">Status ⇅</th>
+                <th onclick="sortTbl('score')">Skor otoritas ⇅</th>
+                <th>Halaman tamu</th>
+                <th>Terakhir dicek</th>
+                <th style="text-align:right">Aksi</th>
+              </tr></thead>
+              <tbody id="tgtBody"></tbody>
+            </table>
+          </div>
+          <div class="pagination">
+            <span id="tgtCount" style="margin-right:auto"></span>
+            <button>‹</button><button class="cur">1</button><button>2</button><button>›</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== PAGE: DETAIL TARGET ========== -->
+      <section class="page" id="page-detail">
+        <div class="page-head">
+          <div>
+            <button class="btn btn-ghost btn-sm" onclick="go('target')" style="margin-bottom:10px">← Kembali ke daftar</button>
+            <div class="page-title" id="detailTitle">—</div>
+            <div class="page-desc" id="detailDesc"></div>
+          </div>
+          <div class="actions">
+            <button class="btn btn-ghost" onclick="toast('Recon dimulai — progres tampil real-time (demo)')">🔍 Jalankan recon</button>
+            <button class="btn btn-primary" onclick="openModal('modalDeploy')">🚀 Deploy konten</button>
+          </div>
+        </div>
+        <div class="tabs" id="detailTabs">
+          <button class="tab active" data-tab="ringkasan">Ringkasan</button>
+          <button class="tab" data-tab="teknologi">Teknologi</button>
+          <button class="tab" data-tab="akses">Kredensial</button>
+          <button class="tab" data-tab="konten">Konten</button>
+          <button class="tab" data-tab="kesehatan">Kesehatan</button>
+          <button class="tab" data-tab="timeline">Timeline</button>
+        </div>
+
+        <div class="tabpane active" id="tab-ringkasan">
+          <div class="grid two-col">
+            <div class="card">
+              <div class="card-head"><div class="card-title">Informasi target</div></div>
+              <div class="card-body"><div class="kv" id="detailKv"></div></div>
+            </div>
+            <div class="card">
+              <div class="card-head"><div class="card-title">Kesehatan komponen</div></div>
+              <div class="card-body" id="detailHealth"></div>
+            </div>
+          </div>
+        </div>
+        <div class="tabpane" id="tab-teknologi">
+          <div class="grid two-col">
+            <div class="card">
+              <div class="card-head"><div class="card-title">Fingerprint terakhir</div><div class="right"><span class="badge-st" style="background:var(--blue-bg);color:var(--blue)">Snapshot 12 Okt 2026</span></div></div>
+              <div class="card-body"><div class="kv" id="fpKv"></div></div>
+            </div>
+            <div class="card">
+              <div class="card-head"><div class="card-title">Snapshot bertanggal</div></div>
+              <div class="card-body">
+                <div class="timeline">
+                  <div class="tl-item green"><div class="tl-title">Snapshot #42 — perubahan minor</div><div class="tl-meta">12 Okt 2026 09:14 · header cache berubah, CMS sama</div></div>
+                  <div class="tl-item"><div class="tl-title">Snapshot #41</div><div class="tl-meta">28 Sep 2026 11:02 · tanpa perubahan</div></div>
+                  <div class="tl-item gray"><div class="tl-title">Snapshot #40</div><div class="tl-meta">14 Sep 2026 08:40 · awal pemantauan</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tabpane" id="tab-akses"><div class="card"><div class="card-head"><div class="card-title">Kredensial &amp; akses sah</div><div class="right"><button class="btn btn-primary btn-sm" onclick="openModal('modalCred')">+ Tambah</button></div></div><div class="tbl-wrap"><table><thead><tr><th>Target</th><th>Nama</th><th>Tipe</th><th>Level</th><th>Secret</th><th>Berlaku s.d.</th><th style="text-align:right">Aksi</th></tr></thead><tbody id="detailCredBody"></tbody></table></div></div></div>
+        <div class="tabpane" id="tab-konten"><div class="card"><div class="card-head"><div class="card-title">Halaman tamu</div></div><div class="tbl-wrap"><table><thead><tr><th>URL</th><th>Kata kunci</th><th>Status indeks</th><th>Terakhir diperbarui</th></tr></thead><tbody id="detailPageBody"></tbody></table></div></div></div>
+        <div class="tabpane" id="tab-kesehatan">
+          <div class="grid two-col">
+            <div class="card"><div class="card-head"><div class="card-title">Cek berkala terakhir</div></div><div class="card-body" id="detailChecks"></div></div>
+            <div class="card"><div class="card-head"><div class="card-title">Riwayat alert target ini</div></div><div id="detailAlerts"></div></div>
+          </div>
+        </div>
+        <div class="tabpane" id="tab-timeline"><div class="card"><div class="card-head"><div class="card-title">Aktivitas target</div></div><div class="card-body"><div class="timeline" id="detailTimeline"></div></div></div></div>
+      </section>
+
+      <!-- ========== PAGE: RECON ========== -->
+      <section class="page" id="page-recon">
+        <div class="page-head">
+          <div>
+            <div class="page-title">Recon &amp; Fingerprint</div>
+            <div class="page-desc">Pemindaian teknis atas situs yang dikelola: header HTTP, CMS, server, IP, dan indikator pemeliharaan. Recon berjalan di antrian — UI tetap responsif.</div>
+          </div>
+          <div class="actions"><button class="btn btn-primary" onclick="runReconQueue()">▶ Jalankan recon massal</button></div>
+        </div>
+        <div class="grid two-col">
+          <div class="card">
+            <div class="card-head"><div class="card-title">Antrian recon</div><div class="right"><span class="badge-st st-nonaktif" id="queueStatus">Menganggur</span></div></div>
+            <div class="card-body">
+              <div class="progressbar" style="margin-bottom:16px"><div class="fill" id="reconProgress" style="width:0%"></div></div>
+              <div id="reconQueue"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><div class="card-title">Indikator yang diperiksa</div></div>
+            <div class="card-body">
+              <div class="kv">
+                <div class="k">Header HTTP</div><div class="v">security, cache, server</div>
+                <div class="k">CMS &amp; versi</div><div class="v">WordPress, Joomla, custom</div>
+                <div class="k">Sertifikat TLS</div><div class="v">kedaluwarsa &amp; issuer</div>
+                <div class="k">Latensi respons</div><div class="v">TTFB p95 per target</div>
+                <div class="k">Integritas berkas</div><div class="v">hash halaman kunci</div>
+                <div class="k">Pembaruan CMS</div><div class="v">deteksi versi usang</div>
+              </div>
+              <p style="font-size:12px;color:var(--muted);margin-top:14px;line-height:1.55">Hasil recon disimpan sebagai snapshot bertanggal dan dapat dibandingkan antar waktu (FR-08 – FR-10).</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== PAGE: KREDENSIAL ========== -->
+      <section class="page" id="page-kredensial">
+        <div class="page-head">
+          <div>
+            <div class="page-title">Vault Kredensial</div>
+            <div class="page-desc">Kredensial untuk situs milik sendiri atau yang dikelola dengan izin tertulis. Secret terenkripsi at-rest; UI hanya menampilkan versi tersamar.</div>
+          </div>
+          <div class="actions"><button class="btn btn-primary" onclick="openModal('modalCred')">+ Tambah kredensial</button></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div class="card-title">Semua kredensial</div><div class="right"><span class="badge-st st-analisis">4 perlu rotasi</span></div></div>
+          <div class="tbl-wrap"><table>
+            <thead><tr><th>Target</th><th>Nama</th><th>Tipe</th><th>Level</th><th>Secret</th><th>Berlaku s.d.</th><th style="text-align:right">Aksi</th></tr></thead>
+            <tbody id="credBody"></tbody>
+          </table></div>
+        </div>
+        <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">🔒 Pada implementasi backend: envelope encryption (SEC-01), rotasi berkala dengan pengingat (SEC-07), dan prinsip hak paling sedikit per peran (SEC-02). Secret tidak pernah dikirim plaintext dalam respons daftar (FR-12).</p>
+      </section>
+
+      <!-- ========== PAGE: DEPLOYMENT ========== -->
+      <section class="page" id="page-deployment">
+        <div class="page-head">
+          <div>
+            <div class="page-title">Deployment Konten</div>
+            <div class="page-desc">Penempatan halaman tamu pada target milik sendiri/berizin, lengkap dengan log dan rollback satu klik.</div>
+          </div>
+          <div class="actions"><button class="btn btn-primary" onclick="openModal('modalDeploy')">🚀 Deploy baru</button></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div class="card-title">Riwayat deployment</div></div>
+          <div class="tbl-wrap"><table>
+            <thead><tr><th>Waktu</th><th>Target</th><th>Path</th><th>Template</th><th>Status</th><th style="text-align:right">Aksi</th></tr></thead>
+            <tbody id="deployBody"></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ========== PAGE: KONTEN ========== -->
+      <section class="page" id="page-konten">
+        <div class="page-head">
+          <div>
+            <div class="page-title">Konten &amp; Kata Kunci</div>
+            <div class="page-desc">Halaman tamu per target beserta kata kunci sasaran dan status indeks (FR-21, FR-22).</div>
+          </div>
+          <div class="actions"><button class="btn btn-primary" onclick="toast('Editor halaman dibuka (demo)')">+ Halaman baru</button></div>
+        </div>
+        <div class="card">
+          <div class="filterbar">
+            <input class="inp" placeholder="Cari URL / kata kunci…" style="width:240px">
+            <select class="sel"><option>Semua status indeks</option><option>Terindeks</option><option>Menunggu</option><option>Gagal</option></select>
+          </div>
+          <div class="tbl-wrap"><table>
+            <thead><tr><th>URL halaman tamu</th><th>Target</th><th>Kata kunci</th><th>Template</th><th>Status indeks</th><th>Posisi rata-rata</th></tr></thead>
+            <tbody id="kontenBody"></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ========== PAGE: MONITORING ========== -->
+      <section class="page" id="page-monitoring">
+        <div class="page-head">
+          <div>
+            <div class="page-title">Monitoring &amp; Integritas</div>
+            <div class="page-desc">Cek berkala status HTTP, latensi, dan perubahan berkas kunci. Anomali memicu alert sesuai severity (FR-14 – FR-16).</div>
+          </div>
+          <div class="actions">
+            <button class="btn btn-ghost" onclick="toast('Kanal notifikasi: Email + Slack (demo)')">⚙ Kanal alert</button>
+            <button class="btn btn-primary" onclick="toast('Pemindaian manual dimulai (demo)')">▶ Pindai sekarang</button>
+          </div>
+        </div>
+        <div class="grid two-col">
+          <div class="card">
+            <div class="card-head"><div class="card-title">Alert aktif</div></div>
+            <div id="monitorAlerts"></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><div class="card-title">Kesehatan &amp; latensi per target (24 jam)</div></div>
+            <div class="card-body" id="latencyList"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div class="card-title">Riwayat cek terakhir</div></div>
+          <div class="tbl-wrap"><table>
+            <thead><tr><th>Waktu</th><th>Target</th><th>Jenis cek</th><th>Hasil</th><th>Latensi</th></tr></thead>
+            <tbody id="checkBody"></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ========== PAGE: BACKLINK ========== -->
+      <section class="page" id="page-backlink">
+        <div class="page-head">
+          <div>
+            <div class="page-title">Manajemen Backlink</div>
+            <div class="page-desc">Node backlink berjenjang (tier 1/2/3) dengan anchor dan sumber (FR-23).</div>
+          </div>
+          <div class="actions"><button class="btn btn-primary" onclick="toast('Form node backlink dibuka (demo)')">+ Node baru</button></div>
+        </div>
+        <div class="card">
+          <div class="tbl-wrap"><table>
+            <thead><tr><th>Sumber</th><th>Tier</th><th>Anchor</th><th>Halaman tujuan</th><th>Status</th><th>DR</th></tr></thead>
+            <tbody id="backlinkBody"></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ========== PAGE: LAPORAN ========== -->
+      <section class="page" id="page-laporan">
+        <div class="page-head">
+          <div>
+            <div class="page-title">Laporan</div>
+            <div class="page-desc">Ringkasan metrik operasional dan hasil (bagian 17 PRD). Ekspor tersedia dalam CSV dan PDF.</div>
+          </div>
+          <div class="actions">
+            <button class="btn btn-ghost" onclick="toast('Ekspor CSV dibuat (demo)')">⬇ CSV</button>
+            <button class="btn btn-ghost" onclick="toast('Ekspor PDF dibuat (demo)')">⬇ PDF</button>
+          </div>
+        </div>
+        <div class="grid kpis">
+          <div class="kpi"><div class="k-val" style="font-size:22px">112 <span style="font-size:13px;color:var(--muted)">/ 120</span></div><div class="k-lbl">Halaman terindeks (naik ↑)</div></div>
+          <div class="kpi"><div class="k-val" style="font-size:22px">#8,4</div><div class="k-lbl">Posisi rata-rata kata kunci (naik ↑)</div></div>
+          <div class="kpi"><div class="k-val" style="font-size:22px">24,8rb</div><div class="k-lbl">Klik / bulan dari halaman tamu</div></div>
+          <div class="kpi"><div class="k-val" style="font-size:22px">104</div><div class="k-lbl">Target aktif &amp; sehat (naik ↑)</div></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div class="card-title">Metrik operasional vs target</div></div>
+          <div class="card-body" id="opsMetrics"></div>
+        </div>
+      </section>
+
+      <!-- ========== PAGE: AUDIT ========== -->
+      <section class="page" id="page-audit">
+        <div class="page-head">
+          <div>
+            <div class="page-title">Audit Log</div>
+            <div class="page-desc">Semua aksi tulis tercatat, tidak dapat diubah (FR-25, SEC-04).</div>
+          </div>
+          <div class="actions"><button class="btn btn-ghost" onclick="toast('Filter lanjutan (demo)')">Filter lanjutan</button></div>
+        </div>
+        <div class="card">
+          <div class="tbl-wrap"><table>
+            <thead><tr><th>Waktu</th><th>Aktor</th><th>Aksi</th><th>Objek</th><th>Detail perubahan</th></tr></thead>
+            <tbody id="auditBody"></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ========== PAGE: PENGATURAN ========== -->
+      <section class="page" id="page-pengaturan">
+        <div class="page-head">
+          <div>
+            <div class="page-title">Pengaturan</div>
+            <div class="page-desc">Konfigurasi panel, tim, dan kebijakan keamanan.</div>
+          </div>
+        </div>
+        <div class="grid two-col">
+          <div class="card">
+            <div class="card-head"><div class="card-title">Tim &amp; peran (RBAC)</div><div class="right"><button class="btn btn-primary btn-sm" onclick="toast('Undang anggota (demo)')">+ Undang</button></div></div>
+            <div class="tbl-wrap"><table>
+              <thead><tr><th>Anggota</th><th>Peran</th><th>MFA</th><th>Login terakhir</th></tr></thead>
+              <tbody>
+                <tr><td><div class="dom">Eghi<div class="sub">owner@hestia.local</div></div></td><td><span class="badge-st st-aktif">Owner</span></td><td>✅</td><td>Baru saja</td></tr>
+                <tr><td><div class="dom">Rani P.<div class="sub">engineer@hestia.local</div></div></td><td><span class="badge-st st-analisis">Engineer</span></td><td>✅</td><td>1 jam lalu</td></tr>
+                <tr><td><div class="dom">Bagus W.<div class="sub">analyst@hestia.local</div></div></td><td><span class="badge-st" style="background:var(--blue-bg);color:var(--blue)">Analyst</span></td><td>—</td><td>Kemarin</td></tr>
+                <tr><td><div class="dom">Manajemen<div class="sub">viewer@hestia.local</div></div></td><td><span class="badge-st st-nonaktif">Viewer</span></td><td>—</td><td>3 hari lalu</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><div class="card-title">Kebijakan keamanan</div></div>
+            <div class="card-body">
+              <div class="kv">
+                <div class="k">MFA wajib</div><div class="v">Owner &amp; Engineer (SEC-03)</div>
+                <div class="k">Sesi kedaluwarsa</div><div class="v">8 jam otomatis</div>
+                <div class="k">Enkripsi secret</div><div class="v">Envelope, kunci master terpisah</div>
+                <div class="k">Backup harian</div><div class="v">Terenkripsi · uji pemulihan bulanan</div>
+                <div class="k">Rate limit recon</div><div class="v">5 req/detik per target</div>
+                <div class="k">Audit log</div><div class="v">Append-only, retensi 12 bulan</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODALS ================= -->
+<div class="modal-ov" id="modalTarget">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">Tambah target baru</div><button class="modal-close" onclick="closeModal('modalTarget')">✕</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Domain</label><input class="inp" id="fDomain" placeholder="mis. blog.situsanda.id"></div>
+      <div class="field"><label>Tipe</label><select class="sel" id="fType"><option>Situs sendiri</option><option>Mitra berizin</option><option>Internal company</option></select></div>
+      <div class="field"><label>Pemilik</label><input class="inp" id="fOwner" placeholder="Nama pemilik / tim"></div>
+      <div class="field"><label>Tag</label><input class="inp" placeholder="pisahkan dengan koma, mis. blog, edukasi"></div>
+      <div class="field"><label>Catatan</label><input class="inp" placeholder="opsional"></div>
+      <p style="font-size:12px;color:var(--muted);line-height:1.55">⚠ Target harus merupakan situs milik sendiri atau memiliki izin tertulis dari pemiliknya sebelum dikelola di panel ini.</p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('modalTarget')">Batal</button>
+      <button class="btn btn-primary" onclick="addTarget()">Simpan target</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-ov" id="modalCred">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">Tambah kredensial</div><button class="modal-close" onclick="closeModal('modalCred')">✕</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Target</label><select class="sel" id="cTarget"></select></div>
+      <div class="field"><label>Nama akun</label><input class="inp" id="cName" placeholder="mis. admin-panel"></div>
+      <div class="field"><label>Tipe</label><select class="sel" id="cType"><option>Panel admin</option><option>SSH</option><option>SFTP</option><option>API key</option></select></div>
+      <div class="field"><label>Level akses</label><select class="sel" id="cLevel"><option>Admin</option><option>Editor</option><option>Baca-saja</option></select></div>
+      <div class="field"><label>Secret</label><input class="inp" type="password" id="cSecret" placeholder="••••••••••••"></div>
+      <div class="field"><label>Berlaku sampai</label><input class="inp" type="date" id="cValid"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('modalCred')">Batal</button>
+      <button class="btn btn-primary" onclick="addCred()">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-ov" id="modalDeploy">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">Deploy konten</div><button class="modal-close" onclick="closeModal('modalDeploy')">✕</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Target</label><select class="sel" id="dTarget"></select></div>
+      <div class="field"><label>Path tujuan</label><input class="inp" id="dPath" placeholder="/blog/artikel-baru/"></div>
+      <div class="field"><label>Template</label><select class="sel" id="dTpl"><option>Artikel standar</option><option>Panduan (longform)</option><option>Halaman produk</option></select></div>
+      <div class="field"><label>Catatan deployment</label><input class="inp" placeholder="opsional"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('modalDeploy')">Batal</button>
+      <button class="btn btn-primary" onclick="doDeploy()">Deploy sekarang</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-ov" id="modalRecon">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">Recon massal</div><button class="modal-close" onclick="closeModal('modalRecon')">✕</button></div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:14px">Recon dijalankan melalui antrian worker dengan rate limit per target (SEC-06). UI tidak terblokir; progres tampil di halaman Recon.</p>
+      <div class="field"><label>Wilayah cek</label><select class="sel"><option>Semua target aktif</option><option>Hanya target tanpa snapshot</option><option>Target belum dicek 7 hari terakhir</option></select></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('modalRecon')">Batal</button>
+      <button class="btn btn-primary" onclick="closeModal('modalRecon');go('recon');runReconQueue()">Jalankan</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= DATA (dummy) ================= */
+const targets=[
+ {id:1,domain:"blog.nusantara-edu.go.id",sub:"Blog edukasi · milik sendiri",type:"Pemerintah",status:"Aktif",score:82,owner:"Tim Konten",pages:14,checked:"2 jam lalu",tags:["edukasi","blog"]},
+ {id:2,domain:"journal.kampusmitra.ac.id",sub:"Publikasi kampus · mitra berizin",type:"Akademia",status:"Aktif",score:76,owner:"Tim Konten",pages:9,checked:"3 jam lalu",tags:["jurnal"]},
+ {id:3,domain:"infotek.medianusantara.id",sub:"Portal teknologi",type:"Media",status:"Aktif",score:88,owner:"Rani P.",pages:22,checked:"1 jam lalu",tags:["teknologi","news"]},
+ {id:4,domain:"wisata.tangselkota.go.id",sub:"Portal pariwisata daerah",type:"Pemerintah",status:"Rusak",score:41,owner:"Rani P.",pages:6,checked:"18 menit lalu",tags:["pariwisata"]},
+ {id:5,domain:"karir.indotekgroup.id",sub:"Halaman karir internal group",type:"Organisasi",status:"Kandidat",score:0,owner:"Tim Konten",pages:0,checked:"—",tags:["karir"]},
+ {id:6,domain:"lms.akademidigital.ac.id",sub:"E-learning partner",type:"Akademia",status:"Dianalisis",score:64,owner:"Bagus W.",pages:3,checked:"5 jam lalu",tags:["e-learning"]},
+ {id:7,domain:"blog.teknokilat.id",sub:"Blog review gadget",type:"Media",status:"Nonaktif",score:55,owner:"Tim Konten",pages:11,checked:"2 hari lalu",tags:["review"]},
+ {id:8,domain:"data.opendk.go.id",sub:"Portal data terbuka",type:"Pemerintah",status:"Aktif",score:79,owner:"Bagus W.",pages:8,checked:"40 menit lalu",tags:["data","opendata"]},
+];
+const creds=[
+ {t:"infotek.medianusantara.id",n:"wp-admin",ty:"Panel admin",lv:"Admin",s:"Hst!9xk2Lm",v:"2026-12-01",near:false},
+ {t:"blog.nusantara-edu.go.id",n:"deploy-bot",ty:"API key",lv:"Editor",s:"hsk_7Yq3AbC",v:"2026-11-05",near:true},
+ {t:"journal.kampusmitra.ac.id",n:"editor-rani",ty:"Panel admin",lv:"Editor",s:"Jrnl#88pQz",v:"2026-11-12",near:true},
+ {t:"data.opendk.go.id",n:"sftp-sync",ty:"SFTP",lv:"Editor",s:"OdK!2wRt5V",v:"2026-10-28",near:true},
+ {t:"lms.akademidigital.ac.id",n:"backup-ssh",ty:"SSH",lv:"Baca-saja",s:"LmsB@ck9Kd",v:"2027-01-15",near:false},
+ {t:"wisata.tangselkota.go.id",n:"admin-darurat",ty:"Panel admin",lv:"Admin",s:"Wst!4mNv7X",v:"2026-10-25",near:true},
+];
+const alerts=[
+ {sev:"kritis",ico:"⚠",t:"wisata.tangselkota.go.id — respons 502",m:"HTTP status gagal 3× berturut · terdeteksi 18 menit lalu · tiket otomatis dibuat"},
+ {sev:"kritis",ico:"🔒",t:"blog.teknokilat.id — sertifikat TLS kedaluwarsa",m:"Sertifikat berakhir 2 hari lalu · pembaruan otomatis gagal"},
+ {sev:"warning",ico:"📝",t:"journal.kampusmitra.ac.id — perubahan header cache",m:"Beda dengan snapshot #42 · tidak berdampak pada konten tamu"},
+ {sev:"info",ico:"🔄",t:"blog.nusantara-edu.go.id — pembaruan CMS tersedia",m:"WordPress 6.4 → 6.5 · uji di staging sebelum diterapkan"},
+];
+const deployments=[
+ {w:"13 Okt 2026 09:12",t:"infotek.medianusantara.id",p:"/panduan/ai-tools/",tpl:"Panduan (longform)",st:"Sukses"},
+ {w:"12 Okt 2026 15:40",t:"blog.nusantara-edu.go.id",p:"/kurikulum-merdeka/faq/",tpl:"Artikel standar",st:"Sukses"},
+ {w:"12 Okt 2026 10:02",t:"data.opendk.go.id",p:"/visualisasi/opendata/",tpl:"Artikel standar",st:"Sukses"},
+ {w:"11 Okt 2026 16:22",t:"journal.kampusmitra.ac.id",p:"/abstrak/ai-education/",tpl:"Artikel standar",st:"Rollback"},
+ {w:"11 Okt 2026 11:05",t:"lms.akademidigital.ac.id",p:"/modul/ai-literacy/",tpl:"Panduan (longform)",st:"Berjalan"},
+];
+const konten=[
+ {u:"/panduan/ai-tools/",t:"infotek.medianusantara.id",k:"ai tools gratis",tpl:"Panduan",idx:"Terindeks",pos:"#4,2"},
+ {u:"/kurikulum-merdeka/faq/",t:"blog.nusantara-edu.go.id",k:"kurikulum merdeka faq",tpl:"Standar",idx:"Terindeks",pos:"#6,8"},
+ {u:"/visualisasi/opendata/",t:"data.opendk.go.id",k:"portal open data indonesia",tpl:"Standar",idx:"Menunggu",pos:"—"},
+ {u:"/abstrak/ai-education/",t:"journal.kampusmitra.ac.id",k:"ai dalam pendidikan",tpl:"Standar",idx:"Terindeks",pos:"#12,5"},
+ {u:"/modul/ai-literacy/",t:"lms.akademidigital.ac.id",k:"literasi ai dasar",tpl:"Panduan",idx:"Gagal",pos:"—"},
+];
+const backlinks=[
+ {s:"blog.teknokilat.id/artikel/ai-2026",tier:1,a:"platform ai terbaik",d:"/panduan/ai-tools/",st:"Aktif",dr:64},
+ {s:"medium-teknologi.dev/post/n8",tier:2,a:"panduan ai lengkap",d:"/panduan/ai-tools/",st:"Aktif",dr:48},
+ {s:"forum-kampus.ac.id/thread/992",tier:3,a:"belajar ai",d:"/modul/ai-literacy/",st:"Menunggu",dr:31},
+ {s:"newsportal.id/teknologi/edtech",tier:1,a:"edtech indonesia",d:"/kurikulum-merdeka/faq/",st:"Aktif",dr:71},
+ {s:"agregasi-blog.io/id/top10",tier:2,a:"open data pemerintah",d:"/visualisasi/opendata/",st:"Aktif",dr:52},
+];
+const audit=[
+ {w:"13 Okt 09:14",a:"rani.p",ak:"deploy",o:"infotek.medianusantara.id /panduan/ai-tools/",d:"template Panduan · rev 3"},
+ {w:"12 Okt 15:41",a:"eghi",ak:"update",o:"target #3 tag",d:"teknologi → teknologi, news"},
+ {w:"12 Okt 10:04",a:"deploy-bot",ak:"deploy",o:"data.opendk.go.id",d:"rev 1 · otomatis"},
+ {w:"11 Okt 16:25",a:"rani.p",ak:"rollback",o:"journal.kampusmitra.ac.id",d:"ke rev 2 — abstrak ganda"},
+ {w:"11 Okt 09:00",a:"sistem",ak:"alert",o:"wisata.tangselkota.go.id",d:"502 terdeteksi · severity kritis"},
+];
+const checks=[
+ {w:"13:02",t:"infotek.medianusantara.id",j:"HTTP + latensi",h:"OK",l:"182 ms"},
+ {w:"13:00",t:"blog.nusantara-edu.go.id",j:"Integritas berkas",h:"OK",l:"—"},
+ {w:"12:45",t:"wisata.tangselkota.go.id",j:"HTTP + latensi",h:"Gagal 502",l:"timeout"},
+ {w:"12:30",t:"journal.kampusmitra.ac.id",j:"Header diff",h:"Perubahan minor",l:"—"},
+ {w:"12:15",t:"data.opendk.go.id",j:"HTTP + latensi",h:"OK",l:"210 ms"},
+];
+const healthBars=[
+ {n:"infotek.medianusantara.id",v:99,c:"var(--green)"},
+ {n:"blog.nusantara-edu.go.id",v:98,c:"var(--green)"},
+ {n:"journal.kampusmitra.ac.id",v:96,c:"var(--green)"},
+ {n:"data.opendk.go.id",v:94,c:"var(--green)"},
+ {n:"lms.akademidigital.ac.id",v:87,c:"var(--yellow)"},
+ {n:"wisata.tangselkota.go.id",v:42,c:"var(--red)"},
+];
+const opsMetrics=[
+ {n:"Waktu deteksi anomali",v:"12 mnt",tgt:"< 15 mnt",pct:80,ok:true},
+ {n:"Waktu deploy konten",v:"6,5 mnt",tgt:"< 10 mnt",pct:65,ok:true},
+ {n:"Persentase target sehat",v:"96%",tgt:"> 90%",pct:96,ok:true},
+ {n:"Target terkelola",v:"120",tgt:"100+",pct:100,ok:true},
+ {n:"Adopsi harian tim",v:"74%",tgt:"> 80%",pct:74,ok:false},
+];
+let reconQueue=[
+ {d:"wisata.tangselkota.go.id",st:"menunggu"},
+ {d:"blog.teknokilat.id",st:"menunggu"},
+ {d:"karir.indotekgroup.id",st:"menunggu"},
+ {d:"lms.akademidigital.ac.id",st:"menunggu"},
+];
+let curDetail=1, reconRunning=false;
+
+/* ================= HELPERS ================= */
+const $=id=>document.getElementById(id);
+function toast(msg){const t=$("toast");t.innerHTML="✅ "+msg;t.classList.add("show");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("show"),2600)}
+function stClass(s){return{"Aktif":"st-aktif","Rusak":"st-rusak","Kandidat":"st-kandidat","Dianalisis":"st-analisis","Nonaktif":"st-nonaktif","Dibersihkan":"st-bersih"}[s]||"st-nonaktif"}
+function scoreColor(v){return v>=75?"var(--green)":v>=50?"var(--yellow)":v>0?"var(--red)":"var(--gray)"}
+function mask(s){return s.slice(0,3)+"••••••"+s.slice(-2)}
+function toggleAll(chk){document.querySelectorAll(".row-chk").forEach(c=>c.checked=chk.checked)}
+function go(p){
+  document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+  $("page-"+p).classList.add("active");
+  document.querySelectorAll(".nav-item").forEach(n=>n.classList.toggle("active",n.dataset.page===p));
+  closeSidebar();
+  window.scrollTo({top:0,behavior:"smooth"});
+  if(p==="recon")renderRecon();
+}
+function openModal(id){
+  if(id==="modalCred"){$("cTarget").innerHTML=targets.map(t=>`<option>${t.domain}</option>`).join("")}
+  if(id==="modalDeploy"){$("dTarget").innerHTML=targets.filter(t=>t.status==="Aktif").map(t=>`<option>${t.domain}</option>`).join("")}
+  $(id).classList.add("open");
+}
+function closeModal(id){$(id).classList.remove("open")}
+document.querySelectorAll(".modal-ov").forEach(m=>m.addEventListener("click",e=>{if(e.target===m)m.classList.remove("open")}));
+document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelectorAll(".modal-ov.open").forEach(m=>m.classList.remove("open"));if((e.metaKey||e.ctrlKey)&&e.key==="k"){e.preventDefault();$("globalSearch").focus()}});
+
+/* nav */
+document.querySelectorAll(".nav-item").forEach(n=>n.addEventListener("click",()=>go(n.dataset.page)));
+function openSidebar(){$("sidebar").classList.add("open");$("sidebarBackdrop").classList.add("show")}
+function closeSidebar(){$("sidebar").classList.remove("open");$("sidebarBackdrop").classList.remove("show")}
+$("hamburger").addEventListener("click",openSidebar);
+$("sidebarBackdrop").addEventListener("click",closeSidebar);
+
+/* detail tabs */
+document.querySelectorAll("#detailTabs .tab").forEach(t=>t.addEventListener("click",()=>{
+  document.querySelectorAll("#detailTabs .tab").forEach(x=>x.classList.remove("active"));
+  t.classList.add("active");
+  document.querySelectorAll("#page-detail .tabpane").forEach(p=>p.classList.remove("active"));
+  $("tab-"+t.dataset.tab).classList.add("active");
+}));
+
+/* table sort */
+let sortKey=null,sortDir=1;
+function sortTbl(k){
+  if(sortKey===k)sortDir=-sortDir;else{sortKey=k;sortDir=1}
+  targets.sort((a,b)=>{
+    const va=(a[k]||"").toString().toLowerCase(),vb=(b[k]||"").toString().toLowerCase();
+    return va<vb?-sortDir:va>vb?sortDir:0;
+  });
+  renderTargets();
+}
+
+/* ================= RENDERERS ================= */
+function renderTargets(){
+  const q=($("tgtSearch").value||"").toLowerCase(),fs=$("tgtStatus").value,ft=$("tgtType").value;
+  const rows=targets.filter(t=>t.domain.toLowerCase().includes(q)&&(!fs||t.status===fs)&&(!ft||t.type===ft));
+  $("tgtBody").innerHTML=rows.length?rows.map(t=>`
+   <tr>
+     <td><input type="checkbox" class="row-chk"></td>
+     <td><span class="dom" style="cursor:pointer" onclick="showDetail(${t.id})">${t.domain}<span class="sub">${t.sub}</span></span></td>
+     <td>${t.type}</td>
+     <td><span class="badge-st ${stClass(t.status)}">${t.status}</span></td>
+     <td><div class="score"><div class="score-bar"><div class="score-fill" style="width:${t.score}%;background:${scoreColor(t.score)}"></div></div><span style="font-size:12.5px;font-weight:650">${t.score||"—"}</span></div></td>
+     <td>${t.pages}</td>
+     <td style="color:var(--muted)">${t.checked}</td>
+     <td><div class="acts">
+       <button class="act-btn" title="Detail" onclick="showDetail(${t.id})">👁</button>
+       <button class="act-btn" title="Recon" onclick="toast('Recon ${t.domain} masuk antrian')">🔍</button>
+       <button class="act-btn" title="Hapus" onclick="toast('Konfirmasi hapus — aksi destruktif selalu minta konfirmasi (FR 12.5)')">🗑</button>
+     </div></td>
+   </tr>`).join(""):`<tr><td colspan="8"><div class="empty"><div class="e-ico">◎</div><div class="e-t">Tidak ada target cocok</div><div class="e-d">Coba ubah filter atau tambahkan target baru.</div><button class="btn btn-primary btn-sm" onclick="openModal('modalTarget')">+ Tambah target</button></div></td></tr>`;
+  $("tgtCount").textContent=`Menampilkan ${rows.length} dari ${targets.length} target`;
+  $("navTargetCount").textContent=targets.length;
+}
+function bulkRecon(){const n=document.querySelectorAll(".row-chk:checked").length;toast(n?`${n} target masuk antrian recon`:"Pilih target dulu dengan centang di tabel")}
+
+function showDetail(id){
+  curDetail=id;const t=targets.find(x=>x.id===id);
+  $("detailTitle").textContent=t.domain;
+  $("detailDesc").textContent=`${t.type} · ${t.sub} · pemilik: ${t.owner} · tag: ${t.tags.join(", ")||"—"}`;
+  $("detailKv").innerHTML=`
+    <div class="k">Status</div><div class="v"><span class="badge-st ${stClass(t.status)}">${t.status}</span></div>
+    <div class="k">Skor otoritas</div><div class="v">${t.score} / 100</div>
+    <div class="k">Halaman tamu</div><div class="v">${t.pages} halaman</div>
+    <div class="k">Terakhir dicek</div><div class="v">${t.checked}</div>
+    <div class="k">Pemilik</div><div class="v">${t.owner}</div>
+    <div class="k">Tag</div><div class="v">${t.tags.map(x=>`<span class="tagchip">${x}</span>`).join("")||"—"}</div>`;
+  $("detailHealth").innerHTML=healthBars.slice(0,5).map(h=>`<div class="hp-row"><div class="hp-name">${h.n}</div><div class="hp-bar"><div class="progressbar"><div class="fill" style="width:${h.v}%;background:${h.c}"></div></div></div><div class="hp-val">${h.v}%</div></div>`).join("");
+  $("fpKv").innerHTML=`
+    <div class="k">Server</div><div class="v">nginx 1.24</div>
+    <div class="k">CMS</div><div class="v">WordPress 6.4.3</div>
+    <div class="k">PHP</div><div class="v">8.2</div>
+    <div class="k">IP</div><div class="v">103.•••.••.14</div>
+    <div class="k">TLS</div><div class="v">Let's Encrypt · sisa 62 hari</div>
+    <div class="k">TTFB p95</div><div class="v">204 ms</div>`;
+  const tc=creds.filter(c=>c.t===t.domain);
+  $("detailCredBody").innerHTML=tc.length?tc.map((c,i)=>credRow(c,"dc"+i)).join(""):`<tr><td colspan="7"><div class="empty"><div class="e-ico">🔑</div><div class="e-t">Belum ada kredensial</div><div class="e-d">Tambahkan kredensial untuk situs yang kamu kelola.</div><button class="btn btn-primary btn-sm" onclick="openModal('modalCred')">+ Tambah kredensial</button></div></td></tr>`;
+  const tp=konten.filter(k=>k.t===t.domain);
+  $("detailPageBody").innerHTML=tp.length?tp.map(k=>`<tr><td class="dom">${k.u}</td><td>${k.k}</td><td><span class="badge-st ${k.idx==="Terindeks"?"st-aktif":k.idx==="Gagal"?"st-rusak":"st-analisis"}">${k.idx}</span></td><td style="color:var(--muted)">2 hari lalu</td></tr>`).join(""):`<tr><td colspan="4"><div class="empty"><div class="e-ico">📄</div><div class="e-t">Belum ada halaman tamu</div><div class="e-d">Deploy konten pertama ke target ini.</div><button class="btn btn-primary btn-sm" onclick="openModal('modalDeploy')">🚀 Deploy konten</button></div></td></tr>`;
+  $("detailChecks").innerHTML=`<div class="hp-row"><div class="hp-name">HTTP status</div><div class="hp-bar"></div><div class="hp-val"><span class="badge-st ${t.status==="Rusak"?"st-rusak":"st-aktif"}">${t.status==="Rusak"?"502":"200"}</span></div></div><div class="hp-row"><div class="hp-name">Latensi p95</div><div class="hp-bar"></div><div class="hp-val">${t.status==="Rusak"?"timeout":"204 ms"}</div></div><div class="hp-row"><div class="hp-name">Hash berkas kunci</div><div class="hp-bar"></div><div class="hp-val">stabil</div></div><div class="hp-row"><div class="hp-name">Header diff</div><div class="hp-bar"></div><div class="hp-val">tidak ada</div></div>`;
+  $("detailAlerts").innerHTML=t.status==="Rusak"?alertItemHTML(alerts[0]):`<div class="empty"><div class="e-ico">🎉</div><div class="e-t">Tidak ada alert</div><div class="e-d">Target ini berjalan normal.</div></div>`;
+  $("detailTimeline").innerHTML=`
+    <div class="tl-item ${t.status==="Rusak"?"red":""}"><div class="tl-title">Cek monitoring ${t.status==="Rusak"?"gagal — 502":"berhasil"}</div><div class="tl-meta">${t.checked} · otomatis</div></div>
+    <div class="tl-item"><div class="tl-title">Snapshot #42 disimpan</div><div class="tl-meta">12 Okt 2026 · recon otomatis</div></div>
+    <div class="tl-item green"><div class="tl-title">Deployment sukses</div><div class="tl-meta">10 Okt 2026 · oleh ${t.owner}</div></div>
+    <div class="tl-item gray"><div class="tl-title">Target ditambahkan</div><div class="tl-meta">28 Sep 2026 · oleh eghi</div></div>`;
+  go("detail");
+}
+function credRow(c,prefix){
+  return `<tr>
+    <td class="dom">${c.t}</td><td>${c.n}</td><td>${c.ty}</td>
+    <td><span class="badge-st" style="background:var(--blue-bg);color:var(--blue)">${c.lv}</span></td>
+    <td><div class="secret-row"><span class="secret-txt" id="s-${prefix}">${mask(c.s)}</span>
+      <button class="act-btn" title="Reveal" onclick="reveal('s-${prefix}','${c.s.replace(/'/g,"\\'")}',this)">👁</button></div></td>
+    <td style="color:${c.near?"var(--yellow)":"var(--muted)"}">${c.v}${c.near?' <span class="badge-st st-analisis">rotasi</span>':""}</td>
+    <td><div class="acts"><button class="act-btn" title="Salin" onclick="toast('Kredensial disalin ke clipboard')">📋</button><button class="act-btn" title="Rotasi" onclick="toast('Rotasi dijadwalkan (demo)')">🔄</button><button class="act-btn" title="Hapus" onclick="toast('Konfirmasi hapus kredensial')">🗑</button></div></td>
+  </tr>`;
+}
+function reveal(id,real,btn){const el=$(id);const hidden=el.textContent.includes("•");el.textContent=hidden?real:mask(real);btn.textContent=hidden?"🙈":"👁"}
+function alertItemHTML(a){return `<div class="alert-item">
+    <div class="alert-ico" style="background:var(--${a.sev==="kritis"?"red":a.sev==="warning"?"yellow":"blue"}-bg)">${a.ico}</div>
+    <div><div class="a-title">${a.t}</div><div class="a-meta">${a.m}</div></div>
+    <div class="a-act"><button class="btn btn-ghost btn-sm" onclick="toast('Detail alert dibuka (demo)')">Lihat</button></div>
+  </div>`}
+
+function renderCreds(){$("credBody").innerHTML=creds.map((c,i)=>credRow(c,"c"+i)).join("")}
+
+function renderAlerts(){
+  $("dashAlerts").innerHTML=alerts.slice(0,3).map(alertItemHTML).join("");
+  $("monitorAlerts").innerHTML=alerts.map(alertItemHTML).join("")||`<div class="empty"><div class="e-ico">✅</div><div class="e-t">Tidak ada alert aktif</div><div class="e-d">Semua target sehat.</div></div>`;
+  $("navAlertBadge").textContent=alerts.length;
+}
+function renderLatency(){
+  $("latencyList").innerHTML=healthBars.map(h=>`<div class="hp-row"><div class="hp-name">${h.n}</div><div class="hp-bar"><div class="progressbar"><div class="fill" style="width:${Math.min(h.v,100)}%;background:${h.c}"></div></div></div><div class="hp-val">${h.n.includes("tangsel")?"timeout · 42%":h.v+"% · "+Math.round(120+h.v*1.4)+" ms"}</div></div>`).join("");
+}
+function renderChecks(){$("checkBody").innerHTML=checks.map(c=>`<tr><td style="color:var(--muted)">hari ini ${c.w}</td><td class="dom">${c.t}</td><td>${c.j}</td><td><span class="badge-st ${c.h==="OK"?"st-aktif":c.h.includes("Gagal")?"st-rusak":"st-analisis"}">${c.h}</span></td><td style="color:var(--muted)">${c.l}</td></tr>`).join("")}
+function renderDeploy(){
+  $("deployBody").innerHTML=deployments.map(d=>`<tr>
+    <td style="color:var(--muted);white-space:nowrap">${d.w}</td>
+    <td class="dom">${d.t}</td><td>${d.p}</td><td>${d.tpl}</td>
+    <td><span class="badge-st ${d.st==="Sukses"?"st-aktif":d.st==="Berjalan"?"st-analisis":"st-rusak"}">${d.st}</span></td>
+    <td><div class="acts"><button class="act-btn" title="Log" onclick="toast('Log deployment dibuka (demo)')">🧾</button><button class="act-btn" title="Rollback" onclick="toast('Rollback 1 klik — kondisi sebelumnya dipulihkan (demo)')">↩</button></div></td>
+  </tr>`).join("");
+}
+function renderKonten(){$("kontenBody").innerHTML=konten.map(k=>`<tr><td class="dom">${k.u}</td><td>${k.t}</td><td>${k.k}</td><td>${k.tpl}</td><td><span class="badge-st ${k.idx==="Terindeks"?"st-aktif":k.idx==="Gagal"?"st-rusak":"st-analisis"}">${k.idx}</span></td><td style="font-weight:650">${k.pos}</td></tr>`).join("")}
+function renderBacklinks(){$("backlinkBody").innerHTML=backlinks.map(b=>`<tr><td class="dom">${b.s}</td><td><span class="tier t${b.tier}">Tier ${b.tier}</span></td><td>${b.a}</td><td>${b.d}</td><td><span class="badge-st ${b.st==="Aktif"?"st-aktif":"st-analisis"}">${b.st}</span></td><td style="font-weight:650">${b.dr}</td></tr>`).join("")}
+function renderAudit(){$("auditBody").innerHTML=audit.map(a=>`<tr><td style="color:var(--muted);white-space:nowrap">${a.w}</td><td class="dom">${a.a}</td><td><span class="tagchip">${a.ak}</span></td><td>${a.o}</td><td style="color:var(--muted)">${a.d}</td></tr>`).join("")}
+function renderOps(){
+  $("opsMetrics").innerHTML=opsMetrics.map(m=>`<div class="hp-row"><div class="hp-name">${m.n}</div><div class="hp-bar"><div class="progressbar"><div class="fill" style="width:${m.pct}%;background:${m.ok?"var(--green)":"var(--yellow)"}"></div></div></div><div class="hp-val"><b style="color:var(--text)">${m.v}</b> · target ${m.tgt} ${m.ok?"✅":"⚠️"}</div></div>`).join("");
+}
+
+/* recon queue */
+function renderRecon(){
+  $("reconQueue").innerHTML=reconQueue.map(r=>`<div class="hp-row"><div class="hp-name">${r.d}</div><div class="hp-bar"></div><div class="hp-val"><span class="badge-st ${r.st==="selesai"?"st-aktif":r.st==="berjalan"?"st-analisis":"st-nonaktif"}">${r.st}</span></div></div>`).join("");
+}
+function runReconQueue(){
+  if(reconRunning)return;reconRunning=true;
+  const qs=$("queueStatus");qs.textContent="Berjalan";qs.className="badge-st st-analisis";
+  let i=0;
+  const step=()=>{
+    if(i>0)reconQueue[i-1].st="selesai";
+    if(i<reconQueue.length){
+      reconQueue[i].st="berjalan";
+      $("reconProgress").style.width=Math.round((i/reconQueue.length)*100)+"%";
+      renderRecon();i++;setTimeout(step,900);
+    }else{
+      $("reconProgress").style.width="100%";renderRecon();
+      qs.textContent="Selesai";qs.className="badge-st st-aktif";
+      reconRunning=false;toast("Recon massal selesai — "+reconQueue.length+" target dipindai");
+    }
+  };step();
+}
+
+/* forms */
+function addTarget(){
+  const d=$("fDomain").value.trim();
+  if(!d||!d.includes(".")){toast("Domain belum valid — isi minimal host.tld");return}
+  targets.unshift({id:Date.now(),domain:d,sub:"Baru ditambahkan",type:$("fType").value,status:"Kandidat",score:0,owner:$("fOwner").value||"—",pages:0,checked:"—",tags:[]});
+  $("fDomain").value="";closeModal("modalTarget");renderTargets();toast("Target ditambahkan sebagai kandidat");
+}
+function addCred(){
+  if(!$("cSecret").value){toast("Secret tidak boleh kosong");return}
+  creds.unshift({t:$("cTarget").value,n:$("cName").value||"akun-baru",ty:$("cType").value,lv:$("cLevel").value,s:$("cSecret").value,v:$("cValid").value||"2027-01-01",near:false});
+  $("cSecret").value="";closeModal("modalCred");renderCreds();toast("Kredensial tersimpan terenkripsi (demo)");
+}
+function doDeploy(){
+  const t=$("dTarget").value,p=$("dPath").value.trim();
+  if(!p.startsWith("/")){toast("Path harus dimulai dengan / — mis. /blog/artikel/");return}
+  deployments.unshift({w:"baru saja",t:t,p:p,tpl:$("dTpl").value,st:"Berjalan"});
+  closeModal("modalDeploy");renderDeploy();toast("Deployment dimulai — log tampil real-time (demo)");
+}
+
+/* ================= CHARTS (inline SVG) ================= */
+function drawBar(){
+  const data=[["Aktif",4,"var(--green)"],["Kandidat",1,"var(--blue)"],["Dianalisis",1,"var(--yellow)"],["Rusak",1,"var(--red)"],["Nonaktif",1,"var(--gray)"]];
+  const W=560,H=240,pad=40,max=6,bw=52,gap=(W-2*pad-5*bw)/4;
+  let s=`<text x="${pad-6}" y="18" fill="#8b94ad" font-size="11">jumlah target</text>`;
+  for(let g=0;g<=max;g+=2){const y=H-30-(g/max)*(H-64);s+=`<line x1="${pad}" y1="${y}" x2="${W-8}" y2="${y}" stroke="#232c44" stroke-dasharray="3 4"/><text x="${pad-12}" y="${y+4}" fill="#5c6579" font-size="10" text-anchor="end">${g}</text>`}
+  data.forEach((d,i)=>{
+    const x=pad+i*(bw+gap),h=(d[1]/max)*(H-64),y=H-30-h;
+    s+=`<rect x="${x}" y="${y}" width="${bw}" height="${h}" rx="8" fill="${d[2]}" opacity="0.88"><animate attributeName="height" from="0" to="${h}" dur="0.5s" fill="freeze"/><animate attributeName="y" from="${H-30}" to="${y}" dur="0.5s" fill="freeze"/></rect>`;
+    s+=`<text x="${x+bw/2}" y="${y-8}" fill="#e8ecf6" font-size="13" font-weight="700" text-anchor="middle">${d[1]}</text>`;
+    s+=`<text x="${x+bw/2}" y="${H-10}" fill="#8b94ad" font-size="11" text-anchor="middle">${d[0]}</text>`;
+  });
+  $("barChart").innerHTML=s;
+}
+function drawLine(){
+  const pts=[88,90,89,91,93,92,94,93,95,94,96,95,96,96];
+  const W=560,H=240,pad=42,min=80,max=100;
+  const X=i=>pad+i*((W-pad-16)/(pts.length-1)),Y=v=>H-30-((v-min)/(max-min))*(H-64);
+  let line="",area=`M ${X(0)} ${Y(pts[0])}`;
+  pts.forEach((p,i)=>{line+=(i?" L ":"M ")+X(i)+" "+Y(p);area+=` L ${X(i)} ${Y(p)}`});
+  area+=` L ${X(pts.length-1)} ${H-30} L ${X(0)} ${H-30} Z`;
+  let s=`<text x="${pad-8}" y="18" fill="#8b94ad" font-size="11">% target sehat</text>`;
+  for(let g=80;g<=100;g+=5){const y=Y(g);s+=`<line x1="${pad}" y1="${y}" x2="${W-8}" y2="${y}" stroke="#232c44" stroke-dasharray="3 4"/><text x="${pad-12}" y="${y+4}" fill="#5c6579" font-size="10" text-anchor="end">${g}</text>`}
+  s+=`<defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4a259" stop-opacity="0.32"/><stop offset="1" stop-color="#f4a259" stop-opacity="0"/></linearGradient></defs>`;
+  s+=`<path d="${area}" fill="url(#ag)"/>`;
+  s+=`<path d="${line}" fill="none" stroke="#f4a259" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>`;
+  pts.forEach((p,i)=>{if(i%3===0||i===pts.length-1)s+=`<circle cx="${X(i)}" cy="${Y(p)}" r="4" fill="#0b0e14" stroke="#f4a259" stroke-width="2.4"/>`});
+  s+=`<circle cx="${X(pts.length-1)}" cy="${Y(pts[pts.length-1])}" r="11" fill="#f4a259" opacity="0.18"/>`;
+  s+=`<text x="${X(pts.length-1)}" y="${Y(pts[pts.length-1])-16}" fill="#ffbe7a" font-size="12" font-weight="700" text-anchor="end">96%</text>`;
+  ["1 Okt","8 Okt","14 Okt"].forEach((lb,i)=>{s+=`<text x="${X(Math.round(i*(pts.length-1)/2))}" y="${H-8}" fill="#5c6579" font-size="10" text-anchor="middle">${lb}</text>`});
+  $("lineChart").innerHTML=s;
+}
+
+/* ================= INIT ================= */
+renderTargets();renderCreds();renderAlerts();renderLatency();renderChecks();renderDeploy();renderKonten();renderBacklinks();renderAudit();renderOps();renderRecon();drawBar();drawLine();
+</script>
+</body>
+</html>

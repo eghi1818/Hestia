@@ -11,3 +11,6 @@ Thumbs.db
 *.log
 tmp/
 .env
+
+# berkas hasil rakitan
+docs/RESUME-PACK.md
