@@ -282,6 +282,38 @@
   }
   window.periksaMassal = periksaMassal;
 
+  function pantauPutaran() {
+    var t = setInterval(function () {
+      fetch("/api/putaran/status").then(function (r) { return r.json(); })
+        .then(function (st) {
+          var info = document.getElementById("kandInfo");
+          if (info) info.textContent = "putaran " + st.fase + "  verif=" + st.verif
+            + " crawl=" + st.crawl + " kandidat_baru=" + st.kandidat_baru
+            + "  " + JSON.stringify(st.ringkas);
+          if (!st.jalan) {
+            clearInterval(t);
+            lapor("putaran-selesai", JSON.stringify(st));
+            if (window.toast) window.toast("putaran selesai");
+            muatKandidat();
+          }
+        });
+    }, 2500);
+  }
+
+  function jalankanPutaran() {
+    fetch("/api/putaran?verif=20&crawl=15", { method: "POST" })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        lapor("putaran-mulai", JSON.stringify(d));
+        if (window.toast) window.toast("putaran otomatis dimulai");
+        pantauPutaran();
+      })
+      .catch(function (e) { lapor("putaran-gagal", String(e)); });
+  }
+  window.jalankanPutaran = jalankanPutaran;
+
+
+
 
 
 

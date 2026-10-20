@@ -344,3 +344,80 @@ def api_periksa_latar(bg: BackgroundTasks, limit: int = 50, suffix: Optional[str
 @app.get("/api/kandidat/periksa-status")
 def api_periksa_status():
     return _PS
+
+
+# ---------- putaran otomatis: verifikasi lalu crawl ----------
+_PUT = {"jalan": False, "fase": "", "verif": 0, "crawl": 0, "kandidat_baru": 0, "ringkas": {}}
+
+
+def _jalankan_putaran(verif, crawl, suffix):
+    import sys as _sys, os as _os, time as _t
+    from datetime import datetime as _dt
+    _t2 = _os.path.join(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))), "tools")
+    if _t2 not in _sys.path:
+        _sys.path.insert(0, _t2)
+    import scrape
+    _PUT.update({"jalan": True, "fase": "verifikasi", "verif": 0, "crawl": 0,
+                 "kandidat_baru": 0, "ringkas": {}})
+    try:
+        c = scrape.conn()
+        now = _dt.now().isoformat(timespec="seconds")
+        q, a = "SELECT domain,suffix FROM kandidat WHERE status='baru'", []
+        if suffix:
+            q += " AND suffix=?"; a.append(suffix)
+        q += " ORDER BY skor DESC, domain LIMIT ?"; a.append(max(0, verif))
+        for r in c.execute(q, a).fetchall():
+            h = scrape.verify_one(r["domain"]); h["suffix"] = r["suffix"]
+            c.execute("""UPDATE kandidat SET status=?,http_status=?,server=?,waf=?,skor=?,
+                         catatan=?,diperiksa_at=? WHERE domain=?""",
+                      (h["status"], h["http_status"], h["server"], h["waf"], scrape.skor(h),
+                       h.get("catatan"), now, r["domain"]))
+            c.commit()
+            _PUT["verif"] += 1
+            _PUT["ringkas"][h["status"]] = _PUT["ringkas"].get(h["status"], 0) + 1
+            _t.sleep(0.6)
+
+        _PUT["fase"] = "crawl"
+        q2 = ("SELECT domain FROM kandidat WHERE status IN ('hidup','alih','dijaga')"
+              " AND (dicrawl IS NULL OR dicrawl=0)")
+        a2 = []
+        if suffix:
+            q2 += " AND suffix=?"; a2.append(suffix)
+        q2 += " ORDER BY skor DESC LIMIT ?"; a2.append(max(0, crawl))
+        ketemu = set()
+        for (d,) in c.execute(q2, a2).fetchall():
+            html = scrape.ambil_html(d)
+            if html is None:
+                c.execute("UPDATE kandidat SET dicrawl=2 WHERE domain=?", (d,)); c.commit()
+                _t.sleep(0.6); continue
+            dapat = set(m.lower() for m in scrape.DOM_RE.findall(html))
+            pet = scrape.hollow_of(html)
+            if not pet and d.split(".")[0].lower() in scrape.PANEL:
+                pet = "halaman panel"
+            for t in dapat:
+                if t != d:
+                    c.execute("INSERT OR IGNORE INTO tautan(dari,ke,dibuat) VALUES(?,?,?)", (d, t, now))
+            ketemu |= dapat
+            c.execute("""UPDATE kandidat SET dicrawl=1, ukuran=?, hollow=?, petunjuk=?
+                         WHERE domain=?""", (len(html), 1 if pet else 0, pet, d))
+            c.commit()
+            _PUT["crawl"] += 1
+            _t.sleep(0.6)
+        _PUT["kandidat_baru"] = scrape.simpan(c, ketemu, "crawl")
+        c.close()
+    finally:
+        _PUT["fase"] = "selesai"
+        _PUT["jalan"] = False
+
+
+@app.post("/api/putaran")
+def api_putaran(bg: BackgroundTasks, verif: int = 20, crawl: int = 15, suffix: Optional[str] = None):
+    if _PUT["jalan"]:
+        return {"sudah_jalan": True, "status": _PUT}
+    bg.add_task(_jalankan_putaran, verif, crawl, suffix)
+    return {"mulai": True, "verif": verif, "crawl": crawl}
+
+
+@app.get("/api/putaran/status")
+def api_putaran_status():
+    return _PUT
