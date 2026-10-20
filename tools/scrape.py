@@ -88,6 +88,10 @@ def conn():
         c.execute("ALTER TABLE kandidat ADD COLUMN dicrawl INTEGER DEFAULT 0")
     if "ukuran" not in kol:
         c.execute("ALTER TABLE kandidat ADD COLUMN ukuran INTEGER DEFAULT 0")
+    if "hollow" not in kol:
+        c.execute("ALTER TABLE kandidat ADD COLUMN hollow INTEGER DEFAULT 0")
+    if "petunjuk" not in kol:
+        c.execute("ALTER TABLE kandidat ADD COLUMN petunjuk TEXT")
     c.commit()
     return c
 
@@ -200,6 +204,37 @@ def discover_web(suf, limit=0):
         hasil |= _web_hackertarget(suf)
     print("    gabungan web: %d" % len(hasil))
     return hasil
+
+
+PETUNJUK = [
+    ("404 - page not found", "halaman 404"),
+    ("page not found", "halaman 404"),
+    ("expired domain", "domain kedaluwarsa"),
+    ("index of /", "daftar berkas"),
+    ("welcome to nginx", "nginx bawaan"),
+    ("apache2 ubuntu default page", "apache bawaan"),
+    ("apache2 default page", "apache bawaan"),
+    ("under construction", "dalam pengerjaan"),
+    ("coming soon", "segera hadir"),
+    ("default web page", "halaman bawaan"),
+    ("idcloudhost", "halaman parkir"),
+    ("parked", "halaman parkir"),
+    ("this domain", "halaman parkir"),
+]
+
+
+def teks_terlihat(html):
+    t = re.sub(r"(?is)<(script|style)[^>]*>.*?</\\1>", " ", html)
+    t = re.sub(r"<[^>]+>", " ", t)
+    return re.sub(r"\\s+", " ", t).strip().lower()
+
+
+def hollow_of(html):
+    t = teks_terlihat(html)
+    for pola, nama in PETUNJUK:
+        if pola in t:
+            return nama
+    return "halaman sangat tipis" if len(t) < 300 else ""
 
 
 def ambil_html(domain, timeout=12):
@@ -347,7 +382,7 @@ def cmd_map(a):
     kosong = c.execute("SELECT count(*) FROM kandidat WHERE ukuran>0 AND ukuran<3000").fetchone()[0]
     print("halaman tipis (<3KB): %d" % kosong)
     top = c.execute("""SELECT domain,status,skor,waf FROM kandidat
-                       WHERE status IN ('hidup','dijaga','alih') AND infra=0
+                       WHERE status IN ('hidup','dijaga','alih') AND infra=0 AND hollow=0
                        ORDER BY skor DESC LIMIT 15""").fetchall()
     if top:
         print("PRIORITAS:")
@@ -386,9 +421,11 @@ def cmd_crawl(a):
                 c.execute("INSERT OR IGNORE INTO tautan(dari,ke,dibuat) VALUES(?,?,?)", (d, t, now))
         baru = dapat - ketemu
         ketemu |= dapat
-        c.execute("UPDATE kandidat SET dicrawl=1, ukuran=? WHERE domain=?",
-                  (len(html), d)); c.commit()
-        print("  %-42s +%d (total %d) ukuran=%d" % (d, len(baru), len(ketemu), len(html)))
+        pet = hollow_of(html)
+        c.execute("UPDATE kandidat SET dicrawl=1, ukuran=?, hollow=?, petunjuk=? WHERE domain=?",
+                  (len(html), 1 if pet else 0, pet, d)); c.commit()
+        print("  %-42s +%d (total %d) ukuran=%d%s" % (d, len(baru), len(ketemu), len(html),
+                                                 (" KOSONG:" + pet) if pet else ""))
         time.sleep(a.jeda)
     n = simpan(c, ketemu, "crawl")
     print("kandidat baru: %d  total: %d  tautan: %d  gagal: %d" % (
