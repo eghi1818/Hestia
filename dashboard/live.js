@@ -189,6 +189,8 @@
     if (st) url += "&status=" + encodeURIComponent(st);
     var ti = document.getElementById("kandTanpaInfra");
     if (ti && ti.checked) url += "&tanpa_infra=true";
+    var tk = document.getElementById("kandTanpaKosong");
+    if (tk && tk.checked) url += "&tanpa_kosong=true";
     body.innerHTML = '<tr><td colspan="8" style="padding:10px;color:var(--muted)">memuat...</td></tr>';
     fetch(url).then(function (r) { return r.json(); }).then(function (d) {
       var info = document.getElementById("kandInfo");

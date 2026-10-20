@@ -206,6 +206,8 @@ def discover_web(suf, limit=0):
     return hasil
 
 
+PANEL = {"cpanel", "webmail", "cpcalendars", "cpcontacts", "webdisk", "plesk",
+         "roundcube", "squirrelmail", "directadmin", "whm", "panel"}
 PETUNJUK = [
     ("404 - page not found", "halaman 404"),
     ("page not found", "halaman 404"),
@@ -220,6 +222,11 @@ PETUNJUK = [
     ("idcloudhost", "halaman parkir"),
     ("parked", "halaman parkir"),
     ("this domain", "halaman parkir"),
+    ("roundcube", "halaman panel"),
+    ("directadmin", "halaman panel"),
+    ("plesk", "halaman panel"),
+    ("webmail", "halaman panel"),
+    ("cpanel", "halaman panel"),
 ]
 
 
@@ -422,6 +429,8 @@ def cmd_crawl(a):
         baru = dapat - ketemu
         ketemu |= dapat
         pet = hollow_of(html)
+        if not pet and d.split(".")[0].lower() in PANEL:
+            pet = "halaman panel"
         c.execute("UPDATE kandidat SET dicrawl=1, ukuran=?, hollow=?, petunjuk=? WHERE domain=?",
                   (len(html), 1 if pet else 0, pet, d)); c.commit()
         print("  %-42s +%d (total %d) ukuran=%d%s" % (d, len(baru), len(ketemu), len(html),

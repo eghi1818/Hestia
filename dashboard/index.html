@@ -542,6 +542,7 @@ tbody tr:last-child td{border-bottom:none}
           <button class="btn btn-ghost btn-sm" id="kandPeriksa" onclick="periksaKandidat()">Periksa 5 baru</button>
           <button class="btn btn-ghost btn-sm" id="kandMassal" onclick="periksaMassal()">Periksa semua (50)</button>
           <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)"><input type="checkbox" id="kandTanpaInfra" onchange="muatKandidat()"> sembunyikan infrastruktur</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)"><input type="checkbox" id="kandTanpaKosong" onchange="muatKandidat()"> sembunyikan kosong</label>
         </div>
         <div id="kandInfo" style="font-size:12px;color:var(--muted);margin-bottom:8px"></div>
         <table style="width:100%;border-collapse:collapse;font-size:13px">
@@ -1124,6 +1125,6 @@ function drawLine(){
 /* ================= INIT ================= */
 renderTargets();renderCreds();renderAlerts();renderLatency();renderChecks();renderDeploy();renderKonten();renderBacklinks();renderAudit();renderOps();renderRecon();drawBar();drawLine();
 </script>
-<script src="/live.js?v=d854767-1792476663"></script>
+<script src="/live.js?v=52ec625-1792476847"></script>
 </body>
 </html>
