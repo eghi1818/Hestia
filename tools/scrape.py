@@ -86,6 +86,8 @@ def conn():
         c.execute("ALTER TABLE kandidat ADD COLUMN infra INTEGER DEFAULT 0")
     if "dicrawl" not in kol:
         c.execute("ALTER TABLE kandidat ADD COLUMN dicrawl INTEGER DEFAULT 0")
+    if "ukuran" not in kol:
+        c.execute("ALTER TABLE kandidat ADD COLUMN ukuran INTEGER DEFAULT 0")
     c.commit()
     return c
 
@@ -342,6 +344,8 @@ def cmd_map(a):
                 print("   %3d  %s" % (r["n"], r["dari"]))
     except Exception:
         pass
+    kosong = c.execute("SELECT count(*) FROM kandidat WHERE ukuran>0 AND ukuran<3000").fetchone()[0]
+    print("halaman tipis (<3KB): %d" % kosong)
     top = c.execute("""SELECT domain,status,skor,waf FROM kandidat
                        WHERE status IN ('hidup','dijaga','alih') AND infra=0
                        ORDER BY skor DESC LIMIT 15""").fetchall()
@@ -382,8 +386,9 @@ def cmd_crawl(a):
                 c.execute("INSERT OR IGNORE INTO tautan(dari,ke,dibuat) VALUES(?,?,?)", (d, t, now))
         baru = dapat - ketemu
         ketemu |= dapat
-        c.execute("UPDATE kandidat SET dicrawl=1 WHERE domain=?", (d,)); c.commit()
-        print("  %-42s +%d (total %d)" % (d, len(baru), len(ketemu)))
+        c.execute("UPDATE kandidat SET dicrawl=1, ukuran=? WHERE domain=?",
+                  (len(html), d)); c.commit()
+        print("  %-42s +%d (total %d) ukuran=%d" % (d, len(baru), len(ketemu), len(html)))
         time.sleep(a.jeda)
     n = simpan(c, ketemu, "crawl")
     print("kandidat baru: %d  total: %d  tautan: %d  gagal: %d" % (
