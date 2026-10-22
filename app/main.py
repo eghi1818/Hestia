@@ -4,7 +4,7 @@ import sqlite3
 from pathlib import Path
 from typing import List, Optional
 
-from fastapi import BackgroundTasks, FastAPI, HTTPException
+from fastapi import Body, BackgroundTasks, FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
@@ -525,3 +525,79 @@ def api_monitoring(batas: int = 25):
 def audit_js():
     from fastapi.responses import FileResponse
     return FileResponse("dashboard/audit.js", media_type="application/javascript")
+
+
+# ---------- kredensial / deployment / konten ----------
+_TABEL = {
+    "kredensial": ("target TEXT, nama TEXT, tipe TEXT, level TEXT, secret TEXT, "
+                   "berlaku_sd TEXT, created_at TEXT",
+                   ["target", "nama", "tipe", "level", "secret", "berlaku_sd", "created_at"]),
+    "deployment": ("waktu TEXT, target TEXT, path TEXT, template TEXT, status TEXT",
+                   ["waktu", "target", "path", "template", "status"]),
+    "konten": ("url TEXT, target TEXT, kata_kunci TEXT, template TEXT, "
+               "status_indeks TEXT, posisi REAL",
+               ["url", "target", "kata_kunci", "template", "status_indeks", "posisi"]),
+}
+
+
+def _siap_tabel():
+    c = _db_kandidat()
+    for n, (kol, _x) in _TABEL.items():
+        c.execute("CREATE TABLE IF NOT EXISTS %s(id INTEGER PRIMARY KEY AUTOINCREMENT, %s)"
+                  % (n, kol))
+    c.commit()
+    return c
+
+
+def _daftar(nama):
+    c = _siap_tabel()
+    rows = [dict(r) for r in c.execute("SELECT * FROM " + nama + " ORDER BY id DESC LIMIT 200")]
+    c.close()
+    return {"total": len(rows), "item": rows}
+
+
+def _tambah(nama, body):
+    kol = _TABEL[nama][1]
+    nilai = [body.get(k) for k in kol]
+    c = _siap_tabel()
+    c.execute("INSERT INTO %s(%s) VALUES(%s)"
+              % (nama, ",".join(kol), ",".join("?" * len(kol))), nilai)
+    c.commit()
+    c.close()
+    return {"ok": True, "tabel": nama}
+
+
+@app.get("/api/kredensial")
+def api_kredensial():
+    return _daftar("kredensial")
+
+
+@app.get("/api/deployment")
+def api_deployment():
+    return _daftar("deployment")
+
+
+@app.get("/api/konten")
+def api_konten():
+    return _daftar("konten")
+
+
+@app.post("/api/kredensial")
+def api_kredensial_tambah(body: dict = Body(...)):
+    return _tambah("kredensial", body)
+
+
+@app.post("/api/deployment")
+def api_deployment_tambah(body: dict = Body(...)):
+    return _tambah("deployment", body)
+
+
+@app.post("/api/konten")
+def api_konten_tambah(body: dict = Body(...)):
+    return _tambah("konten", body)
+
+
+@app.get("/konten.js")
+def konten_js():
+    from fastapi.responses import FileResponse
+    return FileResponse("dashboard/konten.js", media_type="application/javascript")
