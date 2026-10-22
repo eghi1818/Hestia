@@ -795,3 +795,15 @@ def api_clientlog_bersih(simpan: int = 300):
     sisa = c.execute("SELECT count(*) FROM clientlog").fetchone()[0]
     c.close()
     return {"ok": True, "sebelum": tot, "sesudah": sisa}
+
+
+# --- DoH opsional (HESTIA_DOH=1): kebal DNS lokal yang basi ---
+try:
+    import os as _os, sys as _sys
+    if _os.environ.get("HESTIA_DOH") == "1":
+        _sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))), "tools"))
+        import net as _net
+        _net.pasang()
+        print("[net] DoH aktif:", _net.info())
+except Exception as _e:
+    print("[net] DoH dilewati:", _e)

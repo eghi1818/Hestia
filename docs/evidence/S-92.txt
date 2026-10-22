@@ -1,0 +1,55 @@
+=== S-92 bukti DNS basi vs DoH ===
+Thu Oct 22 14:26:24 WIB 2026
+--- [A] resolver sistem, tanpa DoH ---
+curl: (28) Connection timed out after 20005 milliseconds
+   gacor.net  http=000 ip= t=20.005590s
+   curl gagal
+--- [B] paksa IP Cloudflare (--resolve) ---
+   104.21.93.171 -> curl: (60) SSL certificate problem: unable to get local issuer certificate
+More details here: https://curl.se/docs/sslcerts.html
+
+curl failed to verify the legitimacy of the server and therefore could not
+establish a secure connection to it. To learn more about this situation and
+how to fix it, please visit the web page mentioned above.
+http=000 t=0.082633s
+gagal
+   172.67.213.67 -> curl: (60) SSL certificate problem: unable to get local issuer certificate
+More details here: https://curl.se/docs/sslcerts.html
+
+curl failed to verify the legitimacy of the server and therefore could not
+establish a secure connection to it. To learn more about this situation and
+how to fix it, please visit the web page mentioned above.
+http=000 t=0.058454s
+gagal
+--- [C] lewat DoH Cloudflare ---
+curl: (60) SSL certificate problem: unable to get local issuer certificate
+More details here: https://curl.se/docs/sslcerts.html
+
+curl failed to verify the legitimacy of the server and therefore could not
+establish a secure connection to it. To learn more about this situation and
+how to fix it, please visit the web page mentioned above.
+   gacor.net  http=000 ip=104.21.93.171 t=1.352140s
+   curl gagal
+--- [D] judul halaman lewat DoH ---
+--- [E] kontrol: wecash.ai/tentang/profile ---
+   http=200 ip=104.21.5.216
+
+--- [F1] net.py + HESTIA_DOH=1 -> gacor.net ---
+   setelan: DoH=1 url=https://cloudflare-dns.com/dns-query cache=0
+   GAGAL: URLError <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self signed cer
+
+--- [F2] tanpa DoH (resolver sistem) -> gacor.net ---
+   setelan: DoH=0 url=https://cloudflare-dns.com/dns-query cache=0
+   GAGAL: URLError <urlopen error timed out>
+
+--- [G] pasang hook DoH di app/main.py ---
++ hook DoH ditambahkan ke app/main.py
++ app/main.py kompilasi OK
+
+--- [H] nyalakan ulang layanan dengan HESTIA_DOH=1 ---
+   /api/health http=200
+   log: layanan: http 200 
+
+--- [I] skema endpoint (bekal langkah berikut) ---
+   skema: HTTPValidationError, TargetMasuk, TargetUbah, ValidationError
+
