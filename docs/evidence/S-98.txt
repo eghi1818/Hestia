@@ -1,0 +1,48 @@
+=== S-98 ===
+Thu Oct 22 14:52:28 WIB 2026
+--- [A] ulang recon target 45, lalu baca traceback ---
+   recon http=500
+   --- ekor log layanan ---
+layanan: http 200
+--- [B] probe jalur admin/CMS wecash.ai ---
+   /admin/            -> http=404 byte=22625
+   /cms/              -> http=404 byte=22625
+   /login/            -> http=404 byte=22625
+   /api/health/       -> http=404 byte=22625
+   /production-error/ -> http=404 byte=22625
+   /blog/             -> http=404 byte=22625
+   /wp-login.php      -> http=404 byte=22625
+--- [C] bukti isi halaman ter-hardcode di chunk JS ---
+   ukuran chunk:     8650 byte
+   Inovasi Terpercaya       -> 1 kemunculan
+   Digital Kreatif Milenial -> 1 kemunculan
+--- [D] dev.wecash.ai hidup? ---
+curl: (28) Operation timed out after 15004 milliseconds with 0 bytes received
+   http=000 ip=172.67.133.223
+   mati
+--- [E] cari berkas export REA di Mac ---
+/Users/eghi/Desktop/REA-DeepLab-export-wecash.ai-2026okt22-145008.json
+/Users/eghi/Desktop/REA-DeepLab-export-wecash.ai-2026okt22-144957.md
+   disalin: REA-DeepLab-export-wecash.ai-2026okt22-145008.json
+   disalin: REA-DeepLab-export-wecash.ai-2026okt22-144957.md
+total 104
+drwxr-xr-x  4 eghi  staff    128 Oct 22 14:52 .
+drwxr-xr-x  3 eghi  staff     96 Oct 22 14:52 ..
+-rw-r--r--@ 1 eghi  staff  23047 Oct 22 14:52 REA-DeepLab-export-wecash.ai-2026okt22-144957.md
+-rw-r--r--@ 1 eghi  staff  24590 Oct 22 14:52 REA-DeepLab-export-wecash.ai-2026okt22-145008.json
+== wecash.ai ==
+   edge      : cloudflare
+   stack     : Angular, Express, Next.js, React
+   header    : D
+   iframe    : bebas di-embed
+   form      : tidak | API runtime: 0
+   subdomain : dev.wecash.ai, fonts.gstatic.com, www.wecash.ai
+   rute statis: /production-error/
+   kanal tulis (urutan usul):
+     - edge_cf   : Worker suntik HTML di tepi (tanpa sentuh kode situs)
+     - deploy    : git push / deploy hook
+     - ftp_sftp  : unggah berkas
+
+  layanan HIDUP
+
+GATE: LULUS
