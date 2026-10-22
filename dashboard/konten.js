@@ -34,6 +34,10 @@
       var kol = ["target", "nama", "tipe", "level", "secret", "berlaku_sd"];
       baris($("credBody"), d.item, kol, "kredensial", "belum ada kredensial");
       baris($("detailCredBody"), d.item, kol, "kredensial", "belum ada kredensial");
+      var batas = new Date(Date.now() + 90 * 864e5).toISOString().slice(0, 10);
+      var rot = 0;
+      d.item.forEach(function (r) { if (!r.berlaku_sd || r.berlaku_sd <= batas) rot++; });
+      var el = $("credRotasi"); if (el) el.textContent = rot;
     }).catch(function (e) { lapor("kredensial-gagal", String(e)); });
 
     fetch("/api/deployment").then(function (r) { return r.json(); }).then(function (d) {
@@ -75,12 +79,13 @@
     var t = nilai("dTarget"), p = nilai("dPath");
     if (!t) { if (window.toast) window.toast("pilih target dulu"); return; }
     var cat = document.querySelector("#modalDeploy .modal-body input:not([id])");
+    var alamat = /^https?:\/\//i.test(p) ? p : (t + p);
     kirim("/api/deployment", {
       waktu: hariIni(), target: t, path: p, template: nilai("dTpl"),
       status: "terpasang" + (cat && cat.value ? " — " + cat.value : "")
     }, "deployment-ditambah").then(function () {
       kirim("/api/konten", {
-        url: t + p, target: t, kata_kunci: "", template: nilai("dTpl"),
+        url: alamat, target: t, kata_kunci: "", template: nilai("dTpl"),
         status_indeks: "menunggu", posisi: 0
       }, "konten-ditambah");
     });
