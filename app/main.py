@@ -841,4 +841,4 @@ def jalankan_tanam(body: dict):
         tanam.simpan_kredensial(t["domain"], u, pw, tid=tid)
     if not u:
         u, pw = tanam.kredensial_dari_db(t["domain"], tid=tid)
-    return tanam.tanam(t["domain"], user=u, sandi=pw, sapu_dulu=not u)
+    return tanam.tanam(t["domain"], user=u, sandi=pw, sapu_dulu=bool(body.get("sapu")))

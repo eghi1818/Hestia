@@ -25,9 +25,8 @@ DOCROOT = ["public_html", "www", "htdocs", "httpdocs", "public", "web",
            "domains/%s/public_html"]
 BERKAS = ["index.html", "index.htm"]
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"
-PASANGAN = [("ftp", "ftp"), ("ftp", "anonymous"), ("admin", "admin"),
-            ("admin", "123456"), ("user", "user"), ("www", "www"),
-            ("webmaster", "webmaster"), ("hosting", "hosting")]
+PASANGAN = [("ftp", "ftp"), ("admin", "admin"), ("admin", "123456"),
+            ("user", "user"), ("www", "www"), ("webmaster", "webmaster")]
 
 
 def catat(x):
@@ -260,11 +259,22 @@ def tanam(domain, user="", sandi="", sapu_dulu=True):
         return hasil
     c("kanal PUT tidak jalan -> lanjut FTP")
 
+    if not user and not sapu_dulu:
+        c("tanpa kredensial -> coba anonymous saja (cepat)")
+        try:
+            f = sambung(domain, "anonymous", "hestia@example.com", timeout=6)
+            user, sandi = "anonymous", "hestia@example.com"
+            f.quit()
+            c("anonymous diterima")
+        except Exception as e:
+            c("anonymous ditolak: %s" % str(e)[:50])
+            c("-> butuh kredensial FTP. Klik Tanam lagi dan ketik user:sandi")
+            return {"ok": False, "pesan": "butuh kredensial FTP", "langkah": langkah}
     if not user and sapu_dulu:
-        c("kredensial belum ada -> sapu pasangan umum")
-        u, p = sapu(domain, port=21)
+        c("sapu pasangan umum (port 21 lalu 990)")
+        u, p = sapu(domain, port=21, timeout=6)
         if not u:
-            u, p = sapu(domain, port=990, implisit=True)
+            u, p = sapu(domain, port=990, implisit=True, timeout=5)
         if not u:
             return {"ok": False, "pesan": "tidak ada kredensial FTP yang diterima", "langkah": langkah}
         user, sandi = u, p

@@ -1,0 +1,66 @@
+=== S-123 buru jejak ===
+Thu Oct 22 16:55:03 WIB 2026
+--- [A] DNS persaudaraan.com ---
+   A     persaudaraan.com             -> 75.2.60.5 
+   CNAME persaudaraan.com             -> 
+   A     www.persaudaraan.com         -> persaudaraan.com. 75.2.60.5 
+   CNAME www.persaudaraan.com         -> persaudaraan.com. 
+   TXT   -> 
+   NS    -> apollo.dns-parking.com. athena.dns-parking.com. 
+   MX    -> 
+--- [B] tebak nama netlify.app ---
+   persaudaraan.netlify.app   -> http=404 
+   persaudaraan-com.netlify.app -> http=404 
+   persaudaraancom.netlify.app -> http=404 
+   persaudaraan-web.netlify.app -> http=404 
+   persaudaraan-site.netlify.app -> http=404 
+   persaudaraan-id.netlify.app -> http=404 
+   persaudaraanapp.netlify.app -> http=404 
+   persaudaraan-next.netlify.app -> http=404 
+--- [C] API netlify (kalau nama cocok) ---
+   persaudaraan           -> {"code":401,"message":"Access Denied"}
+   persaudaraan-com       -> {"code":401,"message":"Access Denied"}
+   persaudaraancom        -> {"code":401,"message":"Access Denied"}
+--- [D] jejak SSH di Mac ---
+total 72
+drwx------  12 eghi  staff   384 Oct 14 15:51 .
+drwxr-x---+ 40 eghi  staff  1280 Oct 22 16:54 ..
+drwx------   3 eghi  staff    96 Oct 16 07:56 agent
+-rw-------@  1 eghi  staff   327 Oct 16 23:55 config
+-rw-------@  1 eghi  staff   399 Sep 28 11:45 id_ed25519
+-rw-r--r--@  1 eghi  staff    94 Sep 28 11:45 id_ed25519.pub
+-rw-------   1 eghi  staff  1692 Oct  2 18:36 known_hosts
+-rw-------@  1 eghi  staff   932 Oct  2 18:35 known_hosts.old
+-rw-------@  1 eghi  staff   117 Oct 12 20:19 wesearch_vps
+-rw-r--r--@  1 eghi  staff   112 Oct  2 18:49 wesearch_vps.pub
+-rw-------@  1 eghi  staff   432 Oct  2 18:49 wesearch_vps_key
+   --- ~/.ssh/config ---
+# Added by OrbStack: 'orb' SSH host for Linux machines
+# This only works if it's at the top of ssh_config (before any Host blocks).
+# This won't be added again if you remove it.
+Include ~/.orbstack/ssh/config
+
+Host wesearch_vps
+  HostName 93.127.133.160
+  Port 10053
+  IdentityFile ~/.ssh/wesearch_vps_key
+  IdentitiesOnly yes
+   --- known_hosts yang cocok ---
+   waspada        -> 
+   persaudaraan   -> 
+   juragan        -> 
+   liqu           -> 
+   wecash         -> 
+   gacor          -> 
+--- [E] waspadaweb.com DNS ---
+   A   -> 172.67.154.247 104.21.6.57 
+   NS  -> hope.ns.cloudflare.com. nolan.ns.cloudflare.com. 
+   TXT -> "v=spf1 include:spf0101.titan.email ~all" 
++ jalur cepat dipasang
++ kompilasi OK
++ route: sapu hanya bila diminta
++ kompilasi OK
+
+  layanan HIDUP
+
+GATE: LULUS
