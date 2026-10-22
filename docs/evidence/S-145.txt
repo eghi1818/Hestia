@@ -1,0 +1,20 @@
+=== S-145 user alternatif + alat tanam ssh ===
+Thu Oct 22 21:54:26 WIB 2026
+--- [A] coba kunci ini ke user lain ---
+   root           root@93.127.133.160: Permission denied (publickey,password). 
+   ubuntu         ubuntu@93.127.133.160: Permission denied (publickey,password). 
+   administrator  administrator sudo: a password is required 
+   wesearch       wesearch sudo: a password is required 
+--- [B] tulis tools/tanam_ssh.py ---
++ tanam_ssh.py OK
+--- [C] jalankan mode cek ---
+kredensial ssh di DB: tidak ada
+--- wesearch_vps: docroot tidak ketemu, dilewati
+--- [D] ringkas ---
+4:   root           root@93.127.133.160: Permission denied (publickey,password). 
+5:   ubuntu         ubuntu@93.127.133.160: Permission denied (publickey,password). 
+6:   administrator  administrator sudo: a password is required 
+7:   wesearch       wesearch sudo: a password is required 
+  layanan HIDUP
+
+GATE: LULUS
