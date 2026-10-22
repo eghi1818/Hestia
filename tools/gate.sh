@@ -39,11 +39,11 @@ if [ -f dashboard/live.js ] && [ -f dashboard/index.html ] ; then
   jumlah=0
   for id in $ids ; do
     jumlah=$((jumlah + 1))
-    case "$id" in liveBadge) echo "  lewat   #$id (dibuat live.js)" ; continue ;; esac
+    case "$id" in liveBadge) echo "  lewat   #$id (dibuat live.js/ikhtisar.js)" ; continue ;; esac
     if grep -q "id=\"$id\"" dashboard/index.html ; then
       echo "  ok      #$id"
     else
-      echo "  HILANG  #$id dirujuk live.js tapi tidak ada di index.html" ; fail=1
+      echo "  HILANG  #$id dirujuk skrip dashboard tapi tidak ada di index.html" ; fail=1
     fi
   done
   echo "  total rujukan diperiksa: $jumlah"
