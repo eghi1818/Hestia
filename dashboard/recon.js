@@ -28,9 +28,11 @@
         var kol = [x.waktu, x.target_id, x.http_status, (x.ms || 0) + " ms"];
         return tb
           ? "<tr>" + kol.map(function (v) { return '<td style="' + s + '">' + (v || "—") + "</td>"; }).join("") + "</tr>"
-          : '<div style="display:flex;justify-content:space-between;padding:7px 8px;'
-            + 'border-bottom:1px solid #232833;font-size:12px"><span>' + (kol[0] || "—")
-            + "</span><b>" + (kol[2] || 0) + " · " + kol[3] + "</b></div>";
+          : '<div class="hp-row"><div class="hp-name">target ' + (x.target_id || "—")
+            + '</div><div class="hp-bar"></div><div class="hp-val"><span class="badge-st '
+            + (x.http_status >= 200 && x.http_status < 400 ? "st-aktif"
+               : x.http_status === 0 ? "st-nonaktif" : "st-analisis") + '">'
+            + (x.http_status || 0) + " · " + kol[3] + "</span></div></div>";
       }).join("") : (tb
         ? '<tr><td colspan="4" style="' + s + ';color:var(--muted)">belum ada recon</td></tr>'
         : '<div style="padding:10px;color:var(--muted);font-size:13px">belum ada recon</div>');
@@ -66,5 +68,8 @@
     }).catch(function (e) { lapor("recon-antrean-gagal", String(e)); });
   };
 
-  document.addEventListener("DOMContentLoaded", function () { isiAntrean(); });
+  window.renderRecon = isiAntrean;
+  document.addEventListener("DOMContentLoaded", function () {
+    isiAntrean(); setTimeout(isiAntrean, 900);
+  });
 })();

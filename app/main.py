@@ -159,14 +159,21 @@ with db.conn() as _c:
     );
     """)
 
+_HDR_BROWSER = {
+    "User-Agent": ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                   "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"),
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "id-ID,id;q=0.9,en;q=0.8",
+    "Upgrade-Insecure-Requests": "1",
+    "Connection": "close",
+}
+
+
 def _ambil(domain, skema="https"):
     """Satu request saja. Kembalikan dict hasil."""
     import urllib.request, urllib.error, time, re
     url = skema + "://" + domain
-    req = urllib.request.Request(url, headers={
-        "User-Agent": "Hestia/0.1 (+panel internal)",
-        "Accept": "text/html,application/xhtml+xml",
-    })
+    req = urllib.request.Request(url, headers=_HDR_BROWSER)
     mulai = time.time()
     try:
         with urllib.request.urlopen(req, timeout=10) as r:
@@ -175,7 +182,7 @@ def _ambil(domain, skema="https"):
                 "http_status": r.status,
                 "server": r.headers.get("Server", ""),
                 "content_type": r.headers.get("Content-Type", ""),
-                "redirect": "",
+                "redirect": (r.geturl() if r.geturl() != url else ""),
                 "ms": int((time.time() - mulai) * 1000),
                 "judul": (re.search(r"<title[^>]*>(.*?)</title>", isi, re.S | re.I).group(1).strip()[:120]
                           if re.search(r"<title[^>]*>(.*?)</title>", isi, re.S | re.I) else ""),
@@ -187,6 +194,10 @@ def _ambil(domain, skema="https"):
                 "ms": int((time.time() - mulai) * 1000), "judul": "",
                 "catatan": "HTTPError"}
     except Exception as e:
+        if skema == "https":
+            h = _ambil(domain, "http")
+            if h["http_status"] != 0:
+                return h
         return {"http_status": 0, "server": "", "content_type": "", "redirect": "",
                 "ms": int((time.time() - mulai) * 1000), "judul": "",
                 "catatan": type(e).__name__ + ": " + str(e)[:80]}
