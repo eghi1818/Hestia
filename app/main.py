@@ -445,3 +445,47 @@ def api_putaran_status():
 def ikhtisar_js():
     from fastapi.responses import FileResponse
     return FileResponse("dashboard/ikhtisar.js", media_type="application/javascript")
+
+
+@app.get("/api/tautan/ringkas")
+def api_tautan_ringkas():
+    c = _db_kandidat()
+
+    def q(s):
+        return c.execute(s).fetchone()[0]
+
+    out = {
+        "total": q("SELECT count(*) FROM tautan"),
+        "sumber": q("SELECT count(DISTINCT dari) FROM tautan"),
+        "penerima": q("SELECT count(DISTINCT ke) FROM tautan"),
+        "kandidat": q("SELECT count(*) FROM kandidat"),
+        "per_akhiran": [dict(r) for r in c.execute(
+            "SELECT k.suffix, count(DISTINCT t.ke) n FROM tautan t "
+            "JOIN kandidat k ON k.domain=t.ke GROUP BY k.suffix")],
+        "teratas": [dict(r) for r in c.execute(
+            "SELECT ke, count(*) n FROM tautan GROUP BY ke ORDER BY n DESC LIMIT 10")],
+    }
+    c.close()
+    return out
+
+
+@app.get("/api/tautan")
+def api_tautan(limit: int = 200, dari: Optional[str] = None, ke: Optional[str] = None):
+    c = _db_kandidat()
+    w, a = [], []
+    if dari:
+        w.append("dari=?"); a.append(dari)
+    if ke:
+        w.append("ke=?"); a.append(ke)
+    where = (" WHERE " + " AND ".join(w)) if w else ""
+    tot = c.execute("SELECT count(*) FROM tautan" + where, a).fetchone()[0]
+    rows = [dict(r) for r in c.execute(
+        "SELECT * FROM tautan" + where + " ORDER BY dari, ke LIMIT ?", a + [limit])]
+    c.close()
+    return {"total": tot, "item": rows}
+
+
+@app.get("/tautan.js")
+def tautan_js():
+    from fastapi.responses import FileResponse
+    return FileResponse("dashboard/tautan.js", media_type="application/javascript")
