@@ -1,0 +1,59 @@
+=== S-93 diagnosa sertifikat gacor.net ===
+Thu Oct 22 14:30:37 WIB 2026
+--- [A] rantai sertifikat yang disajikan (SNI gacor.net) ---
+verify error:num=20:unable to get local issuer certificate
+verify error:num=21:unable to verify the first certificate
+ 0 s:/CN=gacor.net
+ 1 s:/C=US/ST=CA/L=San Jose/O=SonicWALL Inc./CN=SonicWALL Firewall DPI-SSL
+    Verify return code: 21 (unable to verify the first certificate)
+--- [B] rincian leaf ---
+subject= /CN=gacor.net
+issuer= /C=US/ST=CA/L=San Jose/O=SonicWALL Inc./CN=SonicWALL Firewall DPI-SSL
+notBefore=Sep  7 07:22:15 2026 GMT
+notAfter=Dec  6 07:22:14 2026 GMT
+--- [C] kontrol: sertifikat wecash.ai ---
+subject= /CN=wecash.ai
+issuer= /C=US/O=Google Trust Services/CN=WE1
+--- [D] ambil halaman gacor.net dengan -k ---
+   gacor.net http=403 ip=172.67.213.67 byte=9738 t=1.399530s
+--- [E] judul & tanda di halaman ---
+Binary file (standard input) matches
+   salinan: docs/evidence/gacor-net.html (    9738 byte)
+
+--- [B] tambah pasang_tls ke tools/net.py ---
++ pasang_tls ditambahkan
+   cek def pasang_tls -> True
+   cek _tls_asli = None -> True
+   cek TLS=%s -> True
++ net.py kompilasi OK
+
+--- [C] perbarui hook di app/main.py ---
+= hook lama dipotong
++ hook diperbarui; pasang_tls ada: True
++ app/main.py kompilasi OK
+
+--- [D] nyalakan ulang: HESTIA_DOH=1 HESTIA_TLS_RELAX=1 ---
+   /api/health http=200
+   log: layanan: http 200 
+--- [D2] bukti langsung python -> gacor.net ---
+   setelan: DoH=1 TLS=1 url=https://cloudflare-dns.com/dns-query cache=0
+   GAGAL: HTTPError HTTP Error 403: Forbidden
+
+--- [E] uji lewat layanan Hestia ---
+   jalur recon: ['/api/targets/{tid}/recon', '/api/recon'] [['post', 'get'], ['get']]
+   body target: {"domain": "gacor.net", "tipe": "uji-s93", "status": "uji-s93", "owner": "uji-s93", "tags": "uji-s93", "catatan": "uji-s93"}
+   POST /api/targets -> 400 {"detail":"status tidak dikenal: uji-s93"}
+   id gacor.net: None
+
+--- [F] gate: tambah cek sintaks tools/*.py ---
+= gate sudah memeriksa tools/*.py
+--- [G] uji negatif: rusakkan net.py, gate harus menolak ---
+  GAGAL kompilasi: tools/net.py
+--- [H] gate normal ---
+== gate: layanan dashboard (fail-closed) ==
+  /            http 200
+  /api/health  http 200
+  layanan HIDUP
+
+GATE: LULUS
+

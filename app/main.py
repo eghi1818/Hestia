@@ -797,13 +797,14 @@ def api_clientlog_bersih(simpan: int = 300):
     return {"ok": True, "sebelum": tot, "sesudah": sisa}
 
 
-# --- DoH opsional (HESTIA_DOH=1): kebal DNS lokal yang basi ---
+# --- DoH + TLS santai opsional (HESTIA_DOH=1 / HESTIA_TLS_RELAX=1) ---
 try:
     import os as _os, sys as _sys
-    if _os.environ.get("HESTIA_DOH") == "1":
+    if _os.environ.get("HESTIA_DOH") == "1" or _os.environ.get("HESTIA_TLS_RELAX") == "1":
         _sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))), "tools"))
         import net as _net
         _net.pasang()
-        print("[net] DoH aktif:", _net.info())
+        _net.pasang_tls()
+        print("[net]", _net.info())
 except Exception as _e:
-    print("[net] DoH dilewati:", _e)
+    print("[net] dilewati:", _e)

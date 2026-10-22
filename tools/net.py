@@ -14,6 +14,7 @@ DOH_URL = "https://cloudflare-dns.com/dns-query"
 _asli = socket.getaddrinfo
 _sedang = False
 _peta = {}
+_tls_asli = None
 
 
 def _ip(host):
@@ -54,5 +55,26 @@ def pasang():
     return DOH
 
 
+def pasang_tls():
+    """HESTIA_TLS_RELAX=1: terima sertifikat tak terpercaya (self-signed/intersepsi)."""
+    global _tls_asli
+    if os.environ.get("HESTIA_TLS_RELAX") != "1":
+        return False
+    if _tls_asli is not None:
+        return True
+    import ssl
+    _tls_asli = ssl.create_default_context
+
+    def _ctx(*a, **k):
+        c = _tls_asli(*a, **k)
+        c.check_hostname = False
+        c.verify_mode = ssl.CERT_NONE
+        return c
+
+    ssl.create_default_context = _ctx
+    ssl._create_default_https_context = _ctx
+    return True
+
+
 def info():
-    return "DoH=%s url=%s cache=%d" % ("1" if DOH else "0", DOH_URL, len(_peta))
+    return "DoH=%s TLS=%s url=%s cache=%d" % ("1" if DOH else "0", "1" if _tls_asli else "0", DOH_URL, len(_peta))
