@@ -1,0 +1,18 @@
+=== S-110 sel Teknologi di baris target ===
+Thu Oct 22 16:12:27 WIB 2026
+- sel nyasar dibuang dari dashboard/live.js
+   isi lama: "+ '<td>' + (r.teknologi || '-') + '</td>'"
+template baris: dashboard/audit.js
+   panjang segmen: 416
+   segmen: '"\n            + \'<td style="\' + sel + \'">\' + (r2.diperiksa_at || "") + "</td>"\n            + \'<td style="\' + sel + \'">\' + r2.domain + "</td>"\n            + \'<td style="\' + sel + \'">HTTP</td>\'\n            + \'<td style="\' + sel + \'">\' + r2.status + (r2.http_status ? " " + r2.http_status : "") + "</td>"\n            + \'<td style="\' + sel + \'">\' + (r2.latensi_ms ? r2.latensi_ms + " ms" : "—") + "</td>"\n            + "'
++ sel disisipkan | var: r2
+   sesudah: '"\n            + \'<td style="\' + sel + \'">\' + (r2.diperiksa_at || "") + "</td>"\n            + \'<td style="\' + sel + \'">\' + r2.domain + "</td>"\n            + \'<td style="\' + sel + \'">HTTP</td>\'\n            + \'<td style="\' + sel + \'">\' + r2.status + (r2.http_status ? " " + r2.http_status : "") + "</td>+ \'<td>\' + (r2.teknologi || \'-\') + \'</td>\'"\n            + \'<td style="\' + sel + \'">\' + (r2.latensi_ms ? r2.latensi_ms + " ms" : "—") + "</td>"\n            + "'
+   th=9 ['', 'Domain ⇅', 'Tipe', 'Status ⇅', 'Teknologi', 'Skor otoritas ⇅', 'Halaman tamu', 'Terakhir dicek', 'Aksi']
+   th=8 ['Domain', 'Akhiran', 'Jenis', 'Status', 'HTTP', 'Skor', 'Penjaga', 'Aksi']
+   dashboard/live.js -> td di baris: 8 | teknologi: False
+   dashboard/index.html -> td di baris: 8 | teknologi: False
+
+  /api/health  http 200
+  layanan HIDUP
+
+GATE: LULUS
