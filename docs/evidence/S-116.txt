@@ -1,0 +1,18 @@
+=== S-116 FTPS ===
+Thu Oct 22 16:22:40 WIB 2026
+--- [A0] varian sambungan mana yang diterima ---
+   opt=--ssl-reqd       -> curl: (28) Timeout was reached 
+   opt=--ftp-ssl-reqd   -> curl: (28) Timeout was reached 
+   opt=polos            -> curl: (28) Timeout was reached 
+--- [A] daftar akar ---
+curl: (28) Timeout was reached
+--- [B] cari docroot ---
+   docroot terpilih: TIDAK ADA
+--- [C] isi docroot ---
+--- [D] uji tulis ---
+--- [F] jejak bukti di halaman live ---
+
+  /api/health  http 200
+  layanan HIDUP
+
+GATE: LULUS
