@@ -399,7 +399,7 @@ tbody tr:last-child td{border-bottom:none}
             </select>
             <div style="margin-left:auto;display:flex;gap:8px">
               <button class="btn btn-ghost btn-sm" onclick="bulkRecon()">🔍 Recon terpilih</button>
-              <button class="btn btn-ghost btn-sm" onclick="toast('Ekspor CSV dibuat (demo)')">⬇ Ekspor</button>
+              <button class="btn btn-ghost btn-sm" onclick="toast('Ekspor CSV dibuat (belum tersambung)')">⬇ Ekspor</button>
             </div>
           </div>
           <div class="tbl-wrap">
@@ -603,7 +603,7 @@ tbody tr:last-child td{border-bottom:none}
             <div class="page-title">Konten &amp; Kata Kunci</div>
             <div class="page-desc">Halaman tamu per target beserta kata kunci sasaran dan status indeks (FR-21, FR-22).</div>
           </div>
-          <div class="actions"><button class="btn btn-primary" onclick="toast('Editor halaman dibuka (demo)')">+ Halaman baru</button></div>
+          <div class="actions"><button class="btn btn-primary" onclick="toast('Editor halaman dibuka (belum tersambung)')">+ Halaman baru</button></div>
         </div>
         <div class="card">
           <div class="filterbar">
@@ -625,8 +625,8 @@ tbody tr:last-child td{border-bottom:none}
             <div class="page-desc">Cek berkala status HTTP, latensi, dan perubahan berkas kunci. Anomali memicu alert sesuai severity (FR-14 – FR-16).</div>
           </div>
           <div class="actions">
-            <button class="btn btn-ghost" onclick="toast('Kanal notifikasi: Email + Slack (demo)')">⚙ Kanal alert</button>
-            <button class="btn btn-primary" onclick="toast('Pemindaian manual dimulai (demo)')">▶ Pindai sekarang</button>
+            <button class="btn btn-ghost" onclick="toast('Kanal notifikasi: Email + Slack (belum tersambung)')">⚙ Kanal alert</button>
+            <button class="btn btn-primary" onclick="toast('Pemindaian manual dimulai (belum tersambung)')">▶ Pindai sekarang</button>
           </div>
         </div>
         <div class="grid two-col">
@@ -655,7 +655,7 @@ tbody tr:last-child td{border-bottom:none}
             <div class="page-title">Manajemen Backlink</div>
             <div class="page-desc">Node backlink berjenjang (tier 1/2/3) dengan anchor dan sumber (FR-23).</div>
           </div>
-          <div class="actions"><button class="btn btn-primary" onclick="toast('Form node backlink dibuka (demo)')">+ Node baru</button></div>
+          <div class="actions"><button class="btn btn-primary" onclick="toast('Form node backlink dibuka (belum tersambung)')">+ Node baru</button></div>
         </div>
         <div class="card">
           <div class="tbl-wrap"><table>
@@ -673,8 +673,8 @@ tbody tr:last-child td{border-bottom:none}
             <div class="page-desc">Ringkasan metrik operasional dan hasil (bagian 17 PRD). Ekspor tersedia dalam CSV dan PDF.</div>
           </div>
           <div class="actions">
-            <button class="btn btn-ghost" onclick="toast('Ekspor CSV dibuat (demo)')">⬇ CSV</button>
-            <button class="btn btn-ghost" onclick="toast('Ekspor PDF dibuat (demo)')">⬇ PDF</button>
+            <button class="btn btn-ghost" onclick="toast('Ekspor CSV dibuat (belum tersambung)')">⬇ CSV</button>
+            <button class="btn btn-ghost" onclick="toast('Ekspor PDF dibuat (belum tersambung)')">⬇ PDF</button>
           </div>
         </div>
         <div class="grid kpis">
@@ -696,7 +696,7 @@ tbody tr:last-child td{border-bottom:none}
             <div class="page-title">Audit Log</div>
             <div class="page-desc">Semua aksi tulis tercatat, tidak dapat diubah (FR-25, SEC-04).</div>
           </div>
-          <div class="actions"><button class="btn btn-ghost" onclick="toast('Filter lanjutan (demo)')">Filter lanjutan</button></div>
+          <div class="actions"><button class="btn btn-ghost" onclick="toast('Filter lanjutan (belum tersambung)')">Filter lanjutan</button></div>
         </div>
         <div class="card">
           <div class="tbl-wrap"><table>
@@ -716,7 +716,7 @@ tbody tr:last-child td{border-bottom:none}
         </div>
         <div class="grid two-col">
           <div class="card">
-            <div class="card-head"><div class="card-title">Tim &amp; peran (RBAC)</div><div class="right"><button class="btn btn-primary btn-sm" onclick="toast('Undang anggota (demo)')">+ Undang</button></div></div>
+            <div class="card-head"><div class="card-title">Tim &amp; peran (RBAC)</div><div class="right"><button class="btn btn-primary btn-sm" onclick="toast('Undang anggota (belum tersambung)')">+ Undang</button></div></div>
             <div class="tbl-wrap"><table>
               <thead><tr><th>Anggota</th><th>Peran</th><th>MFA</th><th>Login terakhir</th></tr></thead>
               <tbody>
@@ -1013,14 +1013,14 @@ function credRow(c,prefix){
     <td><div class="secret-row"><span class="secret-txt" id="s-${prefix}">${mask(c.s)}</span>
       <button class="act-btn" title="Reveal" onclick="reveal('s-${prefix}','${c.s.replace(/'/g,"\\'")}',this)">👁</button></div></td>
     <td style="color:${c.near?"var(--yellow)":"var(--muted)"}">${c.v}${c.near?' <span class="badge-st st-analisis">rotasi</span>':""}</td>
-    <td><div class="acts"><button class="act-btn" title="Salin" onclick="toast('Kredensial disalin ke clipboard')">📋</button><button class="act-btn" title="Rotasi" onclick="toast('Rotasi dijadwalkan (demo)')">🔄</button><button class="act-btn" title="Hapus" onclick="toast('Konfirmasi hapus kredensial')">🗑</button></div></td>
+    <td><div class="acts"><button class="act-btn" title="Salin" onclick="toast('Kredensial disalin ke clipboard')">📋</button><button class="act-btn" title="Rotasi" onclick="toast('Rotasi dijadwalkan (belum tersambung)')">🔄</button><button class="act-btn" title="Hapus" onclick="toast('Konfirmasi hapus kredensial')">🗑</button></div></td>
   </tr>`;
 }
 function reveal(id,real,btn){const el=$(id);const hidden=el.textContent.includes("•");el.textContent=hidden?real:mask(real);btn.textContent=hidden?"🙈":"👁"}
 function alertItemHTML(a){return `<div class="alert-item">
     <div class="alert-ico" style="background:var(--${a.sev==="kritis"?"red":a.sev==="warning"?"yellow":"blue"}-bg)">${a.ico}</div>
     <div><div class="a-title">${a.t}</div><div class="a-meta">${a.m}</div></div>
-    <div class="a-act"><button class="btn btn-ghost btn-sm" onclick="toast('Detail alert dibuka (demo)')">Lihat</button></div>
+    <div class="a-act"><button class="btn btn-ghost btn-sm" onclick="toast('Detail alert dibuka (belum tersambung)')">Lihat</button></div>
   </div>`}
 
 function renderCreds(){$("credBody").innerHTML=creds.map((c,i)=>credRow(c,"c"+i)).join("")}
@@ -1039,7 +1039,7 @@ function renderDeploy(){
     <td style="color:var(--muted);white-space:nowrap">${d.w}</td>
     <td class="dom">${d.t}</td><td>${d.p}</td><td>${d.tpl}</td>
     <td><span class="badge-st ${d.st==="Sukses"?"st-aktif":d.st==="Berjalan"?"st-analisis":"st-rusak"}">${d.st}</span></td>
-    <td><div class="acts"><button class="act-btn" title="Log" onclick="toast('Log deployment dibuka (demo)')">🧾</button><button class="act-btn" title="Rollback" onclick="toast('Rollback 1 klik — kondisi sebelumnya dipulihkan (demo)')">↩</button></div></td>
+    <td><div class="acts"><button class="act-btn" title="Log" onclick="toast('Log deployment dibuka (belum tersambung)')">🧾</button><button class="act-btn" title="Rollback" onclick="toast('Rollback 1 klik — kondisi sebelumnya dipulihkan (belum tersambung)')">↩</button></div></td>
   </tr>`).join("");
 }
 function renderKonten(){$("kontenBody").innerHTML=konten.map(k=>`<tr><td class="dom">${k.u}</td><td>${k.t}</td><td>${k.k}</td><td>${k.tpl}</td><td><span class="badge-st ${k.idx==="Terindeks"?"st-aktif":k.idx==="Gagal"?"st-rusak":"st-analisis"}">${k.idx}</span></td><td style="font-weight:650">${k.pos}</td></tr>`).join("")}
@@ -1081,13 +1081,13 @@ function addTarget(){
 function addCred(){
   if(!$("cSecret").value){toast("Secret tidak boleh kosong");return}
   creds.unshift({t:$("cTarget").value,n:$("cName").value||"akun-baru",ty:$("cType").value,lv:$("cLevel").value,s:$("cSecret").value,v:$("cValid").value||"2027-01-01",near:false});
-  $("cSecret").value="";closeModal("modalCred");renderCreds();toast("Kredensial tersimpan terenkripsi (demo)");
+  $("cSecret").value="";closeModal("modalCred");renderCreds();toast("Kredensial tersimpan terenkripsi (belum tersambung)");
 }
 function doDeploy(){
   const t=$("dTarget").value,p=$("dPath").value.trim();
   if(!p.startsWith("/")){toast("Path harus dimulai dengan / — mis. /blog/artikel/");return}
   deployments.unshift({w:"baru saja",t:t,p:p,tpl:$("dTpl").value,st:"Berjalan"});
-  closeModal("modalDeploy");renderDeploy();toast("Deployment dimulai — log tampil real-time (demo)");
+  closeModal("modalDeploy");renderDeploy();toast("Deployment dimulai — log tampil real-time (belum tersambung)");
 }
 
 /* ================= CHARTS (inline SVG) ================= */
@@ -1126,12 +1126,12 @@ function drawLine(){
 /* ================= INIT ================= */
 renderTargets();renderCreds();renderAlerts();renderLatency();renderChecks();renderDeploy();renderKonten();renderBacklinks();renderAudit();renderOps();renderRecon();drawBar();drawLine();
 </script>
-<script src="/live.js?v=f770127-1792643056"></script>
-<script src="/ikhtisar.js?v=f770127-1792643056"></script>
-<script src="/tautan.js?v=f770127-1792643056"></script>
-<script src="/audit.js?v=f770127-1792643056"></script>
-<script src="/konten.js?v=f770127-1792643056"></script>
-<script src="/detail.js?v=f770127-1792643056"></script>
-<script src="/recon.js?v=f770127-1792643056"></script>
+<script src="/live.js?v=2c25b95-1792643191"></script>
+<script src="/ikhtisar.js?v=2c25b95-1792643191"></script>
+<script src="/tautan.js?v=2c25b95-1792643191"></script>
+<script src="/audit.js?v=2c25b95-1792643191"></script>
+<script src="/konten.js?v=2c25b95-1792643191"></script>
+<script src="/detail.js?v=2c25b95-1792643191"></script>
+<script src="/recon.js?v=2c25b95-1792643191"></script>
 </body>
 </html>
