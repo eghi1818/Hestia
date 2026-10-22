@@ -552,6 +552,8 @@ _TABEL = {
                    ["target", "nama", "tipe", "level", "secret", "berlaku_sd", "created_at"]),
     "deployment": ("waktu TEXT, target TEXT, path TEXT, template TEXT, status TEXT",
                    ["waktu", "target", "path", "template", "status"]),
+    "anggota": ("nama TEXT, peran TEXT, ditambah TEXT",
+                ["nama", "peran", "ditambah"]),
     "konten": ("url TEXT, target TEXT, kata_kunci TEXT, template TEXT, "
                "status_indeks TEXT, posisi REAL",
                ["url", "target", "kata_kunci", "template", "status_indeks", "posisi"]),
@@ -703,3 +705,74 @@ def api_kandidat_csv(suffix: Optional[str] = None, status: Optional[str] = None,
 def ekspor_js():
     from fastapi.responses import FileResponse
     return FileResponse("dashboard/ekspor.js", media_type="application/javascript")
+
+
+@app.get("/api/anggota")
+def api_anggota():
+    return _daftar("anggota")
+
+
+@app.post("/api/anggota")
+def api_anggota_tambah(body: dict = Body(...)):
+    return _tambah("anggota", body)
+
+
+@app.delete("/api/anggota/{tid}")
+def api_anggota_hapus(tid: int):
+    return _hapus("anggota", tid)
+
+
+@app.post("/api/tautan")
+def api_tautan_tambah(body: dict = Body(...)):
+    import datetime as _d
+    c = _db_kandidat()
+    c.execute("CREATE TABLE IF NOT EXISTS tautan(dari TEXT, ke TEXT, dibuat TEXT,"
+              " PRIMARY KEY(dari,ke))")
+    c.execute("INSERT OR IGNORE INTO tautan(dari,ke,dibuat) VALUES(?,?,?)",
+              (body.get("dari"), body.get("ke"), _d.date.today().isoformat()))
+    c.commit()
+    c.close()
+    return {"ok": True}
+
+
+@app.post("/api/kredensial/rotasi")
+def api_kredensial_rotasi():
+    import datetime as _d
+    baru = (_d.date.today() + _d.timedelta(days=365)).isoformat()
+    c = _siap_tabel()
+    cur = c.execute("UPDATE kredensial SET berlaku_sd=?", (baru,))
+    c.commit()
+    c.close()
+    return {"ok": True, "diubah": cur.rowcount, "berlaku_sd": baru}
+
+
+def _siap_setelan(c):
+    c.execute("CREATE TABLE IF NOT EXISTS setelan(id INTEGER PRIMARY KEY AUTOINCREMENT,"
+              " kunci TEXT, nilai TEXT)")
+
+
+@app.get("/api/setelan")
+def api_setelan():
+    c = _siap_tabel()
+    _siap_setelan(c)
+    rows = [dict(r) for r in c.execute("SELECT kunci,nilai FROM setelan")]
+    c.close()
+    return {"total": len(rows), "item": rows}
+
+
+@app.post("/api/setelan")
+def api_setelan_simpan(body: dict = Body(...)):
+    c = _siap_tabel()
+    _siap_setelan(c)
+    c.execute("DELETE FROM setelan WHERE kunci=?", (body.get("kunci"),))
+    c.execute("INSERT INTO setelan(kunci,nilai) VALUES(?,?)",
+              (body.get("kunci"), body.get("nilai")))
+    c.commit()
+    c.close()
+    return {"ok": True}
+
+
+@app.get("/aksi.js")
+def aksi_js():
+    from fastapi.responses import FileResponse
+    return FileResponse("dashboard/aksi.js", media_type="application/javascript")
