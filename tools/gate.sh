@@ -31,7 +31,7 @@ echo
 echo "== gate: integrasi skrip dashboard dengan index.html =="
 if [ -f dashboard/live.js ] && [ -f dashboard/index.html ] ; then
   # tangkap rujukan literal, baik lewat getElementById("x") maupun val("x")
-  ids=$(grep -oE '(getElementById|val)\("[A-Za-z0-9_-]+"\)' dashboard/*.js 2>/dev/null \
+  ids=$(grep -oE '(getElementById|val|nilai|\$)\("[A-Za-z0-9_-]+"\)' dashboard/*.js 2>/dev/null \
         | sed 's/.*("//; s/")$//' | sort -u)
   if [ -z "$ids" ] ; then
     echo "  PERINGATAN tidak ada rujukan elemen yang terdeteksi" ; fail=1
