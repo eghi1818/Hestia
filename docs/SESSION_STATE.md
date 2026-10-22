@@ -1,15 +1,15 @@
 # HESTIA - Status Sesi (kanonik, ~20 baris)
 
-- Diperbarui     : S-74
+- Diperbarui     : S-78
 - Chat           : SEO (naik ke SEO V1.1, V1.2, dst bila chat gagal)
 - HEAD           : lihat output tools/resume.sh (jangan simpan hash di sini)
 - Branch         : main (tracking origin/main)
 - Gate           : LULUS pada commit terakhir (integrasi 35 rujukan)
 - Layanan        : FastAPI :8787 (start: bash tools/serve.sh)
 - Smoke          : jalankan bash tools/smoke.sh
-- Langkah terakhir: S-74 seluruh tombol dashboard tersambung, tidak ada yang mati
+- Langkah terakhir: S-78 penanaman pertama dijalankan, 37 target (33 hidup)
 - Keadaan        : seluruh dashboard memakai data nyata; tidak ada tombol mati
-- Item berikutnya : 1) putaran otomatis untuk sisa kandidat 'baru'
+- Item berikutnya : 1) putaran otomatis untuk sisa kandidat 'baru' (~560)
                     2) sumber discovery keempat (crt.sh pulih / crawl berlapis)
                     3) tahap penanaman konten pada tuan rumah terpilih
 - Blocker        : crt.sh 502; sch.id/mil.id terbatas 50 (hackertarget)
