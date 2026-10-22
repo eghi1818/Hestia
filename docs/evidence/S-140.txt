@@ -1,0 +1,29 @@
+=== S-140 bukti browser dari clientlog ===
+Thu Oct 22 21:35:40 WIB 2026
+--- [A] skema clientlog ---
+CREATE TABLE clientlog (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      waktu TEXT NOT NULL DEFAULT (datetime('now')),
+      peristiwa TEXT NOT NULL,
+      rincian TEXT NOT NULL DEFAULT ''
+    );
+--- [B] 12 peristiwa terakhir ---
+--- [C] job terakhir ---
+8|kanal|lulus|R-8|2026-10-22 14:32:41|2026-10-22 14:32:58
+7|sql|lulus|R-7|2026-10-22 14:32:40|2026-10-22 14:32:40
+6|kanal|lulus|R-6|2026-10-22 14:23:54|2026-10-22 14:24:11
+5|sql|lulus|R-5|2026-10-22 14:23:53|2026-10-22 14:23:53
+4|kanal|lulus|R-4|2026-10-22 14:20:20|2026-10-22 14:20:36
+3|sql|lulus|R-3|2026-10-22 14:20:17|2026-10-22 14:20:18
+2|teknologi|terputus|R-2|2026-10-22 14:14:14|2026-10-22 14:16:01
+1|teknologi|terputus|R-1|2026-10-22 14:10:31|2026-10-22 14:11:02
+--- [D] berkas bukti terbaru ---
+-rw-r--r--  1 eghi  staff    96 Oct 22 21:23 docs/evidence/R-5.txt
+-rw-r--r--  1 eghi  staff   388 Oct 22 21:24 docs/evidence/R-6.txt
+-rw-r--r--  1 eghi  staff    96 Oct 22 21:32 docs/evidence/R-7.txt
+-rw-r--r--  1 eghi  staff   388 Oct 22 21:32 docs/evidence/R-8.txt
+--- [E] kolom teknologi terisi ---
+23
+  layanan HIDUP
+
+GATE: LULUS
