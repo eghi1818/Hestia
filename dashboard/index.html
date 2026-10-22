@@ -961,7 +961,7 @@ function renderTargets(){
      <td><input type="checkbox" class="row-chk"></td>
      <td><span class="dom" style="cursor:pointer" onclick="showDetail(${t.id})">${t.domain}<span class="sub">${t.sub}</span></span></td>
      <td>${t.type}</td>
-     <td><span class="badge-st ${stClass(t.status)}">${t.status}</span></td>
+     <td><span class="badge-st ${stClass(t.status)}">${t.status}</span></td><td>${t.teknologi || '-'}</td>
      <td><div class="score"><div class="score-bar"><div class="score-fill" style="width:${t.score}%;background:${scoreColor(t.score)}"></div></div><span style="font-size:12.5px;font-weight:650">${t.score||"—"}</span></div></td>
      <td>${t.pages}</td>
      <td style="color:var(--muted)">${t.checked}</td>
@@ -1128,14 +1128,14 @@ function drawLine(){
 /* ================= INIT ================= */
 renderTargets();renderCreds();renderAlerts();renderLatency();renderChecks();renderDeploy();renderKonten();renderBacklinks();renderAudit();renderOps();renderRecon();drawBar();drawLine();
 </script>
-<script src="/live.js?v=cb4b501-1792660522"></script>
-<script src="/ikhtisar.js?v=cb4b501-1792660522"></script>
-<script src="/tautan.js?v=cb4b501-1792660522"></script>
-<script src="/audit.js?v=cb4b501-1792660522"></script>
-<script src="/konten.js?v=cb4b501-1792660522"></script>
-<script src="/detail.js?v=cb4b501-1792660522"></script>
-<script src="/recon.js?v=cb4b501-1792660522"></script>
-<script src="/ekspor.js?v=cb4b501-1792660522"></script>
-<script src="/aksi.js?v=cb4b501-1792660522"></script>
+<script src="/live.js?v=1284b7a-1792660658"></script>
+<script src="/ikhtisar.js?v=1284b7a-1792660658"></script>
+<script src="/tautan.js?v=1284b7a-1792660658"></script>
+<script src="/audit.js?v=1284b7a-1792660658"></script>
+<script src="/konten.js?v=1284b7a-1792660658"></script>
+<script src="/detail.js?v=1284b7a-1792660658"></script>
+<script src="/recon.js?v=1284b7a-1792660658"></script>
+<script src="/ekspor.js?v=1284b7a-1792660658"></script>
+<script src="/aksi.js?v=1284b7a-1792660658"></script>
 </body>
 </html>

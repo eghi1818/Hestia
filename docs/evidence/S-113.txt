@@ -1,0 +1,35 @@
+=== S-113 ===
+Thu Oct 22 16:17:26 WIB 2026
++ sel disisipkan di index.html pos 60057
+   td sekarang: 9 | teknologi: True
+   segmen: '\n     <td><input type="checkbox" class="row-chk"></td>\n     <td><span class="dom" style="cursor:pointer" onclick="showDetail(${t.id})">${t.domain}<span class="sub">${t.sub}</span></span></td>\n     <td>${t.type}</td>\n     <td><span class="badge-st ${stClass(t.status)}">${t.status}</span></td><td>${t.teknologi || \'-\'}</td>\n     <td><div class="score"><div class="score-bar"><div class="score-fill" style="width:${t.score}%;background:${scoreColor(t.score)}"></div></div><span style="font-size:12.5px;font-weight:650">${t.score||"—"}</span></div></td>\n     <td>${t.pages}</td>\n     <td style="color:var(--muted)">${t.chec'
+--- [A] sambung FTP ---
+   banner: 220---------- Welcome to Pure-FTPd [privsep] [TLS] ----------
+220-You are user number 1 of 50 allowed.
+220-Local time is now 16:17. Server port: 21.
+220-IPv6 connections are also welcome on this server.
+220 You will be disconnected after 15 minutes of inactivity.
+Traceback (most recent call last):
+  File "<stdin>", line 30, in <module>
+  File "<stdin>", line 14, in coba_login
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ftplib.py", line 412, in login
+    resp = self.sendcmd('USER ' + user)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ftplib.py", line 281, in sendcmd
+    return self.getresp()
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ftplib.py", line 252, in getresp
+    raise error_temp(resp)
+ftplib.error_temp: 421 Unable to set up secure anonymous FTP
+Traceback (most recent call last):
+  File "<stdin>", line 17, in <module>
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ftplib.py", line 412, in login
+    resp = self.sendcmd('USER ' + user)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ftplib.py", line 281, in sendcmd
+    return self.getresp()
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/ftplib.py", line 252, in getresp
+    raise error_temp(resp)
+ftplib.error_temp: 421 Unable to set up secure anonymous FTP
+
+  /api/health  http 200
+  layanan HIDUP
+
+GATE: LULUS
