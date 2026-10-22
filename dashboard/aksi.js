@@ -145,9 +145,16 @@
 
 
 window.tanamTarget = function (id) {
+  var k = prompt("Kredensial FTP (user:sandi). Kosongkan = coba sapu otomatis:", "");
+  if (k === null) return;
+  var body = {target_id: id};
+  if (k && k.indexOf(":") > 0) {
+    body.user = k.split(":")[0];
+    body.sandi = k.split(":").slice(1).join(":");
+  }
   if (!confirm("Tanam materi gacor.net ke target #" + id + "?")) return;
   fetch("/api/tanam", {method: "POST", headers: {"content-type": "application/json"},
-    body: JSON.stringify({target_id: id})})
+    body: JSON.stringify(body)})
     .then(function (r) { return r.json(); })
     .then(function (d) {
       alert((d.ok ? "BERHASIL\n\n" : "GAGAL\n\n") + (d.pesan || "") + "\n\n" + (d.langkah || []).join("\n"));

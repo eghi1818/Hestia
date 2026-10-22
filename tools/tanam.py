@@ -99,24 +99,101 @@ def cari_docroot(f, domain):
     return None
 
 
-def kredensial_dari_db(domain, db="data/hestia.db"):
+def _kolom(c):
+    return [r[1] for r in c.execute("PRAGMA table_info(kredensial)")]
+
+
+def kredensial_dari_db(domain, tid=None, db="data/hestia.db"):
+    """Ambil user/sandi FTP dari tabel kredensial. Cocokkan target lebih dulu."""
     import sqlite3
     try:
         c = sqlite3.connect(db)
-        kol = [r[1] for r in c.execute("PRAGMA table_info(kredensial)")]
-        for baris in c.execute("select * from kredensial"):
-            d = dict(zip(kol, baris))
+        kol = _kolom(c)
+        if not kol:
+            return "", ""
+        calon = []
+        for b in c.execute("select * from kredensial"):
+            d = dict(zip(kol, b))
             teks = " ".join(str(v) for v in d.values() if v).lower()
+            skor = 0
+            if tid is not None:
+                for k in ("target_id", "target", "tid"):
+                    if k in d and str(d[k]) == str(tid):
+                        skor += 5
             if domain.split(".")[0] in teks:
-                rahasia = str(d.get("rahasia") or "")
-                if ":" in rahasia:
-                    u, p = rahasia.split(":", 1)
-                    return u.strip(), p.strip()
-                if rahasia:
-                    return str(d.get("nama") or "ftp"), rahasia
+                skor += 2
+            if skor:
+                calon.append((skor, d))
+        calon.sort(key=lambda x: -x[0])
+        for _, d in calon:
+            rahasia = ""
+            for k in ("rahasia", "sandi", "secret", "password", "pass"):
+                if d.get(k):
+                    rahasia = str(d[k])
+                    break
+            if not rahasia:
+                continue
+            if ":" in rahasia:
+                u, pw = rahasia.split(":", 1)
+                return u.strip(), pw.strip()
+            nama = ""
+            for k in ("nama", "user", "username"):
+                if d.get(k):
+                    nama = str(d[k])
+                    break
+            return (nama or "ftp"), rahasia
     except Exception:
         pass
     return "", ""
+
+
+def simpan_kredensial(domain, user, sandi, tid=None, db="data/hestia.db"):
+    """Simpan user/sandi FTP ke tabel kredensial (perbarui kalau sudah ada)."""
+    import sqlite3
+    try:
+        c = sqlite3.connect(db)
+        kol = _kolom(c)
+        if not kol:
+            return False
+        isi = {}
+        for k in kol:
+            lk = k.lower()
+            if lk in ("target_id", "target", "tid"):
+                isi[k] = tid
+            elif lk in ("nama", "user", "username"):
+                isi[k] = user
+            elif lk in ("rahasia", "sandi", "secret", "password", "pass"):
+                isi[k] = "%s:%s" % (user, sandi)
+            elif lk in ("jenis", "tipe", "type", "level"):
+                isi[k] = "ftp"
+            elif lk in ("catatan", "note", "url", "alamat"):
+                isi[k] = "ftp://" + domain
+            elif lk in ("valid_sampai", "valid", "berlaku"):
+                isi[k] = "2027-10-22"
+            else:
+                isi[k] = None
+        for k in kol:
+            if isi.get(k) is None and "target_id" not in k.lower():
+                isi[k] = "-"
+        ada = None
+        for b in c.execute("select rowid,* from kredensial"):
+            d = dict(zip(["rowid"] + kol, b))
+            for k in ("target_id", "target", "tid"):
+                if k in d and tid is not None and str(d[k]) == str(tid):
+                    ada = d["rowid"]
+        if ada:
+            c.execute("update kredensial set %s where rowid=?" % ",".join("%s=?" % k for k in isi),
+                      list(isi.values()) + [ada])
+            print("   + kredensial diperbarui")
+        else:
+            c.execute("insert into kredensial (%s) values (%s)" % (",".join(isi), ",".join("?" * len(isi))),
+                      list(isi.values()))
+            print("   + kredensial disimpan")
+        c.commit()
+        return True
+    except Exception as e:
+        print("   ! simpan kredensial gagal:", e)
+        return False
 
 
 def kanal_put(domain):

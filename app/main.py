@@ -837,6 +837,8 @@ def jalankan_tanam(body: dict):
         raise HTTPException(404, "target tidak ada")
     u = (body.get("user") or "").strip()
     pw = (body.get("sandi") or "").strip()
+    if u and pw:
+        tanam.simpan_kredensial(t["domain"], u, pw, tid=tid)
     if not u:
-        u, pw = tanam.kredensial_dari_db(t["domain"])
+        u, pw = tanam.kredensial_dari_db(t["domain"], tid=tid)
     return tanam.tanam(t["domain"], user=u, sandi=pw, sapu_dulu=not u)

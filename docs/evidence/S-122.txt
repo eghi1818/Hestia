@@ -1,0 +1,11 @@
+=== S-122 kredensial dari dashboard ===
+Thu Oct 22 16:45:02 WIB 2026
++ kredensial_dari_db diganti + simpan_kredensial ditambah
++ kompilasi OK
++ route: simpan kredensial bila dikirim
++ kompilasi OK
++ tombol Tanam kini meminta kredensial dan menyimpannya
+
+  layanan HIDUP
+
+GATE: LULUS
