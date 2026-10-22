@@ -1,0 +1,79 @@
+=== S-97 ===
+Thu Oct 22 14:41:17 WIB 2026
+--- [A] robots.txt ---
+# As a condition of accessing this website, you agree to abide by the following
+# content signals:
+
+# (a)  If a content-signal = yes, you may collect content for the corresponding
+#      use.
+# (b)  If a content-signal = no, you may not collect content for the
+#      corresponding use.
+# (c)  If the website operator does not include a content signal for a
+#      corresponding use, the website operator neither grants nor restricts
+#      permission via content signal with respect to the corresponding use.
+
+# The content signals and their meanings are:
+
+# search:   building a search index and providing search results (e.g., returning
+#           hyperlinks and short excerpts from your website's contents). Search does not
+#           include providing AI-generated search summaries.
+# ai-input: inputting content into one or more AI models (e.g., retrieval
+#           augmented generation, grounding, or other real-time taking of content for
+#           generative AI search answers).
+# ai-train: training or fine-tuning AI models.
+
+# ANY RESTRICTIONS EXPRESSED VIA CONTENT SIGNALS ARE EXPRESS RESERVATIONS OF
+# RIGHTS UNDER ARTICLE 4 OF THE EUROPEAN UNION DIRECTIVE 2019/790 ON COPYRIGHT
+# AND RELATED RIGHTS IN THE DIGITAL SINGLE MARKET.
+--- [B] ke mana 308 mengarah ---
+   /admin         -> http=308 tujuan=https://wecash.ai/admin/
+   /api           -> http=308 tujuan=https://wecash.ai/api/
+   /login         -> http=308 tujuan=https://wecash.ai/login/
+   /cms           -> http=308 tujuan=https://wecash.ai/cms/
+   /wp-json       -> http=308 tujuan=https://wecash.ai/wp-json/
+   /api/health    -> http=308 tujuan=https://wecash.ai/api/health/
+   /tentang       -> http=308 tujuan=https://wecash.ai/tentang/
+--- [C] peta halaman dari navbar ---
+   /                      -> http=200 byte=29357
+   /tentang               -> http=308 byte=9
+   /tentang/profile/      -> http=200 byte=29339
+   /qr                    -> http=308 byte=4
+   /masuk                 -> http=308 byte=7
+--- [D] chunk JS halaman profil ---
+/_next/static/chunks/250-aee9aa5e16d19e88.js
+/_next/static/chunks/664-8af8765c6fed5950.js
+/_next/static/chunks/769-9e1ba79a71eeac7a.js
+/_next/static/chunks/framework-2c79e2a64abdb08b.js
+/_next/static/chunks/main-81fa9cced5cdea31.js
+/_next/static/chunks/pages/_app-e75e9954a61875c4.js
+/_next/static/chunks/pages/tentang/profile-22ebe3a9749ececf.js
+/_next/static/chunks/polyfills-c67a75d1b6f99dc8.js
+/_next/static/chunks/webpack-bd65c8f53bc5b33a.js
+--- [E] jejak validator status ---
+app/main.py:65:        raise HTTPException(400, "status tidak dikenal: " + t.status)
+app/main.py:85:        raise HTTPException(400, "status tidak dikenal: " + u.status)
+app/main.py:14:STATUS_SAH = {"kandidat", "dianalisis", "aktif", "rusak", "dibersihkan", "nonaktif"}
+tools/scrape.py:22:SKOR_STATUS = {"hidup": 50, "alih": 35, "dijaga": 40}
+--- [F] status yang benar-benar ada di DB ---
+   target: ('hidup', 33)
+   target: ('kandidat', 4)
+   target: ('dijaga', 2)
+   target: ('mati', 2)
+   kandidat: ('baru', 731)
+   kandidat: ('hidup', 85)
+   kandidat: ('mati', 31)
+   kandidat: ('dijaga', 31)
+   kandidat: ('alih', 16)
+   kandidat: ('galat', 5)
+   kandidat: ('rusak', 2)
+   kandidat: ('hilang', 2)
+
+--- [G] recon gacor.net lewat Hestia ---
+   target awal: {"id": 45, "domain": "gacor.net", "tipe": "lain", "status": "kandidat", "owner": "", "tags": "", "catatan": "", "created_at": "2026-10-22 07:37:26", "updated_at": "2026-10-22 07:37:26"}
+   POST recon -> 500
+   GET recon -> 200 []
+   target sesudah: {"id": 45, "domain": "gacor.net", "tipe": "lain", "status": "kandidat", "owner": "", "tags": "", "catatan": "", "created_at": "2026-10-22 07:37:26", "updated_at": "2026-10-22 07:37:26"}
+
+  layanan HIDUP
+
+GATE: LULUS
