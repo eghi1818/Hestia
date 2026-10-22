@@ -1,0 +1,25 @@
+=== S-112 ===
+Thu Oct 22 16:15:11 WIB 2026
+--- markup tabel Target (mentah) ---
+   '<table>\n              <thead><tr>\n                <th style="width:34px"><input type="checkbox" id="chkAll" onchange="toggleAll(this)"></th>\n                <th onclick="sortTbl(\'domain\')">Domain ⇅</th>\n                <th>Tipe</th>\n                <th onclick="sortTbl(\'status\')">Status ⇅</th><th>Teknologi</th>\n                <th onclick="sortTbl(\'score\')">Skor otoritas ⇅</th>\n                <th>Halaman tamu</th>\n                <th>Terakhir dicek</th>\n                <th style="text-align:right">Aksi</th>\n              </tr></thead>\n              <tbody id="tgtBody"></tbody>\n            </t'
+   id: ['chkAll', 'tgtBody']
+   tbody: ['<tbody id="tgtBody">']
+   dashboard/audit.js     pos   2839 td=5 skor_target=0 skor_kandidat=0
+      segmen: '"\n            + \'<td style="\' + sel + \'">\' + (r2.diperiksa_at || "") + "</td>"\n            + \'<td style="\' + sel + \'">\' + r2.domain + "</td>"\n            + \'<td style="\' + sel + \'">HTTP</td>\'\n            + \'<td style="\' + sel + \'">\' + r2.status + (r2.http_status ? " " + r2.http_status : "") + "</td>"\n            + \'<td style="\' + sel + \'">\' + (r2.latensi_ms ? r2.latensi_ms + " ms" : "—") + "</td>"\n            + "'
+   dashboard/live.js      pos   7561 td=8 skor_target=0 skor_kandidat=1
+      segmen: '"\n          + \'<td style="\' + sel + \'">\' + k.domain + "</td>"\n          + \'<td style="\' + sel + \'">\' + k.suffix + "</td>"\n          + \'<td style="\' + sel + \'">\' + (k.jenis || "-") + "</td>"\n          + \'<td style="\' + sel + \'">\' + k.status + "</td>"\n          + \'<td style="\' + sel + \'">\' + (k.http_status || "-") + "</td>"\n          + \'<td style="\' + sel + \'">\' + k.skor + "</td>"\n          + \'<td style="\' + sel + \'">\' + (k.waf || "-") + "</td>"\n          + \'<td style="\' + sel + \'"><button class="btn btn-ghost btn-sm'
+   dashboard/index.html   pos  59761 td=8 skor_target=0 skor_kandidat=0
+      segmen: '\n     <td><input type="checkbox" class="row-chk"></td>\n     <td><span class="dom" style="cursor:pointer" onclick="showDetail(${t.id})">${t.domain}<span class="sub">${t.sub}</span></span></td>\n     <td>${t.type}</td>\n     <td><span class="badge-st ${stClass(t.status)}">${t.status}</span></td>\n     <td><div class="score"><div class="score-bar"><div class="score-fill" style="width:${t.score}%;background:${scoreColor(t.score)}"></div></div><span style="font-size:12.5px;font-weight:650">${t.score||"—"}</span></div></td>'
+   peringkat:
+     +0  dashboard/index.html   pos  59761 td=8
+     +0  dashboard/audit.js     pos   2839 td=5
+     -1  dashboard/live.js      pos   7561 td=8
+   ! tidak yakin
+   dashboard/audit.js     td=5 teknologi=False
+   dashboard/live.js      td=8 teknologi=False
+   dashboard/index.html   td=8 teknologi=False
+
+  /api/health  http 200
+  layanan HIDUP
+
+GATE: LULUS
