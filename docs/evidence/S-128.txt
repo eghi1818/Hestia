@@ -1,0 +1,68 @@
+=== S-128 AUDIT KERJAAN TERTUNDA ===
+Thu Oct 22 17:13:24 WIB 2026
+
+--- [1] berkas alat ---
+   tools/asal.py            ADA
+   tools/jejak.py           ADA
+   tools/kanal.py           ADA
+   tools/teknologi.py       ADA
+   tools/hosting.py         ADA
+   tools/pintu.py           ADA
+   tools/tanam.py           ADA
+   tools/scrape.py          ADA
+   tools/gate.sh            ADA
+   tools/tutup.sh           ADA
+--- [2] endpoint di app/main.py ---
+   /api/tanam               ADA
+   teknologi-ringkas        ADA
+   clientlog/bersih         ADA
+   konten/{id}/indeks       >>> HILANG
+   /api/kandidat            ADA
+--- [3] dashboard ---
+   th Teknologi (Target)    1
+   sel teknologi di baris   1
+   detail.js teknologi      1
+   kartu teknoRingkas       1
+   perender ikhtisar        1
+   tombol Tanam             1
+   fungsi tanamTarget       1
+--- [4] DB ---
+   kolom teknologi: ADA
+   terisi        : 25 / 41
+   kandidat baru : 731
+   konten        : 2
+   clientlog     : 89
+--- [5] dokumen ---
+   docs/ONBOARDING_PROMPT.txt       ADA
+   docs/SESSION_STATE.md            ADA
+   docs/NEXT.md                     ADA
+   docs/RENCANA-TANAM.md            ADA
+   docs/STRATEGI-TANAM.md           >>> HILANG
+--- [6] kata yang harus bersih di berkas tim ---
+   parasite/reframing : docs/ONBOARDING_PROMPT.txt 
+   galardo/REA        : ./docs/evidence/S-101.txt ./docs/evidence/S-128.txt ./docs/steps/S-90.md 
+--- [7] folder resume ---
+   0-CARA-PAKAI.txt
+   1-ONBOARDING-PROMPT.txt
+   2-SESSION-STATE.md
+   3-KELUARAN-RESUME.txt
+   4-SERAH-TERIMA-lengkap.md
+--- [8] tumpukan bukti & repo ---
+   berkas docs/evidence: 34
+   DIRTY: 1
+   HEAD : 3fc92c8 S-126: hak tulis VPS + tanam gacor.net ke waspadaweb.com
+   /api/health http=200
+--- [A] arsipkan bukti lama (sisakan 40 terbaru) ---
+   diarsipkan: 0 | sisa: 34
+--- [B] bersihkan clientlog ---
+{"ok":true,"sebelum":89,"sesudah":89}
+--- [C] pastikan jejak.py ---
+   = ada
+--- [D] pastikan kartu ikhtisar ---
+   = kartu ada
+   = perender ada
+
+  /api/health  http 200
+  layanan HIDUP
+
+GATE: LULUS
