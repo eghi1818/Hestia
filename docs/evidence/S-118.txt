@@ -1,0 +1,37 @@
+=== S-118 kredensial FTPS juraganit.com ===
+Thu Oct 22 16:25:32 WIB 2026
+--- [A] sapuan pasangan user/pass ---
+   --  anonymous                  hestia@example.com 'NoneType' object has no attribute 'sendall'
+   --  anonymous                  anonymous@     'NoneType' object has no attribute 'sendall'
+   --  ftp                        ftp            'NoneType' object has no attribute 'sendall'
+   --  ftp                        anonymous      'NoneType' object has no attribute 'sendall'
+   --  ftp                        ftp@juraganit.com 'NoneType' object has no attribute 'sendall'
+   --  juraganit                  juraganit      'NoneType' object has no attribute 'sendall'
+   --  juraganit                  Juraganit      'NoneType' object has no attribute 'sendall'
+   --  juraganit                  juraganit123   'NoneType' object has no attribute 'sendall'
+   --  juraganit@juraganit.com    juraganit      'NoneType' object has no attribute 'sendall'
+   --  juragan                    juragan        'NoneType' object has no attribute 'sendall'
+   --  admin                      admin          'NoneType' object has no attribute 'sendall'
+   --  admin                      123456         'NoneType' object has no attribute 'sendall'
+   --  user                       user           'NoneType' object has no attribute 'sendall'
+   --  www                        www            'NoneType' object has no attribute 'sendall'
+   --  webmaster                  webmaster      'NoneType' object has no attribute 'sendall'
+--- [B] sapuan porta panel ---
+   porta 2082   -> -
+   porta 2083   -> -
+   porta 2086   -> -
+   porta 2087   -> -
+   porta 2095   -> -
+   porta 2096   -> -
+   porta 2222   -> -
+   porta 2077   -> -
+   porta 2078   -> -
+   porta 8443   -> -
+   porta 8080   -> BUKA | (tanpa spanduk)
+   porta 10000  -> -
+kredensial dipakai: anonymous
+login gagal: 'NoneType' object has no attribute 'sendall'
+
+  layanan HIDUP
+
+GATE: LULUS
