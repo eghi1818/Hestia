@@ -1,0 +1,75 @@
+=== S-125 diagnosa VPS ===
+Thu Oct 22 17:03:44 WIB 2026
+--- [A] berkas kunci ---
+-rw-------@ 1 eghi  staff  432 Oct  2 18:49 /Users/eghi/.ssh/wesearch_vps_key
+   bisa dibaca tanpa sandi: YA
+   sidik jari: 256 SHA256:vLH7lnDorbHBFAKhRcB7eZg68n3SOyFmC1Mi3xHn5Wk eghi@Eghis-MacBook-Pro-2.local (ED25519)
+   --- ssh-agent ---
+The agent has no identities.
+--- [B] porta 10053 hidup? ---
+   BUKA
+--- [C] VPS ini melayani waspadaweb.com? ---
+   http=404 byte=19
+404 page not found
+
+--- [D] SSH verbose (root) - cari titik gagal ---
+debug1: SSH2_MSG_NEWKEYS sent
+debug1: Sending SSH2_MSG_EXT_INFO
+debug1: expecting SSH2_MSG_NEWKEYS
+debug1: ssh_packet_read_poll2: resetting read seqnr 3
+debug1: SSH2_MSG_NEWKEYS received
+debug1: rekey in after 4294967296 blocks
+debug1: SSH2_MSG_EXT_INFO received
+debug1: kex_ext_info_client_parse: server-sig-algs=<ssh-ed25519,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ssh-ed25519@openssh.com,sk-ecdsa-sha2-nistp256@openssh.com,rsa-sha2-512,rsa-sha2-256>
+debug1: kex_ext_info_check_ver: publickey-hostbound@openssh.com=<0>
+debug1: kex_ext_info_check_ver: ping@openssh.com=<0>
+debug1: SSH2_MSG_SERVICE_ACCEPT received
+debug1: SSH2_MSG_EXT_INFO received
+debug1: kex_ext_info_client_parse: server-sig-algs=<ssh-ed25519,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ssh-ed25519@openssh.com,sk-ecdsa-sha2-nistp256@openssh.com,rsa-sha2-512,rsa-sha2-256>
+debug1: Authentications that can continue: publickey,password
+debug1: Next authentication method: publickey
+debug1: get_agent_identities: bound agent to hostkey
+debug1: get_agent_identities: ssh_fetch_identitylist: agent contains no identities
+debug1: Will attempt key: /Users/eghi/.ssh/wesearch_vps_key ED25519 SHA256:vLH7lnDorbHBFAKhRcB7eZg68n3SOyFmC1Mi3xHn5Wk explicit
+debug1: Offering public key: /Users/eghi/.ssh/wesearch_vps_key ED25519 SHA256:vLH7lnDorbHBFAKhRcB7eZg68n3SOyFmC1Mi3xHn5Wk explicit
+debug1: Authentications that can continue: publickey,password
+debug1: No more authentication methods to try.
+root@93.127.133.160: Permission denied (publickey,password).
+--- [E] coba semua user ---
+   eghi       -> eghi@93.127.133.160: Permission denied (publickey,password). 
+   root       -> root@93.127.133.160: Permission denied (publickey,password). 
+   ubuntu     -> ubuntu@93.127.133.160: Permission denied (publickey,password). 
+   debian     -> debian@93.127.133.160: Permission denied (publickey,password). 
+   admin      -> admin@93.127.133.160: Permission denied (publickey,password). 
+   wesearch   -> wesearch vps-sedp 
+--- [Z] layanan Hestia ---
+   /api/health http=200
+user SSH terpilih: wesearch
+--- [F] recon server ---
+Linux 6.8.0-36-generic
+
+--- /var/www ---
+html
+waspadaweb
+--- web server ---
+/etc/nginx/conf.d:
+
+/etc/nginx/sites-enabled:
+default
+waspadaweb.com
+--- yang menyebut waspadaweb ---
+/etc/nginx/sites-available/waspadaweb.com
+--- [G] tanam ---
+docroot: /var/www/waspadaweb
+berkas: /var/www/waspadaweb/index.html (185 byte)
+butuh sudo (minta sandi)
+--- [H] verifikasi live ---
+   putaran 1: hestia-gacor=0
+   putaran 2: hestia-gacor=0
+   putaran 3: hestia-gacor=0
+   putaran 4: hestia-gacor=0
+   /api/health http=200
+
+  layanan HIDUP
+
+GATE: LULUS

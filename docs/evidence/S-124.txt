@@ -1,0 +1,16 @@
+=== S-124 VPS 93.127.133.160 ===
+Thu Oct 22 17:01:55 WIB 2026
+--- [A] apakah VPS ini melayani waspadaweb.com (Host header) ---
+   http  http=404 byte=19
+404 page not found
+
+   https http=404 byte=19
+--- [B] cari user SSH yang diterima (key sudah ada) ---
+   eghi     -> eghi@93.127.133.160: Permission denied (publickey,password). 
+   root     -> root@93.127.133.160: Permission denied (publickey,password). 
+   ubuntu   -> ubuntu@93.127.133.160: Permission denied (publickey,password). 
+   debian   -> debian@93.127.133.160: Permission denied (publickey,password). 
+   admin    -> admin@93.127.133.160: Permission denied (publickey,password). 
+--- [C] isi known_hosts untuk IP ini ---
+   baris cocok: 3
+user SSH: TIDAK ADA
