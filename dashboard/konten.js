@@ -24,6 +24,10 @@
         return '<td style="' + sel + '">' + (v === null || v === undefined || v === "" ? "—" : v)
           + "</td>";
       }).join("") + '<td style="' + sel + ';text-align:right">'
+        + (tabel === "konten"
+            ? '<button class="btn btn-ghost btn-sm" onclick="tandaiIndeks(' + r.id
+              + ')">indeks</button> '
+            : "")
         + '<button class="btn btn-ghost btn-sm" onclick="hapusBaris(\'' + tabel + "'," + r.id
         + ')">hapus</button></td></tr>';
     }).join("");
@@ -89,6 +93,12 @@
         status_indeks: "menunggu", posisi: 0
       }, "konten-ditambah");
     });
+  };
+
+  window.tandaiIndeks = function (id) {
+    fetch("/api/konten/" + id + "/indeks?nilai=terindeks", { method: "POST" })
+      .then(function () { lapor("konten-terindeks", String(id));
+                          if (window.toast) window.toast("ditandai terindeks"); muatSemua(); });
   };
 
   window.hapusBaris = function (tabel, id) {

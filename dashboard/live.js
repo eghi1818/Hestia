@@ -180,11 +180,13 @@
   }
   lapor("live-versi", "kandidat-tab");
 
+  var kandLimit = 200;
+
   function muatKandidat() {
     var body = document.getElementById("kandBody");
     if (!body) { lapor("kandidat-tanpa-wadah", "kandBody tidak ada"); return; }
     var q = val("kandCari"), st = val("kandStatus");
-    var url = "/api/kandidat?limit=200";
+    var url = "/api/kandidat?limit=" + kandLimit;
     if (q) url += "&q=" + encodeURIComponent(q);
     if (st) url += "&status=" + encodeURIComponent(st);
     var ti = document.getElementById("kandTanpaInfra");
@@ -194,7 +196,8 @@
     body.innerHTML = '<tr><td colspan="8" style="padding:10px;color:var(--muted)">memuat...</td></tr>';
     fetch(url).then(function (r) { return r.json(); }).then(function (d) {
       var info = document.getElementById("kandInfo");
-      if (info) info.textContent = "menampilkan " + d.item.length + " dari " + d.total + " kandidat";
+      if (info) info.textContent = "menampilkan " + d.item.length + " dari " + d.total
+        + " kandidat" + (d.total > d.item.length ? "  (muat lagi untuk sisanya)" : "");
       var nb = document.getElementById("navKandCount");
       if (nb) nb.textContent = d.total;
       if (!d.item.length) {
@@ -319,6 +322,7 @@
 
 
   window.muatKandidat = muatKandidat;
+  window.muatKandidatLagi = function () { kandLimit += 200; muatKandidat(); };
 
   function pasangKandidat() {
     if (!document.getElementById("kandBody")) return;

@@ -776,3 +776,12 @@ def api_setelan_simpan(body: dict = Body(...)):
 def aksi_js():
     from fastapi.responses import FileResponse
     return FileResponse("dashboard/aksi.js", media_type="application/javascript")
+
+
+@app.post("/api/konten/{tid}/indeks")
+def api_konten_indeks(tid: int, nilai: str = "terindeks"):
+    c = _siap_tabel()
+    c.execute("UPDATE konten SET status_indeks=? WHERE id=?", (nilai, tid))
+    c.commit()
+    c.close()
+    return {"ok": True, "id": tid, "status_indeks": nilai}
