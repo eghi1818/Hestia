@@ -106,6 +106,20 @@
     });
   }
 
+  function editorHalaman() {
+    var url = prompt("URL halaman yang diedit:");
+    if (!url) return;
+    var kk = prompt("Kata kunci utama:") || "";
+    var tpl = prompt("Template (artikel / profil / berita):", "artikel") || "artikel";
+    kirim("/api/konten", { url: url, target: "", kata_kunci: kk, template: tpl,
+                           status_indeks: "menunggu", posisi: 0 })
+      .then(function () {
+        lapor("editor-halaman", url);
+        if (window.toast) window.toast("halaman dicatat: " + tpl);
+        if (window.muatKonten) window.muatKonten();
+      });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     pasang("Halaman baru", halamanBaru);
     pasang("Kanal alert", kanalAlert);
@@ -117,5 +131,6 @@
     pasang("Log", logDeploy, true);
     pasang("Rollback", rollback, true);
     pasang("Lihat", lihatAlert);
+    pasang("Editor halaman", editorHalaman);
   });
 })();
