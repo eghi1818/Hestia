@@ -215,6 +215,11 @@ def recon_target(tid: int, skema: str = "https"):
         rid = cur.lastrowid
     with db.conn() as c:
         r = c.execute("SELECT * FROM recon WHERE id = ?", (rid,)).fetchone()
+    _st = ("hidup" if 200 <= h["http_status"] < 400 else
+           "dijaga" if h["http_status"] in (401, 403, 406, 418, 429, 503) else
+           "mati" if h["http_status"] == 0 else "galat")
+    c.execute("UPDATE targets SET status=? WHERE id=?", (_st, tid))
+    c.commit()
     return dict(r)
 
 @app.get("/api/targets/{tid}/recon")
