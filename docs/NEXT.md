@@ -1,5 +1,6 @@
-1. Bangun /api/kandidat + tab dashboard.
-2. Bersihkan tabel clientlog.
-3. Naikkan kandidat terbaik menjadi target.
-4. E1 crawl dari benih, kedalaman 1.
-5. Ganti sisa data palsu dashboard.
+1. Jalankan putaran otomatis berulang untuk memverifikasi sisa kandidat berstatus 'baru'.
+2. Tambah sumber discovery keempat: crt.sh bila pulih, atau crawl berlapis dari domain hidup.
+3. Tahap penanaman: pilih tuan rumah dari kandidat bersih, tanam konten,
+   catat di tabel konten + deployment, lalu pantau status_indeks.
+4. Jadwalkan pembersihan tabel clientlog supaya tidak menumpuk selamanya.
+5. Rapikan berkas bukti lama bila sudah terlalu banyak.
