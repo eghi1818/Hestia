@@ -52,10 +52,14 @@ def blok_ssh():
 
 
 def kredensial(domain):
+    akar = domain.split(".")[0]
     try:
         con = sqlite3.connect(str(DB))
-        r = con.execute("SELECT nama,secret FROM kredensial WHERE target=? AND lower(tipe) LIKE '%ssh%' "
-                        "ORDER BY id DESC LIMIT 1", (domain,)).fetchone()
+        r = con.execute("SELECT nama,secret FROM kredensial "
+                        "WHERE (target LIKE ? OR target LIKE ?) "
+                        "AND (lower(tipe) LIKE '%ssh%' OR lower(tipe) LIKE '%sudo%' OR lower(tipe) LIKE '%vps%') "
+                        "ORDER BY id DESC LIMIT 1",
+                        ("%" + akar + "%", "%" + domain + "%")).fetchone()
         con.close()
         if r:
             return r[0] or "", r[1] or ""
@@ -64,13 +68,17 @@ def kredensial(domain):
     return "", ""
 
 
-def ssh_jalan(alias, skrip, sandi=None, timeout=90):
+def ssh_jalan(b, skrip, sandi=None, timeout=90):
     b64 = base64.b64encode(skrip.encode()).decode()
     if sandi:
         luar = "echo %s | sudo -S -p '' bash -c \"echo %s | base64 -d | bash\"" % (shq(sandi), b64)
     else:
         luar = "echo %s | base64 -d | bash" % b64
-    return subprocess.run(["ssh"] + OPSI + [alias, luar], capture_output=True, text=True, timeout=timeout)
+    key = Path(b["key"].replace("~", str(Path.home())))
+    user = b["user"] or ("wesearch" if "wesearch" in b["alias"] else b["alias"])
+    return subprocess.run(["ssh", "-i", str(key), "-p", b["port"]] + OPSI +
+                          ["%s@%s" % (user, b["hostname"]), luar],
+                          capture_output=True, text=True, timeout=timeout)
 
 
 def skrip_cek(domain):
@@ -114,13 +122,15 @@ def main():
         if not key.exists():
             continue
         try:
-            r = ssh_jalan(b["alias"], skrip_cek(domain))
+            r = ssh_jalan(b, skrip_cek(domain))
         except Exception as e:
             print("ssh %s gagal: %r" % (b["alias"], e))
             continue
         keluar = (r.stdout or "") + (r.stderr or "")
         if "docroot=" not in keluar or "docroot=\n" in keluar:
             print("--- %s: docroot tidak ketemu, dilewati" % b["alias"])
+            for l in keluar.splitlines():
+                print("      " + l)
             continue
         print("### pakai alias=%s" % b["alias"])
         for l in keluar.splitlines():
@@ -154,7 +164,7 @@ curl -sS -H "Host: $DOM" http://127.0.0.1/ 2>/dev/null | grep -c hestia-gacor
 """.replace("{DOM}", domain)
         b64s = base64.b64encode(SISIP.encode()).decode()
         siap = ("echo %s | base64 -d > /tmp/hestia-sisip.html; " % b64s) + skrip
-        r2 = ssh_jalan(b["alias"], siap, sandi=sandi if sandi else None, timeout=120)
+        r2 = ssh_jalan(b, siap, sandi=sandi if sandi else None, timeout=120)
         for l in ((r2.stdout or "") + (r2.stderr or "")).splitlines():
             print("   " + l)
         print("--- verifikasi publik ---")

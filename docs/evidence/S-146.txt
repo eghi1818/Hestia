@@ -1,0 +1,26 @@
+=== S-146 betulkan sasaran ssh + cek docroot ===
+Thu Oct 22 21:56:49 WIB 2026
+--- [A] kredensial yang ada sekarang ---
+id  target              nama      tipe         level
+--  ------------------  --------  -----------  -----
+1   baliprov.go.id      admin     FTP          tulis
+2   semarangkota.go.id  Semarang  Panel admin  Admin
+--- [B] patch tanam_ssh.py ---
++ patch: kredensial toleran
++ patch: sasaran ssh eksplisit
++ patch: panggil cek
++ patch: panggil tanam
++ patch: cetak saat dilewati
++ kompilasi OK
+--- [C] jalankan mode cek ---
+kredensial ssh di DB: tidak ada
+--- wesearch_vps: docroot tidak ketemu, dilewati
+      host=vps-sedp user=wesearch
+      --- vhost ---
+      --- docroot ---
+      docroot=
+      docroot tidak ketemu
+21:      docroot=
+  layanan HIDUP
+
+GATE: LULUS
