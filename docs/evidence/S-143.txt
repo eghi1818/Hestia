@@ -1,0 +1,34 @@
+=== S-143 kanal kunci mesin + tombol Uji kredensial ===
+Thu Oct 22 21:45:57 WIB 2026
+--- [A] tulis tools/kunci.py ---
++ kunci.py OK
+--- [B] daftarkan ke whitelist ---
+kunci|1|0|90
+--- [C] jalankan pada waspadaweb.com ---
+target: waspadaweb.com | host di ssh config: 1
+--- alias=wesearch_vps host=93.127.133.160:10053 kunci=ADA
+   vhost:
+   sebut-target:
+   www:
+   /var/www/html
+   /var/www/waspadaweb
+   bisa-ditulis:
+   id:
+   wesearch
+KUNCI MESIN: BUKA alias=wesearch_vps porta=10053 user=wesearch
+--- [D] tambah rute uji kredensial ---
++ rute uji ditambahkan
++ main.py OK
+--- [E] panel Kunci di halaman Konsol ---
++ panel kunci disisipkan
++ versi skrip -> konsol-4
++ js sintaks OK
+layanan: http 401
+--- [F] verifikasi ---
+1
+2
+   /api/kredensial-uji http=200
+{"ok":true,"id":1,"metode":"ftp","hasil":"gagal","pesan":"[Errno 61] Connection refused"}
+  layanan HIDUP
+
+GATE: LULUS

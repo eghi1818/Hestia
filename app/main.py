@@ -1153,3 +1153,121 @@ def _konsol_js():
     p = _Path(__file__).resolve().parent.parent / "dashboard" / "konsol.js"
     isi = p.read_text(encoding="utf-8") if p.exists() else "// kosong"
     return Response(isi, media_type="application/javascript")
+
+# ===== UJI KREDENSIAL (S-143) =====
+def _ssh_alias_untuk(host):
+    try:
+        c = _Path.home() / ".ssh" / "config"
+        if not c.exists():
+            return ""
+        for baris in c.read_text(errors="ignore").splitlines():
+            b = baris.strip()
+            if b.lower().startswith("hostname ") and b.split(None, 1)[1].strip() == host:
+                return b.split(None, 1)[1].strip()
+        return ""
+    except Exception:
+        return ""
+
+
+def _uji_ftp(target, nama, secret):
+    import ftplib
+    import ssl
+    host = target.split("/")[0]
+    pesan = "tidak dicoba"
+    for porta in (21, 990):
+        try:
+            f = ftplib.FTP_TLS(context=ssl._create_unverified_context(), timeout=10)
+            f.connect(host, porta)
+            try:
+                f.login(nama or "anonymous", secret or "")
+                pwd = f.pwd()
+                f.quit()
+                return ("ftp:%d" % porta, "lulus", "login OK pwd=%s" % pwd)
+            except Exception as e:
+                pesan = str(e)[:140]
+                try:
+                    f.close()
+                except Exception:
+                    pass
+        except Exception as e:
+            pesan = str(e)[:140]
+    return ("ftp", "gagal", pesan)
+
+
+def _uji_sudo(target, nama, secret):
+    import subprocess
+    host = target.split("/")[0]
+    user = nama or "root"
+    alias = _ssh_alias_untuk(host)
+    sasaran = alias or ("%s@%s" % (user, host))
+    opsi = ["-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=accept-new", "-o", "ConnectTimeout=8"]
+    if not alias:
+        opsi = ["-p", "22"] + opsi
+    try:
+        r = subprocess.run(["ssh"] + opsi + [sasaran, "sudo -S -p '' true"],
+                           input=(secret or "") + "\n", capture_output=True, text=True, timeout=30)
+        if r.returncode == 0:
+            return ("ssh-sudo", "lulus", "sudo -S OK lewat %s" % sasaran)
+        return ("ssh-sudo", "gagal", (r.stderr or "").strip()[:140] or "kode %s" % r.returncode)
+    except Exception as e:
+        return ("ssh-sudo", "gagal", repr(e)[:140])
+
+
+def _uji_netlify(secret):
+    import json as _j
+    import urllib.request
+    try:
+        r = urllib.request.Request("https://api.netlify.com/api/v1/sites",
+                                   headers={"Authorization": "Bearer " + (secret or "")})
+        with urllib.request.urlopen(r, timeout=20) as x:
+            d = _j.loads(x.read().decode())
+        return ("netlify-api", "lulus", "%d situs" % len(d))
+    except Exception as e:
+        return ("netlify-api", "gagal", repr(e)[:140])
+
+
+def _uji_http(target, nama, secret, t):
+    import base64
+    import urllib.request
+    url = target if target.startswith("http") else "https://" + target.split("/")[0] + "/"
+    try:
+        hdr = {}
+        if nama:
+            hdr["Authorization"] = "Basic " + base64.b64encode(("%s:%s" % (nama, secret or "")).encode()).decode()
+        r = urllib.request.Request(url, headers=hdr)
+        with urllib.request.urlopen(r, timeout=20) as x:
+            return ("http:%s" % x.status, "lulus" if x.status < 400 else "gagal", "http=%s" % x.status)
+    except Exception as e:
+        return ("http", "gagal", repr(e)[:140])
+
+
+def _uji_jalankan(tipe, target, nama, secret, level):
+    t = ("%s %s" % (tipe or "", level or "")).lower()
+    if "ftp" in t:
+        return _uji_ftp(target, nama, secret)
+    if "netlify" in t:
+        return _uji_netlify(secret)
+    if "sudo" in t or "ssh" in t or "vps" in t:
+        return _uji_sudo(target, nama, secret)
+    return _uji_http(target, nama, secret, t)
+
+
+@app.post("/api/kredensial/{kid}/uji")
+def _kredensial_uji(kid: int):
+    with db.conn() as c:
+        r = c.execute("SELECT id,target,nama,tipe,level,secret FROM kredensial WHERE id=?", (kid,)).fetchone()
+    if not r:
+        return {"ok": False, "sebab": "kredensial tidak ada"}
+    _id, target, nama, tipe, level, secret = r
+    metode, hasil, pesan = _uji_jalankan(tipe, target, nama, secret, level)
+    with db.conn() as c:
+        c.execute("INSERT INTO kredensial_uji(kredensial_id,metode,hasil,pesan) VALUES(?,?,?,?)",
+                  (_id, metode, hasil, pesan[:300]))
+    return {"ok": True, "id": _id, "metode": metode, "hasil": hasil, "pesan": pesan[:300]}
+
+
+@app.get("/api/kredensial-uji")
+def _kredensial_uji_daftar():
+    with db.conn() as c:
+        r = c.execute("SELECT kredensial_id,metode,hasil,pesan,diuji_pada FROM kredensial_uji ORDER BY id DESC LIMIT 100").fetchall()
+    return {"item": [{"kredensial_id": x[0], "metode": x[1], "hasil": x[2], "pesan": x[3], "diuji_pada": x[4]} for x in r]}

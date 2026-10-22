@@ -95,3 +95,74 @@
     lapor("konsol-dimuat", "halaman konsol");
   });
 })();
+
+/* HESTIA - panel Kunci di halaman Konsol */
+(function () {
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s == null ? "" : s).replace(/[<>&]/g, function (c) { return { "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]; }); }
+  var ujiTerakhir = {};
+
+  function isiUji() {
+    return fetch("/api/kredensial-uji").then(function (r) { return r.json(); }).then(function (d) {
+      ujiTerakhir = {};
+      (d.item || []).forEach(function (u) { if (!ujiTerakhir[u.kredensial_id]) ujiTerakhir[u.kredensial_id] = u; });
+    }).catch(function () {});
+  }
+
+  function barisKunci(item) {
+    var u = ujiTerakhir[item.id];
+    var tr = document.createElement("tr");
+    tr.innerHTML = "<td>" + esc(item.target) + "</td><td>" + esc(item.nama) + "</td><td>" + esc(item.tipe) + "</td><td>" + esc(item.level) + "</td>"
+      + "<td>" + (u ? esc(u.hasil) + " (" + esc(u.metode) + ")" : "belum diuji") + "</td>"
+      + "<td><button class=\"btn btn-sm\" data-uji=\"" + item.id + "\">Uji</button> "
+      + "<button class=\"btn btn-ghost btn-sm\" data-hapus=\"" + item.id + "\">Hapus</button></td>";
+    return tr;
+  }
+
+  function isiKunci() {
+    return isiUji().then(function () { return fetch("/api/kredensial"); }).then(function (r) { return r.json(); }).then(function (d) {
+      var b = $("kunciBody"); if (!b) return;
+      b.innerHTML = "";
+      (d.item || []).forEach(function (it) { b.appendChild(barisKunci(it)); });
+      if (!b.children.length) {
+        var tr = document.createElement("tr");
+        tr.innerHTML = "<td colspan=\"6\" style=\"opacity:.6\">belum ada kunci</td>";
+        b.appendChild(tr);
+      }
+      var s = $("kunciStatus"); if (s) s.textContent = (d.item || []).length + " kunci";
+    }).catch(function (e) { var s = $("kunciStatus"); if (s) s.textContent = "galat: " + e; });
+  }
+
+  function uji(kid) {
+    var s = $("kunciStatus"); if (s) s.textContent = "menguji #" + kid + " ...";
+    fetch("/api/kredensial/" + kid + "/uji", { method: "POST" }).then(function (r) { return r.json(); }).then(function (d) {
+      if (s) s.textContent = "#" + kid + " " + (d.hasil || "gagal") + " - " + (d.pesan || d.sebab || "");
+      isiKunci();
+    });
+  }
+
+  function hapus(kid) { fetch("/api/kredensial/" + kid, { method: "DELETE" }).then(function () { isiKunci(); }); }
+
+  function tambah() {
+    var t = $("kunciTarget"), n = $("kunciNama"), tp = $("kunciTipe"), sc = $("kunciSecret"), lv = $("kunciLevel");
+    fetch("/api/kredensial", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ target: t ? t.value.trim() : "", nama: n ? n.value.trim() : "", tipe: tp ? tp.value.trim() : "", level: lv ? lv.value.trim() : "", secret: sc ? sc.value : "" })
+    }).then(function () { if (sc) sc.value = ""; isiKunci(); });
+  }
+
+  function siap(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else fn(); }
+  siap(function () {
+    var b = $("kunciBody");
+    if (!b) return;
+    b.addEventListener("click", function (e) {
+      var a = e.target.getAttribute && e.target.getAttribute("data-uji");
+      if (a) { uji(a); return; }
+      var h = e.target.getAttribute && e.target.getAttribute("data-hapus");
+      if (h) { hapus(h); }
+    });
+    if ($("kunciTambah")) $("kunciTambah").addEventListener("click", tambah);
+    if ($("kunciSegarkan")) $("kunciSegarkan").addEventListener("click", isiKunci);
+    isiKunci();
+  });
+})();
