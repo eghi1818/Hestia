@@ -668,3 +668,38 @@ def detail_js():
 def recon_js():
     from fastapi.responses import FileResponse
     return FileResponse("dashboard/recon.js", media_type="application/javascript")
+
+
+@app.get("/api/kandidat.csv")
+def api_kandidat_csv(suffix: Optional[str] = None, status: Optional[str] = None,
+                     tanpa_infra: bool = True, tanpa_kosong: bool = True):
+    import csv as _csv, io
+    from fastapi.responses import Response
+    c = _db_kandidat()
+    w, a = [], []
+    if suffix:
+        w.append("suffix=?"); a.append(suffix)
+    if status:
+        w.append("status=?"); a.append(status)
+    if tanpa_infra:
+        w.append("(infra IS NULL OR infra=0)")
+    if tanpa_kosong:
+        w.append("(hollow IS NULL OR hollow=0)")
+    where = (" WHERE " + " AND ".join(w)) if w else ""
+    rows = c.execute(
+        "SELECT domain,suffix,jenis,status,http_status,server,waf,skor FROM kandidat"
+        + where + " ORDER BY skor DESC, domain", a).fetchall()
+    c.close()
+    buf = io.StringIO()
+    wr = _csv.writer(buf)
+    wr.writerow(["domain", "suffix", "jenis", "status", "http_status", "server", "waf", "skor"])
+    for r in rows:
+        wr.writerow(list(r))
+    return Response(content=buf.getvalue(), media_type="text/csv",
+                    headers={"Content-Disposition": "attachment; filename=kandidat.csv"})
+
+
+@app.get("/ekspor.js")
+def ekspor_js():
+    from fastapi.responses import FileResponse
+    return FileResponse("dashboard/ekspor.js", media_type="application/javascript")
