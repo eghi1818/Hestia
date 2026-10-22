@@ -205,7 +205,12 @@ def _ambil(domain, skema="https"):
 @app.post("/api/targets/{tid}/recon")
 def recon_target(tid: int, skema: str = "https"):
     t = ambil(tid)
+    if not t:
+        raise HTTPException(404, "target tidak ada")
     hasil = _ambil(t["domain"], skema)
+    _st = ("hidup" if 200 <= hasil["http_status"] < 400 else
+           "dijaga" if hasil["http_status"] in (401, 403, 406, 418, 429, 503) else
+           "mati" if hasil["http_status"] == 0 else "galat")
     with db.conn() as c:
         cur = c.execute(
             "INSERT INTO recon (target_id,http_status,server,content_type,redirect,ms,judul,catatan)"
@@ -213,14 +218,11 @@ def recon_target(tid: int, skema: str = "https"):
             (tid, hasil["http_status"], hasil["server"], hasil["content_type"],
              hasil["redirect"], hasil["ms"], hasil["judul"], hasil["catatan"]))
         rid = cur.lastrowid
+        c.execute("UPDATE targets SET status=? WHERE id=?", (_st, tid))
     with db.conn() as c:
         r = c.execute("SELECT * FROM recon WHERE id = ?", (rid,)).fetchone()
-    _st = ("hidup" if 200 <= h["http_status"] < 400 else
-           "dijaga" if h["http_status"] in (401, 403, 406, 418, 429, 503) else
-           "mati" if h["http_status"] == 0 else "galat")
-    c.execute("UPDATE targets SET status=? WHERE id=?", (_st, tid))
-    c.commit()
     return dict(r)
+
 
 @app.get("/api/targets/{tid}/recon")
 def lihat_recon(tid: int):
