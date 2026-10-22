@@ -193,7 +193,7 @@
     if (ti && ti.checked) url += "&tanpa_infra=true";
     var tk = document.getElementById("kandTanpaKosong");
     if (tk && tk.checked) url += "&tanpa_kosong=true";
-    body.innerHTML = '<tr><td colspan="8" style="padding:10px;color:var(--muted)">memuat...</td>+ '<td>' + (r.teknologi || '-') + '</td>'</tr>';
+    body.innerHTML = '<tr><td colspan="9" style="padding:10px;color:var(--muted)">memuat...</td>+ '<td>' + (r.teknologi || '-') + '</td>'</tr>';
     fetch(url).then(function (r) { return r.json(); }).then(function (d) {
       var info = document.getElementById("kandInfo");
       if (info) info.textContent = "menampilkan " + d.item.length + " dari " + d.total
@@ -201,7 +201,7 @@
       var nb = document.getElementById("navKandCount");
       if (nb) nb.textContent = d.total;
       if (!d.item.length) {
-        body.innerHTML = '<tr><td colspan="8" style="padding:10px;color:var(--muted)">belum ada kandidat</td></tr>';
+        body.innerHTML = '<tr><td colspan="9" style="padding:10px;color:var(--muted)">belum ada kandidat</td></tr>';
         return;
       }
       var sel = "padding:7px 8px;border-bottom:1px solid #232833";
@@ -225,7 +225,7 @@
       }
       lapor("kandidat-dimuat", "total=" + d.total);
     }).catch(function (e) {
-      body.innerHTML = '<tr><td colspan="8" style="padding:10px;color:var(--red)">gagal: ' + e + "</td></tr>";
+      body.innerHTML = '<tr><td colspan="9" style="padding:10px;color:var(--red)">gagal: ' + e + "</td></tr>";
       lapor("kandidat-gagal", String(e));
     });
   }

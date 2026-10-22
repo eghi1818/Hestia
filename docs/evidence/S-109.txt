@@ -1,0 +1,28 @@
+=== S-109 perbaiki kolom Teknologi ===
+Thu Oct 22 16:09:44 WIB 2026
+- Teknologi dibuang dari tabel Kandidat
++ Teknologi ditambahkan ke tabel Target (setelah Status)
+= sel sudah ada
+   th=9 ['', 'Domain ⇅', 'Tipe', 'Status ⇅', 'Teknologi', 'Skor otoritas ⇅', 'Halaman tamu', 'Terakhir dicek', 'Aksi']
+   th=8 ['Domain', 'Akhiran', 'Jenis', 'Status', 'HTTP', 'Skor', 'Penjaga', 'Aksi']
+   td di template baris: 12 | ada teknologi: True
+--- [A] kartu teknoRingkas ---
+   + kartu disisipkan
+   + perender ditambahkan ke ikhtisar.js
+--- [B] nyalakan ulang + uji ---
+   /api/health http=200
+   /api/teknologi-ringkas http=200
+--- [C] jejak server asli waspadaweb.com + juraganit.com ---
+== jejak waspadaweb.com ==
+   riwayat DNS: 0 nama
+   favicon: tidak ada
+== jejak juraganit.com ==
+   riwayat DNS: 0 nama
+   favicon: 25931 byte | hash mmh3 -2070047203
+   shodan (favicon sama): 0 IP
+
+
+  /api/health  http 200
+  layanan HIDUP
+
+GATE: LULUS

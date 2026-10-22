@@ -74,3 +74,27 @@
     setTimeout(isiIkhtisar, 1400);
   });
 })();
+
+
+// kartu sebaran teknologi & kanal (S-109)
+(function () {
+  function chip(arr, kunci) {
+    return (arr || []).map(function (x) {
+      return '<span style="display:inline-block;margin:2px 6px 2px 0;padding:2px 8px;border-radius:10px;background:rgba(255,255,255,.08)">' +
+        (x[kunci] || "-") + ' <b>' + x.n + '</b></span>';
+    }).join(" ");
+  }
+  function muat() {
+    var el = document.getElementById("teknoRingkas");
+    if (!el) return;
+    fetch("/api/teknologi-ringkas").then(function (r) { return r.json(); }).then(function (d) {
+      el.innerHTML = '<h3>Sebaran teknologi, WAF, dan kanal</h3>' +
+        '<div style="opacity:.7;font-size:12px">target dengan pintu terbuka: <b>' + (d.ada_pintu || 0) + '</b></div>' +
+        '<div style="margin-top:8px"><b>WAF</b><br>' + chip(d.waf, "waf") + '</div>' +
+        '<div style="margin-top:8px"><b>Kanal</b><br>' + chip(d.kanal, "kanal") + '</div>' +
+        '<div style="margin-top:8px"><b>Teknologi</b><br>' + chip(d.teknologi, "teknologi") + '</div>';
+    }).catch(function () {});
+  }
+  muat();
+  setInterval(muat, 10000);
+})();
