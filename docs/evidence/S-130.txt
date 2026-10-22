@@ -1,0 +1,45 @@
+=== S-130 perbaiki gate_api + variabel gagal gate ===
+Thu Oct 22 17:21:20 WIB 2026
+--- [A] bagian akhir gate.sh (cari penanda gagal) ---
+  fi
+fi
+
+echo
+if python3 tools/gate_api.py; then :; else HESTIA_ALLOW_DOWN=1; fi
+
+echo "== gate: layanan dashboard (fail-closed) =="
+code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 3 http://127.0.0.1:8787/ 2>/dev/null || true)
+[ -z "$code" ] && code=000
+api=$(curl -s -o /dev/null -w '%{http_code}' --max-time 3 http://127.0.0.1:8787/api/health 2>/dev/null || true)
+[ -z "$api" ] && api=000
+echo "  /            http $code"
+echo "  /api/health  http $api"
+if [ -f app/main.py ] ; then
+  if [ "$code" = "200" ] && [ "$api" = "200" ] ; then
+    echo "  layanan HIDUP"
+  elif [ "${HESTIA_ALLOW_DOWN:-0}" = "1" ] ; then
+    echo "  layanan MATI (diizinkan lewat HESTIA_ALLOW_DOWN=1)"
+  else
+    echo "  layanan MATI" ; fail=1
+  fi
+fi
+
+echo
+if [ "$fail" -eq 0 ]; then echo "GATE: LULUS" ; exit 0 ; else echo "GATE: GAGAL" ; exit 1 ; fi
+== gate: rute api dipakai dashboard ==
+  rute di app/main.py: 32
+  ok      semua rute api ada di app/main.py
+   variabel gagal yang benar: fail
++ pemanggilan gate_api memakai variabel yang benar
++ rute indeks duplikat dibuang
++ kompilasi OK
+== gate: rute api dipakai dashboard ==
+  HILANG  dashboard/konten.js -> /api/rutePalsu
+GATE: GAGAL
+== gate: rute api dipakai dashboard ==
+  ok      semua rute api ada di app/main.py
+GATE: LULUS
+
+  layanan HIDUP
+
+GATE: LULUS

@@ -845,11 +845,4 @@ def jalankan_tanam(body: dict):
     return tanam.tanam(t["domain"], user=u, sandi=pw, sapu_dulu=bool(body.get("sapu")))
 
 
-@app.post("/api/konten/{kid}/indeks")
-def tandai_indeks(kid: int):
-    with db.conn() as c:
-        if not c.execute("select 1 from konten where id=?", (kid,)).fetchone():
-            raise HTTPException(404, "konten tidak ada")
-        c.execute("update konten set status_indeks=? where id=?", ("indeks", kid))
-        c.commit()
-    return {"ok": True, "id": kid, "status_indeks": "indeks"}
+
