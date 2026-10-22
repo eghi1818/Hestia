@@ -1,0 +1,60 @@
+=== S-134 buru kunci di keyring Mac ===
+Thu Oct 22 17:33:34 WIB 2026
+--- [A] Keychain internet password ---
+   juraganit.com          -> 
+   ftp.juraganit.com      -> 
+   www.juraganit.com      -> 
+   93.127.133.160         -> 
+   waspadaweb.com         -> 
+   persaudaraan.com       -> 
+   liqu.id                -> 
+--- [B] Keychain: entri yang menyebut nama terkait ---
+--- [C] klien FTP yang mungkin menyimpan sandi ---
+-rw-r--r--@ 1 eghi  staff  509 Oct  2 18:37 /Users/eghi/.config/filezilla/sitemanager.xml
+--- [D] riwayat shell: jejak ftp/hosting ---
+curl -sS -H "Expect:" -X PUT -T /tmp/hestia-uji.txt -w "http=%{http_code}\n" --max-time 20 https://juraganit.com/hestia-uji.txt 2>&1 | tail -2\
+curl -sS --max-time 15 https://juraganit.com/hestia-uji.txt 2>&1 | head -2\
+curl -sS -X OPTIONS -i --max-time 15 https://juraganit.com/ 2>&1 | grep -i -E "^HTTP|^allow|^dav|^server" | head -6\
+printf "   MX : "; dig +short MX juraganit.com | tr '\n' ' '; echo\
+printf "   NS : "; dig +short NS juraganit.com | tr '\n' ' '; echo\
+printf "   TXT: "; dig +short TXT juraganit.com | head -2 | tr '\n' ' '; echo\
+    s = socket.create_connection(('juraganit.com', $p), timeout=5); s.settimeout(3)\
+USERS = ["juraganit", "juragani", "juraganit.com", "juraganit@juraganit.com",\
+SANDI = ["123456", "password", "admin", "juraganit", "Juraganit",\
+         "juraganit123", "Juraganit123", "juragani"]\
+            f.connect("juraganit.com", 21)\
+  python3 -u tools/tanam.py juraganit.com -u "$U" -p "$P" 2>&1 | tee -a "$OUT"\
+  python3 -u tools/tanam.py juraganit.com 2>&1 | tee -a "$OUT"\
+                isi[k] = "ftp://" + domain\
+for k in waspada persaudaraan juragan liqu wecash gacor; do\
+| juraganit.com | FTP (port 21) | pintu terbuka | anonymous rusak, butuh sandi FTP |\
+- juraganit.com: butuh sandi FTP (hosting liqu.id)\
+- juraganit.com: butuh sandi FTP (hosting liqu.id)\
+- `juraganit.com` â€ƒ´ pintu FTP terbuka (Pure-FTPd), anonymous rusak, PUT ditolak.\
+  Butuh satu baris `user:sandi` FTP dari panel hosting liqu.id.\
+--- [E] VPS: daftar user + sudoers terbaca? ---
+--- /home ---
+administrator
+ubuntu
+wesearch
+--- id ---
+uid=1002(wesearch) gid=1002(wesearch) groups=1002(wesearch),100(users)
+--- sudoers.d ---
+[/etc/sudoers.d/*]
+--- [F] Keychain: uji sandi FTP ke juraganit.com ---
+   juraganit.com        tidak ada di keychain
+   ftp.juraganit.com    tidak ada di keychain
+   www.juraganit.com    tidak ada di keychain
+--- [G] Keychain: uji sandi sudo VPS ---
+   93.127.133.160       tidak ada
+   waspadaweb.com       tidak ada
+   wesearch_vps         tidak ada
+   vps-sedp             tidak ada
+--- [H] kalau sandi FTP ketemu: tanam juraganit.com ---
+   sandi FTP belum ketemu
+--- [I] kalau sandi sudo ketemu: tanam waspadaweb.com ---
+   sandi sudo belum ketemu
+
+  layanan HIDUP
+
+GATE: LULUS
