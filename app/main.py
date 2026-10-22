@@ -242,8 +242,26 @@ def api_kandidat_ringkas():
         "SELECT suffix,status,count(*) n FROM kandidat GROUP BY suffix,status")]
     jen = [dict(r) for r in k.execute(
         "SELECT suffix,jenis,count(*) n FROM kandidat GROUP BY suffix,jenis")]
+
+    def _c(sql):
+        return k.execute(sql).fetchone()[0]
+
+    ang = {
+        "hidup": _c("SELECT count(*) FROM kandidat WHERE status='hidup'"),
+        "dijaga": _c("SELECT count(*) FROM kandidat WHERE status='dijaga'"),
+        "mati": _c("SELECT count(*) FROM kandidat WHERE status='mati'"),
+        "galat": _c("SELECT count(*) FROM kandidat WHERE status='galat'"),
+        "baru": _c("SELECT count(*) FROM kandidat WHERE status='baru'"),
+        "infra": _c("SELECT count(*) FROM kandidat WHERE infra=1"),
+        "kosong": _c("SELECT count(*) FROM kandidat WHERE hollow=1"),
+        "panel": _c("SELECT count(*) FROM kandidat WHERE petunjuk='halaman panel'"),
+        "bersih": _c("SELECT count(*) FROM kandidat WHERE (infra IS NULL OR infra=0)"
+                     " AND (hollow IS NULL OR hollow=0)"),
+    }
     k.close()
-    return {"total": tot, "per_suffix_status": per, "per_suffix_jenis": jen}
+    out = {"total": tot, "per_suffix_status": per, "per_suffix_jenis": jen}
+    out.update(ang)
+    return out
 
 
 @app.get("/api/kandidat")
@@ -421,3 +439,9 @@ def api_putaran(bg: BackgroundTasks, verif: int = 20, crawl: int = 15, suffix: O
 @app.get("/api/putaran/status")
 def api_putaran_status():
     return _PUT
+
+
+@app.get("/ikhtisar.js")
+def ikhtisar_js():
+    from fastapi.responses import FileResponse
+    return FileResponse("dashboard/ikhtisar.js", media_type="application/javascript")

@@ -319,7 +319,7 @@ tbody tr:last-child td{border-bottom:none}
           <div class="kpi">
             <div class="k-ico" style="background:var(--green-bg)">♥</div>
             <div class="k-val">96%</div>
-            <div class="k-lbl">Kesehatan rata-rata</div>
+            <div class="k-lbl">Kandidat bersih</div>
             <span class="k-trend trend-up">▲ 1,2%</span>
           </div>
           <div class="kpi">
@@ -331,7 +331,7 @@ tbody tr:last-child td{border-bottom:none}
           <div class="kpi">
             <div class="k-ico" style="background:rgba(244,162,89,.13)">🚀</div>
             <div class="k-val">31</div>
-            <div class="k-lbl">Total deployment</div>
+            <div class="k-lbl">Halaman kosong</div>
             <span class="k-trend trend-flat">— 0</span>
           </div>
         </div>
@@ -339,24 +339,24 @@ tbody tr:last-child td{border-bottom:none}
         <div class="grid two-col">
           <div class="card">
             <div class="card-head">
-              <div class="card-title">Distribusi status target</div>
+              <div class="card-title">Distribusi status kandidat</div>
               <div class="right"><button class="btn btn-ghost btn-sm" onclick="go('target')">Lihat semua</button></div>
             </div>
             <div class="card-body">
               <div class="chart-wrap"><svg id="barChart" viewBox="0 0 560 240" width="100%" style="display:block"></svg></div>
               <div class="legend">
-                <span><i style="background:var(--green)"></i> Aktif</span>
-                <span><i style="background:var(--blue)"></i> Kandidat</span>
-                <span><i style="background:var(--yellow)"></i> Dianalisis</span>
-                <span><i style="background:var(--red)"></i> Rusak</span>
-                <span><i style="background:var(--gray)"></i> Nonaktif</span>
+                <span><i style="background:var(--green)"></i> hidup</span>
+                <span><i style="background:var(--blue)"></i> dijaga</span>
+                <span><i style="background:var(--yellow)"></i> alih</span>
+                <span><i style="background:var(--red)"></i> mati</span>
+                <span><i style="background:var(--gray)"></i> baru</span>
               </div>
             </div>
           </div>
           <div class="card">
             <div class="card-head">
-              <div class="card-title">Tren kesehatan — 30 hari</div>
-              <div class="right"><span class="badge-st st-aktif">96% saat ini</span></div>
+              <div class="card-title">Sebaran kandidat per akhiran</div>
+              <div class="right"><span class="badge-st st-aktif" id="ikhtisarBersih">— bersih</span></div>
             </div>
             <div class="card-body">
               <div class="chart-wrap"><svg id="lineChart" viewBox="0 0 560 240" width="100%" style="display:block"></svg></div>
@@ -1126,6 +1126,7 @@ function drawLine(){
 /* ================= INIT ================= */
 renderTargets();renderCreds();renderAlerts();renderLatency();renderChecks();renderDeploy();renderKonten();renderBacklinks();renderAudit();renderOps();renderRecon();drawBar();drawLine();
 </script>
-<script src="/live.js?v=7ab94a3-1792477352"></script>
+<script src="/live.js?v=4466a49-1792640175"></script>
+<script src="/ikhtisar.js?v=4466a49-1792640175"></script>
 </body>
 </html>
