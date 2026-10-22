@@ -785,3 +785,15 @@ def api_konten_indeks(tid: int, nilai: str = "terindeks"):
     c.commit()
     c.close()
     return {"ok": True, "id": tid, "status_indeks": nilai}
+
+
+@app.post("/api/clientlog/bersih")
+def api_clientlog_bersih(simpan: int = 300):
+    c = _db_kandidat()
+    tot = c.execute("SELECT count(*) FROM clientlog").fetchone()[0]
+    c.execute("DELETE FROM clientlog WHERE id NOT IN "
+              "(SELECT id FROM clientlog ORDER BY id DESC LIMIT ?)", (max(10, simpan),))
+    c.commit()
+    sisa = c.execute("SELECT count(*) FROM clientlog").fetchone()[0]
+    c.close()
+    return {"ok": True, "sebelum": tot, "sesudah": sisa}

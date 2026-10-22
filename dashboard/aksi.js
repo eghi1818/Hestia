@@ -120,6 +120,13 @@
       });
   }
 
+  function bersihkanLog() {
+    kirim("/api/clientlog/bersih?simpan=300", null).then(function (d) {
+      lapor("clientlog-dibersihkan", JSON.stringify(d));
+      if (window.toast) window.toast("log dibersihkan: " + d.sesudah + " tersisa");
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     pasang("Halaman baru", halamanBaru);
     pasang("Kanal alert", kanalAlert);
@@ -132,5 +139,6 @@
     pasang("Rollback", rollback, true);
     pasang("Lihat", lihatAlert);
     pasang("Editor halaman", editorHalaman);
+    pasang("Bersihkan log", bersihkanLog);
   });
 })();
