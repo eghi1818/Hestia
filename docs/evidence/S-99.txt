@@ -1,0 +1,106 @@
+=== S-99 ===
+Thu Oct 22 14:55:39 WIB 2026
+--- [A] balasan 500 apa adanya ---
+Internal Server Error
+--- [B] baris yang menyebut recon ---
+145:# --- recon: sentuhan pertama ke domain target ---
+148:    CREATE TABLE IF NOT EXISTS recon (
+205:@app.post("/api/targets/{tid}/recon")
+206:def recon_target(tid: int, skema: str = "https"):
+214:            "INSERT INTO recon (target_id,http_status,server,content_type,redirect,ms,judul,catatan)"
+221:        r = c.execute("SELECT * FROM recon WHERE id = ?", (rid,)).fetchone()
+225:@app.get("/api/targets/{tid}/recon")
+226:def lihat_recon(tid: int):
+229:            "SELECT * FROM recon WHERE target_id = ? ORDER BY id DESC LIMIT 20", (tid,)
+652:@app.get("/api/recon")
+653:def api_recon(batas: int = 50):
+656:        "SELECT * FROM recon ORDER BY id DESC LIMIT ?", (batas,))]
+667:@app.get("/recon.js")
+668:def recon_js():
+670:    return FileResponse("dashboard/recon.js", media_type="application/javascript")
+--- [C] badan rutenya ---
+   mulai baris 205
+@app.post("/api/targets/{tid}/recon")
+def recon_target(tid: int, skema: str = "https"):
+    t = ambil(tid)
+    if not t:
+        raise HTTPException(404, "target tidak ada")
+    hasil = _ambil(t["domain"], skema)
+    _st = scrape.status_dari_kode(hasil["http_status"])
+    with db.conn() as c:
+        cur = c.execute(
+            "INSERT INTO recon (target_id,http_status,server,content_type,redirect,ms,judul,catatan)"
+            " VALUES (?,?,?,?,?,?,?,?)",
+            (tid, hasil["http_status"], hasil["server"], hasil["content_type"],
+             hasil["redirect"], hasil["ms"], hasil["judul"], hasil["catatan"]))
+        rid = cur.lastrowid
+        c.execute("UPDATE targets SET status=? WHERE id=?", (_st, tid))
+    with db.conn() as c:
+        r = c.execute("SELECT * FROM recon WHERE id = ?", (rid,)).fetchone()
+    return dict(r)
+
+
+@app.get("/api/targets/{tid}/recon")
+def lihat_recon(tid: int):
+    with db.conn() as c:
+        rows = c.execute(
+            "SELECT * FROM recon WHERE target_id = ? ORDER BY id DESC LIMIT 20", (tid,)
+        ).fetchall()
+    return [dict(r) for r in rows]
+
+
+# ---------- kandidat (hasil sapuan) ----------
+def _db_kandidat():
+    import sqlite3, os
+    p = os.environ.get("HESTIA_DB")
+    if not p:
+        try:
+            from app import db as _d
+            for at in ("DB_PATH", "PATH", "DB", "DBFILE"):
+                v = getattr(_d, at, None)
+                if isinstance(v, str) and v:
+                    p = v
+                    break
+        except Exception:
+            pass
+    c = sqlite3.connect(p or "data/hestia.db")
+    c.row_factory = sqlite3.Row
+    return c
+
+
+@app.get("/api/kandidat/ringkas")
+def api_kandidat_ringkas():
+    k = _db_kandidat()
+    tot = k.execute("SELECT count(*) FROM kandidat").fetchone()[0]
+    per = [dict(r) for r in k.execute(
+        "SELECT suffix,status,count(*) n FROM kandidat GROUP BY suffix,status")]
+    jen = [dict(r) for r in k.execute(
+        "SELECT suffix,jenis,count(*) n FROM kandidat GROUP BY suffix,jenis")]
+
+    def _c(sql):
+        return k.execute(sql).fetchone()[0]
+--- [D] penanganan galat / 500 ---
+7:from fastapi import Body, BackgroundTasks, FastAPI, HTTPException
+39:        raise HTTPException(404, "target tidak ditemukan")
+65:        raise HTTPException(400, "status tidak dikenal: " + t.status)
+74:        raise HTTPException(409, "domain sudah terdaftar: " + t.domain)
+85:        raise HTTPException(400, "status tidak dikenal: " + u.status)
+98:        raise HTTPException(409, "domain sudah dipakai target lain")
+130:def catat_client(peristiwa: str, rincian: str = ""):
+196:    except Exception as e:
+209:        raise HTTPException(404, "target tidak ada")
+246:        except Exception:
+352:        a.append(max(1, min(limit, 500)))
+809:except Exception as _e:
+--- [E] jejak kredensial Cloudflare di Mac ---
+   env: kosong
+   ~/.wrangler tidak ada
+   ~/.cloudflared tidak ada
+wrangler not found
+cloudflared not found
+/Users/eghi/.local/bin/node
+/Users/eghi/.local/bin/npx
+
+  layanan HIDUP
+
+GATE: LULUS
