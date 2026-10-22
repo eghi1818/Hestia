@@ -1,0 +1,45 @@
+=== S-142 bukti browser (klik nyata) ===
+Thu Oct 22 21:39:41 WIB 2026
+--- [A] bagaimana nav-item diklik? ---
+dashboard/index.html:41:.nav-item{display:flex;align-items:center;gap:10px;padding:8.5px 11px;border-radius:9px;font-size:13.5px;color:var(--muted);width:100%;text-align:left;transition:all .15s;margin-bottom:1px}
+dashboard/index.html:42:.nav-item:hover{background:var(--panel);color:var(--text)}
+dashboard/index.html:43:.nav-item.active{background:linear-gradient(90deg,rgba(244,162,89,.14),rgba(244,162,89,.05));color:var(--accent2);font-weight:600}
+dashboard/index.html:44:.nav-item .ico{width:19px;text-align:center;font-size:15px;flex-shrink:0}
+dashboard/index.html:45:.nav-item .badge{margin-left:auto;background:var(--red-bg);color:var(--red);font-size:10.5px;font-weight:700;padding:1.5px 7px;border-radius:20px}
+dashboard/index.html:46:.nav-item .badge.gray{background:var(--gray-bg);color:var(--gray)}
+dashboard/index.html:256:      <button class="nav-item active" data-page="dashboard"><span class="ico">▦</span> Dashboard</button>
+dashboard/index.html:257:      <button class="nav-item" data-page="target"><span class="ico">◎</span> Target <span class="badge gray" id="navTargetCount">8</span></button>
+dashboard/index.html:258:      <button class="nav-item" data-page="recon"><span class="ico">🔍</span> Recon</button>
+dashboard/index.html:259:      <button class="nav-item" data-page="kandidat"><span class="ico">🧭</span> Kandidat <span class="badge gray" id="navKandCount">0</span></button>
+dashboard/index.html:260:      <button class="nav-item" data-page="kredensial"><span class="ico">🔑</span> Kredensial <span class="badge" id="navAlertBadge">4</span></button>
+dashboard/index.html:262:      <button class="nav-item" data-page="deployment"><span class="ico">🚀</span> Deployment</button>
+--- [B] pasang onclick + penanda versi v3 ---
++ onclick go('konsol') ditambahkan
++ penanda versi v3 dipasang di halaman
++ versi skrip -> konsol-3
+layanan: http 401
+--- [C] verifikasi yang dilayani ---
+konsol.js?v=konsol-3
+1
+1
+--- [D] simulasi jalur browser dari terminal (rincian=simulasi) ---
+   clientlog dimuat http=201
+{"ok":true,"job_id":9,"r_nomor":"R-9","argv":["/Users/eghi/Documents/REPO/Hestia/.venv/bin/python","-u","tools/kanal.py","waspadaweb.com"],"berkas":"/Users/eghi/Documents/REPO/Hestia/docs/evidence/R-9
+{"ok":true,"job":{"id":9,"aksi":"kanal","status":"lulus","r_nomor":"R-9","stdout_path":"/Users/eghi/Documents/REPO/Hestia/docs/evidence/R-9.txt","pid":40239,"detak":"2026-10-22 14:40:04","mulai":"2026-10-22 14:39:48","selesai":"2026-10-22 14:40:04"}}
+--- [E] clientlog sesudah simulasi ---
+94|konsol-dimuat|simulasi
+93|uji-cli-query|tes
+--- [F] peristiwa konsol ---
+108|2026-10-22 14:42:04|konsol-selesai|R-10=lulus
+107|2026-10-22 14:41:46|konsol-jalankan|R-10 /Users/eghi/Documents/REPO/Hestia/.venv/bin/python -u tools/kanal
+97|2026-10-22 14:40:15|konsol-dimuat|halaman konsol
+94|2026-10-22 14:39:48|konsol-dimuat|simulasi
+--- [G] job sesudah simulasi ---
+10|kanal|lulus|R-10|2026-10-22 14:41:46
+9|kanal|lulus|R-9|2026-10-22 14:39:48
+8|kanal|lulus|R-8|2026-10-22 14:32:41
+7|sql|lulus|R-7|2026-10-22 14:32:40
+6|kanal|lulus|R-6|2026-10-22 14:23:54
+  layanan HIDUP
+
+GATE: LULUS
