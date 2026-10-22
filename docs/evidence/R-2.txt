@@ -1,0 +1,40 @@
+[sys] mulai: /Users/eghi/Documents/REPO/Hestia/.venv/bin/python -u tools/teknologi.py
+[out] memeriksa 44 target
+[sys] denyut
+[out]   1. komdigi.go.id                    -                          -            wp(403), wp-rest(403), joomla(403), drup
+[out]   2. tangselkota.go.id                -                          -            -
+[sys] denyut
+[out]   3. surabaya.go.id                   next.js                    -            -
+[sys] denyut
+[out]   4. medan.go.id                      -                          cloudflare   wp(403), wp-rest(403), joomla(403), drup
+[out]   5. bandung.go.id                    jquery                     -            -
+[out]   6. kemdikbud.go.id                  -                          -            -
+[out]   7. bps.go.id                        -                          cloudflare   wp(403), wp-rest(403), joomla(403), drup
+[out]   8. jogjaprov.go.id                  bootstrap                  -            wp(200), wp-rest(200), joomla(200), drup
+[sys] denyut
+[sys] denyut
+[sys] denyut
+[out]   9. baliprov.go.id                   bootstrap                  -            admin(200)
+[out]  10. semarangkota.go.id               bootstrap, jquery          -            wp(200), wp-rest(200), joomla(200), drup
+[sys] denyut
+[out]  11. 3cil.sch.id                      jquery, moodle             -            wp-rest(200), joomla(200), drupal(200), 
+[out]  12. kemdiktisaintek.go.id            next.js                    -            -
+[sys] denyut
+[out]  13. kemendikdasmen.go.id              [Odoo]                    -            -
+[out]  14. ristekdikti.go.id                -                          -            -
+[sys] denyut
+[out]  15. dikti.go.id                      next.js                    cloudflare   -
+[out]  16. badungkab.go.id                  bootstrap, moodle          -            -
+[sys] denyut
+[sys] denyut
+[sys] denyut
+[sys] denyut
+[sys] denyut
+[out]  17. bulelengkab.go.id                -                          -            -
+[sys] denyut
+[sys] denyut
+[sys] denyut
+[out]  18. akademi-tni.mil.id               bootstrap, laravel         -            -
+[sys] denyut
+[sys] denyut
+[sys] denyut

@@ -938,6 +938,8 @@ async def _konsol_jalankan(muatan: dict):
     extra_utuh = (muatan.get("extra") or "").strip()
     if a[4]:
         tambahan = [extra_utuh] if extra_utuh else []
+        if tambahan and a[3] and not _re.match(a[3], tambahan[0]):
+            return {"ok": False, "sebab": "argumen utuh ditolak pola"}
     else:
         tambahan = extra_utuh.split()
         for tok in tambahan:
@@ -1052,3 +1054,80 @@ async def _konsol_startup():
         _job_terputus()
     except Exception:
         pass
+
+# ===== PATCH S-137: runner v2 (denyut, stdin DEVNULL, grup proses) =====
+async def _jalankan2(jid, argv, rahasia, berkas, batas):
+    env = dict(_os.environ)
+    if rahasia:
+        env["HESTIA_RAHASIA"] = rahasia
+    f = open(berkas, "a", encoding="utf-8")
+    kotak = [0]
+
+    def catat(aliran, teks):
+        kotak[0] += 1
+        with db.conn() as c:
+            c.execute("INSERT INTO job_log(job_id,urutan,aliran,baris) VALUES(?,?,?,?)",
+                      (jid, kotak[0], aliran, teks))
+            c.execute("UPDATE job SET detak=datetime('now') WHERE id=?", (jid,))
+        f.write("[%s] %s\n" % (aliran, teks))
+        f.flush()
+
+    catat("sys", "mulai: " + " ".join(argv))
+    try:
+        p = await _asyncio.create_subprocess_exec(
+            *argv, cwd=str(_AKAR), env=env,
+            stdin=_asyncio.subprocess.DEVNULL,
+            stdout=_asyncio.subprocess.PIPE, stderr=_asyncio.subprocess.PIPE,
+            start_new_session=True)
+    except Exception as e:
+        catat("sys", "gagal start: %r" % (e,))
+        with db.conn() as c:
+            c.execute("UPDATE job SET status='gagal', selesai=datetime('now') WHERE id=?", (jid,))
+        f.close()
+        return
+    with db.conn() as c:
+        c.execute("UPDATE job SET pid=?, detak=datetime('now') WHERE id=?", (p.pid, jid))
+
+    async def baca(aliran, stream):
+        while True:
+            baris = await stream.readline()
+            if not baris:
+                break
+            catat(aliran, baris.decode("utf-8", "ignore").rstrip("\n"))
+
+    async def denyut():
+        while p.returncode is None:
+            await _asyncio.sleep(5)
+            if p.returncode is None:
+                catat("sys", "denyut")
+
+    tugas_denyut = _asyncio.ensure_future(denyut())
+    status, kode = "gagal", -1
+    try:
+        await _asyncio.gather(baca("out", p.stdout), baca("err", p.stderr))
+        kode = await _asyncio.wait_for(p.wait(), timeout=batas)
+        status = "lulus" if kode == 0 else "gagal"
+    except _asyncio.TimeoutError:
+        try:
+            _os.killpg(p.pid, 15)
+        except Exception:
+            p.kill()
+        await p.wait()
+        status, kode = "timeout", -1
+    except _asyncio.CancelledError:
+        try:
+            _os.killpg(p.pid, 15)
+        except Exception:
+            p.kill()
+        await p.wait()
+        status, kode = "batal", -1
+    finally:
+        tugas_denyut.cancel()
+    catat("sys", "selesai status=%s kode=%s" % (status, kode))
+    f.close()
+    with db.conn() as c:
+        c.execute("UPDATE job SET status=?, selesai=datetime('now') WHERE id=?", (status, jid))
+    _JALAN.pop(jid, None)
+
+
+_jalankan = _jalankan2

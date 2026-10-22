@@ -1,0 +1,70 @@
+=== S-137 buktikan runner (job harus benar-benar selesai) ===
+Thu Oct 22 21:14:00 WIB 2026
+--- [A] keadaan job dari S-136 ---
+1|teknologi|terputus|R-1|19040|2026-10-22 14:10:31|2026-10-22 14:10:31|2026-10-22 14:11:02
+   baris job_log: 0
+   pid 19040 masih hidup? MASIH
+   R-1.txt:        0
+--- [B] H1: apakah teknologi.py memakai argv? ---
+70:def main():
+72:    ada = [r[1] for r in c.execute("PRAGMA table_info(targets)")]
+77:    batas = int(sys.argv[1]) if len(sys.argv) > 1 else 999
+88:    for w, n in c.execute("select waf, count(*) from targets group by waf order by 2 desc"):
+90:    for k, n in c.execute("select kanal, count(*) from targets group by kanal order by 2 desc limit 10"):
+94:if __name__ == "__main__":
+   jumlah baris:       95
+--- [C] H2: baris python di whitelist tanpa -u ---
+asal|["tools/asal.py"]
+hosting|["tools/hosting.py"]
+jejak|["tools/jejak.py"]
+kanal|["tools/kanal.py"]
+pintu|["tools/pintu.py"]
+tanam|["-u", "tools/tanam.py"]
+teknologi|["tools/teknologi.py"]
+--- [D] H4: child watcher di venv ---
+   versi python: 3.9.6
+   watcher: ThreadedChildWatcher
+--- [E] perbaikan: -u pada baris python + validasi pola argumen utuh ---
++ baris python diberi -u: 6
+    asal ["-u", "tools/asal.py"]
+    hosting ["-u", "tools/hosting.py"]
+    jejak ["-u", "tools/jejak.py"]
+    kanal ["-u", "tools/kanal.py"]
+    pintu ["-u", "tools/pintu.py"]
+    tanam ["-u", "tools/tanam.py"]
+    teknologi ["-u", "tools/teknologi.py"]
++ validasi pola argumen utuh ditambahkan
+--- [F] pasang runner v2 ---
++ runner v2 dipasang
++ kompilasi OK
++ uji_konsol.py OK
+--- [G] restart layanan ---
+layanan: http 401
+   job sesudah restart:
+1|terputus
+--- [H] uji penerimaan ---
+--- uji: aksi cepat (sql) ---
+   GAGAL: argumen utuh ditolak pola
+--- uji: aksi nyata (teknologi) ---
+   job_id=2 r=R-2
+   GAGAL: masih jalan setelah 100s
+   status=jalan baris=40 ukuran=2163 terlihat_saat_jalan=True
+UJI KONSOL: GAGAL
+   rc=1
+--- [I] bukti ---
+-rw-r--r--  1 eghi  staff     0 Oct 22 21:10 docs/evidence/R-1.txt
+-rw-r--r--  1 eghi  staff  2163 Oct 22 21:15 docs/evidence/R-2.txt
+   === docs/evidence/R-1.txt ===
+   === docs/evidence/R-2.txt ===
+[sys] mulai: /Users/eghi/Documents/REPO/Hestia/.venv/bin/python -u tools/teknologi.py
+[out] memeriksa 44 target
+[sys] denyut
+[out]   1. komdigi.go.id                    -                          -            wp(403), wp-rest(403), joomla(403), drup
+[out]   2. tangselkota.go.id                -                          -            -
+[sys] denyut
+1|teknologi|terputus|R-1|19040
+2|teknologi|jalan|R-2|22526
+
+  layanan HIDUP
+
+GATE: LULUS
