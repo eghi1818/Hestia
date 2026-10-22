@@ -1,0 +1,54 @@
+=== S-126 hak tulis VPS ===
+Thu Oct 22 17:07:49 WIB 2026
+--- [A] identitas dan kepemilikan ---
+uid=1002(wesearch) gid=1002(wesearch) groups=1002(wesearch),100(users)
+
+total 16
+drwxr-xr-x  4 root root 4096 Oct 12 08:52 .
+drwxr-xr-x 14 root root 4096 Oct 12 08:46 ..
+drwxr-xr-x  2 root root 4096 Oct 12 08:46 html
+drwxr-xr-x  2 root root 4096 Oct 12 08:52 waspadaweb
+
+total 12
+drwxr-xr-x 2 root root 4096 Oct 12 08:52 .
+drwxr-xr-x 4 root root 4096 Oct 12 08:52 ..
+-rw-r--r-- 1 root root  185 Oct 12 08:52 index.html
+--- [B] alat yang tersedia ---
+   python3  /usr/bin/python3
+   python   -
+   perl     /usr/bin/perl
+   awk      /usr/bin/awk
+   sed      /usr/bin/sed
+   git      /usr/bin/git
+   tee      /usr/bin/tee
+--- [C] hak sudo tanpa sandi ---
+sudo: a password is required
+--- [D] uji tulis langsung ---
+   LANGSUNG: GAGAL
+touch: cannot touch '/var/www/waspadaweb/.hestia-uji': Permission denied
+--- [E] uji tulis lewat sudo -n ---
+   SUDO -n: GAGAL
+sudo: a password is required
+--- [F] isi index.html sekarang ---
+<!doctype html><html lang="id"><head><meta charset="utf-8"><title>WaspadaWeb</title></head><body><h1>WaspadaWeb is online</h1><p>Origin VPS Ubuntu berhasil merespons.</p></body></html>
+
+root:root 755 /var/www/waspadaweb
+root:root 644 /var/www/waspadaweb/index.html
+--- [G] apakah ada git di docroot ---
+--- [H] tanam (stderr dibuka) ---
+cara: sudo
+alat: python3
+sudo: a password is required
+ukuran sekarang: 185 byte
+--- [I] verifikasi live waspadaweb.com ---
+   putaran 1: hestia-gacor=0
+   putaran 2: hestia-gacor=0
+   putaran 3: hestia-gacor=0
+   putaran 4: hestia-gacor=0
+   putaran 5: hestia-gacor=0
+--- [J] potongan halaman live ---
+<!doctype html><html lang="id"><head><meta charset="utf-8"><title>WaspadaWeb</title></head><body><h1>WaspadaWeb is online</h1><p>Origin VPS Ubuntu berhasil merespons.</p></body></html>
+
+  layanan HIDUP
+
+GATE: LULUS
