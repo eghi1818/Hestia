@@ -1,0 +1,35 @@
+=== S-141 perbaiki jalur clientlog + pancing bukti browser ===
+Thu Oct 22 21:37:07 WIB 2026
+--- [A] rute clientlog di app/main.py ---
+129:    CREATE TABLE IF NOT EXISTS clientlog (
+137:@app.post("/api/clientlog", status_code=201)
+140:        c.execute("INSERT INTO clientlog (peristiwa, rincian) VALUES (?, ?)",
+144:@app.get("/api/clientlog")
+148:            "SELECT * FROM clientlog ORDER BY id DESC LIMIT ?", (batas,)
+522:    tot = c.execute("SELECT count(*) FROM clientlog").fetchone()[0]
+524:        "SELECT id, waktu, peristiwa, rincian FROM clientlog ORDER BY id DESC LIMIT ?", (batas,))]
+796:@app.post("/api/clientlog/bersih")
+--- [B] uji kontrak endpoint: badan JSON vs query ---
+   badan-json http=422
+   query      http=201
+--- [C] baris clientlog setelah uji ---
+93|uji-cli-query|tes
+--- [D] perbaiki lapor() di dashboard/konsol.js ---
++ lapor() diperbaiki (kirim badan JSON dan query)
++ versi skrip dinaikkan ke konsol-2 (paksa browser memuat ulang)
++ js sintaks OK
+--- [E] pastikan yang dilayani sudah versi baru ---
+2
+konsol.js?v=konsol-2
+--- [F] restart agar halaman pasti segar ---
+layanan: http 401
+   layanan http=200
+--- [G] peristiwa konsol dari browser ---
+--- [H] job yang dibuat sesudah S-140 ---
+--- [I] berkas bukti R- baru ---
+-rw-r--r--  1 eghi  staff   388 Oct 22 21:24 docs/evidence/R-6.txt
+-rw-r--r--  1 eghi  staff    96 Oct 22 21:32 docs/evidence/R-7.txt
+-rw-r--r--  1 eghi  staff   388 Oct 22 21:32 docs/evidence/R-8.txt
+  layanan HIDUP
+
+GATE: LULUS

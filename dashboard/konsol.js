@@ -4,9 +4,16 @@
   var jobAktif = null, timer = null, urut = 0;
 
   function lapor(a, r) {
+    var q = "?peristiwa=" + encodeURIComponent(a) + "&rincian=" + encodeURIComponent(r || "");
+    var hdr = { "Content-Type": "application/json" };
+    var badan = JSON.stringify({ peristiwa: a, rincian: r || "" });
     try {
-      fetch("/api/clientlog?peristiwa=" + encodeURIComponent(a) + "&rincian=" + encodeURIComponent(r || ""), { method: "POST" });
-    } catch (e) {}
+      fetch("/api/clientlog" + q, { method: "POST", headers: hdr, body: badan }).then(function (x) {
+        if (!x.ok) { fetch("/api/clientlog" + q).catch(function () {}); }
+      }).catch(function () { fetch("/api/clientlog" + q).catch(function () {}); });
+    } catch (e) {
+      fetch("/api/clientlog" + q).catch(function () {});
+    }
   }
   function siap(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else fn(); }
 
