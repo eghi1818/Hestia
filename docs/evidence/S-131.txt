@@ -47,3 +47,37 @@ chat ini: SEO V1.0  ->  buat chat baru bernama: SEO V1.1
   layanan HIDUP
 
 GATE: LULUS
+--- [D] smoke.sh menyesuaikan auth ---
+   isi smoke.sh:
+#!/usr/bin/env bash
+# HESTIA - asap: rute inti harus hidup
+cd "$(dirname "$0")/.." || exit 1
+p=0; f=0
+cek() { c=$(curl -s -o /dev/null -w '%{http_code}' --max-time 3 "http://127.0.0.1:8787$2"); \
+  if [ "$c" = "$3" ]; then echo "ok    $1"; p=$((p+1)); else echo "GAGAL $1 ($c != $3)"; f=$((f+1)); fi; }
+cek "targets"   "/api/targets" 200
+cek "dashboard" "/"            200
+cek "live.js"   "/live.js" 
+--- [E] prune clientlog di tutup.sh ---
+   = sudah ada
+--- [F] aturan tempelan (hindari exit) ---
+   = sudah ada
+   + aturan ditulis ke docs/SOP-NEW-CHAT.md
+--- [G] arsipkan bukti lama (sisakan 40) ---
+   diarsipkan: 0 | sisa: 37
+--- [H] segarkan folder resume ---
+   jalankan tools/siapkan_newchat.sh
+-rw-r--r--  1 eghi  staff   599 Oct 22 17:24 2-SESSION-STATE.md
+-rw-r--r--  1 eghi  staff  1043 Oct 22 17:24 3-KELUARAN-RESUME.txt
+-rw-r--r--  1 eghi  staff  9658 Oct 22 17:24 4-SERAH-TERIMA-lengkap.md
+chat ini: SEO V1.0  ->  buat chat baru bernama: SEO V1.1
+   0-CARA-PAKAI.txt
+   1-ONBOARDING-PROMPT.txt
+   2-SESSION-STATE.md
+   3-KELUARAN-RESUME.txt
+   4-SERAH-TERIMA-lengkap.md
+
+  /api/health  http 200
+  layanan HIDUP
+
+GATE: LULUS
