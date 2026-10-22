@@ -311,9 +311,12 @@ def verify_one(domain, timeout=10):
     return h
 
 
-def skor(h):
+def skor(h, domain=None):
     s = BOBOT.get(h.get("suffix"), 10) + SKOR_STATUS.get(h["status"], 0)
+    if domain and h.get("suffix") and jenis_of(domain, h["suffix"]) == "akar":
+        s += 8
     return min(s + (5 if h.get("waf") else 0), 100)
+
 
 
 def cmd_discover(a):
@@ -354,7 +357,7 @@ def cmd_verify(a):
         h["suffix"] = r["suffix"]
         c.execute("""UPDATE kandidat SET status=?,http_status=?,server=?,waf=?,skor=?,
                      catatan=?,diperiksa_at=?,latensi_ms=? WHERE domain=?""",
-                  (h["status"], h["http_status"], h["server"], h["waf"], skor(h),
+                  (h["status"], h["http_status"], h["server"], h["waf"], skor(h, r["domain"]),
                    h.get("catatan"), datetime.now(timezone.utc).isoformat(timespec="seconds"),
                    h.get("latensi_ms", 0), r["domain"]))
         c.commit()

@@ -325,7 +325,7 @@ def api_kandidat_periksa(limit: int = 5, suffix: Optional[str] = None):
         h = scrape.verify_one(r["domain"]); h["suffix"] = r["suffix"]
         c.execute("""UPDATE kandidat SET status=?,http_status=?,server=?,waf=?,skor=?,
                      catatan=?,diperiksa_at=? WHERE domain=?""",
-                  (h["status"], h["http_status"], h["server"], h["waf"], scrape.skor(h),
+                  (h["status"], h["http_status"], h["server"], h["waf"], scrape.skor(h, r["domain"]),
                    h.get("catatan"), _dt.now().isoformat(timespec="seconds"), r["domain"]))
         c.commit()
         ringkas[h["status"]] = ringkas.get(h["status"], 0) + 1
@@ -358,7 +358,7 @@ def _jalankan_periksa(limit, suffix):
             h = scrape.verify_one(r["domain"]); h["suffix"] = r["suffix"]
             c.execute("""UPDATE kandidat SET status=?,http_status=?,server=?,waf=?,skor=?,
                          catatan=?,diperiksa_at=?,latensi_ms=? WHERE domain=?""",
-                      (h["status"], h["http_status"], h["server"], h["waf"], scrape.skor(h),
+                      (h["status"], h["http_status"], h["server"], h["waf"], scrape.skor(h, r["domain"]),
                        h.get("catatan"), _dt.now().isoformat(timespec="seconds"),
                        h.get("latensi_ms", 0), r["domain"]))
             c.commit()
@@ -407,7 +407,7 @@ def _jalankan_putaran(verif, crawl, suffix):
             h = scrape.verify_one(r["domain"]); h["suffix"] = r["suffix"]
             c.execute("""UPDATE kandidat SET status=?,http_status=?,server=?,waf=?,skor=?,
                          catatan=?,diperiksa_at=?,latensi_ms=? WHERE domain=?""",
-                      (h["status"], h["http_status"], h["server"], h["waf"], scrape.skor(h),
+                      (h["status"], h["http_status"], h["server"], h["waf"], scrape.skor(h, r["domain"]),
                        h.get("catatan"), now, h.get("latensi_ms", 0), r["domain"]))
             c.commit()
             _PUT["verif"] += 1
