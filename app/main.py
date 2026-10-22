@@ -10,8 +10,16 @@ from pydantic import BaseModel
 
 from . import db
 
+# tools/ di sys.path + impor scrape tingkat modul (S-101)
+import os as _op
+import sys as _sp
+_TOOLS = _op.path.join(_op.path.dirname(_op.path.dirname(_op.path.abspath(__file__))), "tools")
+if _TOOLS not in _sp.path:
+    _sp.path.insert(0, _TOOLS)
+import scrape  # noqa: E402
+
 ROOT = Path(__file__).resolve().parent.parent
-STATUS_SAH = {"kandidat", "dianalisis", "aktif", "rusak", "dibersihkan", "nonaktif"}
+STATUS_SAH = {"baru", "kandidat", "dianalisis", "aktif", "rusak", "dibersihkan", "nonaktif", "hidup", "mati", "dijaga", "hilang"}
 
 app = FastAPI(title="Hestia API", version="0.1.0")
 db.init()
