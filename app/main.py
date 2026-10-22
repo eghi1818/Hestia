@@ -549,9 +549,14 @@ def _siap_tabel():
     return c
 
 
-def _daftar(nama):
+def _daftar(nama, target=None):
     c = _siap_tabel()
-    rows = [dict(r) for r in c.execute("SELECT * FROM " + nama + " ORDER BY id DESC LIMIT 200")]
+    if target:
+        rows = [dict(r) for r in c.execute(
+            "SELECT * FROM " + nama + " WHERE target=? ORDER BY id DESC LIMIT 200", (target,))]
+    else:
+        rows = [dict(r) for r in c.execute(
+            "SELECT * FROM " + nama + " ORDER BY id DESC LIMIT 200")]
     c.close()
     return {"total": len(rows), "item": rows}
 
@@ -568,18 +573,18 @@ def _tambah(nama, body):
 
 
 @app.get("/api/kredensial")
-def api_kredensial():
-    return _daftar("kredensial")
+def api_kredensial(target: Optional[str] = None):
+    return _daftar("kredensial", target)
 
 
 @app.get("/api/deployment")
-def api_deployment():
-    return _daftar("deployment")
+def api_deployment(target: Optional[str] = None):
+    return _daftar("deployment", target)
 
 
 @app.get("/api/konten")
-def api_konten():
-    return _daftar("konten")
+def api_konten(target: Optional[str] = None):
+    return _daftar("konten", target)
 
 
 @app.post("/api/kredensial")
@@ -624,3 +629,18 @@ def api_deployment_hapus(tid: int):
 @app.delete("/api/konten/{tid}")
 def api_konten_hapus(tid: int):
     return _hapus("konten", tid)
+
+
+@app.get("/api/recon")
+def api_recon(batas: int = 50):
+    c = _db_kandidat()
+    rows = [dict(r) for r in c.execute(
+        "SELECT * FROM recon ORDER BY id DESC LIMIT ?", (batas,))]
+    c.close()
+    return {"total": len(rows), "item": rows}
+
+
+@app.get("/detail.js")
+def detail_js():
+    from fastapi.responses import FileResponse
+    return FileResponse("dashboard/detail.js", media_type="application/javascript")
