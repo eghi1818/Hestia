@@ -1,0 +1,13 @@
+[sys] mulai: /Users/eghi/Documents/REPO/Hestia/.venv/bin/python -u tools/kanal.py waspadaweb.com
+[out] == waspadaweb.com ==
+[out]    muka   : http=200 | teknologi=-
+[sys] denyut
+[out]    t0 tanpa akun : -
+[sys] denyut
+[out]    t1 akun CMS   : -
+[out]    t2 berkas     : -
+[sys] denyut
+[out]    t3 pipa deploy: -
+[out]    KANAL TERPILIH: tidak ada
+[out] 
+[sys] selesai status=lulus kode=0

@@ -266,6 +266,7 @@ tbody tr:last-child td{border-bottom:none}
       <div class="nav-label">Analitik</div>
       <button class="nav-item" data-page="laporan"><span class="ico">📊</span> Laporan</button>
       <button class="nav-item" data-page="audit"><span class="ico">🧾</span> Audit Log</button>
+      <button class="nav-item" data-page="konsol"><span class="ico">&#9000;</span> Konsol</button>
       <button class="nav-item" data-page="pengaturan"><span class="ico">⚙️</span> Pengaturan</button>
     </nav>
     <div class="sidebar-foot">
@@ -692,6 +693,24 @@ tbody tr:last-child td{border-bottom:none}
       </section>
 
       <!-- ========== PAGE: AUDIT ========== -->
+      <section class="page" id="page-konsol">
+        <div class="page-desc">Jalankan aksi whitelist dari browser. Target mode=pantau (situs pemerintah) hanya ditulis bila Paksa dicentang.</div>
+        <div class="card" style="padding:14px;margin:12px 0">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+            <select id="konsolAksi" style="min-width:210px;padding:7px;border-radius:8px;background:#121826;color:#e7e9ee;border:1px solid #232c44"></select>
+            <input id="konsolDomain" placeholder="domain (opsional)" style="padding:7px;border-radius:8px;background:#121826;color:#e7e9ee;border:1px solid #232c44">
+            <input id="konsolExtra" placeholder="argumen tambahan (opsional)" style="min-width:220px;padding:7px;border-radius:8px;background:#121826;color:#e7e9ee;border:1px solid #232c44">
+            <label style="display:flex;gap:6px;align-items:center;font-size:13px"><input type="checkbox" id="konsolPaksa"> Paksa</label>
+            <button class="btn btn-primary" id="konsolJalankan">Jalankan</button>
+            <button class="btn" id="konsolBatal" disabled>Batal</button>
+            <button class="btn btn-ghost" id="konsolSegarkan">Segarkan</button>
+          </div>
+          <div id="konsolStatus" style="margin-top:10px;font-size:13px;color:#9aa4b8">siap</div>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <div id="konsolLog" style="height:430px;overflow:auto;padding:12px;font:12px/1.5 ui-monospace,Menlo,monospace;background:#0b0e14;color:#cfd6e4"></div>
+        </div>
+      </section>
       <section class="page" id="page-audit">
         <div class="page-head">
           <div>
@@ -1128,14 +1147,15 @@ function drawLine(){
 /* ================= INIT ================= */
 renderTargets();renderCreds();renderAlerts();renderLatency();renderChecks();renderDeploy();renderKonten();renderBacklinks();renderAudit();renderOps();renderRecon();drawBar();drawLine();
 </script>
-<script src="/live.js?v=db98850-1792679053"></script>
-<script src="/ikhtisar.js?v=db98850-1792679053"></script>
-<script src="/tautan.js?v=db98850-1792679053"></script>
-<script src="/audit.js?v=db98850-1792679053"></script>
-<script src="/konten.js?v=db98850-1792679053"></script>
-<script src="/detail.js?v=db98850-1792679053"></script>
-<script src="/recon.js?v=db98850-1792679053"></script>
-<script src="/ekspor.js?v=db98850-1792679053"></script>
-<script src="/aksi.js?v=db98850-1792679053"></script>
+<script src="/live.js?v=b66c401-1792679580"></script>
+<script src="/ikhtisar.js?v=b66c401-1792679580"></script>
+<script src="/tautan.js?v=b66c401-1792679580"></script>
+<script src="/audit.js?v=b66c401-1792679580"></script>
+<script src="/konten.js?v=b66c401-1792679580"></script>
+<script src="/detail.js?v=b66c401-1792679580"></script>
+<script src="/recon.js?v=b66c401-1792679580"></script>
+<script src="/ekspor.js?v=b66c401-1792679580"></script>
+<script src="/aksi.js?v=b66c401-1792679580"></script>
+<script src="/konsol.js?v=konsol-1"></script>
 </body>
 </html>

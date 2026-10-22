@@ -1145,3 +1145,11 @@ async def _jalankan2(jid, argv, rahasia, berkas, batas):
 
 
 _jalankan = _jalankan2
+
+
+@app.get("/konsol.js")
+def _konsol_js():
+    from fastapi.responses import Response
+    p = _Path(__file__).resolve().parent.parent / "dashboard" / "konsol.js"
+    isi = p.read_text(encoding="utf-8") if p.exists() else "// kosong"
+    return Response(isi, media_type="application/javascript")
