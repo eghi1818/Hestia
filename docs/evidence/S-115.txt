@@ -1,0 +1,14 @@
+=== S-115 FTPS ===
+Thu Oct 22 16:20:57 WIB 2026
+--- [A] daftar akar ---
+zsh: command not found: curl -sS -k --ssl-reqd --max-time 45 -u anonymous:hestia@example.com
+--- [B] cari docroot ---
+   docroot terpilih: TIDAK ADA
+--- [C] isi docroot ---
+--- [D] uji tulis ---
+--- [F] jejak bukti ---
+
+  /api/health  http 200
+  layanan HIDUP
+
+GATE: LULUS
