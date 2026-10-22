@@ -82,3 +82,10 @@ Pindah chat bila salah satu terjadi:
 - Janji tanggal; semua "segera"
 - Menghapus atau menulis ulang riwayat
 - Commit saat gate gagal
+
+## Aturan tempelan terminal
+
+- Jangan memakai `exit` di dalam tempelan. `exit` menutup jendela zsh dan seluruh blok berhenti.
+  Pakai `true` atau `return` bila perlu menghentikan bagian skrip.
+- Selalu `python3 -u` bila keluarannya di-pipe, supaya tidak tertahan buffer.
+- Jangan menyembunyikan stderr dengan `2>/dev/null` pada langkah yang sedang didiagnosa.

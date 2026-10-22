@@ -1,20 +1,13 @@
-# HESTIA - Status Sesi (kanonik, ~20 baris)
+# SESSION_STATE — Hestia
 
-- Diperbarui     : S-83
-- Chat           : SEO (naik ke SEO V1.1, V1.2, dst bila chat gagal)
-- HEAD           : lihat output tools/resume.sh (jangan simpan hash di sini)
-- Branch         : main (tracking origin/main)
-- Gate           : LULUS pada commit terakhir (integrasi 35 rujukan)
-- Layanan        : FastAPI :8787 (start: bash tools/serve.sh)
-- Smoke          : jalankan bash tools/smoke.sh
-- Langkah terakhir: S-83 seluruh pending kode tuntas; gate 46 rujukan
-- Keadaan        : seluruh dashboard memakai data nyata; tidak ada tombol mati
-- Item berikutnya : 1) putaran otomatis untuk sisa kandidat 'baru' (~560)
-                    2) sumber discovery keempat (crt.sh pulih / crawl berlapis)
-                    3) tahap penanaman konten pada tuan rumah terpilih
-- Blocker        : crt.sh 502; sch.id/mil.id terbatas 50 (hackertarget)
-- Basis          : kandidat 459, tautan 186, targets 11,
-                   kredensial/deployment/konten masih berisi contoh
-- Konvensi bukti : docs/steps/S-xx.md
-- Lampiran sesi  : docs/ONBOARDING_PROMPT.txt + docs/SESSION_STATE.md + output tools/resume.sh
-- Titik aman     : commit terakhir yang gate-nya LULUS (lihat resume.sh)
+- Langkah terakhir: S-131
+- Layanan: http://127.0.0.1:8787 (login Basic; sandi dari HESTIA_SANDI, bawaan: hestia)
+- Basis data: data/hestia.db (backup otomatis 10 terbaru di data/backup/)
+- Gate: tools/gate.sh — fail-closed, memeriksa rute api, id dashboard, sterilisasi, sintaks, layanan
+- Kanal tanam: tools/tanam.py (PUT tanpa kredensial, lalu FTP); tombol Tanam di dashboard
+
+## Menunggu
+
+- juraganit.com: butuh sandi FTP (hosting liqu.id)
+- waspadaweb.com: SSH tembus, /var/www/waspadaweb milik root, butuh sudo
+- persaudaraan.com: nama *.netlify.app belum ketemu

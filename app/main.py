@@ -846,3 +846,23 @@ def jalankan_tanam(body: dict):
 
 
 
+
+
+@app.middleware("http")
+async def _auth(request, call_next):
+    import base64 as _b64
+    import os as _o
+    from fastapi.responses import JSONResponse as _JR
+    if request.url.path in ("/api/health",):
+        return await call_next(request)
+    sandi = _o.environ.get("HESTIA_SANDI", "hestia")
+    h = request.headers.get("authorization", "")
+    if h.startswith("Basic "):
+        try:
+            _u, p2 = _b64.b64decode(h[6:]).decode("utf-8", "ignore").split(":", 1)
+            if p2 == sandi:
+                return await call_next(request)
+        except Exception:
+            pass
+    return _JR({"detail": "perlu login"}, status_code=401,
+               headers={"WWW-Authenticate": 'Basic realm="Hestia"'})

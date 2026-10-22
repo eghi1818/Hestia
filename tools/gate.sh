@@ -80,7 +80,7 @@ api=$(curl -s -o /dev/null -w '%{http_code}' --max-time 3 http://127.0.0.1:8787/
 echo "  /            http $code"
 echo "  /api/health  http $api"
 if [ -f app/main.py ] ; then
-  if [ "$code" = "200" ] && [ "$api" = "200" ] ; then
+  if [ "$api" = "200" ] && { [ "$code" = "200" ] || [ "$code" = "401" ]; } ; then
     echo "  layanan HIDUP"
   elif [ "${HESTIA_ALLOW_DOWN:-0}" = "1" ] ; then
     echo "  layanan MATI (diizinkan lewat HESTIA_ALLOW_DOWN=1)"
