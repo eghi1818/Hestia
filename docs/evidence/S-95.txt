@@ -1,0 +1,45 @@
+=== S-95 kondisi jaringan (NordVPN aktif) ===
+Thu Oct 22 14:34:53 WIB 2026
+--- [A] IP keluar ---
+187.40.232.156
+--- [B] resolusi DNS sistem ---
+   gacor.net    -> 172.67.213.67 104.21.93.171 
+   wecash.ai    -> 172.67.133.223 104.21.5.216 
+--- [C] sertifikat gacor.net sekarang ---
+subject= /CN=gacor.net
+issuer= /C=US/O=Let's Encrypt/CN=YE1
+--- [D] ambil halaman TANPA -k (verifikasi normal) ---
+   gacor.net http=200 byte=613180 ip=172.67.213.67 t=1.790636s
+--- [E] judul halaman ---
+<title>BOSGACOR > Situs Terpopuler Agen Slot Gacor Resmi Gampang Menang Hari Ini</title>
+<title>angle-down</title>
+--- [F] kontrol wecash.ai ---
+   http=200 ip=172.67.133.223
+
+--- [G] python: DoH mati, TLS verifikasi normal ---
+   setelan: DoH=0 TLS=0 url=https://cloudflare-dns.com/dns-query cache=0
+   http 200 | 500000 byte
+   judul: BOSGACOR > Situs Terpopuler Agen Slot Gacor Resmi Gampang Menang Hari Ini
+--- [H] python: DoH + TLS santai ---
+   setelan: DoH=1 TLS=1 url=https://cloudflare-dns.com/dns-query cache=0
+   http 200 | 500000 byte
+   judul: BOSGACOR > Situs Terpopuler Agen Slot Gacor Resmi Gampang Menang Hari Ini
+
+--- [I] struktur halaman profil wecash.ai (kunci goal) ---
+   http=200 byte=29339
+   buildId: fYvk3d2HCCaFDHqB9Hr2n
+   pageProps keys: []
+   cuplikan: {}
+   tautan ke gacor di halaman: False
+
+--- [J] nyalakan ulang layanan (DOH+TLS santai, aman dua kondisi) ---
+   /api/health http=200
+--- [K] target gacor.net + recon lewat Hestia ---
+   POST /api/targets -> 400
+   id gacor.net: None
+
+  /api/health  http 200
+  layanan HIDUP
+
+GATE: LULUS
+
