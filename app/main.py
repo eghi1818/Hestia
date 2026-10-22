@@ -816,3 +816,13 @@ try:
         print("[net]", _net.info())
 except Exception as _e:
     print("[net] dilewati:", _e)
+
+
+@app.get("/api/teknologi-ringkas")
+def teknologi_ringkas():
+    with db.conn() as c:
+        waf = [dict(r) for r in c.execute("select coalesce(waf,'-') as waf, count(*) as n from targets group by waf order by n desc")]
+        kanal = [dict(r) for r in c.execute("select coalesce(kanal,'-') as kanal, count(*) as n from targets group by kanal order by n desc limit 12")]
+        teknologi = [dict(r) for r in c.execute("select coalesce(teknologi,'-') as teknologi, count(*) as n from targets group by teknologi order by n desc limit 12")]
+        pintu = c.execute("select count(*) from targets where pintu is not null and pintu != '-'").fetchone()[0]
+    return {"waf": waf, "kanal": kanal, "teknologi": teknologi, "ada_pintu": pintu}

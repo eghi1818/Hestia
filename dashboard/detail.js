@@ -26,7 +26,7 @@
       for (i = 0; i < ts.length; i++) { if (String(ts[i].id) === String(idTarget)) t = ts[i]; }
       if (!t) return;
       kv($("detailKv"), [["Domain", t.domain], ["Pemilik", t.owner], ["Tipe", t.tipe],
-                         ["Status", t.status], ["Dibuat", t.created_at]]);
+                         ["Status", t.status], ["Dibuat", t.created_at], ["Teknologi", t.teknologi || "-"], ["Server", t.server || "-"], ["WAF", t.waf || "-"], ["Pintu", t.pintu || "-"], ["Kanal", t.kanal || "-"]]);
 
       fetch("/api/targets/" + idTarget + "/recon").then(function (r) { return r.json(); })
         .then(function (d) {

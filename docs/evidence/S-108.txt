@@ -1,0 +1,93 @@
+=== S-108 verifikasi ===
+Thu Oct 22 16:05:06 WIB 2026
+--- berkas alat ---
+   tools/asal.py          ADA
+   tools/jejak.py         HILANG
+   tools/kanal.py         HILANG
+   tools/teknologi.py     ADA
+   tools/hosting.py       ADA
+   tools/pintu.py         ADA
+--- kolom DB targets ---
+   kolom teknologi  : ADA
+   kolom server     : ADA
+   kolom waf        : ADA
+   kolom pintu      : ADA
+   kolom kanal      : ADA
+   kolom dianalisa  : ADA
+   terisi: 25 dari 41 target
+--- dashboard ---
+   th Teknologi di index.html : 1
+   sel teknologi di perender   : 
+   detail.js menyebut teknologi: 0
+   route teknologi-ringkas     : 0
+   kartu teknoRingkas          : 0
+--- layanan ---
+   /api/health http=200
+   /api/teknologi-ringkas http=404
+--- juraganit.com porta langsung (bukan CDN) ---
+   porta 21    -> BUKA | 220---------- Welcome to Pure-FTPd [privsep] [TLS] ---------
+   porta 22    -> -
+   porta 2083  -> -
+   porta 2087  -> -
+   porta 3306  -> -
+--- netlify.app persaudaraan ---
+   persaudaraan.netlify.app -> http=404
+{"code":401,"message":"Access Denied"}
+   persaudaraan-com.netlify.app -> http=404
+{"code":401,"message":"Access Denied"}
+--- waspadaweb.com isi (552 byte) ---
+<!doctype html><html lang="id"><head><meta charset="utf-8"><title>WaspadaWeb</title></head><body><h1>WaspadaWeb is online</h1><p>Origin VPS Ubuntu berhasil merespons.</p></body></html>
+
+--- jalankan kanal.py ---
+== waspadaweb.com ==
+   muka   : http=200 | teknologi=-
+   t0 tanpa akun : -
+   t1 akun CMS   : -
+   t2 berkas     : -
+   t3 pipa deploy: -
+   KANAL TERPILIH: tidak ada
+
+== persaudaraan.com ==
+   muka   : http=200 | teknologi=-
+   t0 tanpa akun : -
+   t1 akun CMS   : -
+   t2 berkas     : -
+   t3 pipa deploy: -
+   KANAL TERPILIH: tidak ada
+
+== juraganit.com ==
+   muka   : http=200 | teknologi=next.js
+   t0 tanpa akun : -
+   t1 akun CMS   : -
+   t2 berkas     : -
+   t3 pipa deploy: build next.js
+   KANAL TERPILIH: build next.js
+
+--- [A] pastikan kolom header + sel ---
+   tabel pos  24417 | th=['', 'Domain ⇅', 'Tipe', 'Status ⇅', 'Skor otoritas ⇅', 'Halaman tamu', 'Terakhir dicek', 'Aksi']
+   tabel pos  28485 | th=['Target', 'Nama', 'Tipe', 'Level', 'Secret', 'Berlaku s.d.', 'Aksi']
+   tabel pos  28863 | th=['URL', 'Kata kunci', 'Status indeks', 'Terakhir diperbarui']
+   tabel pos  34047 | th=['Domain', 'Akhiran', 'Jenis', 'Status', 'Teknologi', 'HTTP', 'Skor', 'Penjaga', 'Aksi']
+   tabel pos  35702 | th=['Target', 'Nama', 'Tipe', 'Level', 'Secret', 'Berlaku s.d.', 'Aksi']
+   tabel pos  36946 | th=['Waktu', 'Target', 'Path', 'Template', 'Status', 'Aksi']
+   tabel pos  38057 | th=['URL halaman tamu', 'Target', 'Kata kunci', 'Template', 'Status indeks', 'Posisi rata-rata']
+   tabel pos  39610 | th=['Waktu', 'Target', 'Jenis cek', 'Hasil', 'Latensi']
+   tabel pos  40381 | th=['Sumber', 'Tier', 'Anchor', 'Halaman tujuan', 'Status', 'DR']
+   tabel pos  42570 | th=['Waktu', 'Aktor', 'Aksi', 'Objek', 'Detail perubahan']
+   tabel pos  43429 | th=['Anggota', 'Peran', 'MFA', 'Login terakhir']
+   tabel ber-Teknologi: [34047]
+   + sel disisipkan di dashboard/live.js | konteks: '   body.innerHTML = \'<tr><td colspan="8" style="padding:10px;color:var(--muted)">memuat...</td></tr>\';\n    fetch(url).then(functio'
+--- [B] pastikan baris di detail.js ---
+   + baris ditambahkan
+--- [C] pastikan route ringkas ---
+   + route ditambahkan
+   + kompilasi OK
+--- [D] nyalakan ulang + uji ---
+   /api/health http=200
+{"waf":[{"waf":"-","n":36},{"waf":"cloudflare","n":5}],"kanal":[{"kanal":"-","n":26},{"kanal":"t1 wp (user+pass) | t1 joomla | t1 moodle","n":5},{"kanal":"t4 worker (akun CDN)","n":3},{"kanal":"t1 wp (user+pass)","n":3},{"kanal":"t1 wp (user+pass) | t1 moodle","n":2},{"kanal":"t1 wp (user+pass) | t1 joomla | t1 moodle | t4 worker (akun CDN)","n":2}],"teknologi":[{"teknologi":"","n":16},{"teknologi
+[{"id":45,"domain":"gacor.net","tipe":"lain","status":"hidup","owner":"","tags":"","catatan":"","created_at":"2026-10-22 07:37:26","updated_at":"2026-10-22 08:20:53","teknologi":"tailwind","server":"cloudflare","waf":"cloudflare","pintu":"-","kanal":"t4 worker (akun CDN)","dianalisa":"2026-10-22"},{
+
+  /api/health  http 200
+  layanan HIDUP
+
+GATE: LULUS

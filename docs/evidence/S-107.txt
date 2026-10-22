@@ -1,0 +1,23 @@
+=== S-107 penyedia + repo sumber ===
+Thu Oct 22 15:58:55 WIB 2026
+== waspadaweb.com ==
+   http 200 | penyedia cloudflare | byte 552
+   judul: WaspadaWeb
+   kerangka: html biasa
+   pages.dev/workers.dev: -
+
+== persaudaraan.com ==
+   http 200 | penyedia netlify | byte 32336
+   judul: PERSAUDARAAN — Satu Coin. Satu Harapan.
+   kerangka: html biasa
+   pages.dev/workers.dev: -
+   netlify api: tidak ketemu
+
+== juraganit.com ==
+   http 200 | penyedia LiteSpeed | byte 45457
+   judul: Juragan IT - PT Juragan Langit Teknologi
+   kerangka: next.js
+   pages.dev/workers.dev: -
+
+--- kanal tulis ketiga situs ---
+/Library/Developer/CommandLineTools/usr/bin/python3: can't open file '/Users/eghi/Documents/REPO/Hestia/tools/kanal.py': [Errno 2] No such file or directory
