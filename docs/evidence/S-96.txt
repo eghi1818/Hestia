@@ -1,0 +1,103 @@
+=== S-96 ===
+Thu Oct 22 14:37:26 WIB 2026
+--- [A] skema TargetMasuk apa adanya ---
+{
+ "properties": {
+  "domain": {
+   "type": "string",
+   "title": "Domain"
+  },
+  "tipe": {
+   "type": "string",
+   "title": "Tipe",
+   "default": "lain"
+  },
+  "status": {
+   "type": "string",
+   "title": "Status",
+   "default": "kandidat"
+  },
+  "owner": {
+   "type": "string",
+   "title": "Owner",
+   "default": ""
+  },
+  "tags": {
+   "type": "string",
+   "title": "Tags",
+   "default": ""
+  },
+  "catatan": {
+   "type": "string",
+   "title": "Catatan",
+   "default": ""
+  }
+ },
+ "type": "object",
+ "required": [
+  "domain"
+ ],
+ "title": "TargetMasuk"
+}
+--- [B] POST + pesan galat penuh ---
+{"detail":"status tidak dikenal: baru"}
+   http=400
+--- [C] ulangan: hanya domain ---
+{"id":45,"domain":"gacor.net","tipe":"lain","status":"kandidat","owner":"","tags":"","catatan":"","created_at":"2026-10-22 07:37:26","updated_at":"2026-10-22 07:37:26"}
+   http=201
+--- [D] kepala balasan halaman profil ---
+HTTP/2 200 
+date: Thu, 22 Oct 2026 07:37:32 GMT
+content-type: text/html; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=napHRY%2FySwXB%2BaqDVmtqHMsxDDTxOOLKXNXksH63hgjVMKrqeEhHvijW8U8419hx1BuU2UAwyYAYI%2BcaEsHYlALJo6HY9WVTpGJkoisNCAEK1A2mMQWOg%2F7AUDo%3D"}]}
+vary: Accept-Encoding
+x-powered-by: Next.js
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a4e6d6597d1309cc-HKG
+alt-svc: h3=":443"; ma=86400
+
+--- [E] rute data / aset ---
+   /_next/data/fYvk3d2HCCaFDHqB9Hr2n/tentang/profile.json  -> http=200 byte=29339 jenis=text/html; charset=utf-8
+   /api/health                                             -> http=308 byte=12 jenis=
+   /api/profile                                            -> http=308 byte=13 jenis=
+   /robots.txt                                             -> http=200 byte=1248 jenis=text/plain; charset=utf-8
+   /sitemap.xml                                            -> http=404 byte=22625 jenis=text/html; charset=utf-8
+--- [F] kalau rute data 200, isinya: ---
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Profile -  Wecash</title><meta name="description" content="Wecash Profile"/><meta name="next-head-count" content="4"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png"/><link rel="icon" href="/favicon.ico" sizes="48x48"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /><link rel="preload" href="/_next/static/css/a697c4f1186e3e1c.css" as="style"/><link rel="stylesheet" href="/_next/static/css/
+--- [G] jejak URL di HTML profil ---
+http://www.w3.org/2000/svg
+https://facebook.com/wecash.official
+https://fonts.googleapis.com
+https://fonts.googleapis.com/css2
+https://fonts.gstatic.com
+https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa0ZL7W0Q5n-wU.woff2
+https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2
+https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1pL7W0Q5n-wU.woff2
+https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa25L7W0Q5n-wU.woff2
+https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2JL7W0Q5n-wU.woff2
+https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2ZL7W0Q5n-wU.woff2
+https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2pL7W0Q5n-wU.woff2
+https://fonts.gstatic.com/s/inter/v20/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuFuYMZs.woff
+https://fonts.gstatic.com/s/inter/v20/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuGKYMZs.woff
+https://fonts.gstatic.com/s/inter/v20/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuI6fMZs.woff
+https://fonts.gstatic.com/s/inter/v20/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfMZs.woff
+https://fonts.gstatic.com/s/inter/v20/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuOKfMZs.woff
+https://twitter.com
+https://www.instagram.com
+https://www.linkedin.com
+--- [H] teks yang tampak di halaman profil ---
+    Profile - Wecash Home QRIS Tentang Kami Masuk Satu Platform Pembayaran QRIS Terintegrasi untuk Pertumbuhan Usaha Anda Wecash menyediakan infrastruktur pembayaran digital yang aman melalui WhatsApp dan Telegram, memungkinkan UMKM, Yayasan, dan Komunitas menerima transaksi QRIS secara efisien. Inovasi Terpercaya untuk Ekonomi Digital Indonesia. Wecash.ai adalah layanan pembayaran digital yang dikembangkan dan dikelola secara profesional oleh PT. Digital Kreatif Milenial. Kami berkomitmen untuk memberdayakan pertumbuhan ekonomi dari tingkat akar rumput—mulai dari usaha mikro, koperasi, hingga lembaga sosial—dengan teknologi yang mudah diakses dan aman. Lebih dari seribu merchant telah mempercayakan sistem pembayaran mereka kepada Wecash karena proses yang cepat, layanan responsif, dan dukunga
+--- [I] kandidat CMS / admin ---
+   /admin         -> http=308
+   /wp-json       -> http=308
+   /api           -> http=308
+   /login         -> http=308
+   /cms           -> http=308
+
+  /api/health  http 200
+  layanan HIDUP
+
+GATE: LULUS
+
