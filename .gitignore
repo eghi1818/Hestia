@@ -22,3 +22,4 @@ data/
 .out/
 docs/HANDOFF.md
 docs/STEPLOG.md
+data/backup/

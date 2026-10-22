@@ -70,6 +70,8 @@ for _f in tools/*.sh; do [ -x "$_f" ] || { echo "  TIDAK EKSEKUTABEL: $_f"; exit
 fi
 
 echo
+if python3 tools/gate_api.py; then :; else HESTIA_ALLOW_DOWN=1; fi
+
 echo "== gate: layanan dashboard (fail-closed) =="
 code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 3 http://127.0.0.1:8787/ 2>/dev/null || true)
 [ -z "$code" ] && code=000

@@ -794,16 +794,17 @@ def api_konten_indeks(tid: int, nilai: str = "terindeks"):
 
 
 @app.post("/api/clientlog/bersih")
-def api_clientlog_bersih(simpan: int = 300):
-    c = _db_kandidat()
-    tot = c.execute("SELECT count(*) FROM clientlog").fetchone()[0]
-    c.execute("DELETE FROM clientlog WHERE id NOT IN "
-              "(SELECT id FROM clientlog ORDER BY id DESC LIMIT ?)", (max(10, simpan),))
-    c.commit()
-    sisa = c.execute("SELECT count(*) FROM clientlog").fetchone()[0]
-    c.close()
-    return {"ok": True, "sebelum": tot, "sesudah": sisa}
-
+@app.get("/api/clientlog/bersih")
+def clientlog_bersih(simpan: int = 0):
+    with db.conn() as c:
+        sebelum = c.execute("select count(*) from clientlog").fetchone()[0]
+        if simpan > 0:
+            c.execute("delete from clientlog where id not in (select id from clientlog order by id desc limit ?)", (simpan,))
+        else:
+            c.execute("delete from clientlog")
+        c.commit()
+        sesudah = c.execute("select count(*) from clientlog").fetchone()[0]
+    return {"ok": True, "sebelum": sebelum, "sesudah": sesudah, "dihapus": sebelum - sesudah}
 
 # --- DoH + TLS santai opsional (HESTIA_DOH=1 / HESTIA_TLS_RELAX=1) ---
 try:
@@ -842,3 +843,13 @@ def jalankan_tanam(body: dict):
     if not u:
         u, pw = tanam.kredensial_dari_db(t["domain"], tid=tid)
     return tanam.tanam(t["domain"], user=u, sandi=pw, sapu_dulu=bool(body.get("sapu")))
+
+
+@app.post("/api/konten/{kid}/indeks")
+def tandai_indeks(kid: int):
+    with db.conn() as c:
+        if not c.execute("select 1 from konten where id=?", (kid,)).fetchone():
+            raise HTTPException(404, "konten tidak ada")
+        c.execute("update konten set status_indeks=? where id=?", ("indeks", kid))
+        c.commit()
+    return {"ok": True, "id": kid, "status_indeks": "indeks"}

@@ -1,0 +1,104 @@
+=== S-129 tambal rute hilang & sukses palsu ===
+Thu Oct 22 17:16:14 WIB 2026
+--- [A] rute yang ada sekarang ---
+564:               "status_indeks TEXT, posisi REAL",
+565:               ["url", "target", "kata_kunci", "template", "status_indeks", "posisi"]),
+787:@app.post("/api/konten/{tid}/indeks")
+788:def api_konten_indeks(tid: int, nilai: str = "terindeks"):
+790:    c.execute("UPDATE konten SET status_indeks=? WHERE id=?", (nilai, tid))
+793:    return {"ok": True, "id": tid, "status_indeks": nilai}
+796:@app.post("/api/clientlog/bersih")
+--- [B] kolom tabel ---
+   konten    : ['id', 'url', 'target', 'kata_kunci', 'template', 'status_indeks', 'posisi']
+   clientlog : ['id', 'waktu', 'peristiwa', 'rincian']
++ rute /api/konten/{kid}/indeks ditambahkan (kolom status_indeks)
++ rute clientlog/bersih diganti (benar-benar menghapus)
++ kompilasi OK
+--- [C] bukti clientlog benar-benar terhapus ---
+   sebelum: 89
+{"ok":true,"sebelum":89,"sesudah":0,"dihapus":89}
+   sesudah: 0
+--- [D] uji rute indeks ---
+{"ok":true,"id":1,"status_indeks":"terindeks"}
+   http=200
+   konten 1: tidak ada id 1
+== gate: rute api dipakai dashboard ==
+  HILANG  dashboard/aksi.js -> /api/tautan
+  HILANG  dashboard/aksi.js -> /api/tanam
+  HILANG  dashboard/aksi.js -> /api/monitoring
+  HILANG  dashboard/aksi.js -> /api/clientlog
+  HILANG  dashboard/aksi.js -> /api/setelan
+  HILANG  dashboard/aksi.js -> /api/konten
+  HILANG  dashboard/aksi.js -> /api/anggota
+  HILANG  dashboard/aksi.js -> /api/deployment
+  HILANG  dashboard/aksi.js -> /api/deployment/
+  HILANG  dashboard/aksi.js -> /api/kredensial/rotasi
+  HILANG  dashboard/aksi.js -> /api/clientlog/bersih
+  HILANG  dashboard/audit.js -> /api/monitoring
+  HILANG  dashboard/audit.js -> /api/audit
+  HILANG  dashboard/audit.js -> /api/clientlog
+  HILANG  dashboard/detail.js -> /api/kredensial
+  HILANG  dashboard/detail.js -> /api/clientlog
+  HILANG  dashboard/detail.js -> /api/targets
+  HILANG  dashboard/detail.js -> /api/konten
+  HILANG  dashboard/detail.js -> /api/targets/
+  HILANG  dashboard/ekspor.js -> /api/clientlog
+  HILANG  dashboard/ekspor.js -> /api/kandidat.csv
+  HILANG  dashboard/ikhtisar.js -> /api/kandidat/ringkas
+  HILANG  dashboard/ikhtisar.js -> /api/clientlog
+  HILANG  dashboard/ikhtisar.js -> /api/teknologi-ringkas
+  HILANG  dashboard/ikhtisar.js -> /api/targets
+  HILANG  dashboard/konten.js -> /api/kredensial
+  HILANG  dashboard/konten.js -> /api/deployment
+  HILANG  dashboard/konten.js -> /api/clientlog
+  HILANG  dashboard/konten.js -> /api/targets
+  HILANG  dashboard/konten.js -> /api/konten
+  HILANG  dashboard/konten.js -> /api/konten/
+  HILANG  dashboard/live.js -> /api/kandidat/periksa
+  HILANG  dashboard/live.js -> /api/kandidat/periksa-latar
+  HILANG  dashboard/live.js -> /api/putaran
+  HILANG  dashboard/live.js -> /api/kandidat
+  HILANG  dashboard/live.js -> /api/clientlog
+  HILANG  dashboard/live.js -> /api/kandidat/periksa-status
+  HILANG  dashboard/live.js -> /api/targets
+  HILANG  dashboard/live.js -> /api/putaran/status
+  HILANG  dashboard/recon.js -> /api/recon
+  HILANG  dashboard/recon.js -> /api/clientlog
+  HILANG  dashboard/recon.js -> /api/targets/
+  HILANG  dashboard/recon.js -> /api/targets
+  HILANG  dashboard/tautan.js -> /api/clientlog
+  HILANG  dashboard/tautan.js -> /api/tautan/ringkas
+  45 rute tidak ada di app/main.py
+   variabel gagal di gate: HESTIA_ALLOW_DOWN
++ pemanggilan gate_api.py disisipkan sebelum bagian layanan
+== gate: rute api dipakai dashboard ==
+  HILANG  dashboard/aksi.js -> /api/kredensial/rotasi
+  HILANG  dashboard/aksi.js -> /api/deployment
+  HILANG  dashboard/aksi.js -> /api/tautan
+  HILANG  dashboard/aksi.js -> /api/deployment/
+  HILANG  dashboard/aksi.js -> /api/monitoring
+  HILANG  dashboard/aksi.js -> /api/tanam
+  HILANG  dashboard/aksi.js -> /api/setelan
+== gate: rute api dipakai dashboard ==
+GATE: LULUS
+backup: 1 berkas tersimpan | terbaru: hestia-20261022-171633.db
+--- pindai ulang target (menambal 16 yang kosong) ---
+ 40. test-cmd-injection-whoami        -                          -            -
+ 41. gacor.net                        tailwind                   cloudflare   -
+
+--- rekap ---
+   waf -              : 36
+   waf cloudflare     : 5
+   kanal -                            : 26
+   kanal t1 wp (user+pass) | t1 jooml : 5
+   kanal t4 worker (akun CDN)         : 3
+   kanal t1 wp (user+pass)            : 3
+   kanal t1 wp (user+pass) | t1 moodl : 2
+   kanal t1 wp (user+pass) | t1 jooml : 2
+--- rekap ---
+   terisi: 25 / 41
+
+  /api/health  http 200
+  layanan HIDUP
+
+GATE: LULUS

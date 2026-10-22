@@ -13,3 +13,6 @@ if bash tools/gate.sh; then
 else
   echo "GATE GAGAL - commit ditolak"; exit 1
 fi
+
+# salin basis data sebelum ditutup
+python3 tools/backup.py
