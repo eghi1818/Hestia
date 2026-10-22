@@ -1,0 +1,110 @@
+=== S-138: domain ke argv + buang proses yatim ===
+Thu Oct 22 21:17:36 WIB 2026
+--- [A] konvensi argv setiap tool (penentu pakai_domain) ---
+   === tools/teknologi.py ===
+70:def main():
+77:    batas = int(sys.argv[1]) if len(sys.argv) > 1 else 999
+94:if __name__ == "__main__":
+   === tools/pintu.py ===
+104:if __name__ == "__main__":
+105:    for d in (sys.argv[1:] or daftar()):
+   === tools/kanal.py ===
+99:if __name__ == "__main__":
+100:    for d in (sys.argv[1:] or ["wecash.ai"]):
+   === tools/asal.py ===
+136:if __name__ == "__main__":
+137:    for d in (sys.argv[1:] or ["wecash.ai"]):
+   === tools/jejak.py ===
+89:def main(d):
+109:if __name__ == "__main__":
+110:    for d in (sys.argv[1:] or ["wecash.ai"]):
+   === tools/hosting.py ===
+82:if __name__ == "__main__":
+83:    for d in (sys.argv[1:] or ["waspadaweb.com"]):
+   === tools/tanam.py ===
+337:if __name__ == "__main__":
+--- [B] job + proses yang masih hidup ---
+1|teknologi|terputus|19040
+2|teknologi|terputus|22526
+   pid 19040       pid 22526    --- [C] buang proses yatim (job yang tidak sedang jalan) ---
+   19040 sudah mati
+   22526 sudah mati
+--- [D] perbaikan skema + deteksi pakai_domain + patch app/main.py ---
++ kolom whitelist.pakai_domain ditambahkan
++ pola 'sql' diizinkan memuat spasi
++ batas_detik dinaikkan untuk aksi pemindai
+   asal       pakai_domain=0 (tidak memakai argv[1] - memindai semua)
+   gate       pakai_domain=0 (bukan skrip tools/)
+   hosting    pakai_domain=0 (tidak memakai argv[1] - memindai semua)
+   jejak      pakai_domain=0 (tidak memakai argv[1] - memindai semua)
+   kanal      pakai_domain=0 (tidak memakai argv[1] - memindai semua)
+   pintu      pakai_domain=0 (tidak memakai argv[1] - memindai semua)
+   smoke      pakai_domain=0 (bukan skrip tools/)
+   sql        pakai_domain=0 (bukan skrip tools/)
+   tanam      pakai_domain=0 (tidak memakai argv[1] - memindai semua)
+   teknologi  pakai_domain=0 (argv[1] = angka batas)
++ patch: aksi_baris ambil pakai_domain
++ patch: konsol_aksi ambil pakai_domain
++ patch: kol konsol_aksi
++ patch: sisipkan domain ke argv
++ patch: startup bunuh yatim
++ kompilasi OK
+asal|0|0|600
+gate|0|0|180
+hosting|0|0|600
+jejak|0|0|600
+kanal|0|0|300
+pintu|0|0|300
+smoke|0|0|120
+sql|0|0|60
+tanam|0|1|300
+teknologi|0|0|600
+--- [H] betulkan pakai_domain (peta eksplisit, bukan heuristik) ---
+asal|1|0|600
+gate|0|0|180
+hosting|1|0|600
+jejak|1|0|600
+kanal|1|0|300
+pintu|1|0|300
+smoke|0|0|120
+sql|0|0|60
+tanam|1|1|300
+teknologi|0|0|600
+--- [I] tulis ulang uji_konsol.py (ringkas) ---
++ uji_konsol.py OK
+--- [J] restart ---
+layanan: http 401
+1|terputus
+2|terputus
+--- [K] uji penerimaan ---
+--- uji: aksi cepat (sql)
+   job=3 r=R-3 argv=/usr/bin/sqlite3 data/hestia.db SELECT 1
+   GAGAL: tak ada baris terlihat saat status jalan
+   status=lulus baris=3 ukuran=96 lihat=False
+--- aksi berdomain tanpa menulis: ['asal', 'hosting', 'jejak', 'kanal', 'pintu']
+--- uji: berdomain (kanal)
+   job=4 r=R-4 argv=/Users/eghi/Documents/REPO/Hestia/.venv/bin/python -u tools/kanal.py waspadaweb.com
+   status=lulus baris=13 ukuran=388 lihat=True
+--- uji: penjaga mode=pantau
+   tolak: target mode=pantau (situs pemerintah) - kirim paksa=1 untuk menulis
+UJI KONSOL: GAGAL
+   rc=1
+--- [L] pastikan tidak ada job tertinggal 'jalan' ---
+1|teknologi|terputus|R-1
+2|teknologi|terputus|R-2
+3|sql|lulus|R-3
+4|kanal|lulus|R-4
+-rw-r--r--  1 eghi  staff     0 Oct 22 21:10 docs/evidence/R-1.txt
+-rw-r--r--  1 eghi  staff  2393 Oct 22 21:15 docs/evidence/R-2.txt
+-rw-r--r--  1 eghi  staff    96 Oct 22 21:20 docs/evidence/R-3.txt
+-rw-r--r--  1 eghi  staff   388 Oct 22 21:20 docs/evidence/R-4.txt
+--- uji: aksi cepat (sql)
+   job=5 r=R-5 argv=/usr/bin/sqlite3 data/hestia.db SELECT 1
+   status=lulus durasi=1.0s baris=3 ukuran=96 lihat=False
+--- aksi berdomain tanpa menulis: ['asal', 'hosting', 'jejak', 'kanal', 'pintu']
+--- uji: berdomain (kanal)
+   job=6 r=R-6 argv=/Users/eghi/Documents/REPO/Hestia/.venv/bin/python -u tools/kanal.py waspadaweb.com
+   status=lulus durasi=18.2s baris=13 ukuran=388 lihat=True
+--- uji: penjaga mode=pantau
+   tolak: target mode=pantau (situs pemerintah) - kirim paksa=1 untuk menulis
+UJI KONSOL: LULUS

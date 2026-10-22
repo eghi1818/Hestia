@@ -883,6 +883,17 @@ _JALAN = {}
 
 def _job_terputus():
     with db.conn() as c:
+        baris = c.execute("SELECT id,pid FROM job WHERE status='jalan'").fetchall()
+    for _jid, _pid in baris:
+        if _pid:
+            try:
+                _os.killpg(_pid, 15)
+            except Exception:
+                try:
+                    _os.kill(_pid, 15)
+                except Exception:
+                    pass
+    with db.conn() as c:
         c.execute("UPDATE job SET status='terputus', selesai=datetime('now') WHERE status='jalan'")
 
 
@@ -904,7 +915,7 @@ def _nomor_r():
 
 def _aksi_baris(nama):
     with db.conn() as c:
-        return c.execute("SELECT nama,biner,argumen_tetap,pola,argumen_utuh,menulis,batas_detik "
+        return c.execute("SELECT nama,biner,argumen_tetap,pola,argumen_utuh,menulis,batas_detik,pakai_domain "
                          "FROM whitelist WHERE nama=? AND aktif=1", (nama,)).fetchone()
 
 
@@ -920,9 +931,9 @@ def _target_baris(domain=None, tid=None):
 @app.get("/api/konsol/aksi")
 def _konsol_aksi():
     with db.conn() as c:
-        r = c.execute("SELECT nama,biner,pola,argumen_utuh,menulis,batas_detik,deskripsi "
+        r = c.execute("SELECT nama,biner,pola,argumen_utuh,menulis,batas_detik,deskripsi,pakai_domain "
                       "FROM whitelist WHERE aktif=1 ORDER BY nama").fetchall()
-    kol = ["nama", "biner", "pola", "argumen_utuh", "menulis", "batas_detik", "deskripsi"]
+    kol = ["nama", "biner", "pola", "argumen_utuh", "menulis", "batas_detik", "deskripsi", "pakai_domain"]
     return {"aksi": [dict(zip(kol, x)) for x in r]}
 
 
@@ -954,7 +965,10 @@ async def _konsol_jalankan(muatan: dict):
         sedang = c.execute("SELECT COUNT(*) FROM job WHERE status='jalan'").fetchone()[0]
     if sedang:
         return {"ok": False, "sebab": "masih ada job jalan - batas konkurensi 1"}
-    argv = [biner] + _json.loads(a[2]) + tambahan
+    argv = [biner] + _json.loads(a[2])
+    if a[7] and t:
+        argv.append(t[1])
+    argv += tambahan
     n = _nomor_r()
     berkas = _DOK_EV / ("R-%d.txt" % n)
     with db.conn() as c:

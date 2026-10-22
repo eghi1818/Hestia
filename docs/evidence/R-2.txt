@@ -38,3 +38,6 @@
 [sys] denyut
 [sys] denyut
 [sys] denyut
+[out]  19. balog-tni.mil.id                 bootstrap, jquery, wordpre -            wp(200)
+[sys] denyut
+[out]  20. 1004korea.ac.id                  -                          -            wp(403), wp-rest(403), joomla(403), drup

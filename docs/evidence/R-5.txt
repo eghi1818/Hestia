@@ -1,0 +1,3 @@
+[sys] mulai: /usr/bin/sqlite3 data/hestia.db SELECT 1
+[out] 1
+[sys] selesai status=lulus kode=0
