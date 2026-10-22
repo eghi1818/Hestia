@@ -1,0 +1,173 @@
+=== S-144 cari jalur tulis tanpa sandi di VPS ===
+Thu Oct 22 21:49:12 WIB 2026
+--- [A] kredensial yang sudah ada ---
+id  target              nama      tipe         level  berlaku_sd
+--  ------------------  --------  -----------  -----  ----------
+1   baliprov.go.id      admin     FTP          tulis  2027-10-22
+2   semarangkota.go.id  Semarang  Panel admin  Admin  2027-10-22
+--- [B] tulis tools/jalur.py ---
++ jalur.py OK
+--- [C] jalankan ---
+### host=93.127.133.160 porta=10053 user=wesearch
+== proses-web ==
+root      331730 nginx: master process /usr/sbin/nginx -g daemon on; master_process on;
+www-data  331732 nginx: worker process
+www-data  331733 nginx: worker process
+== porta-dengar ==
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      4096      127.0.0.54:53         0.0.0.0:*          
+LISTEN 0      4096       127.0.0.1:20241      0.0.0.0:*          
+LISTEN 0      4096         0.0.0.0:22         0.0.0.0:*          
+LISTEN 0      511          0.0.0.0:80         0.0.0.0:*          
+LISTEN 0      128        127.0.0.1:27019      0.0.0.0:*          
+LISTEN 0      4096       127.0.0.1:27017      0.0.0.0:*          
+LISTEN 0      4096   127.0.0.53%lo:53         0.0.0.0:*          
+LISTEN 0      4096            [::]:22            [::]:*          
+LISTEN 0      511             [::]:80            [::]:*          
+LISTEN 0      128            [::1]:27019         [::]:*          
+== usr-local ==
+bin
+etc
+games
+include
+lib
+man
+sbin
+share
+src
+== kandidat-konfig ==
+/etc/nginx
+/etc/nginx/conf.d
+/etc/nginx/sites-enabled
+== cari-vhost ==
+23:fastcgi_param  SERVER_NAME        $server_name;
+24:fastcgi_param  SERVER_NAME        $server_name;
+41:	root /var/www/html;
+46:	server_name _;
+5:    server_name waspadaweb.com www.waspadaweb.com;
+7:    root /var/www/waspadaweb;
+23:	# server_names_hash_bucket_size 64;
+24:	# server_name_in_redirect off;
+17:scgi_param  SERVER_NAME        $server_name;
+17:uwsgi_param  SERVER_NAME        $server_name;
+== var-www ==
+total 16
+drwxr-xr-x  4 root root 4096 Oct 12 08:52 .
+drwxr-xr-x 14 root root 4096 Oct 12 08:46 ..
+drwxr-xr-x  2 root root 4096 Oct 12 08:46 html
+drwxr-xr-x  2 root root 4096 Oct 12 08:52 waspadaweb
+== docroot ==
+total 12
+drwxr-xr-x 2 root root 4096 Oct 12 08:52 .
+drwxr-xr-x 4 root root 4096 Oct 12 08:52 ..
+-rw-r--r-- 1 root root  185 Oct 12 08:52 index.html
+== bisa-ditulis ==
+== skrip-bisa-ditulis ==
+== crontab-sistem ==
+# /etc/crontab: system-wide crontab
+# Unlike any other crontab you don't have to run the `crontab'
+# command to install the new version when you edit this file
+# and files in /etc/cron.d. These files also have username fields,
+# that none of the other crontabs do.
+
+SHELL=/bin/sh
+# You can also override PATH, but by default, newer versions inherit it from the environment
+#PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name command to be executed
+17 *	* * *	root	cd / && run-parts --report /etc/cron.hourly
+25 6	* * *	root	test -x /usr/sbin/anacron || { cd / && run-parts --report /etc/cron.daily; }
+47 6	* * 7	root	test -x /usr/sbin/anacron || { cd / && run-parts --report /etc/cron.weekly; }
+52 6	1 * *	root	test -x /usr/sbin/anacron || { cd / && run-parts --report /etc/cron.monthly; }
+#
+total 20
+drwxr-xr-x   2 root root 4096 Oct 12 08:43 .
+drwxr-xr-x 112 root root 4096 Oct 21 06:33 ..
+-rw-r--r--   1 root root  102 Apr 23  2024 .placeholder
+-rw-r--r--   1 root root  201 Apr  8  2024 e2scrub_all
+-rw-r--r--   1 root root  396 Apr 23  2024 sysstat
+30 3 * * 0 root test -e /run/systemd/system || SERVICE_MODE=1 /usr/lib/x86_64-linux-gnu/e2fsprogs/e2scrub_all_cron
+10 3 * * * root test -e /run/systemd/system || SERVICE_MODE=1 /sbin/e2scrub_all -A -r
+# The first element of the path is a directory where the debian-sa1
+# script is located
+PATH=/usr/lib/sysstat:/usr/sbin:/usr/sbin:/usr/bin:/sbin:/bin
+
+# Activity reports every 10 minutes everyday
+5-55/10 * * * * root command -v debian-sa1 > /dev/null && debian-sa1 1 1
+
+# Additional run at 23:59 to rotate the statistics file
+59 23 * * * root command -v debian-sa1 > /dev/null && debian-sa1 60 2
+== crontab-user ==
+*/10 * * * * cd ~/lexa-scrape && if ! pgrep -f pasal_scraper.py > /dev/null; then ./run.sh >> scrape.log 2>&1; fi
+== systemd-kustom ==
+/etc/systemd/system/cloudflared-update.service
+/etc/systemd/system/cloudflared.service
+/etc/systemd/system/dbus-org.freedesktop.ModemManager1.service
+/etc/systemd/system/dbus-org.freedesktop.resolve1.service
+/etc/systemd/system/dbus-org.freedesktop.thermald.service
+/etc/systemd/system/dbus-org.freedesktop.timesync1.service
+/etc/systemd/system/iscsi.service
+/etc/systemd/system/syslog.service
+/etc/systemd/system/vmtoolsd.service
+ExecStart=/usr/bin/cloudflared --no-autoupdate tunnel run --token-file /etc/cloudflared/token
+ExecStart=/bin/bash -c '/usr/bin/cloudflared update; code=$?; if [ $code -eq 11 ]; then systemctl restart cloudflared; exit 0; fi; exit $code'
+ExecStart=/usr/sbin/ModemManager
+ExecStart=!!/usr/lib/systemd/systemd-resolved
+ExecStart=/usr/sbin/thermald --systemd --dbus-enable --adaptive
+ExecStart=!!/usr/lib/systemd/systemd-timesyncd
+ExecStart=/usr/sbin/iscsiadm -m node --loginall=automatic
+ExecStart=/usr/lib/open-iscsi/activate-storage.sh
+ExecStartPre=/usr/lib/rsyslog/reload-apparmor-profile
+ExecStart=/usr/sbin/rsyslogd -n -iNONE
+ExecStart=/usr/bin/vmtoolsd
+== grup ==
+uid=1002(wesearch) gid=1002(wesearch) groups=1002(wesearch),100(users)
+sudo:x:27:administrator,ubuntu
+adm:x:4:syslog,administrator,ubuntu
+www-data:x:33:
+== setuid ==
+/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+/usr/lib/openssh/ssh-keysign
+/usr/lib/polkit-1/polkit-agent-helper-1
+/usr/bin/chfn
+/usr/bin/fusermount3
+/usr/bin/gpasswd
+/usr/bin/newgrp
+/usr/bin/umount
+/usr/bin/chsh
+/usr/bin/sudo
+/usr/bin/passwd
+/usr/bin/su
+/usr/bin/mount
+== firewall ==
+== home ==
+total 20
+drwxr-xr-x  5 root          root          4096 Oct 14 11:20 .
+drwxr-xr-x 23 root          root          4096 Oct  2 10:42 ..
+drwxr-x---  7 administrator administrator 4096 Oct  2 12:07 administrator
+drwxr-x---  3 ubuntu        ubuntu        4096 Jul  8  2024 ubuntu
+drwxr-x---  6 wesearch      wesearch      4096 Oct 16 16:06 wesearch
+== root-ssh ==
+== php-fpm ==
+== sudo-n ==
+sudo: a password is required
+RINGKAS: bisa-ditulis=0 skrip-bisa-ditulis=0
+JALUR TANPA SANDI: TIDAK ADA -> sandi sudo wajib
+--- [D] hasil uji kredensial ---
+id  kredensial_id  metode  hasil  substr(pesan,1,70)           
+--  -------------  ------  -----  -----------------------------
+1   1              ftp     gagal  [Errno 61] Connection refused
+--- [E] ringkas jalur.py ---
+11:### host=93.127.133.160 porta=10053 user=wesearch
+161:RINGKAS: bisa-ditulis=0 skrip-bisa-ditulis=0
+162:JALUR TANPA SANDI: TIDAK ADA -> sandi sudo wajib
+  layanan HIDUP
+
+GATE: LULUS

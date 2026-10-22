@@ -1,0 +1,13 @@
+[sys] mulai: /Users/eghi/Documents/REPO/Hestia/.venv/bin/python -u tools/kunci.py waspadaweb.com
+[out] target: waspadaweb.com | host di ssh config: 1
+[out] --- alias=wesearch_vps host=93.127.133.160:10053 kunci=ADA
+[out]    vhost:
+[out]    sebut-target:
+[out]    www:
+[out]    /var/www/html
+[out]    /var/www/waspadaweb
+[out]    bisa-ditulis:
+[out]    id:
+[out]    wesearch
+[out] KUNCI MESIN: BUKA alias=wesearch_vps porta=10053 user=wesearch
+[sys] selesai status=lulus kode=0
