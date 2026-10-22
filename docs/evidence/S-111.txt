@@ -1,0 +1,26 @@
+=== S-111 ===
+Thu Oct 22 16:13:59 WIB 2026
+- sel dibuang dari audit.js
+   dashboard/audit.js       pos   2839 td=5 lain
+   dashboard/live.js        pos   7561 td=8 lain
+   dashboard/index.html     pos  59761 td=8 lain
+sasaran: TIDAK ADA
+   th=9 ['', 'Domain ⇅', 'Tipe', 'Status ⇅', 'Teknologi', 'Skor otoritas ⇅', 'Halaman tamu', 'Terakhir dicek', 'Aksi']
+   th=7 ['Target', 'Nama', 'Tipe', 'Level', 'Secret', 'Berlaku s.d.', 'Aksi']
+   th=4 ['URL', 'Kata kunci', 'Status indeks', 'Terakhir diperbarui']
+   th=8 ['Domain', 'Akhiran', 'Jenis', 'Status', 'HTTP', 'Skor', 'Penjaga', 'Aksi']
+   th=7 ['Target', 'Nama', 'Tipe', 'Level', 'Secret', 'Berlaku s.d.', 'Aksi']
+   th=6 ['Waktu', 'Target', 'Path', 'Template', 'Status', 'Aksi']
+   th=6 ['URL halaman tamu', 'Target', 'Kata kunci', 'Template', 'Status indeks', 'Posisi rata-rata']
+   th=5 ['Waktu', 'Target', 'Jenis cek', 'Hasil', 'Latensi']
+   th=6 ['Sumber', 'Tier', 'Anchor', 'Halaman tujuan', 'Status', 'DR']
+   th=5 ['Waktu', 'Aktor', 'Aksi', 'Objek', 'Detail perubahan']
+   th=4 ['Anggota', 'Peran', 'MFA', 'Login terakhir']
+   dashboard/audit.js     td=5 teknologi=False 
+   dashboard/live.js      td=8 teknologi=False 
+   dashboard/index.html   td=8 teknologi=False 
+
+  /api/health  http 200
+  layanan HIDUP
+
+GATE: LULUS

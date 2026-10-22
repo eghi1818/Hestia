@@ -61,7 +61,7 @@
             + '<td style="' + sel + '">' + (r2.diperiksa_at || "") + "</td>"
             + '<td style="' + sel + '">' + r2.domain + "</td>"
             + '<td style="' + sel + '">HTTP</td>'
-            + '<td style="' + sel + '">' + r2.status + (r2.http_status ? " " + r2.http_status : "") + "</td>+ '<td>' + (r2.teknologi || '-') + '</td>'"
+            + '<td style="' + sel + '">' + r2.status + (r2.http_status ? " " + r2.http_status : "") + "</td>"
             + '<td style="' + sel + '">' + (r2.latensi_ms ? r2.latensi_ms + " ms" : "—") + "</td>"
             + "</tr>";
         }).join("");
