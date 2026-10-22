@@ -601,3 +601,26 @@ def api_konten_tambah(body: dict = Body(...)):
 def konten_js():
     from fastapi.responses import FileResponse
     return FileResponse("dashboard/konten.js", media_type="application/javascript")
+
+
+def _hapus(nama, tid):
+    c = _siap_tabel()
+    c.execute("DELETE FROM %s WHERE id=?" % nama, (tid,))
+    c.commit()
+    c.close()
+    return {"ok": True, "tabel": nama, "id": tid}
+
+
+@app.delete("/api/kredensial/{tid}")
+def api_kredensial_hapus(tid: int):
+    return _hapus("kredensial", tid)
+
+
+@app.delete("/api/deployment/{tid}")
+def api_deployment_hapus(tid: int):
+    return _hapus("deployment", tid)
+
+
+@app.delete("/api/konten/{tid}")
+def api_konten_hapus(tid: int):
+    return _hapus("konten", tid)
