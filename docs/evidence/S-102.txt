@@ -1,0 +1,27 @@
+=== S-102 ===
+Thu Oct 22 15:24:30 WIB 2026
+--- [A] alat yang tersedia ---
+gh not found
+/usr/bin/git
+/usr/bin/ssh
+/Users/eghi/.local/bin/node
+/Users/eghi/.local/bin/npx
+--- [B] identitas SSH ke GitHub (tanpa klik) ---
+Hi eghi1818! You've successfully authenticated, but GitHub does not provide shell access.
+--- [C] gh siap? ---
+   gh tidak ada
+--- [D] daftar repo sendiri (kalau gh siap) ---
+--- [E] tebak nama repo lewat SSH ---
+   wecash           
+   wecash-ai        
+   wecash.ai        
+   wecash-web       
+   wecashid         
+   wecash-id        
+   wecash-landing   
+   wecash-next      
+   wecash-app       
+   wecashsite       
+   wecash-website   
+--- [F] gacor.net boleh di-iframe? ---
+HTTP/2 200 

@@ -1,0 +1,33 @@
+=== S-103 pencarian server asli ===
+Thu Oct 22 15:32:25 WIB 2026
+== asal wecash.ai ==
+   crt.sh      : 2 nama
+   rapiddns    : 0 nama
+   hackertarget: 2 nama
+   total nama : 61
+   NS         : eve.ns.cloudflare.com., dilbert.ns.cloudflare.com.
+   MX         : 10 alt4.aspmx.l.google.com., 5 alt1.aspmx.l.google.com., 5 alt2.aspmx.l.google.com., 1 aspmx.l.google.com., 10 alt3.aspmx.l.google.com.
+   TXT        : "google-site-verification=G6_g0w9jehAvoXLB06Ud_0iqnS0w2ccb5jILbUG2ypQ" | "v=spf1 include:_spf.google.com -all"
+   IP DI LUAR CDN (calon server asli):
+     tidak ada - semua di belakang CDN
+   KESIMPULAN: tersembunyi penuh di CDN
+
+--- gacor.net (pembanding) ---
+== asal gacor.net ==
+   crt.sh      : 0 nama
+   rapiddns    : 1 nama
+   hackertarget: 2 nama
+   total nama : 62
+   NS         : damien.ns.cloudflare.com., aron.ns.cloudflare.com.
+   MX         : -
+   TXT        : "google-site-verification=oyGu60W5PVYyBaen4w9w5y1rH1JZ4TSnCV_AFxRH9-M"
+   IP DI LUAR CDN (calon server asli):
+     tidak ada - semua di belakang CDN
+   KESIMPULAN: tersembunyi penuh di CDN
+
+--- [X] gacor.net boleh di-iframe? ---
+HTTP/2 200 
+
+  layanan HIDUP
+
+GATE: LULUS
