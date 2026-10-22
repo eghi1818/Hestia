@@ -1,0 +1,86 @@
+=== S-136 migrasi konsol (idempoten) ===
+Thu Oct 22 21:10:17 WIB 2026
++ kolom targets.mode ditambahkan
++ semua target lama disetel mode='pantau'
++ tabel siap: job
++ tabel siap: job_log
++ tabel siap: langkah
++ tabel siap: bukti
++ tabel siap: status_konten
++ tabel siap: kredensial_uji
++ tabel siap: whitelist
++ situs uji didaftarkan: waspadaweb.com mode=uji
++ situs uji didaftarkan: persaudaraan.com mode=uji
++ situs uji didaftarkan: juraganit.com mode=uji
++ whitelist terisi: 10 aksi
+--- ringkas ---
+targets: 44
+mode uji: 3
+mode pantau: 41
+tabel baru: bukti, job, job_log, kredensial_uji, langkah, status_konten, whitelist
+--- [B] verifikasi ---
+48|juraganit.com|baru|uji
+47|persaudaraan.com|baru|uji
+46|waspadaweb.com|baru|uji
+asal|/Users/eghi/Documents/REPO/Hestia/.venv/bin/python|0|180
+gate|/bin/bash|0|180
+hosting|/Users/eghi/Documents/REPO/Hestia/.venv/bin/python|0|120
+jejak|/Users/eghi/Documents/REPO/Hestia/.venv/bin/python|0|180
+kanal|/Users/eghi/Documents/REPO/Hestia/.venv/bin/python|0|120
+pintu|/Users/eghi/Documents/REPO/Hestia/.venv/bin/python|0|120
+smoke|/bin/bash|0|120
+sql|/usr/bin/sqlite3|0|60
+tanam|/Users/eghi/Documents/REPO/Hestia/.venv/bin/python|1|240
+teknologi|/Users/eghi/Documents/REPO/Hestia/.venv/bin/python|0|120
+CREATE TABLE job(
+ id INTEGER PRIMARY KEY AUTOINCREMENT,
+ target_id INTEGER,
+--- [C] ulang migrasi (uji idempoten) ---
++ whitelist terisi: 10 aksi
+--- ringkas ---
+targets: 44
+mode uji: 3
+mode pantau: 41
+tabel baru: bukti, job, job_log, kredensial_uji, langkah, status_konten, whitelist
+--- [D] pasang konsol ke app/main.py ---
++ konsol ditambahkan
++ kompilasi OK
+--- [E] restart layanan ---
+layanan: http 401
+--- [F] uji: daftar aksi ---
+    asal | /Users/eghi/Documents/REPO/Hestia/.venv/bin/python | menulis= 0
+    gate | /bin/bash | menulis= 0
+    hosting | /Users/eghi/Documents/REPO/Hestia/.venv/bin/python | menulis= 0
+    jejak | /Users/eghi/Documents/REPO/Hestia/.venv/bin/python | menulis= 0
+    kanal | /Users/eghi/Documents/REPO/Hestia/.venv/bin/python | menulis= 0
+    pintu | /Users/eghi/Documents/REPO/Hestia/.venv/bin/python | menulis= 0
+    smoke | /bin/bash | menulis= 0
+    sql | /usr/bin/sqlite3 | menulis= 0
+    tanam | /Users/eghi/Documents/REPO/Hestia/.venv/bin/python | menulis= 1
+    teknologi | /Users/eghi/Documents/REPO/Hestia/.venv/bin/python | menulis= 0
+--- [G] uji: tolak tulis ke situs pemerintah ---
+{"ok":false,"sebab":"target mode=pantau (situs pemerintah) - kirim paksa=1 untuk menulis"}
+--- [H] uji: jalankan aksi baca (teknologi) ke target pemerintah ---
+   job_id=1
+   --- detak 1 ---
+{"ok":true,"job":{"id":1,"aksi":"teknologi","status":"jalan","r_nomor":"R-1","stdout_path":"/Users/eghi/Documents/REPO/Hestia/docs/evidence/R-1.txt","pid":19040,"detak":"2026-10-22 14:10:31","mulai":"2026-10-22 14:10:31","selesai":null}}
+   --- detak 2 ---
+{"ok":true,"job":{"id":1,"aksi":"teknologi","status":"jalan","r_nomor":"R-1","stdout_path":"/Users/eghi/Documents/REPO/Hestia/docs/evidence/R-1.txt","pid":19040,"detak":"2026-10-22 14:10:31","mulai":"2026-10-22 14:10:31","selesai":null}}
+   --- detak 3 ---
+{"ok":true,"job":{"id":1,"aksi":"teknologi","status":"jalan","r_nomor":"R-1","stdout_path":"/Users/eghi/Documents/REPO/Hestia/docs/evidence/R-1.txt","pid":19040,"detak":"2026-10-22 14:10:31","mulai":"2026-10-22 14:10:31","selesai":null}}
+   --- detak 4 ---
+{"ok":true,"job":{"id":1,"aksi":"teknologi","status":"jalan","r_nomor":"R-1","stdout_path":"/Users/eghi/Documents/REPO/Hestia/docs/evidence/R-1.txt","pid":19040,"detak":"2026-10-22 14:10:31","mulai":"2026-10-22 14:10:31","selesai":null}}
+   --- detak 5 ---
+{"ok":true,"job":{"id":1,"aksi":"teknologi","status":"jalan","r_nomor":"R-1","stdout_path":"/Users/eghi/Documents/REPO/Hestia/docs/evidence/R-1.txt","pid":19040,"detak":"2026-10-22 14:10:31","mulai":"2026-10-22 14:10:31","selesai":null}}
+   --- detak 6 ---
+{"ok":true,"job":{"id":1,"aksi":"teknologi","status":"jalan","r_nomor":"R-1","stdout_path":"/Users/eghi/Documents/REPO/Hestia/docs/evidence/R-1.txt","pid":19040,"detak":"2026-10-22 14:10:31","mulai":"2026-10-22 14:10:31","selesai":null}}
+   --- detak 7 ---
+{"ok":true,"job":{"id":1,"aksi":"teknologi","status":"jalan","r_nomor":"R-1","stdout_path":"/Users/eghi/Documents/REPO/Hestia/docs/evidence/R-1.txt","pid":19040,"detak":"2026-10-22 14:10:31","mulai":"2026-10-22 14:10:31","selesai":null}}
+   --- detak 8 ---
+{"ok":true,"job":{"id":1,"aksi":"teknologi","status":"jalan","r_nomor":"R-1","stdout_path":"/Users/eghi/Documents/REPO/Hestia/docs/evidence/R-1.txt","pid":19040,"detak":"2026-10-22 14:10:31","mulai":"2026-10-22 14:10:31","selesai":null}}
+--- [I] berkas bukti jalan ---
+-rw-r--r--  1 eghi  staff  0 Oct 22 21:10 docs/evidence/R-1.txt
+
+  layanan HIDUP
+
+GATE: LULUS

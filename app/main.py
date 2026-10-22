@@ -866,3 +866,189 @@ async def _auth(request, call_next):
             pass
     return _JR({"detail": "perlu login"}, status_code=401,
                headers={"WWW-Authenticate": 'Basic realm="Hestia"'})
+
+# ===== KONSOL (S-136) =====
+import asyncio as _asyncio
+import fcntl as _fcntl
+import json as _json
+import os as _os
+import re as _re
+from pathlib import Path as _Path
+
+_AKAR = _Path(__file__).resolve().parent.parent
+_DOK_EV = _AKAR / "docs" / "evidence"
+_KUNCI = "/tmp/hestia-r.lock"
+_JALAN = {}
+
+
+def _job_terputus():
+    with db.conn() as c:
+        c.execute("UPDATE job SET status='terputus', selesai=datetime('now') WHERE status='jalan'")
+
+
+def _nomor_r():
+    _DOK_EV.mkdir(parents=True, exist_ok=True)
+    f = open(_KUNCI, "w")
+    _fcntl.flock(f, _fcntl.LOCK_EX)
+    try:
+        n = 0
+        for p in _DOK_EV.glob("R-*.txt"):
+            m = _re.match(r"R-(\d+)\.txt$", p.name)
+            if m:
+                n = max(n, int(m.group(1)))
+        return n + 1
+    finally:
+        _fcntl.flock(f, _fcntl.LOCK_UN)
+        f.close()
+
+
+def _aksi_baris(nama):
+    with db.conn() as c:
+        return c.execute("SELECT nama,biner,argumen_tetap,pola,argumen_utuh,menulis,batas_detik "
+                         "FROM whitelist WHERE nama=? AND aktif=1", (nama,)).fetchone()
+
+
+def _target_baris(domain=None, tid=None):
+    with db.conn() as c:
+        if tid:
+            return c.execute("SELECT id,domain,mode FROM targets WHERE id=?", (tid,)).fetchone()
+        if domain:
+            return c.execute("SELECT id,domain,mode FROM targets WHERE domain=?", (domain,)).fetchone()
+    return None
+
+
+@app.get("/api/konsol/aksi")
+def _konsol_aksi():
+    with db.conn() as c:
+        r = c.execute("SELECT nama,biner,pola,argumen_utuh,menulis,batas_detik,deskripsi "
+                      "FROM whitelist WHERE aktif=1 ORDER BY nama").fetchall()
+    kol = ["nama", "biner", "pola", "argumen_utuh", "menulis", "batas_detik", "deskripsi"]
+    return {"aksi": [dict(zip(kol, x)) for x in r]}
+
+
+@app.post("/api/konsol/jalankan")
+async def _konsol_jalankan(muatan: dict):
+    nama = (muatan.get("aksi") or "").strip()
+    a = _aksi_baris(nama)
+    if not a:
+        return {"ok": False, "sebab": "aksi tidak ada di whitelist: %s" % nama}
+    biner = a[1]
+    if not _os.path.isabs(biner) or not _os.path.exists(biner):
+        return {"ok": False, "sebab": "biner tidak ada: %s" % biner}
+    extra_utuh = (muatan.get("extra") or "").strip()
+    if a[4]:
+        tambahan = [extra_utuh] if extra_utuh else []
+    else:
+        tambahan = extra_utuh.split()
+        for tok in tambahan:
+            if a[3] and not _re.match(a[3], tok):
+                return {"ok": False, "sebab": "argumen ditolak pola: %s" % tok}
+    t = _target_baris(muatan.get("domain"), muatan.get("target_id"))
+    if (muatan.get("domain") or muatan.get("target_id")) and not t:
+        return {"ok": False, "sebab": "target tidak ada"}
+    if a[5] and t and t[2] == "pantau" and not muatan.get("paksa"):
+        return {"ok": False, "sebab": "target mode=pantau (situs pemerintah) - kirim paksa=1 untuk menulis"}
+    with db.conn() as c:
+        sedang = c.execute("SELECT COUNT(*) FROM job WHERE status='jalan'").fetchone()[0]
+    if sedang:
+        return {"ok": False, "sebab": "masih ada job jalan - batas konkurensi 1"}
+    argv = [biner] + _json.loads(a[2]) + tambahan
+    n = _nomor_r()
+    berkas = _DOK_EV / ("R-%d.txt" % n)
+    with db.conn() as c:
+        c.execute("INSERT INTO job(target_id,aksi,argv,r_nomor,status,stdout_path,mulai) "
+                  "VALUES(?,?,?,?, 'jalan', ?, datetime('now'))",
+                  (t[0] if t else None, nama, _json.dumps(argv), "R-%d" % n, str(berkas)))
+        jid = c.execute("SELECT last_insert_rowid()").fetchone()[0]
+    tugas = _asyncio.ensure_future(_jalankan(jid, argv, muatan.get("rahasia"), berkas, a[6]))
+    _JALAN[jid] = tugas
+    return {"ok": True, "job_id": jid, "r_nomor": "R-%d" % n, "argv": argv, "berkas": str(berkas)}
+
+
+async def _jalankan(jid, argv, rahasia, berkas, batas):
+    env = dict(_os.environ)
+    if rahasia:
+        env["HESTIA_RAHASIA"] = rahasia
+    try:
+        p = await _asyncio.create_subprocess_exec(
+            *argv, cwd=str(_AKAR), env=env,
+            stdout=_asyncio.subprocess.PIPE, stderr=_asyncio.subprocess.PIPE)
+    except Exception as e:
+        with db.conn() as c:
+            c.execute("UPDATE job SET status='gagal', selesai=datetime('now') WHERE id=?", (jid,))
+        with open(berkas, "a", encoding="utf-8") as f:
+            f.write("! gagal start: %r\n" % (e,))
+        return
+    with db.conn() as c:
+        c.execute("UPDATE job SET pid=?, detak=datetime('now') WHERE id=?", (p.pid, jid))
+    f = open(berkas, "a", encoding="utf-8")
+    kotak = [0]
+
+    async def baca(aliran, stream):
+        while True:
+            baris = await stream.readline()
+            if not baris:
+                break
+            teks = baris.decode("utf-8", "ignore").rstrip("\n")
+            kotak[0] += 1
+            with db.conn() as c:
+                c.execute("INSERT INTO job_log(job_id,urutan,aliran,baris) VALUES(?,?,?,?)",
+                          (jid, kotak[0], aliran, teks))
+                c.execute("UPDATE job SET detak=datetime('now') WHERE id=?", (jid,))
+            f.write("[%s] %s\n" % (aliran, teks))
+            f.flush()
+
+    try:
+        await _asyncio.gather(baca("out", p.stdout), baca("err", p.stderr))
+        await _asyncio.wait_for(p.wait(), timeout=batas)
+        status = "lulus" if p.returncode == 0 else "gagal"
+        kode = p.returncode
+    except _asyncio.TimeoutError:
+        p.kill()
+        await p.wait()
+        status, kode = "timeout", -1
+    except _asyncio.CancelledError:
+        p.kill()
+        await p.wait()
+        status, kode = "batal", -1
+    f.write("[sys] selesai status=%s kode=%s\n" % (status, kode))
+    f.close()
+    with db.conn() as c:
+        c.execute("UPDATE job SET status=?, selesai=datetime('now') WHERE id=?", (status, jid))
+    _JALAN.pop(jid, None)
+
+
+@app.get("/api/job/{jid}")
+def _job_lihat(jid: int):
+    with db.conn() as c:
+        r = c.execute("SELECT id,aksi,status,r_nomor,stdout_path,pid,detak,mulai,selesai "
+                      "FROM job WHERE id=?", (jid,)).fetchone()
+    if not r:
+        return {"ok": False}
+    kol = ["id", "aksi", "status", "r_nomor", "stdout_path", "pid", "detak", "mulai", "selesai"]
+    return {"ok": True, "job": dict(zip(kol, r))}
+
+
+@app.get("/api/job/{jid}/log")
+def _job_log(jid: int, sejak: int = 0):
+    with db.conn() as c:
+        r = c.execute("SELECT urutan,aliran,baris FROM job_log WHERE job_id=? AND urutan>? "
+                      "ORDER BY urutan LIMIT 800", (jid, sejak)).fetchall()
+    return {"baris": [{"urutan": x[0], "aliran": x[1], "baris": x[2]} for x in r]}
+
+
+@app.post("/api/job/{jid}/batal")
+def _job_batal(jid: int):
+    t = _JALAN.get(jid)
+    if not t:
+        return {"ok": False, "sebab": "job tidak sedang jalan"}
+    t.cancel()
+    return {"ok": True}
+
+
+@app.on_event("startup")
+async def _konsol_startup():
+    try:
+        _job_terputus()
+    except Exception:
+        pass
