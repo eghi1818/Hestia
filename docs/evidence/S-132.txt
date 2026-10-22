@@ -1,0 +1,37 @@
+=== S-132 rapikan sisa ===
+Thu Oct 22 17:25:21 WIB 2026
+--- [A] smoke.sh sebelum ---
+#!/usr/bin/env bash
+# HESTIA - asap: rute inti harus hidup
+cd "$(dirname "$0")/.." || exit 1
+p=0; f=0
+cek() { c=$(curl -s -o /dev/null -w '%{http_code}' --max-time 3 "http://127.0.0.1:8787$2"); \
+  if [ "$c" = "$3" ]; then echo "ok    $1"; p=$((p+1)); else echo "GAGAL $1 ($c != $3)"; f=$((f+1)); fi; }
+cek "targets"   "/api/targets" 200
+cek "dashboard" "/"            200
+cek "live.js"   "/live.js"     200
+echo "smoke: $p lulus / $f gagal"
+[ $f -eq 0 ] || exit 1
++ smoke.sh memakai kredensial dari HESTIA_USER/HESTIA_SANDI
+--- [B] jalankan smoke.sh ---
+ok    targets
+ok    dashboard
+ok    live.js
+smoke: 3 lulus / 0 gagal
+--- [C] uji rute lewat HTTP dengan kredensial ---
+   /api/health              -> http=200
+   /api/targets             -> http=200
+   /api/teknologi-ringkas   -> http=200
+   /api/kandidat            -> http=200
+   /live.js                 -> http=200
+   / tanpa kredensial       -> http=401
+--- [D] verifikasi menyeluruh ---
+   gate            : GATE: LULUS
+   smoke           : smoke: 3 lulus / 0 gagal
+   health          : http=200
+   auth /          : http=401
+   backup          : 5
+   berkas bukti    : 37
+   target terpindai: 25 / 41
+   DIRTY           : 4
+

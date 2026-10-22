@@ -18,3 +18,7 @@
 ## [1.0] - 2026-10-18
 
 - Versi pertama.
+
+## S-132 — rapikan
+- smoke.sh ikut memakai autentikasi
+- docs/NEXT.md: daftar kerjaan tertunda

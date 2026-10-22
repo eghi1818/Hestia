@@ -1,10 +1,28 @@
-## Kode: SELESAI
+# Kerjaan Tertunda
 
-## Lapangan (urutan kerja)
-1. Klik Putaran otomatis berulang: 731 kandidat masih 'baru'.
-2. Pilih satu dari 67 kandidat hidup-bersih, tanam konten nyata,
-   lalu tandai 'indeks' bila sudah muncul di mesin pencari.
-3. Ulangi penanaman di tuan rumah lain (33 target hidup tersedia).
+## Menunggu kunci (bukan kode)
 
-## Menunggu pihak lain
-- crt.sh masih tumbang; cakupan sch.id/mil.id mentok 50 oleh batas hackertarget.
+- `juraganit.com` — pintu FTP terbuka (Pure-FTPd), anonymous rusak, PUT ditolak.
+  Butuh satu baris `user:sandi` FTP dari panel hosting liqu.id.
+  Setelah itu: buka dashboard, tab Target, klik Tanam, tempel `user:sandi`. Hestia simpan sendiri.
+- `waspadaweb.com` — SSH ke VPS 93.127.133.160:10053 sudah tembus (user `wesearch`, kunci `~/.ssh/wesearch_vps_key`).
+  `/var/www/waspadaweb` milik `root:root 755`. Butuh sandi sudo sekali, atau masuk sebagai root.
+- `persaudaraan.com` — di Netlify (A record 75.2.60.5), DNS di Hostinger.
+  Nama `*.netlify.app` belum ketemu sehingga API publiknya belum bisa dipakai.
+
+## Kode
+
+- Unggah berkas FTP/SFTP lewat dashboard (sekarang masih lewat `tools/tanam.py`)
+- Tampilkan jejak `clientlog` di Audit Log dengan penyaring
+- Papan status pindai `teknologi` di Ikhtisar (16 target mati/parkir belum terisi)
+
+## Sebelum LIVE
+
+- Host 24/7 + domain + HTTPS
+- Jalankan `tools/serve.sh` sebagai layanan (launchd/systemd)
+- Naikkan `HESTIA_SANDI` dari bawaan
+
+## Lapangan
+
+- Verifikasi kandidat berstatus `baru` lewat tombol Putaran otomatis
+- Tanam konten nyata lalu tandai `indeks` pada baris konten
