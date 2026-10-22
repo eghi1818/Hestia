@@ -644,3 +644,9 @@ def api_recon(batas: int = 50):
 def detail_js():
     from fastapi.responses import FileResponse
     return FileResponse("dashboard/detail.js", media_type="application/javascript")
+
+
+@app.get("/recon.js")
+def recon_js():
+    from fastapi.responses import FileResponse
+    return FileResponse("dashboard/recon.js", media_type="application/javascript")
