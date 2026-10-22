@@ -218,6 +218,11 @@
           + "onclick=\"angkat('" + k.domain + "')\">jadikan target</button></td>"
           + "</tr>";
       }).join("");
+      var bl = document.getElementById("kandLagi");
+      if (bl) {
+        bl.disabled = (d.item.length >= d.total);
+        bl.textContent = bl.disabled ? "semua termuat" : "Muat 200 lagi";
+      }
       lapor("kandidat-dimuat", "total=" + d.total);
     }).catch(function (e) {
       body.innerHTML = '<tr><td colspan="8" style="padding:10px;color:var(--red)">gagal: ' + e + "</td></tr>";
