@@ -14,7 +14,7 @@ import argparse, csv, json, os, re, socket, sqlite3, sys, time
 import urllib.error, urllib.request
 from datetime import datetime, timezone
 
-INFRA = {"mail", "cpanel", "webmail", "autoconfig", "autodiscover", "smtp",
+INFRA = {"mail", "cpanel", "autodiscover", "autoconfig", "ns0", "ns4", "webmail", "autoconfig", "autodiscover", "smtp",
          "pop", "imap", "ftp", "ns", "ns1", "ns2", "ns3", "dns", "dns1", "dns2",
          "cp", "cp1", "cp2", "cp01", "cp02", "cdn", "api", "mx", "mx1", "mx2"}
 SUFFIX = ["go.id", "desa.id", "mil.id", "ac.id", "sch.id"]
@@ -303,12 +303,28 @@ def verify_one(domain, timeout=10):
         gab = " ".join("%s:%s" % (k, v) for k, v in hdr.items()).lower()
         h["latensi_ms"] = int((time.time() - _t0) * 1000)
         h["http_status"] = kode
+        h["catatan"] = ""
         h["server"] = hdr.get("Server")
         h["waf"] = next((w for w in WAF_MARK if w in gab), None)
-        h["status"] = ("hidup" if kode < 300 else "alih" if kode < 400
-                       else "dijaga" if kode in (401, 403, 406, 418, 429, 503) else "galat")
+        h["status"] = status_dari_kode(kode)
         return h
     return h
+
+
+def status_dari_kode(kode):
+    if not kode:
+        return "mati"
+    if kode < 300:
+        return "hidup"
+    if kode < 400:
+        return "alih"
+    if kode in (401, 403, 406, 418, 429, 503):
+        return "dijaga"
+    if kode == 404:
+        return "hilang"
+    if kode >= 500:
+        return "rusak"
+    return "galat"
 
 
 def skor(h, domain=None):

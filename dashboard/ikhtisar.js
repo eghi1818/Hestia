@@ -56,8 +56,9 @@
       gambarBar("barChart", [
         { label: "hidup", n: st.hidup || 0 }, { label: "dijaga", n: st.dijaga || 0 },
         { label: "alih", n: st.alih || 0 }, { label: "galat", n: st.galat || 0 },
+        { label: "hilang", n: st.hilang || 0 }, { label: "rusak", n: st.rusak || 0 },
         { label: "mati", n: st.mati || 0 }, { label: "baru", n: st.baru || 0 }
-      ], ["var(--green)", "var(--yellow)", "var(--blue)", "#f4a259", "var(--red)", "var(--gray)"]);
+      ], ["var(--green)", "var(--yellow)", "var(--blue)", "#f4a259", "#b07cf0", "#f4a259", "var(--red)", "var(--gray)"]);
       var per = {};
       (rk.per_suffix_status || []).forEach(function (r) { per[r.suffix] = (per[r.suffix] || 0) + r.n; });
       gambarBar("lineChart",

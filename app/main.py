@@ -208,9 +208,7 @@ def recon_target(tid: int, skema: str = "https"):
     if not t:
         raise HTTPException(404, "target tidak ada")
     hasil = _ambil(t["domain"], skema)
-    _st = ("hidup" if 200 <= hasil["http_status"] < 400 else
-           "dijaga" if hasil["http_status"] in (401, 403, 406, 418, 429, 503) else
-           "mati" if hasil["http_status"] == 0 else "galat")
+    _st = scrape.status_dari_kode(hasil["http_status"])
     with db.conn() as c:
         cur = c.execute(
             "INSERT INTO recon (target_id,http_status,server,content_type,redirect,ms,judul,catatan)"
