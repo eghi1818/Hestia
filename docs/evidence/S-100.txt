@@ -1,0 +1,107 @@
+=== S-100 ===
+Thu Oct 22 15:15:26 WIB 2026
+--- [A] kolom tabel recon yang ADA di DB ---
+    id INTEGER
+    target_id INTEGER
+    waktu TEXT
+    http_status INTEGER
+    server TEXT
+    content_type TEXT
+    redirect TEXT
+    ms INTEGER
+    judul TEXT
+    catatan TEXT
+--- [B] impor & jejak fungsi terkait ---
+3:import sqlite3
+4:from pathlib import Path
+5:from typing import List, Optional
+7:from fastapi import Body, BackgroundTasks, FastAPI, HTTPException
+8:from fastapi.responses import FileResponse
+9:from pydantic import BaseModel
+11:from . import db
+172:def _ambil(domain, skema="https"):
+198:            h = _ambil(domain, "http")
+210:    hasil = _ambil(t["domain"], skema)
+211:    _st = scrape.status_dari_kode(hasil["http_status"])
+311:    if _t not in _sys.path:
+312:        _sys.path.insert(0, _t)
+313:    import scrape
+342:    if _t2 not in _sys.path:
+343:        _sys.path.insert(0, _t2)
+344:    import scrape
+392:    if _t2 not in _sys.path:
+393:        _sys.path.insert(0, _t2)
+394:    import scrape
+804:        _sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))), "tools"))
+--- [C] badan _ambil ---
+   mulai baris 172
+def _ambil(domain, skema="https"):
+    """Satu request saja. Kembalikan dict hasil."""
+    import urllib.request, urllib.error, time, re
+    url = skema + "://" + domain
+    req = urllib.request.Request(url, headers=_HDR_BROWSER)
+    mulai = time.time()
+    try:
+        with urllib.request.urlopen(req, timeout=10) as r:
+            isi = r.read(60000).decode("utf-8", "ignore")
+            return {
+                "http_status": r.status,
+                "server": r.headers.get("Server", ""),
+                "content_type": r.headers.get("Content-Type", ""),
+                "redirect": (r.geturl() if r.geturl() != url else ""),
+                "ms": int((time.time() - mulai) * 1000),
+                "judul": (re.search(r"<title[^>]*>(.*?)</title>", isi, re.S | re.I).group(1).strip()[:120]
+                          if re.search(r"<title[^>]*>(.*?)</title>", isi, re.S | re.I) else ""),
+                "catatan": "",
+            }
+    except urllib.error.HTTPError as e:
+        return {"http_status": e.code, "server": e.headers.get("Server", ""),
+                "content_type": e.headers.get("Content-Type", ""), "redirect": "",
+                "ms": int((time.time() - mulai) * 1000), "judul": "",
+                "catatan": "HTTPError"}
+    except Exception as e:
+        if skema == "https":
+            h = _ambil(domain, "http")
+            if h["http_status"] != 0:
+                return h
+        return {"http_status": 0, "server": "", "content_type": "", "redirect": "",
+                "ms": int((time.time() - mulai) * 1000), "judul": "",
+                "catatan": type(e).__name__ + ": " + str(e)[:80]}
+
+@app.post("/api/targets/{tid}/recon")
+def recon_target(tid: int, skema: str = "https"):
+    t = ambil(tid)
+--- [D] panggil langsung di proses -> traceback asli ---
+Traceback (most recent call last):
+  File "<stdin>", line 14, in <module>
+  File "/Users/eghi/Documents/REPO/Hestia/./app/main.py", line 211, in recon_target
+    _st = scrape.status_dari_kode(hasil["http_status"])
+NameError: name 'scrape' is not defined
+[net] DoH=1 TLS=1 url=https://cloudflare-dns.com/dns-query cache=0
+   impor app.main: OK
+   atribut scrape: TIDAK ADA
+   target 45: {'id': 45, 'domain': 'gacor.net', 'tipe': 'lain', 'status': 'kandidat', 'owner': '', 'tags': '', 'catatan': '', 'created_at': '2026-10-22 07:37:26', 'updated_at': '2026-10-22 07:37:26'}
+   _ambil -> {'http_status': 200, 'server': 'cloudflare', 'content_type': 'text/html', 'redirect': '', 'ms': 1624, 'judul': 'BOSGACOR > Situs Terpopuler Agen Slot Gacor Resmi Gampang Menang Hari Ini', 'catatan': ''}
+   rute GAGAL:
+--- [E] wrangler siap? ---
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
+--- [F] login OAuth (browser terbuka, klik Allow) ---
+────────────────────
+Attempting to login via OAuth...
+Opening a link in your default browser: https://dash.cloudflare.com/oauth2/auth?response_type=code&client_id=54d11594-84e4-41aa-b438-e81b8fa78ee7&redirect_uri=http%3A%2F%2Flocalhost%3A8976%2Foauth%2Fcallback&scope=k2.read%20k2.write%20account%3Aread%20user%3Aread%20workers%3Awrite%20workers_kv%3Awrite%20workers_routes%3Awrite%20workers_scripts%3Awrite%20workers_tail%3Aread%20d1%3Awrite%20pages%3Awrite%20zone%3Aread%20ssl_certs%3Awrite%20ai%3Awrite%20ai-search%3Awrite%20ai-search%3Arun%20agent-memory%3Awrite%20queues%3Awrite%20pipelines%3Awrite%20secrets_store%3Awrite%20artifacts%3Awrite%20flagship%3Awrite%20containers%3Awrite%20cloudchamber%3Awrite%20connectivity%3Aadmin%20email_routing%3Awrite%20email_sending%3Awrite%20browser%3Awrite%20challenge-widgets.write%20offline_access&state=okZkTqt8GRKPVwwNDr3hUsfpUVtGVEXq&code_challenge=YOKe5lYjOxrLRQKk8PLJmoBpG-bWyUnEHt0-XQAbCRg&code_challenge_method=S256
+
+[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mTimed out waiting for authorization code, please try again.[0m
+
+
+🪵  Logs were written to "/Users/eghi/Library/Preferences/.wrangler/logs/wrangler-2026-10-22_08-15-45_834.log"
+--- [G] cari berkas token ---
+   ~/.wrangler/config tidak ada
+--- [H] Hestia ambil Zone ID + Account ID sendiri ---
+   TOKEN TIDAK KETEMU
+   TOKEN TIDAK KETEMU
+
+  layanan HIDUP
+
+GATE: LULUS
