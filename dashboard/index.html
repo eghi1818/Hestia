@@ -969,7 +969,7 @@ function renderTargets(){
        <button class="act-btn" title="Detail" onclick="showDetail(${t.id})">👁</button>
        <button class="act-btn" title="Recon" onclick="toast('Recon ${t.domain} masuk antrian')">🔍</button>
        <button class="act-btn" title="Hapus" onclick="toast('Konfirmasi hapus — aksi destruktif selalu minta konfirmasi (FR 12.5)')">🗑</button>
-     </div></td>
+     </div><button class="btn-mini" onclick="tanamTarget(${t.id})">Tanam</button></td>
    </tr>`).join(""):`<tr><td colspan="8"><div class="empty"><div class="e-ico">◎</div><div class="e-t">Tidak ada target cocok</div><div class="e-d">Coba ubah filter atau tambahkan target baru.</div><button class="btn btn-primary btn-sm" onclick="openModal('modalTarget')">+ Tambah target</button></div></td></tr>`;
   $("tgtCount").textContent=`Menampilkan ${rows.length} dari ${targets.length} target`;
   $("navTargetCount").textContent=targets.length;
@@ -1128,14 +1128,14 @@ function drawLine(){
 /* ================= INIT ================= */
 renderTargets();renderCreds();renderAlerts();renderLatency();renderChecks();renderDeploy();renderKonten();renderBacklinks();renderAudit();renderOps();renderRecon();drawBar();drawLine();
 </script>
-<script src="/live.js?v=5c7b5c1-1792661184"></script>
-<script src="/ikhtisar.js?v=5c7b5c1-1792661184"></script>
-<script src="/tautan.js?v=5c7b5c1-1792661184"></script>
-<script src="/audit.js?v=5c7b5c1-1792661184"></script>
-<script src="/konten.js?v=5c7b5c1-1792661184"></script>
-<script src="/detail.js?v=5c7b5c1-1792661184"></script>
-<script src="/recon.js?v=5c7b5c1-1792661184"></script>
-<script src="/ekspor.js?v=5c7b5c1-1792661184"></script>
-<script src="/aksi.js?v=5c7b5c1-1792661184"></script>
+<script src="/live.js?v=65f4d85-1792661544"></script>
+<script src="/ikhtisar.js?v=65f4d85-1792661544"></script>
+<script src="/tautan.js?v=65f4d85-1792661544"></script>
+<script src="/audit.js?v=65f4d85-1792661544"></script>
+<script src="/konten.js?v=65f4d85-1792661544"></script>
+<script src="/detail.js?v=65f4d85-1792661544"></script>
+<script src="/recon.js?v=65f4d85-1792661544"></script>
+<script src="/ekspor.js?v=65f4d85-1792661544"></script>
+<script src="/aksi.js?v=65f4d85-1792661544"></script>
 </body>
 </html>

@@ -142,3 +142,15 @@
     pasang("Bersihkan log", bersihkanLog);
   });
 })();
+
+
+window.tanamTarget = function (id) {
+  if (!confirm("Tanam materi gacor.net ke target #" + id + "?")) return;
+  fetch("/api/tanam", {method: "POST", headers: {"content-type": "application/json"},
+    body: JSON.stringify({target_id: id})})
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      alert((d.ok ? "BERHASIL\n\n" : "GAGAL\n\n") + (d.pesan || "") + "\n\n" + (d.langkah || []).join("\n"));
+    })
+    .catch(function (e) { alert("galat: " + e); });
+};

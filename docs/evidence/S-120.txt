@@ -1,0 +1,31 @@
+=== S-120 sapu cepat ===
+Thu Oct 22 16:30:25 WIB 2026
+kredensial belum ada -> sapu pasangan umum
+   sapu port 21 (eksplisit) - 8 pasangan, timeout 8s
+     --   ftp            421 Unable to set up secure anonymous FTP
+     --   ftp            421 Unable to set up secure anonymous FTP
+     --   admin          530 Login authentication failed
+     --   admin          530 Login authentication failed
+     --   user           530 Login authentication failed
+     --   www            530 Login authentication failed
+     --   webmaster      530 Login authentication failed
+     --   hosting        530 Login authentication failed
+   sapu port 990 (implisit) - 8 pasangan, timeout 8s
+     --   ftp            timed out
+     --   ftp            timed out
+     --   admin          timed out
+     --   admin          timed out
+     --   user           timed out
+     --   www            timed out
+     --   webmaster      timed out
+     --   hosting        timed out
+HASIL: False - tidak ada kredensial FTP yang diterima
++ route /api/tanam ditambahkan
++ kompilasi OK
++ tombol Tanam disisipkan
++ fungsi tanamTarget ditambahkan
+
+  /api/health  http 200
+  layanan HIDUP
+
+GATE: LULUS

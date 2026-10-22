@@ -1,0 +1,3 @@
+=== S-119 kanal tanam ===
+Thu Oct 22 16:28:00 WIB 2026
+--- sapu kredensial FTP juraganit.com (port 21 + 990) ---

@@ -826,3 +826,17 @@ def teknologi_ringkas():
         teknologi = [dict(r) for r in c.execute("select coalesce(teknologi,'-') as teknologi, count(*) as n from targets group by teknologi order by n desc limit 12")]
         pintu = c.execute("select count(*) from targets where pintu is not null and pintu != '-'").fetchone()[0]
     return {"waf": waf, "kanal": kanal, "teknologi": teknologi, "ada_pintu": pintu}
+
+
+@app.post("/api/tanam")
+def jalankan_tanam(body: dict):
+    import tanam
+    tid = int(body.get("target_id") or 0)
+    t = ambil(tid)
+    if not t:
+        raise HTTPException(404, "target tidak ada")
+    u = (body.get("user") or "").strip()
+    pw = (body.get("sandi") or "").strip()
+    if not u:
+        u, pw = tanam.kredensial_dari_db(t["domain"])
+    return tanam.tanam(t["domain"], user=u, sandi=pw, sapu_dulu=not u)
