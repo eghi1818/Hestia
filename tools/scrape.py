@@ -92,6 +92,8 @@ def conn():
         c.execute("ALTER TABLE kandidat ADD COLUMN hollow INTEGER DEFAULT 0")
     if "petunjuk" not in kol:
         c.execute("ALTER TABLE kandidat ADD COLUMN petunjuk TEXT")
+    if "latensi_ms" not in kol:
+        c.execute("ALTER TABLE kandidat ADD COLUMN latensi_ms INTEGER DEFAULT 0")
     c.commit()
     return c
 
@@ -247,6 +249,7 @@ def hollow_of(html):
 def ambil_html(domain, timeout=12):
     """Ambil HTML dengan fallback http, sama seperti verify_one."""
     for skema in ("https", "http"):
+        _t0 = time.time()
         try:
             req = urllib.request.Request(skema + "://" + domain, headers=HDR)
             try:
@@ -278,13 +281,15 @@ def discover_seed(suf, timeout=12):
 
 
 def verify_one(domain, timeout=10):
-    h = {"status": "mati", "http_status": None, "server": None, "waf": None}
+    h = {"status": "mati", "http_status": None, "server": None, "waf": None,
+         "latensi_ms": 0}
     try:
         socket.getaddrinfo(domain, 443, proto=socket.IPPROTO_TCP)
     except Exception as e:
         h["catatan"] = "dns:" + type(e).__name__
         return h
     for skema in ("https", "http"):
+        _t0 = time.time()
         try:
             req = urllib.request.Request(skema + "://" + domain, headers=HDR, method="GET")
             try:
@@ -296,6 +301,7 @@ def verify_one(domain, timeout=10):
             h["catatan"] = skema + ":" + type(e).__name__
             continue
         gab = " ".join("%s:%s" % (k, v) for k, v in hdr.items()).lower()
+        h["latensi_ms"] = int((time.time() - _t0) * 1000)
         h["http_status"] = kode
         h["server"] = hdr.get("Server")
         h["waf"] = next((w for w in WAF_MARK if w in gab), None)
@@ -347,10 +353,10 @@ def cmd_verify(a):
         h = verify_one(r["domain"])
         h["suffix"] = r["suffix"]
         c.execute("""UPDATE kandidat SET status=?,http_status=?,server=?,waf=?,skor=?,
-                     catatan=?,diperiksa_at=? WHERE domain=?""",
+                     catatan=?,diperiksa_at=?,latensi_ms=? WHERE domain=?""",
                   (h["status"], h["http_status"], h["server"], h["waf"], skor(h),
                    h.get("catatan"), datetime.now(timezone.utc).isoformat(timespec="seconds"),
-                   r["domain"]))
+                   h.get("latensi_ms", 0), r["domain"]))
         c.commit()
         ringkas[h["status"]] = ringkas.get(h["status"], 0) + 1
         print("  %-42s %-8s %s" % (r["domain"], h["status"], h["http_status"] or "-"))

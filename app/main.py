@@ -339,9 +339,10 @@ def _jalankan_periksa(limit, suffix):
         for r in baris:
             h = scrape.verify_one(r["domain"]); h["suffix"] = r["suffix"]
             c.execute("""UPDATE kandidat SET status=?,http_status=?,server=?,waf=?,skor=?,
-                         catatan=?,diperiksa_at=? WHERE domain=?""",
+                         catatan=?,diperiksa_at=?,latensi_ms=? WHERE domain=?""",
                       (h["status"], h["http_status"], h["server"], h["waf"], scrape.skor(h),
-                       h.get("catatan"), _dt.now().isoformat(timespec="seconds"), r["domain"]))
+                       h.get("catatan"), _dt.now().isoformat(timespec="seconds"),
+                       h.get("latensi_ms", 0), r["domain"]))
             c.commit()
             _PS["selesai"] += 1
             _PS["ringkas"][h["status"]] = _PS["ringkas"].get(h["status"], 0) + 1
@@ -387,9 +388,9 @@ def _jalankan_putaran(verif, crawl, suffix):
         for r in c.execute(q, a).fetchall():
             h = scrape.verify_one(r["domain"]); h["suffix"] = r["suffix"]
             c.execute("""UPDATE kandidat SET status=?,http_status=?,server=?,waf=?,skor=?,
-                         catatan=?,diperiksa_at=? WHERE domain=?""",
+                         catatan=?,diperiksa_at=?,latensi_ms=? WHERE domain=?""",
                       (h["status"], h["http_status"], h["server"], h["waf"], scrape.skor(h),
-                       h.get("catatan"), now, r["domain"]))
+                       h.get("catatan"), now, h.get("latensi_ms", 0), r["domain"]))
             c.commit()
             _PUT["verif"] += 1
             _PUT["ringkas"][h["status"]] = _PUT["ringkas"].get(h["status"], 0) + 1
@@ -489,3 +490,38 @@ def api_tautan(limit: int = 200, dari: Optional[str] = None, ke: Optional[str] =
 def tautan_js():
     from fastapi.responses import FileResponse
     return FileResponse("dashboard/tautan.js", media_type="application/javascript")
+
+
+@app.get("/api/audit")
+def api_audit(batas: int = 60):
+    c = _db_kandidat()
+    tot = c.execute("SELECT count(*) FROM clientlog").fetchone()[0]
+    rows = [dict(r) for r in c.execute(
+        "SELECT id, waktu, peristiwa, rincian FROM clientlog ORDER BY id DESC LIMIT ?", (batas,))]
+    c.close()
+    return {"total": tot, "item": rows}
+
+
+@app.get("/api/monitoring")
+def api_monitoring(batas: int = 25):
+    c = _db_kandidat()
+    alerts = [dict(r) for r in c.execute(
+        "SELECT domain,status,http_status,catatan,diperiksa_at FROM kandidat "
+        "WHERE status IN ('galat','dijaga') AND (infra IS NULL OR infra=0) "
+        "ORDER BY diperiksa_at DESC LIMIT 12")]
+    riwayat = [dict(r) for r in c.execute(
+        "SELECT domain,status,http_status,latensi_ms,diperiksa_at FROM kandidat "
+        "WHERE diperiksa_at IS NOT NULL ORDER BY diperiksa_at DESC LIMIT ?", (batas,))]
+    sehat = [dict(r) for r in c.execute(
+        "SELECT suffix, "
+        "SUM(CASE WHEN status IN ('hidup','dijaga','alih') THEN 1 ELSE 0 END) baik, "
+        "SUM(CASE WHEN status IN ('mati','galat') THEN 1 ELSE 0 END) buruk, count(*) total "
+        "FROM kandidat GROUP BY suffix")]
+    c.close()
+    return {"alerts": alerts, "riwayat": riwayat, "kesehatan": sehat}
+
+
+@app.get("/audit.js")
+def audit_js():
+    from fastapi.responses import FileResponse
+    return FileResponse("dashboard/audit.js", media_type="application/javascript")
