@@ -1,0 +1,79 @@
+=== S-105 analisa teknologi seluruh target ===
+Thu Oct 22 15:39:55 WIB 2026
+memeriksa 41 target
+  1. komdigi.go.id                    -                          -            wp(403), wp-rest(403), joomla(403), drup
+  2. tangselkota.go.id                -                          -            -
+  3. surabaya.go.id                   next.js                    -            -
+  4. medan.go.id                      -                          cloudflare   wp(403), wp-rest(403), joomla(403), drup
+  5. bandung.go.id                    jquery                     -            -
+  6. kemdikbud.go.id                  -                          -            -
+  7. bps.go.id                        -                          cloudflare   wp(403), wp-rest(403), joomla(403), drup
+  8. jogjaprov.go.id                  bootstrap                  -            wp(200), wp-rest(200), joomla(200), drup
+  9. baliprov.go.id                   bootstrap                  -            admin(200)
+ 10. semarangkota.go.id               bootstrap, jquery          -            wp(200), wp-rest(200), joomla(200), drup
+ 11. 3cil.sch.id                      jquery, moodle             -            wp-rest(200), joomla(200), drupal(200), 
+ 12. kemdiktisaintek.go.id            next.js                    -            -
+ 13. kemendikdasmen.go.id              [Odoo]                    -            -
+ 14. ristekdikti.go.id                -                          -            -
+ 15. dikti.go.id                      next.js                    cloudflare   -
+ 16. badungkab.go.id                  bootstrap, moodle          -            -
+ 17. bulelengkab.go.id                bootstrap, codeigniter, jq -            -
+ 18. akademi-tni.mil.id               bootstrap, laravel         -            -
+ 19. balog-tni.mil.id                 bootstrap, jquery, wordpre -            wp(200)
+ 20. 1004korea.ac.id                   [Hostinger Website Builde -            -
+ 21. 45mataram.ac.id                  tailwind                   -            -
+ 22. a2b.ac.id                        jquery, wordpress [WordPre -            wp(200), wp-rest(200), moodle(200)
+ 23. aa-yai.ac.id                     bootstrap, jquery, laravel -            admin(403)
+ 24. aabs.sch.id                      jquery, wordpress [AMP for -            wp(200), wp-rest(200), moodle(200), admi
+ 25. aaiibs.sch.id                    bootstrap                  -            wp(200), wp-rest(200), joomla(200), drup
+ 26. akpol.ac.id                      wordpress [WordPress 7.1.3 -            wp-rest(200)
+ 27. untemungkur-tapanuliutara.desa.id -                          -            -
+ 28. unterudang.desa.id               -                          -            -
+ 29. urungpane.desa.id                -                          -            -
+ 30. urutsewu.desa.id                 -                          -            -
+ 31. walahar.desa.id                  -                          -            -
+ 32. waluya-cikarangutara.desa.id     bootstrap, codeigniter, jq -            wp(401)
+ 33. waluyojati.desa.id               tailwind                   -            -
+ 34. wanadadi-banjarnegara.desa.id    -                          -            -
+ 35. wanadadi.desa.id                 bootstrap, codeigniter, jq -            -
+ 36. wanakarsa-wanadadi.desa.id       -                          -            -
+ 37. banglikab.go.id                  tailwind                   cloudflare   -
+ 38. test-sqli-attack-OR-1=1--        -                          -            -
+ 39. test-xss-attack<script>alert(1)</script> -                          -            -
+ 40. test-cmd-injection-whoami        -                          -            -
+ 41. gacor.net                        tailwind                   cloudflare   -
+
+--- rekap ---
+   waf -              : 36
+   waf cloudflare     : 5
+   kanal -                            : 26
+   kanal t1 wp (user+pass) | t1 jooml : 5
+   kanal t4 worker (akun CDN)         : 3
+   kanal t1 wp (user+pass)            : 3
+   kanal t1 wp (user+pass) | t1 moodl : 2
+   kanal t1 wp (user+pass) | t1 jooml : 2
+--- [A] kepala tabel target ---
+grep: index.html: No such file or directory
+--- [B] perender sel status ---
+dashboard/aksi.js:81:        return "• " + a.domain + " — " + a.status + (a.http_status ? " " + a.http_status : "");
+dashboard/audit.js:40:            + '<span style="color:var(--muted)">' + a.status
+dashboard/audit.js:64:            + '<td style="' + sel + '">' + r2.status + (r2.http_status ? " " + r2.http_status : "") + "</td>"
+dashboard/detail.js:29:                         ["Status", t.status], ["Dibuat", t.created_at]]);
+dashboard/detail.js:73:            return "<tr>" + [k.url, k.kata_kunci, k.status_indeks].map(function (v) {
+dashboard/ikhtisar.js:55:      (rk.per_suffix_status || []).forEach(function (r) { st[r.status] = (st[r.status] || 0) + r.n; });
+dashboard/konten.js:64:      if (r.status !== 200) throw new Error("http " + r.status);
+dashboard/live.js:41:      status: judul(r.status),
+dashboard/live.js:53:      return r.status === "aktif" || r.status === "kandidat";
+dashboard/live.js:85:        if (!r.ok) { throw new Error("http " + r.status); }
+dashboard/live.js:123:        if (r.status === 409) { throw new Error("domain sudah terdaftar"); }
+dashboard/live.js:124:        if (!r.ok) { throw new Error("http " + r.status); }
+dashboard/live.js:213:          + '<td style="' + sel + '">' + k.status + "</td>"
+dashboard/live.js:240:      if (r.status === 201) { lapor("kandidat-diangkat", domain); if (window.toast) window.toast(domain + " diangkat menjadi target"); muatKandidat(); }
+dashboard/live.js:241:      else if (r.status === 409) { lapor("kandidat-sudah-ada", domain); if (window.toast) window.toast(domain + " sudah menjadi target"); }
+berkas halaman: dashboard/index.html
++ <th>Teknologi</th> ditambahkan setelah Status
+
+  /api/health  http 200
+  layanan HIDUP
+
+GATE: LULUS
