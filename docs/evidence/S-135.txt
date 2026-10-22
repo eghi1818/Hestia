@@ -1,0 +1,164 @@
+=== S-135 baca fakta sebelum DDL (bebas efek, nol target disentuh) ===
+Thu Oct 22 21:06:04 WIB 2026
+--- [A] basis data yang NYATA ---
+   db: data/hestia.db
+anggota     deployment  konten      recon       targets   
+clientlog   kandidat    kredensial  setelan     tautan    
+table|anggota
+table|clientlog
+table|deployment
+index|idx_targets_status
+table|kandidat
+table|konten
+table|kredensial
+table|recon
+table|setelan
+index|sqlite_autoindex_kandidat_1
+index|sqlite_autoindex_targets_1
+index|sqlite_autoindex_tautan_1
+table|sqlite_sequence
+table|targets
+table|tautan
+   === PRAGMA targets (tipe PK = penentu target_id) ===
+0|id|INTEGER|0||1
+1|domain|TEXT|1||0
+2|tipe|TEXT|1|'lain'|0
+3|status|TEXT|1|'kandidat'|0
+4|owner|TEXT|1|''|0
+5|tags|TEXT|1|''|0
+6|catatan|TEXT|1|''|0
+7|created_at|TEXT|1|datetime('now')|0
+8|updated_at|TEXT|1|datetime('now')|0
+9|teknologi|TEXT|0||0
+10|server|TEXT|0||0
+11|waf|TEXT|0||0
+12|pintu|TEXT|0||0
+13|kanal|TEXT|0||0
+14|dianalisa|TEXT|0||0
+   === schema konten ===
+CREATE TABLE konten(id INTEGER PRIMARY KEY AUTOINCREMENT, url TEXT, target TEXT, kata_kunci TEXT, template TEXT, status_indeks TEXT, posisi REAL);
+   === schema kredensial ===
+CREATE TABLE kredensial(id INTEGER PRIMARY KEY AUTOINCREMENT, target TEXT, nama TEXT, tipe TEXT, level TEXT, secret TEXT, berlaku_sd TEXT, created_at TEXT);
+   === schema deployment ===
+CREATE TABLE deployment(id INTEGER PRIMARY KEY AUTOINCREMENT, waktu TEXT, target TEXT, path TEXT, template TEXT, status TEXT);
+   langkah          belum ada
+   job              belum ada
+   bukti            belum ada
+   status_konten    belum ada
+   kredensial_uji   belum ada
+   mode             belum ada
+   === target yang ada sekarang (pantau vs uji) ===
+1004korea.ac.id|hidup
+3cil.sch.id|hidup
+45mataram.ac.id|hidup
+a2b.ac.id|hidup
+aa-yai.ac.id|hidup
+aabs.sch.id|hidup
+aaiibs.sch.id|hidup
+akademi-tni.mil.id|hidup
+akpol.ac.id|hidup
+badungkab.go.id|hidup
+baliprov.go.id|hidup
+balog-tni.mil.id|hidup
+bandung.go.id|hidup
+banglikab.go.id|hidup
+bps.go.id|hidup
+bulelengkab.go.id|hidup
+dikti.go.id|hidup
+gacor.net|hidup
+jogjaprov.go.id|hidup
+kemdikbud.go.id|mati
+kemdiktisaintek.go.id|hidup
+kemendikdasmen.go.id|hidup
+komdigi.go.id|dijaga
+medan.go.id|dijaga
+ristekdikti.go.id|hidup
+semarangkota.go.id|hidup
+surabaya.go.id|hidup
+tangselkota.go.id|mati
+test-cmd-injection-whoami|kandidat
+test-sqli-attack-OR-1=1--|kandidat
+test-xss-attack<script>alert(1)</script>|kandidat
+untemungkur-tapanuliutara.desa.id|hidup
+unterudang.desa.id|hidup
+urungpane.desa.id|hidup
+urutsewu.desa.id|hidup
+walahar.desa.id|hidup
+waluya-cikarangutara.desa.id|hidup
+waluyojati.desa.id|hidup
+wanadadi-banjarnegara.desa.id|hidup
+wanadadi.desa.id|hidup
+wanakarsa-wanadadi.desa.id|hidup
+--- [B] isi bukti S-134 (belum pernah dibaca) ---
+    2805 docs/evidence/S-134.txt
+3:--- [A] Keychain internet password ---
+11:--- [B] Keychain: entri yang menyebut nama terkait ---
+12:--- [C] klien FTP yang mungkin menyimpan sandi ---
+14:--- [D] riwayat shell: jejak ftp/hosting ---
+30:| juraganit.com | FTP (port 21) | pintu terbuka | anonymous rusak, butuh sandi FTP |\
+31:- juraganit.com: butuh sandi FTP (hosting liqu.id)\
+32:- juraganit.com: butuh sandi FTP (hosting liqu.id)\
+34:  Butuh satu baris `user:sandi` FTP dari panel hosting liqu.id.\
+35:--- [E] VPS: daftar user + sudoers terbaca? ---
+36:--- /home ---
+40:--- id ---
+42:--- sudoers.d ---
+44:--- [F] Keychain: uji sandi FTP ke juraganit.com ---
+45:   juraganit.com        tidak ada di keychain
+46:   ftp.juraganit.com    tidak ada di keychain
+47:   www.juraganit.com    tidak ada di keychain
+48:--- [G] Keychain: uji sandi sudo VPS ---
+49:   93.127.133.160       tidak ada
+50:   waspadaweb.com       tidak ada
+51:   wesearch_vps         tidak ada
+52:   vps-sedp             tidak ada
+53:--- [H] kalau sandi FTP ketemu: tanam juraganit.com ---
+54:   sandi FTP belum ketemu
+55:--- [I] kalau sandi sudo ketemu: tanam waspadaweb.com ---
+56:   sandi sudo belum ketemu
+--- [C] fakta lingkungan untuk verify_rule + konsol ---
+   curl: curl 8.7.1 (x86_64-apple-darwin25.0) libcurl/8.7.1 (SecureTransport) LibreSSL/3.3.6 zlib/1.2.12 nghttp2/1.68.1
+   python3: Python 3.9.6
+   wget        tidak ada
+   lftp        tidak ada
+   pytest      tidak ada
+   sqlite3     ADA
+   jq          ADA
+   git-dumper  tidak ada
+   gh          tidak ada
+   netlify     tidak ada
+   modul: asyncio/sqlite3/zipfile/unittest OK
+   --reload pada layanan:
+tools/serve.sh:6:nohup $PY -m uvicorn app.main:app --host 127.0.0.1 --port 8787 >/tmp/hestia.log 2>&1 &
+tools/serve.sh:8:curl -s -o /dev/null -w "layanan: http %{http_code}\n" http://127.0.0.1:8787/api/targets
+   modul dashboard:
+README.md
+aksi.js
+audit.js
+detail.js
+ekspor.js
+ikhtisar.js
+index.html
+konten.js
+live.js
+recon.js
+tautan.js
+   cek yang sudah ada di gate:
+63:  if .venv/bin/python -m py_compile app/main.py 2>/dev/null ; then
+64:for _f in tools/*.py; do python3 -m py_compile "$_f" >/dev/null 2>&1 || { echo "  GAGAL kompilasi: $_f"; exit 1; }; done
+68:    echo "  GAGAL   app/main.py tidak bisa dikompilasi" ; fail=1
+93:if [ "$fail" -eq 0 ]; then echo "GATE: LULUS" ; exit 0 ; else echo "GATE: GAGAL" ; exit 1 ; fi
+   bukti terakhir:
+S-97.txt
+S-98.txt
+S-99.txt
+arsip
+gacor-net.html
+   langkah terakhir:
+24b52ea S-134: buru kunci di keyring Mac + uji FTP/sudo
+f4b0b74 S-133: dokumen langkah ditulis otomatis + isi mundur dari S-92
+7c86f76 S-132: smoke.sh berautentikasi + docs/NEXT.md + changelog
+
+  layanan HIDUP
+
+GATE: LULUS
