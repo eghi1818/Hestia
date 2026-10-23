@@ -606,7 +606,6 @@ def _tambah(nama, body):
     kol = [k for k in _KOLOM[nama] if k != "id"]
     dibuang = sorted(k for k in body if k not in kol)
     nilai = [body.get(k) for k in kol]
-    c = _siap_tabel()
     cur = c.execute("INSERT INTO %s(%s) VALUES(%s)"
                     % (nama, ",".join(kol), ",".join("?" * len(kol))), nilai)
     c.commit()

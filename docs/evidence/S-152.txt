@@ -16,3 +16,19 @@ berkas (dari git show --stat):
 perbaikan pasca-commit (app/main.py):
   _tambah membaca _KOLOM sebelum _siap_tabel sehingga KeyError pada POST
   pertama setiap proses. Diperbaiki: _siap_tabel dipanggil sebelum _KOLOM dibaca.
+
+perbaikan pasca-commit (app/main.py):
+  _tambah membaca _KOLOM sebelum _siap_tabel sehingga KeyError pada POST
+  pertama setiap proses. Diperbaiki: _siap_tabel dipanggil sebelum _KOLOM dibaca.
+  Dirapikan: panggilan ganda dihapus, koneksi ditutup.
+
+bukti uji runtime 2026-10-23, proses bersih dengan _KOLOM kosong:
+  hasil : {'ok': True, 'tabel': 'kredensial',
+           'item': {'id': 3, 'target': 'uji-152', ...}, 'dibuang': []}
+  tanpa KeyError. POST pertama kini berhasil.
+
+temuan terbuka:
+  DB memuat 22 tabel; _TABEL kode hanya 4 (kredensial, deployment, anggota, konten).
+  Tabel kandidat, targets, tautan, recon, clientlog, setelan, job, bukti,
+  transisi_status, metrik, skema_versi, status_konten belum terjangkau _tambah/_daftar.
+  Tabel hasil migrasi fase0 sudah ada di DB, skripnya masih untracked.
