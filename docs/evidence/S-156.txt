@@ -19,3 +19,12 @@ bukti:
 catatan:
   Klaim "data/backup/" di SESSION_STATE tidak pernah benar; diperbaiki jadi
   menyebut lokasi dan perilaku yang sebenarnya.
+
+koreksi 2026-10-23 (kesalahan #8):
+  Klaim awal "data/backup/ tidak pernah benar" adalah SALAH. Direktori data/backup/
+  ADA dan berisi 10 berkas dengan retensi yang sudah jalan. Penulisnya: <isi dari Blok A>.
+  Jadi ada DUA mekanisme cadangan yang berjalan paralel:
+    (1) data/backup/            - sudah beretensi 10
+    (2) data/hestia.db.bak.*    - dibuat migrasi, kini juga beretensi 10
+  Baris SESSION_STATE soal data/backup/ semula benar; yang kurang hanyalah
+  menyebut mekanisme kedua.

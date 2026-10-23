@@ -2,7 +2,7 @@
 
 - Langkah terakhir: S-155 (rincian di blok SESI bawah; acuan sah = git HEAD)
 - Layanan: http://127.0.0.1:8787 (login Basic; sandi dari HESTIA_SANDI, bawaan: hestia)
-- Basis data: data/hestia.db (cadangan VACUUM INTO, 10 terbaru dipangkas otomatis di data/)
+- Basis data: data/hestia.db (dua mekanisme cadangan: data/backup/ dan data/hestia.db.bak.*, masing-masing dipangkas ke 10 terbaru)
 - Gate: tools/gate.sh — fail-closed, memeriksa rute api, id dashboard, sterilisasi, sintaks, layanan
 - Kanal tanam: tools/tanam.py (PUT tanpa kredensial, lalu FTP); tombol Tanam di dashboard
 
