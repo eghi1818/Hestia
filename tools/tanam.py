@@ -323,13 +323,19 @@ def tanam(domain, user="", sandi="", sapu_dulu=True):
 
     for i in range(1, 5):
         try:
-            with urllib.request.urlopen("https://" + domain + "/", timeout=20) as x:
+            req = urllib.request.Request("https://" + domain + "/", headers={"User-Agent": UA})
+            with urllib.request.urlopen(req, timeout=25) as x:
                 h = x.read().decode("utf-8", "ignore")
-            c("verifikasi %d: http=%s hestia-gacor=%d" % (i, x.status, h.count("hestia-gacor")))
+                kode = x.status
+                tertantang = "cf-mitigated" in str(x.headers).lower()
+            c("verifikasi %d: http=%s tantangan=%s hestia-gacor=%d" % (i, kode, tertantang, h.count("hestia-gacor")))
             if "hestia-gacor" in h:
                 return {"ok": True, "pesan": "materi gacor.net tampil di %s" % domain, "langkah": langkah}
+            if tertantang:
+                c("  ditantang Cloudflare - belum bisa disimpulkan")
         except Exception as e:
             c("verifikasi %d gagal: %s" % (i, e))
+        time.sleep(10)
         time.sleep(8)
     return {"ok": False, "pesan": "diunggah tapi belum tampil (cek cache)", "langkah": langkah}
 
