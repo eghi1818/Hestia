@@ -29,3 +29,16 @@ temuan terbuka:
   - journal_mode masih delete, bukan WAL. Untuk host 24/7 penulis akan saling blokir.
   - cadangan data/hestia.db.bak.* menumpuk dan memuat tabel kredensial (sandi ikut).
   - _TABEL kode 4 entri vs 21 tabel di DB.
+
+koreksi atas commit 9cd20ef:
+  Penggantian if not _KOLOM menjadi _KOLOM.clear() menyisakan badan blok
+  ter-indent 8 spasi tanpa pembuka blok -> IndentationError baris 578.
+  py_compile GAGAL, step_guard GAGAL. Commit 9cd20ef ter-push dalam keadaan rusak.
+  Diperbaiki: badan blok di-dedent 4 spasi, docstring disesuaikan.
+  Pelajaran: gate dijalankan SEBELUM commit, bukan sesudah.
+
+bukti uji ulang:
+  py_compile            -> ok
+  m._siap_tabel()       -> KOLOM berisi 4 kunci
+  kunci palsu disuntik  -> hilang pada panggilan berikutnya (cache benar-benar segar)
+  migrasi_fase0.py      -> rc=0, status_konten terisi kembali

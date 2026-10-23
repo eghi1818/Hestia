@@ -571,16 +571,16 @@ _KOLOM = {}
 
 def _siap_tabel():
     """DB adalah sumber daftar kolom; _TABEL hanya untuk membuat tabel di clone bersih.
-    Dijalankan sekali, bukan setiap request."""
+    Kolom disegarkan setiap panggilan supaya kolom baru dari migrasi ikut terbaca."""
     global _KOLOM
     c = _db_kandidat()
     _KOLOM.clear()
-        for n, (kol, _x) in _TABEL.items():
-            c.execute("CREATE TABLE IF NOT EXISTS %s(id INTEGER PRIMARY KEY AUTOINCREMENT, %s)"
-                      % (n, kol))
-        for n in _TABEL:
-            _KOLOM[n] = [r[1] for r in c.execute("pragma table_info(%s)" % n)]
-        c.commit()
+    for n, (kol, _x) in _TABEL.items():
+        c.execute("CREATE TABLE IF NOT EXISTS %s(id INTEGER PRIMARY KEY AUTOINCREMENT, %s)"
+                  % (n, kol))
+    for n in _TABEL:
+        _KOLOM[n] = [r[1] for r in c.execute("pragma table_info(%s)" % n)]
+    c.commit()
     return c
 
 
