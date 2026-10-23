@@ -22,7 +22,7 @@ catatan:
 
 koreksi 2026-10-23 (kesalahan #8):
   Klaim awal "data/backup/ tidak pernah benar" adalah SALAH. Direktori data/backup/
-  ADA dan berisi 10 berkas dengan retensi yang sudah jalan. Penulisnya: <isi dari Blok A>.
+  ADA dan berisi 10 berkas dengan retensi yang sudah jalan. Penulisnya: tools/backup.py tools/tutup.sh tools/asal.py
   Jadi ada DUA mekanisme cadangan yang berjalan paralel:
     (1) data/backup/            - sudah beretensi 10
     (2) data/hestia.db.bak.*    - dibuat migrasi, kini juga beretensi 10

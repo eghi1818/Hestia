@@ -93,4 +93,7 @@ echo
 echo
 bash tools/gate_audit.sh || fail=1
 
+echo "== gate: placeholder bukti =="
+if ! bash tools/cek_placeholder.sh; then fail=1; fi
+
 if [ "$fail" -eq 0 ]; then echo "GATE: LULUS" ; exit 0 ; else echo "GATE: GAGAL" ; exit 1 ; fi

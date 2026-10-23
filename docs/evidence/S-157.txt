@@ -1,0 +1,20 @@
+S-157 - pemeriksa placeholder masuk gate
+tanggal: 2026-10-23
+
+latar:
+  Placeholder <...> lolos ter-commit dua kali: S-154 ("<tempel keluaran ...>")
+  dan S-156 ("<isi dari Blok A>"). Gate tidak memeriksa isi berkas bukti.
+
+perubahan:
+  tools/cek_placeholder.sh baru: memindai docs/evidence/*.txt untuk pola placeholder,
+  rc=1 kalau ada yang belum diisi.
+  tools/gate.sh: sisipkan pemeriksa tepat sebelum penentu LULUS/GAGAL.
+
+bukti:
+  bash tools/cek_placeholder.sh -> rc=0, "tidak ada placeholder"
+  gate tetap LULUS dengan pemeriksa terpasang
+
+catatan:
+  Pola diperiksa lewat daftar eksplisit, bukan regex longgar, supaya potongan HTML
+  di berkas bukti lama (mis. <title>, <td>) tidak ikut tertandai.
+  Placeholder gaya baru harus ditambahkan ke POLA.
