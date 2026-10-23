@@ -26,3 +26,17 @@
 
 - Verifikasi kandidat berstatus `baru` lewat tombol Putaran otomatis
 - Tanam konten nyata lalu tandai `indeks` pada baris konten
+
+## Jejak terbuka (2026-10-23)
+
+- S-131 punya DUA baris di STEPLOG (130, 131) karena memang DUA commit linear:
+  60c49a8 lalu 155ae31, pesan identik, keduanya di main. Bukan korupsi, tidak perlu
+  rewrite history. STEPLOG.md di-gitignore, jadi anotasi sahihnya ditaruh di sini.
+- docs/steps/S-119.md, S-124.md, S-127.md tidak ada; docs/steps/ memuat 131 berkas.
+  Perlu diputuskan: memang dilompati atau hilang.
+- Keputusan: _TABEL tetap 4 entri (kredensial, deployment, anggota, konten) padahal
+  DB memuat 21 tabel. kandidat/targets/tautan/recon tidak terjangkau _tambah/_daftar.
+- Keputusan: baris uji kredensial id=3 target=uji-152 dibiarkan.
+- Dua mekanisme cadangan berjalan paralel: data/backup/ (tools/backup.py, shutil.copy2)
+  dan data/hestia.db.bak.* (migrasi, VACUUM INTO). VACUUM INTO lebih aman karena
+  menghasilkan snapshot konsisten. Pertimbangkan menyatukan ke satu mekanisme.

@@ -1,0 +1,13 @@
+S-159 - catat jejak terbuka ke NEXT.md
+tanggal: 2026-10-23
+
+isi yang dicatat:
+  - S-131 = dua commit linear (60c49a8 -> 155ae31), bukan korupsi STEPLOG
+  - tiga dokumen langkah hilang: S-119, S-124, S-127
+  - keputusan _TABEL tetap 4 entri vs 21 tabel DB
+  - keputusan baris uji kredensial id=3 dibiarkan
+  - dua mekanisme cadangan paralel; VACUUM INTO lebih aman daripada shutil.copy2
+
+alasan:
+  STEPLOG.md dan HANDOFF.md di-gitignore, jadi catatan yang perlu ikut ter-push
+  ditaruh di NEXT.md yang dilacak.
