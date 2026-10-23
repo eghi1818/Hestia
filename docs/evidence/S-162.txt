@@ -1,0 +1,16 @@
+S-162 - hilangkan kedipan data demo di Audit Log
+tanggal: 2026-10-23
+
+masalah:
+  index.html baris 1168 memanggil renderAudit() yang mengisi #auditBody dengan array
+  demo statis, lalu audit.js menimpanya setelah DOMContentLoaded. Selama itu halaman
+  Audit Log menampilkan data palsu.
+
+perubahan:
+  index.html: renderAudit() dihapus dari rangkaian render. #auditBody kini diisi hanya
+  oleh audit.js dari /api/audit, termasuk penyaring S-161.
+  Definisi renderAudit() dan array demo `audit` dibiarkan; tidak lagi dipanggil.
+
+bukti:
+  grep renderAudit -> hanya definisi yang tersisa, tidak ada pemanggilan
+  gate LULUS, GATE-AUDIT LULUS, smoke 3/0
