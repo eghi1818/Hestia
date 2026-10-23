@@ -42,3 +42,12 @@ bukti uji ulang:
   m._siap_tabel()       -> KOLOM berisi 4 kunci
   kunci palsu disuntik  -> hilang pada panggilan berikutnya (cache benar-benar segar)
   migrasi_fase0.py      -> rc=0, status_konten terisi kembali
+
+koreksi klaim 2026-10-23:
+  Tertulis "status_konten terisi kembali". Sebenarnya status_konten adalah tabel
+  PER-KONTEN (kunci konten_id), bukan tabel acuan. Kosong itu wajar sampai app
+  menulis status indeks. Migrasi hanya membangun ulang DDL-nya.
+  Penjaga perlu (baris 78) memeriksa teks DDL di sqlite_master, bukan isi baris.
+  Post-condition membandingkan jumlah baris sebelum/sesudah; 0 -> 0 adalah LULUS sah.
+  Yang di-seed dan hadir: transisi_status 9 baris, metrik 2 baris.
+  Tidak ada bug. Hanya kalimat di atas yang keliru.
