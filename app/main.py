@@ -574,7 +574,7 @@ def _siap_tabel():
     Dijalankan sekali, bukan setiap request."""
     global _KOLOM
     c = _db_kandidat()
-    if not _KOLOM:
+    _KOLOM.clear()
         for n, (kol, _x) in _TABEL.items():
             c.execute("CREATE TABLE IF NOT EXISTS %s(id INTEGER PRIMARY KEY AUTOINCREMENT, %s)"
                       % (n, kol))

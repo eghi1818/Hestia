@@ -16,10 +16,6 @@ berkas (dari git show --stat):
 perbaikan pasca-commit (app/main.py):
   _tambah membaca _KOLOM sebelum _siap_tabel sehingga KeyError pada POST
   pertama setiap proses. Diperbaiki: _siap_tabel dipanggil sebelum _KOLOM dibaca.
-
-perbaikan pasca-commit (app/main.py):
-  _tambah membaca _KOLOM sebelum _siap_tabel sehingga KeyError pada POST
-  pertama setiap proses. Diperbaiki: _siap_tabel dipanggil sebelum _KOLOM dibaca.
   Dirapikan: panggilan ganda dihapus, koneksi ditutup.
 
 bukti uji runtime 2026-10-23, proses bersih dengan _KOLOM kosong:

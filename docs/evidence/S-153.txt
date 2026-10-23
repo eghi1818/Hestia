@@ -1,0 +1,31 @@
+S-153 - migrasi_fase0.py masuk repo + _siap_tabel tidak lagi mengunci kolom sekali seumur proses
+tanggal: 2026-10-23
+
+latar:
+  Tabel hasil migrasi (status_konten, transisi_status, metrik, skema_versi,
+  kredensial_uji) sudah ada di DB sejak sebelum commit, tetapi skripnya masih
+  untracked. DB berada di depan repo; tanpa resep, 5 tabel itu tak bisa direproduksi.
+
+isi migrasi_fase0.py:
+  - idempoten: CREATE TABLE IF NOT EXISTS, INSERT OR IGNORE, cek ada()/perlu, tambah_kolom
+  - cadangan VACUUM INTO + integrity_check; migrasi dibatalkan kalau cadangan tidak sehat
+  - post-condition: status_konten, konten.peran, idx_konten_url, metrik, foreign_key_check
+  - jalur uji: --paksa-gagal, --paksa-akhir, --paksa-rebuild
+  - ledger skema_versi memuat nama, waktu, hash skrip
+
+bukti jalan:
+  python tools/migrasi_fase0.py            -> rc=0, post-condition LULUS (idempoten)
+  python tools/migrasi_fase0.py --paksa-gagal -> rc=1 sesudah cadangan
+  python tools/migrasi_fase0.py --paksa-akhir -> rc=1, post-condition GAGAL
+  skema_versi: fase0 / <waktu> / hash skrip
+
+perbaikan pasca-commit (app/main.py):
+  _siap_tabel memakai penjaga if not _KOLOM sehingga kolom terkunci sejak panggilan
+  pertama; kolom baru dari migrasi (konten.peran, status_konten.status) tidak terbaca
+  oleh proses yang sedang hidup. Diganti _KOLOM.clear() sehingga selalu segar.
+  Diuji: kunci palsu yang disuntikkan hilang pada panggilan berikutnya.
+
+temuan terbuka:
+  - journal_mode masih delete, bukan WAL. Untuk host 24/7 penulis akan saling blokir.
+  - cadangan data/hestia.db.bak.* menumpuk dan memuat tabel kredensial (sandi ikut).
+  - _TABEL kode 4 entri vs 21 tabel di DB.
