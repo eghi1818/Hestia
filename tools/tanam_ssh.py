@@ -68,14 +68,14 @@ def kredensial(domain):
     return "", ""
 
 
-def ssh_jalan(b, skrip, sandi=None, timeout=90):
+def ssh_jalan(b, skrip, sandi=None, timeout=90, user=None):
     b64 = base64.b64encode(skrip.encode()).decode()
     if sandi:
         luar = "echo %s | sudo -S -p '' bash -c \"echo %s | base64 -d | bash\"" % (shq(sandi), b64)
     else:
         luar = "echo %s | base64 -d | bash" % b64
     key = Path(b["key"].replace("~", str(Path.home())))
-    user = b["user"] or ("wesearch" if "wesearch" in b["alias"] else b["alias"])
+    user = user or b["user"] or ("wesearch" if "wesearch" in b["alias"] else b["alias"])
     return subprocess.run(["ssh", "-i", str(key), "-p", b["port"]] + OPSI +
                           ["%s@%s" % (user, b["hostname"]), luar],
                           capture_output=True, text=True, timeout=timeout)
@@ -89,9 +89,10 @@ echo "host=$(hostname) user=$(id -un)"
 echo "--- vhost ---"
 grep -rh -m2 -B6 "server_name[^;]*$DOM" /etc/nginx/conf.d /etc/nginx/sites-enabled /etc/nginx/nginx.conf 2>/dev/null | head -20
 echo "--- docroot ---"
-DOK=$(grep -rh -A8 "server_name[^;]*$DOM" /etc/nginx/conf.d /etc/nginx/sites-enabled 2>/dev/null | grep -m1 -oE "root[[:space:]]+[^;]+" | awk '{print $2}')
+DOK=$(grep -Rh -A8 "server_name[^;]*$DOM" /etc/nginx 2>/dev/null | grep -m1 -oE "root[[:space:]]+[^;]+" | awk '{print $2}')
 echo "docroot=$DOK"
 [ -n "$DOK" ] || { echo "docroot tidak ketemu"; exit 0; }
+[ -n "$DOK" ] || { echo "docroot tidak ketemu"; exit 1; }
 F="$DOK/index.html"
 [ -f "$F" ] || F=$(find "$DOK" -maxdepth 2 -name 'index.html' 2>/dev/null | head -1)
 echo "berkas=$F"
@@ -142,7 +143,8 @@ def main():
         skrip = """
 set -e
 DOM="{DOM}"
-DOK=$(grep -rh -A8 "server_name[^;]*$DOM" /etc/nginx/conf.d /etc/nginx/sites-enabled 2>/dev/null | grep -m1 -oE "root[[:space:]]+[^;]+" | awk '{print $2}')
+DOK=$(grep -Rh -A8 "server_name[^;]*$DOM" /etc/nginx 2>/dev/null | grep -m1 -oE "root[[:space:]]+[^;]+" | awk '{print $2}')
+[ -n "$DOK" ] || { echo "docroot tidak ketemu"; exit 1; }
 F="$DOK/index.html"
 [ -f "$F" ] || { echo "index.html tidak ada"; exit 0; }
 echo "berkas=$F ukuran=$(wc -c < "$F")"

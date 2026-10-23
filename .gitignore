@@ -18,8 +18,8 @@ docs/RESUME-PACK.md
 # python dan data lokal
 .venv/
 __pycache__/
-data/
+data/*
+!data/tala/
 .out/
 docs/HANDOFF.md
 docs/STEPLOG.md
-data/backup/
