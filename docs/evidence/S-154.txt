@@ -1,0 +1,19 @@
+S-154 - journal_mode delete -> wal pada kedua titik masuk DB
+tanggal: 2026-10-23
+
+latar:
+  Migrasi menyetel busy_timeout 5000, aplikasi tidak. Mode jurnal masih delete,
+  sehingga penulis saling blokir. Untuk host 24/7 ini titik rapuh.
+
+perubahan:
+  tools/migrasi_fase0.py  : tambah k.execute("pragma journal_mode = wal")
+  app/main.py _db_kandidat: tambah busy_timeout 5000 + journal_mode wal
+  Aplikasi sebelumnya tanpa busy_timeout sama sekali.
+
+bukti:
+  <tempel keluaran kompilasi + baris journal_mode migrasi + pembacaan akhir>
+  berkas data/hestia.db-wal dan -shm terbentuk, tertutup .gitignore
+
+temuan terbuka:
+  - cadangan data/hestia.db.bak.* sudah 11 berkas, tiap berkas memuat kredensial
+  - _TABEL kode 4 entri vs 21 tabel di DB

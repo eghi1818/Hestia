@@ -254,6 +254,8 @@ def _db_kandidat():
         except Exception:
             pass
     c = sqlite3.connect(p or "data/hestia.db")
+    c.execute("pragma busy_timeout = 5000")
+    c.execute("pragma journal_mode = wal")
     c.row_factory = sqlite3.Row
     return c
 

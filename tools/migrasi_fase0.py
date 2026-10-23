@@ -46,6 +46,7 @@ def sambung():
     k = sqlite3.connect(DB, isolation_level=None)
     k.row_factory = sqlite3.Row
     k.execute("pragma busy_timeout = 5000")
+    k.execute("pragma journal_mode = wal")
     return k
 
 def main():
