@@ -90,4 +90,7 @@ if [ -f app/main.py ] ; then
 fi
 
 echo
+echo
+bash tools/gate_audit.sh || fail=1
+
 if [ "$fail" -eq 0 ]; then echo "GATE: LULUS" ; exit 0 ; else echo "GATE: GAGAL" ; exit 1 ; fi

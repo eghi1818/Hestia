@@ -1,0 +1,40 @@
+=== S-148 vendor audit-skill + temuan.json ===
+Fri Oct 23 09:51:41 WIB 2026
+   ambil report-schema.json              14494 byte
+   ambil validate-findings.cjs           28806 byte
+   ambil validate-findings.test.cjs      26384 byte
+--- pin ---
+6575c9de4a62255699ea052ebf9a49ebfb373a32891bcd89af6f55cc84b35519  report-schema.json
+e85f232e36bfac0f866f244da50376692d6b45c690beadcb00608b0e6c8b5283  validate-findings.cjs
+b92001117a92c4161d43777a0ba2fa182a8a4d97f2304cc8c0cee5331497b73b  validate-findings.test.cjs
+e1b5084d4e517b734d654d8660140b3143d5e8115061efe5760d55087214db25  ASAL.md
+--- verifikasi pin ---
+report-schema.json: OK
+validate-findings.cjs: OK
+validate-findings.test.cjs: OK
+ASAL.md: OK
++ susun_temuan.py OK
++ tulis docs/audit/temuan.json (3 record)
+   tools/tanam.py               baris 56   login ftplib | f.login(user, sandi, secure=False)
+   docs/evidence/S-120.txt      baris 7    sandi ditolak | --   admin          530 Login authentication
+   docs/evidence/S-113.txt      baris 21   anonim ditolak di tahap USER | ftplib.error_temp: 421 Unable
+   docs/evidence/S-120.txt      baris 7    sapuan umum gagal | --   admin          530 Login authentica
+   docs/evidence/S-121.txt      baris 5    PUT ditolak | http=403
+   tools/hosting.py             baris 12   cari kebocoran | TANDA = [("netlify", ["x-nf-request-id", "x
+   docs/evidence/S-107.txt      baris 1    akses ditolak | (anchor tidak ketemu)  <-- anchor tidak ketemu
+   docs/evidence/S-107.txt      baris 1    API Netlify menolak | (anchor tidak ketemu)  <-- anchor tidak ketemu
+   docs/evidence/S-123.txt      baris 4    A record load balancer | A     persaudaraan.com             
+   docs/evidence/S-135.txt      baris 129  token lokal tidak ada | netlify     tidak ada
+   tools/jalur.py               baris 17   find -writable | 'echo "== bisa-ditulis =="; find /var/www -
+   docs/evidence/S-144.txt      baris 162  kesimpulan probe | JALUR TANPA SANDI: TIDAK ADA -> sandi sud
+   docs/evidence/S-144.txt      baris 162  tidak ada jalur tulis | JALUR TANPA SANDI: TIDAK ADA -> sand
+   docs/evidence/S-145.txt      baris 8    user alternatif menerima kunci | administrator  administrato
+   docs/evidence/S-146.txt      baris 17   bug pencarian vhost | --- wesearch_vps: docroot tidak ketemu
+--- jalankan validator upstream ---
++ sintaks validator OK
+   test validator rc=1
+    code: 'MODULE_NOT_FOUND',
+    requireStack: [ '/Users/eghi/Documents/REPO/Hestia/tools/audit-skill/validate-findings.test.cjs' ]
+  }
+PASS: 3 findings valid
+   validate rc=0

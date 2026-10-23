@@ -1,0 +1,150 @@
+[
+  {
+    "verdict": "needs_validation",
+    "fingerprint": "deploy/juraganit/ftp-anonim-mati",
+    "title": "juraganit.com: kanal FTP terkunci karena sesi anonim ditolak server",
+    "description": "Pure-FTPd menolak sesi anonim dengan 421 pada tahap USER, baik plain maupun TLS. Sapuan lima pasangan user dan sandi umum semuanya 530. HTTP PUT ditolak LiteSpeed dengan 403. Tanpa kredensial nyata, tidak ada kanal tulis yang terbukti.",
+    "claimed_root_cause": "Konfigurasi Pure-FTPd tidak mengizinkan login anonim, dan akun FTP nyata hanya diketahui dari panel hosting liqu.id.",
+    "trace": [
+      {
+        "kind": "entrypoint",
+        "file": "tools/tanam.py",
+        "line": 56,
+        "scope": "klien FTP",
+        "description": "login ftplib | f.login(user, sandi, secure=False)"
+      },
+      {
+        "kind": "sink",
+        "file": "docs/evidence/S-120.txt",
+        "line": 7,
+        "scope": "bukti sapuan",
+        "description": "sandi ditolak | --   admin          530 Login authentication failed"
+      }
+    ],
+    "evidence": [
+      {
+        "file": "docs/evidence/S-113.txt",
+        "line": 21,
+        "description": "anonim ditolak di tahap USER | ftplib.error_temp: 421 Unable to set up secure anonymous FTP"
+      },
+      {
+        "file": "docs/evidence/S-120.txt",
+        "line": 7,
+        "description": "sapuan umum gagal | --   admin          530 Login authentication failed"
+      },
+      {
+        "file": "docs/evidence/S-121.txt",
+        "line": 5,
+        "description": "PUT ditolak | http=403"
+      }
+    ],
+    "blockers": [
+      "satu pasangan user dan sandi FTP dari panel liqu.id",
+      "sapuan lima pasangan umum gagal dengan 530",
+      "HTTP PUT ditolak LiteSpeed dengan 403"
+    ],
+    "validation_plan": {
+      "deployment": "setelah kredensial ada: tools/tanam.py juraganit.com -u <user> -p <sandi>, lalu cek marker di https://juraganit.com/"
+    }
+  },
+  {
+    "verdict": "needs_validation",
+    "fingerprint": "deploy/persaudaraan/netlify-nama-situs-tak-diketahui",
+    "title": "persaudaraan.com: isi tidak bisa ditulis karena nama situs Netlify tidak diketahui",
+    "description": "A record menunjuk IP load balancer Netlify, DNS dikelola Hostinger. API Netlify membalas 401 dan nama internal netlify.app tidak bocor di HTML, header, maupun DNS. gh dan netlify CLI tidak terpasang di mesin ini.",
+    "claimed_root_cause": "Situs di-deploy ke Netlify tanpa jejak nama internal yang terbaca dari luar, sehingga jalur tulis hanya lewat repo Git atau token API.",
+    "trace": [
+      {
+        "kind": "entrypoint",
+        "file": "tools/hosting.py",
+        "line": 12,
+        "scope": "probe hosting",
+        "description": "cari kebocoran | TANDA = [(\"netlify\", [\"x-nf-request-id\", \"x-nf-request-id\"]), (\"vercel\", [\"x-vercel-id\"]),"
+      },
+      {
+        "kind": "sink",
+        "file": "docs/evidence/S-123.txt",
+        "line": 21,
+        "scope": "bukti API",
+        "description": "API netlify menolak tanpa token | persaudaraan           -> {\"code\":401,\"message\":\"Access Denied\"}"
+      }
+    ],
+    "evidence": [
+      {
+        "file": "docs/evidence/S-123.txt",
+        "line": 21,
+        "description": "API Netlify membalas 401 Access Denied | persaudaraan           -> {\"code\":401,\"message\":\"Access Denied\"}"
+      },
+      {
+        "file": "docs/evidence/S-107.txt",
+        "line": 14,
+        "description": "probe awal: netlify api tidak ketemu | netlify api: tidak ketemu"
+      },
+      {
+        "file": "docs/evidence/S-123.txt",
+        "line": 4,
+        "description": "A record load balancer | A     persaudaraan.com             -> 75.2.60.5"
+      },
+      {
+        "file": "docs/evidence/S-135.txt",
+        "line": 129,
+        "description": "token lokal tidak ada | netlify     tidak ada"
+      }
+    ],
+    "blockers": [
+      "token Netlify atau repo Git yang terhubung",
+      "nama situs internal tidak terbaca dari luar"
+    ],
+    "validation_plan": {
+      "deployment": "GET https://api.netlify.com/api/v1/sites dengan Bearer token untuk dapat nama situs dan hak tulis"
+    }
+  },
+  {
+    "verdict": "needs_validation",
+    "fingerprint": "deploy/waspadaweb/docroot-tidak-bisa-ditulis",
+    "title": "waspadaweb.com: docroot root:root tanpa jalur tulis bebas sandi",
+    "description": "nginx menyajikan /var/www/waspadaweb dengan pemilik root:root. find -writable kosong sampai kedalaman empat, tidak ada skrip writable di /etc /usr/local /opt /srv, tidak ada cron root maupun unit systemd kustom yang menjalankan skrip writable. user wesearch hanya berada di grup wesearch dan users. Situs dilayani lewat Cloudflare Tunnel sehingga tidak ada port 443 di VPS.",
+    "claimed_root_cause": "vhost nginx menunjuk docroot milik root, dan user SSH tidak punya jalur tulis maupun eksekusi root tanpa sandi.",
+    "trace": [
+      {
+        "kind": "entrypoint",
+        "file": "tools/jalur.py",
+        "line": 17,
+        "scope": "probe jalur tulis",
+        "description": "find -writable | 'echo \"== bisa-ditulis ==\"; find /var/www -maxdepth 4 -writable 2>/dev/null | head -15; '"
+      },
+      {
+        "kind": "sink",
+        "file": "docs/evidence/S-144.txt",
+        "line": 162,
+        "scope": "bukti",
+        "description": "kesimpulan probe | JALUR TANPA SANDI: TIDAK ADA -> sandi sudo wajib"
+      }
+    ],
+    "evidence": [
+      {
+        "file": "docs/evidence/S-144.txt",
+        "line": 162,
+        "description": "tidak ada jalur tulis | JALUR TANPA SANDI: TIDAK ADA -> sandi sudo wajib"
+      },
+      {
+        "file": "docs/evidence/S-145.txt",
+        "line": 8,
+        "description": "user alternatif menerima kunci | administrator  administrator sudo: a password is required"
+      },
+      {
+        "file": "docs/evidence/S-146.txt",
+        "line": 17,
+        "description": "bug pencarian vhost | --- wesearch_vps: docroot tidak ketemu, dilewati"
+      }
+    ],
+    "blockers": [
+      "sandi sudo untuk wesearch atau administrator",
+      "tidak ada jalur tulis tanpa sandi"
+    ],
+    "validation_plan": {
+      "local": "tools/tanam_ssh.py --cek membaca docroot tanpa sandi",
+      "deployment": "setelah sandi ada: tanam_ssh --tanam, lalu cocokkan sha256 docroot dengan halaman publik"
+    }
+  }
+]
