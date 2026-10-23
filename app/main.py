@@ -566,51 +566,68 @@ _TABEL = {
 }
 
 
+_KOLOM = {}
+
+
 def _siap_tabel():
+    """DB adalah sumber daftar kolom; _TABEL hanya untuk membuat tabel di clone bersih.
+    Dijalankan sekali, bukan setiap request."""
+    global _KOLOM
     c = _db_kandidat()
-    for n, (kol, _x) in _TABEL.items():
-        c.execute("CREATE TABLE IF NOT EXISTS %s(id INTEGER PRIMARY KEY AUTOINCREMENT, %s)"
-                  % (n, kol))
-    c.commit()
+    if not _KOLOM:
+        for n, (kol, _x) in _TABEL.items():
+            c.execute("CREATE TABLE IF NOT EXISTS %s(id INTEGER PRIMARY KEY AUTOINCREMENT, %s)"
+                      % (n, kol))
+        for n in _TABEL:
+            _KOLOM[n] = [r[1] for r in c.execute("pragma table_info(%s)" % n)]
+        c.commit()
     return c
 
 
-def _daftar(nama, target=None):
+def _daftar(nama, target=None, limit=200, offset=0):
+    limit = max(1, min(int(limit or 200), 2000))
+    offset = max(0, int(offset or 0))
     c = _siap_tabel()
     if target:
+        total = c.execute("SELECT COUNT(*) FROM " + nama + " WHERE target=?", (target,)).fetchone()[0]
         rows = [dict(r) for r in c.execute(
-            "SELECT * FROM " + nama + " WHERE target=? ORDER BY id DESC LIMIT 200", (target,))]
+            "SELECT * FROM " + nama + " WHERE target=? ORDER BY id DESC LIMIT ? OFFSET ?",
+            (target, limit, offset))]
     else:
+        total = c.execute("SELECT COUNT(*) FROM " + nama).fetchone()[0]
         rows = [dict(r) for r in c.execute(
-            "SELECT * FROM " + nama + " ORDER BY id DESC LIMIT 200")]
+            "SELECT * FROM " + nama + " ORDER BY id DESC LIMIT ? OFFSET ?", (limit, offset))]
     c.close()
-    return {"total": len(rows), "item": rows}
+    return {"total": total, "jumlah": len(rows), "limit": limit, "offset": offset, "item": rows}
 
 
 def _tambah(nama, body):
-    kol = _TABEL[nama][1]
+    c = _siap_tabel()
+    kol = [k for k in _KOLOM[nama] if k != "id"]
+    dibuang = sorted(k for k in body if k not in kol)
     nilai = [body.get(k) for k in kol]
     c = _siap_tabel()
-    c.execute("INSERT INTO %s(%s) VALUES(%s)"
-              % (nama, ",".join(kol), ",".join("?" * len(kol))), nilai)
+    cur = c.execute("INSERT INTO %s(%s) VALUES(%s)"
+                    % (nama, ",".join(kol), ",".join("?" * len(kol))), nilai)
     c.commit()
+    baru = dict(c.execute("SELECT * FROM %s WHERE id=?" % nama, (cur.lastrowid,)).fetchone())
     c.close()
-    return {"ok": True, "tabel": nama}
+    return {"ok": True, "tabel": nama, "item": baru, "dibuang": dibuang}
 
 
 @app.get("/api/kredensial")
-def api_kredensial(target: Optional[str] = None):
-    return _daftar("kredensial", target)
+def api_kredensial(target: Optional[str] = None, limit: int = 200, offset: int = 0):
+    return _daftar("kredensial", target, limit, offset)
 
 
 @app.get("/api/deployment")
-def api_deployment(target: Optional[str] = None):
-    return _daftar("deployment", target)
+def api_deployment(target: Optional[str] = None, limit: int = 200, offset: int = 0):
+    return _daftar("deployment", target, limit, offset)
 
 
 @app.get("/api/konten")
-def api_konten(target: Optional[str] = None):
-    return _daftar("konten", target)
+def api_konten(target: Optional[str] = None, limit: int = 200, offset: int = 0):
+    return _daftar("konten", target, limit, offset)
 
 
 @app.post("/api/kredensial")

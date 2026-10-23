@@ -1,0 +1,18 @@
+S-152 - verifikasi tanam sopan (UA+jeda+tantangan) + prober awet uji_probe.py
+commit : 1518bdca93f8182884d41a7834aef8349c93121c
+tanggal: 2026-10-23 14:51:59 +0700
+bukti ditulis pasca-commit, 2026-10-23
+
+step_guard : OK
+gate       : LULUS (layanan 401)
+smoke      : 3 lulus / 0 gagal
+
+berkas (dari git show --stat):
+  dashboard/index.html | 18
+  docs/steps/S-151.md  |  4
+  tools/tanam.py       | 10
+  tools/uji_probe.py   | 85
+
+perbaikan pasca-commit (app/main.py):
+  _tambah membaca _KOLOM sebelum _siap_tabel sehingga KeyError pada POST
+  pertama setiap proses. Diperbaiki: _siap_tabel dipanggil sebelum _KOLOM dibaca.

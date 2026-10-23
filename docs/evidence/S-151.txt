@@ -1,0 +1,18 @@
+S-151 - tambalan tanam_ssh + lacak data/tala + penyemai set tala + aturan pelajaran probe
+commit : 48ff3530422e40e70b7c6281b39b261da1cd0ed4
+tanggal: 2026-10-23 14:23:54 +0700
+bukti ditulis pasca-commit, 2026-10-23
+
+step_guard : OK
+gate       : LULUS (layanan 401)
+smoke      : 3 lulus / 0 gagal
+
+berkas (dari git show --stat):
+  .gitignore             |  4
+  dashboard/index.html   | 18
+  data/tala/README.md    | 22
+  data/tala/url_mati.txt |  3
+  docs/PELAJARAN.md      |  6
+  docs/steps/S-150.md    |  4
+  tools/tala_siapkan.py  | 96
+  tools/tanam_ssh.py     | 10
