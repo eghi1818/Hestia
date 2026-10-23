@@ -9,7 +9,6 @@ if bash tools/gate.sh; then
   git commit -m "$MSG" || true
   git push
   bash tools/siapkan_newchat.sh >/dev/null 2>&1
-  echo "langkah ditutup. DIRTY: $(git status --porcelain | wc -l | tr -d ' ')"
 else
   echo "GATE GAGAL - commit ditolak"; exit 1
 fi
@@ -36,3 +35,8 @@ if m:
         open(f, "w").write("# S-%s - %s\n\n- commit: %s\n- bukti: docs/evidence/S-%s.txt\n" % (n, pesan, h, n))
         print("+ dokumen langkah ditulis: %s" % f)
 PYEOF
+
+# catatan: dokumen langkah ditulis SESUDAH commit karena hash commit baru ada
+# setelah commit; karena itu dokumen ikut masuk commit langkah berikutnya.
+# DIRTY dicetak di sini, bukan sebelumnya, supaya angkanya jujur.
+echo "langkah ditutup. DIRTY: $(git status --porcelain | wc -l | tr -d ' ')"
