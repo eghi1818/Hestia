@@ -67,6 +67,16 @@ def main():
     ic = k.execute("pragma c.integrity_check").fetchone()[0]
     k.execute("detach database c")
     print("cadangan: %s (integritas: %s)" % (os.path.basename(cad), ic))
+    _d = os.path.dirname(DB) or "."
+    _b = os.path.basename(DB)
+    lama = sorted(f for f in os.listdir(_d) if f.startswith(_b + ".bak."))[:-10]
+    for f in lama:
+        try:
+            os.remove(os.path.join(_d, f))
+        except OSError:
+            pass
+    if lama:
+        print("retensi: %d cadangan lama dihapus" % len(lama))
     if ic != "ok":
         print("[GALAT] cadangan tidak sehat, migrasi dibatalkan"); return 1
     if paksa_awal:

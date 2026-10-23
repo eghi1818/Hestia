@@ -1,0 +1,21 @@
+S-156 - retensi cadangan: pangkas ke 10 terbaru
+tanggal: 2026-10-23
+
+latar:
+  SESSION_STATE mengklaim "backup otomatis 10 terbaru di data/backup/" tetapi
+  migrasi membuat data/hestia.db.bak.<cap-waktu> di data/ tanpa memangkas.
+  Cadangan menumpuk 12 berkas dan tiap berkas memuat tabel kredensial.
+
+perubahan:
+  tools/migrasi_fase0.py: sesudah cadangan dibuat dan integritas diperiksa,
+  pangkas data/hestia.db.bak.* ke 10 terbaru. Tanpa impor baru (os.listdir).
+  Urutan nama = urutan waktu, jadi pengurutan leksikografis sahih.
+
+bukti:
+  kompilasi ok
+  migrasi: retensi: 3 cadangan lama dihapus
+  jumlah cadangan sesudah: 10
+
+catatan:
+  Klaim "data/backup/" di SESSION_STATE tidak pernah benar; diperbaiki jadi
+  menyebut lokasi dan perilaku yang sebenarnya.

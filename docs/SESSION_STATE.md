@@ -1,8 +1,8 @@
 # SESSION_STATE — Hestia
 
-- Langkah terakhir: S-131
+- Langkah terakhir: S-155 (rincian di blok SESI bawah; acuan sah = git HEAD)
 - Layanan: http://127.0.0.1:8787 (login Basic; sandi dari HESTIA_SANDI, bawaan: hestia)
-- Basis data: data/hestia.db (backup otomatis 10 terbaru di data/backup/)
+- Basis data: data/hestia.db (cadangan VACUUM INTO, 10 terbaru dipangkas otomatis di data/)
 - Gate: tools/gate.sh — fail-closed, memeriksa rute api, id dashboard, sterilisasi, sintaks, layanan
 - Kanal tanam: tools/tanam.py (PUT tanpa kredensial, lalu FTP); tombol Tanam di dashboard
 
@@ -14,7 +14,7 @@
 
 ## SESI 2026-10-23 (sinkron dari git, bukan catatan tangan)
 
-HEAD: 01dfb68 (S-154). Branch main, behind=0 ahead=0, working tree bersih.
+HEAD: 57b767b (S-155). Branch main, behind=0 ahead=0, working tree bersih.
 Rentang yang selesai sesi ini: S-152 (bug _tambah), S-153 (migrasi fase0 masuk repo,
 cache _KOLOM selalu segar), S-154 (journal_mode wal).
 Catatan: baris "S-131" di atas sudah basi; acuan yang sah adalah HEAD.
