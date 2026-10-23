@@ -732,11 +732,16 @@ tbody tr:last-child td{border-bottom:none}
             <div class="page-title">Audit Log</div>
             <div class="page-desc">Semua aksi tulis tercatat, tidak dapat diubah (FR-25, SEC-04).</div>
           </div>
-          <div class="actions"><button class="btn btn-ghost" onclick="toast('Filter lanjutan')">Filter lanjutan</button></div>
+          <div class="actions" style="display:flex;gap:8px;align-items:center">
+            <select id="auditPeristiwa" style="background:#151a22;border:1px solid #232833;color:#cfd6e4;border-radius:6px;padding:7px 8px;font-size:13px"><option value="">semua peristiwa</option></select>
+            <input id="auditCari" placeholder="cari peristiwa / rincian" style="background:#151a22;border:1px solid #232833;color:#cfd6e4;border-radius:6px;padding:7px 8px;font-size:13px">
+            <input id="auditBatas" type="number" value="60" min="10" max="500" style="background:#151a22;border:1px solid #232833;color:#cfd6e4;border-radius:6px;padding:7px 8px;font-size:13px;width:90px">
+            <button class="btn btn-ghost" onclick="isiAudit()">Terapkan</button>
+          </div>
         </div>
         <div class="card">
           <div class="tbl-wrap"><table>
-            <thead><tr><th>Waktu</th><th>Aktor</th><th>Aksi</th><th>Objek</th><th>Detail perubahan</th></tr></thead>
+            <thead><tr><th>Waktu</th><th>Aktor</th><th>Peristiwa</th><th>Rincian</th></tr></thead>
             <tbody id="auditBody"></tbody>
           </table></div>
         </div>
@@ -772,7 +777,7 @@ tbody tr:last-child td{border-bottom:none}
                 <div class="k">Enkripsi secret</div><div class="v">Envelope, kunci master terpisah</div>
                 <div class="k">Backup harian</div><div class="v">Terenkripsi · uji pemulihan bulanan</div>
                 <div class="k">Rate limit recon</div><div class="v">5 req/detik per target</div>
-                <div class="k">Audit log</div><div class="v">Append-only, retensi 12 bulan</div>
+                <div class="k">Audit log</div><div class="v">Append-only, dipangkas ke 200 baris terakhir</div>
               </div>
             </div>
           </div>
@@ -1165,7 +1170,7 @@ renderTargets();renderCreds();renderAlerts();renderLatency();renderChecks();rend
 <script src="/live.js?v=S152-1792741919"></script>
 <script src="/ikhtisar.js?v=S152-1792741919"></script>
 <script src="/tautan.js?v=S152-1792741919"></script>
-<script src="/audit.js?v=S152-1792741919"></script>
+<script src="/audit.js?v=S161-1"></script>
 <script src="/konten.js?v=S152-1792741919"></script>
 <script src="/detail.js?v=S152-1792741919"></script>
 <script src="/recon.js?v=S152-1792741919"></script>

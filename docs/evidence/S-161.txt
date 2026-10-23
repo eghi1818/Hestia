@@ -1,0 +1,39 @@
+S-161 - penyaring Audit Log + rapikan kolom
+tanggal: 2026-10-23
+
+latar:
+  Jejak clientlog sudah tampil di Audit Log lewat /api/audit, tetapi tanpa penyaring.
+  Tombol "Filter lanjutan" hanya memanggil toast. Tabel memakai 5 kolom padahal hanya
+  3 kolom berisi data; kolom Aktor selalu "peramban" dan Detail selalu em-dash.
+
+backend (app/main.py):
+  /api/audit: tambah parameter peristiwa dan cari. WHERE disusun dari daftar klausa,
+  semua nilai lewat parameter binding.
+  /api/audit/peristiwa (rute baru): peristiwa unik + jumlah, untuk isi dropdown.
+
+frontend:
+  dashboard/audit.js: kueriAudit() menyusun batas/peristiwa/cari; isiPilihan() mengisi
+  dropdown dari /api/audit/peristiwa; kolom Detail yang selalu kosong dihapus.
+  dashboard/index.html: tombol "Filter lanjutan" diganti kontrol nyata (select
+  peristiwa, input cari, input batas, tombol Terapkan); tajuk tabel jadi 4 kolom
+  (Waktu, Aktor, Peristiwa, Rincian); versi skrip audit.js di-bump ke S161-1.
+
+bukti uji fungsi langsung:
+  tanpa penyaring         : total 30
+  peristiwa=konsol-selesai : total 2
+  cari=monitor            : total 4
+  cari=zzz-tidak-ada      : total 0
+  /api/audit/peristiwa    : terisi (tautan-diisi 4, monitoring-diisi 4, dst)
+
+gate:
+  68 rujukan id diperiksa, termasuk #auditPeristiwa, #auditCari, #auditBatas
+  rute app/main.py 40 (naik dari 39)
+  GATE: LULUS, GATE-AUDIT: LULUS, smoke 3/0, placeholder ok
+
+perbaikan klaim:
+  index.html "retensi 12 bulan" -> "dipangkas ke 200 baris terakhir", sesuai
+  perilaku nyata /api/clientlog/bersih?simpan=200.
+
+catatan terbuka:
+  #auditBody masih diisi dua kali: array statis di index.html lalu audit.js setelah
+  1200 ms, sehingga 1,2 detik pertama menampilkan data demo.

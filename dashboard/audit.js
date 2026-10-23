@@ -9,11 +9,11 @@
   var sel = "padding:7px 8px;border-bottom:1px solid #232833";
 
   function isiAudit() {
-    fetch("/api/audit?batas=60").then(function (r) { return r.json(); }).then(function (d) {
+    fetch("/api/audit?" + kueriAudit()).then(function (r) { return r.json(); }).then(function (d) {
       var tb = document.getElementById("auditBody");
       if (!tb) return;
       if (!d.item.length) {
-        tb.innerHTML = '<tr><td colspan="5" style="' + sel + '">belum ada peristiwa</td></tr>';
+        tb.innerHTML = '<tr><td colspan="4" style="' + sel + '">belum ada peristiwa</td></tr>';
         return;
       }
       tb.innerHTML = d.item.map(function (a) {
@@ -22,7 +22,6 @@
           + '<td style="' + sel + '">peramban</td>'
           + '<td style="' + sel + '">' + a.peristiwa + "</td>"
           + '<td style="' + sel + '">' + (a.rincian || "—") + "</td>"
-          + '<td style="' + sel + '">—</td>'
           + "</tr>";
       }).join("");
       lapor("audit-diisi", "total=" + d.total);
@@ -70,10 +69,30 @@
     }).catch(function (e) { lapor("monitoring-gagal", String(e)); });
   }
 
+  function kueriAudit() {
+    var p = document.getElementById("auditPeristiwa");
+    var q = document.getElementById("auditCari");
+    var b = document.getElementById("auditBatas");
+    return "batas=" + encodeURIComponent(b && b.value ? b.value : "60")
+      + "&peristiwa=" + encodeURIComponent(p ? p.value : "")
+      + "&cari=" + encodeURIComponent(q ? q.value : "");
+  }
+  function isiPilihan() {
+    var p = document.getElementById("auditPeristiwa");
+    if (!p) return;
+    fetch("/api/audit/peristiwa").then(function (r) { return r.json(); }).then(function (d) {
+      var ada = p.value;
+      p.innerHTML = '<option value="">semua peristiwa</option>' + (d.item || []).map(function (x) {
+        return '<option value="' + x.peristiwa + '">' + x.peristiwa + " (" + x.n + ")</option>";
+      }).join("");
+      p.value = ada;
+    }).catch(function () {});
+  }
   window.isiAudit = isiAudit;
+  window.isiPilihanAudit = isiPilihan;
   window.isiMonitoring = isiMonitoring;
   document.addEventListener("DOMContentLoaded", function () {
-    isiAudit(); isiMonitoring();
+    isiPilihan(); isiAudit(); isiMonitoring();
     setTimeout(function () { isiAudit(); isiMonitoring(); }, 1200);
   });
 })();

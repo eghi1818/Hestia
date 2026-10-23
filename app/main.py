@@ -519,13 +519,30 @@ def tautan_js():
 
 
 @app.get("/api/audit")
-def api_audit(batas: int = 60):
+def api_audit(batas: int = 60, peristiwa: str = "", cari: str = ""):
     c = _db_kandidat()
-    tot = c.execute("SELECT count(*) FROM clientlog").fetchone()[0]
+    w, a = [], []
+    if peristiwa:
+        w.append("peristiwa=?"); a.append(peristiwa)
+    if cari:
+        w.append("(peristiwa LIKE ? OR rincian LIKE ?)")
+        a += ["%" + cari + "%", "%" + cari + "%"]
+    where = (" WHERE " + " AND ".join(w)) if w else ""
+    tot = c.execute("SELECT count(*) FROM clientlog" + where, a).fetchone()[0]
     rows = [dict(r) for r in c.execute(
-        "SELECT id, waktu, peristiwa, rincian FROM clientlog ORDER BY id DESC LIMIT ?", (batas,))]
+        "SELECT id, waktu, peristiwa, rincian FROM clientlog" + where
+        + " ORDER BY id DESC LIMIT ?", a + [batas])]
     c.close()
     return {"total": tot, "item": rows}
+
+
+@app.get("/api/audit/peristiwa")
+def api_audit_peristiwa():
+    c = _db_kandidat()
+    rows = [dict(r) for r in c.execute(
+        "SELECT peristiwa, count(*) AS n FROM clientlog GROUP BY peristiwa ORDER BY n DESC")]
+    c.close()
+    return {"item": rows}
 
 
 @app.get("/api/monitoring")
