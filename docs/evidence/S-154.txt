@@ -11,7 +11,9 @@ perubahan:
   Aplikasi sebelumnya tanpa busy_timeout sama sekali.
 
 bukti:
-  <tempel keluaran kompilasi + baris journal_mode migrasi + pembacaan akhir>
+  kompilasi ok (app/main.py + tools/migrasi_fase0.py)
+  migrasi: journal_mode: wal
+  pembacaan akhir: journal_mode sekarang: wal / busy_timeout: 5000
   berkas data/hestia.db-wal dan -shm terbentuk, tertutup .gitignore
 
 temuan terbuka:
