@@ -1,0 +1,16 @@
+S-163 - retensi clientlog 200 -> 4000 baris
+tanggal: 2026-10-23
+
+masalah:
+  index.html mengklaim "retensi 12 bulan", tetapi tools/tutup.sh memanggil
+  /api/clientlog/bersih?simpan=200. Pada laju ~15 baris/hari, 200 baris hanya
+  sekitar satu minggu.
+
+perubahan:
+  tools/tutup.sh: simpan=200 -> simpan=4000 (sekitar 9 bulan pada laju sekarang).
+  dashboard/index.html: klaim disesuaikan jadi "dipangkas ke 4000 baris terakhir".
+
+bukti:
+  grep simpan=4000 -> ada di tools/tutup.sh
+  grep "4000 baris" -> ada di dashboard/index.html
+  gate LULUS, GATE-AUDIT LULUS, smoke 3/0

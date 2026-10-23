@@ -17,7 +17,7 @@ fi
 python3 tools/backup.py
 
 # sisakan 200 catatan klien terakhir
-curl -sS -X POST --max-time 5 "http://127.0.0.1:8787/api/clientlog/bersih?simpan=200" >/dev/null 2>&1 || true
+curl -sS -X POST --max-time 5 "http://127.0.0.1:8787/api/clientlog/bersih?simpan=4000" >/dev/null 2>&1 || true
 
 # tulis dokumen langkah untuk commit ini
 python3 - "$1" <<'PYEOF'
