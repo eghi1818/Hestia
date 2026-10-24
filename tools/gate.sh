@@ -114,4 +114,21 @@ for berkas in $(grep -o '<script src="/[a-z0-9_-]*\.js' dashboard/index.html | s
   fi
 done
 
+echo "== gate: rute api utama (hidup) =="
+SANDI_H=$(sed -n 's/^HESTIA_SANDI=//p' "$HOME/.hestia/live.env" 2>/dev/null || true)
+if [ -n "$SANDI_H" ]; then
+  for pasangan in "/api/health:200" "/api/targets:200" "/api/teknologi-ringkas:200" "/api/status/ringkas:200" "/api/audit:200" "/api/driver/rules?domain=waspadaweb.com:200" "/api/driver/plan?domain=waspadaweb.com:200"; do
+    jalur="${pasangan%:*}"
+    harap="${pasangan##*:}"
+    dapat=$(curl -s${KURVA:-} -o /dev/null -w '%{http_code}' --max-time 8 -u "eghi:$SANDI_H" "$BASE$jalur" 2>/dev/null || true)
+    if [ "$dapat" = "$harap" ]; then
+      echo "  ok      $jalur -> $dapat"
+    else
+      echo "  KURANG  $jalur -> $dapat (harap $harap)"; fail=1
+    fi
+  done
+else
+  echo "  lewat   sandi live belum ada"
+fi
+
 if [ "$fail" -eq 0 ]; then echo "GATE: LULUS" ; exit 0 ; else echo "GATE: GAGAL" ; exit 1 ; fi

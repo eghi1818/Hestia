@@ -1,0 +1,17 @@
+S-200 - gate memprobe rute api secara hidup, bukan hanya memeriksa keberadaannya
+
+masalah: gate memeriksa rute dashboard hanya secara statis (nama rute ada di
+app/main.py), sehingga 404 nyata seperti GET /driver.js dan salah parameter seperti
+/api/driver/rules tanpa ?domain= tidak pernah ketahuan gate; keduanya hanya tertangkap
+oleh sapuan manual.
+
+pemeriksaan tambahan: driver.js mengirim /api/driver/plan?domain= dan
+/api/driver/verify?domain=, monitor.js mengirim /api/status/ringkas dan
+/api/status/periksa -- jadi tidak ada ketidakcocokan parameter (422 pada S-199 hanya
+salah tebak nama parameter di sapuan).
+
+perubahan: gate mendapat seksi "rute api utama (hidup)" yang memanggil tujuh GET utama
+dengan parameter benar dan menuntut 200, memakai BASE/KURVA sehingga ikut bekerja pada
+mode TLS.
+
+bukti: seksi tersebut mencetak ok untuk ketujuh rute; gate LULUS.
