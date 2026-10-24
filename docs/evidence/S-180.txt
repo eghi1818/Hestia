@@ -1,0 +1,18 @@
+S-180 - r_nomor numerik dari tabel job; uji runner dengan bentuk yang benar
+tanggal: 2026-10-24
+
+masalah (berantai):
+  1. Uji memakai asyncio.run()/run_until_complete pada fungsi yang sudah SINKRON
+     -> TypeError; tugas _jalankan2 dibatalkan saat loop ditutup -> job zombie.
+  2. _nomor_r() menghitung berkas R-*.txt; job zombie tidak menulis berkas -> nomor
+     mengulang -> UNIQUE constraint failed: job.r_nomor.
+  3. r_nomor TEXT 'R-<n>' sehingga MAX() langsung salah (R-9 > R-10).
+  4. R-13.txt tidak pernah ada karena job mati sebelum menulis.
+
+perubahan:
+  _nomor_r() = COALESCE(MAX(CAST(SUBSTR(r_nomor,3) AS INTEGER)),0)+1 dari SELURUH job.
+  Uji memakai loop yang dipertahankan + memanggil fungsi sinkron tanpa pembungkus.
+  Penyapu menulis sebab kematian ke R-<n>.txt.
+  .gitignore (docs/evidence/R-*.txt) ikut di-commit.
+
+bukti: nomor berikutnya 14; job lulus; berkas R ada; bukti memuat job_id sesuai jid.

@@ -109,3 +109,14 @@ Jangan "melengkapi" nomor-nomor ini tanpa alasan; cukup tahu bahwa celah itu waj
 PENGINGAT PROSES: tools/tutup.sh menulis docs/steps/S-<n>.md otomatis. Sejak S-152 ia
 tidak pernah dijalankan, sehingga S-153..S-176 harus dibuat menyusul. Jalankan tutup.sh
 di akhir tiap langkah, atau setidaknya sekali per sesi.
+
+## Runner job - bentuk sebenarnya (2026-10-24)
+
+- _konsol_jalankan adalah fungsi SINKRON yang menyiapkan baris job, lalu menjadwalkan
+  tugas asinkron _jalankan2 lewat ensure_future ke loop yang aktif. Ia mengembalikan
+  dict {ok, job_id, r_nomor, berkas}. JANGAN dibungkus asyncio.run().
+  Dari skrip: buat loop, asyncio.set_event_loop(loop), panggil fungsi sinkronnya,
+  lalu loop.run_until_complete(asyncio.sleep(3)) berulang sambil memantau status.
+  asyncio.run() membunuh tugas karena loop ditutup saat korutina selesai.
+- r_nomor TEXT 'R-<n>'; penomoran kini numerik dari SELURUH tabel job.
+- Penyapu _bersihkan_job_mati() menutup zombie dan menulis sebab ke R-<n>.txt.

@@ -24,3 +24,6 @@ data/*
 .out/
 docs/HANDOFF.md
 docs/STEPLOG.md
+
+# log job dari runner (dibuat ulang tiap jalan)
+docs/evidence/R-*.txt

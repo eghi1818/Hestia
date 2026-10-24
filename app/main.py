@@ -932,20 +932,22 @@ def _job_terputus():
         c.execute("UPDATE job SET status='terputus', selesai=datetime('now') WHERE status='jalan'")
 
 
-def _nomor_r():
-    _DOK_EV.mkdir(parents=True, exist_ok=True)
-    f = open(_KUNCI, "w")
-    _fcntl.flock(f, _fcntl.LOCK_EX)
+def _nomor_r(c=None):
+    """Nomor R berikutnya. Numerik, dari SELURUH tabel job termasuk yang gagal.
+
+    r_nomor bertipe TEXT 'R-<n>', jadi MAX() langsung salah (R-9 > R-10).
+    Sebelumnya nomor dihitung dari berkas R-*.txt, padahal job zombie tidak
+    menghasilkan berkas -> nomor mengulang dan kena UNIQUE constraint.
+    """
+    sendiri = c is None
+    if sendiri:
+        c = _db_kandidat()
     try:
-        n = 0
-        for p in _DOK_EV.glob("R-*.txt"):
-            m = _re.match(r"R-(\d+)\.txt$", p.name)
-            if m:
-                n = max(n, int(m.group(1)))
-        return n + 1
+        return c.execute("SELECT COALESCE(MAX(CAST(SUBSTR(r_nomor,3) AS INTEGER)),0)+1"
+                         " FROM job").fetchone()[0]
     finally:
-        _fcntl.flock(f, _fcntl.LOCK_UN)
-        f.close()
+        if sendiri:
+            c.close()
 
 
 def _aksi_baris(nama):
