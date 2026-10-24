@@ -1,48 +1,48 @@
-# SESSION_STATE — Hestia
+# SESSION STATE - Hestia
 
-- Langkah terakhir: S-155 (rincian di blok SESI bawah; acuan sah = git HEAD)
-- Layanan: http://127.0.0.1:8787 (login Basic; sandi dari HESTIA_SANDI, bawaan: hestia)
-- Basis data: data/hestia.db (dua mekanisme cadangan: data/backup/ dan data/hestia.db.bak.*, masing-masing dipangkas ke 10 terbaru)
-- Gate: tools/gate.sh — fail-closed, memeriksa rute api, id dashboard, sterilisasi, sintaks, layanan
-- Kanal tanam: tools/tanam.py (PUT tanpa kredensial, lalu FTP); tombol Tanam di dashboard
+Ditulis: 2026-10-24. Chat: SEO V1.1.
+HEAD saat dokumen ini ditulis: ba636d3 S-181: HESTIA_JOB_ID diekspor di _jalankan2 (bukan _jalankan)
 
-## Menunggu
+## Keadaan
+- branch main, tree bersih, gate LULUS, GATE-AUDIT LULUS, smoke 3/0
+- 46 rute, 70 rujukan id dashboard tervalidasi, placeholder ok
+- layanan :8787 hidup di balik Basic auth
 
-- juraganit.com: butuh sandi FTP (hosting liqu.id)
-- waspadaweb.com: SSH tembus, /var/www/waspadaweb milik root, butuh sudo
-- persaudaraan.com: nama *.netlify.app belum ketemu
+## Yang sudah SELESAI dan tidak perlu diulang
+- Fondasi: auth, gate fail-closed, audit, WAL, migrasi fase0, retensi cadangan,
+  pemeriksa placeholder, sinkron state
+- Modul 4 (driver 301/410): tools/driver.py + data/rules + rute /api/driver/*
+  + halaman Driver di dashboard + ActionLog ke clientlog
+  Bukti: docs/evidence/S-167.txt, S-169.txt, S-172.txt
+- Modul 5 (Link Rot Monitor): tools/status_periksa.py + rute /api/status/*
+  + transisi otomatis vs usul + bukti teratribusi ke job
+  Bukti: docs/evidence/S-173.txt .. S-181.txt
+  Empat cabang teruji: tetap, tak-pasti, transisi(otomatis), usul(izin None)
+- Runner job: r_nomor kebal bentrok, penyapu zombie, HESTIA_JOB_ID diekspor
+  Bukti: docs/evidence/S-179.txt, S-180.txt, S-181.txt
 
-## SESI 2026-10-23 (sinkron dari git, bukan catatan tangan)
+## SISA KERJA (berurut)
+1. Panel Monitor di dashboard untuk Modul 5 (rute /api/status/* sudah ada,
+   halaman belum). Pola: tiru dashboard/driver.js (S-172).
+2. metrik belum punya kolom nilai; angka disimpan sebagai prosa di catatan.
+   Pertimbangkan migrasi kolom nilai (P2).
+3. Retensi bukti: bukti tumbuh ~jumlah diperiksa tiap run.
+4. unggah berkas FTP/SFTP lewat dashboard (masih lewat tools/tanam.py)
+5. papan status pindai teknologi di Ikhtisar (16 target mati/parkir kosong)
+6. LIVE: HESTIA_SANDI dinaikkan, serve.sh jadi layanan, host 24/7 + HTTPS
 
-HEAD: 57b767b (S-155). Branch main, behind=0 ahead=0, working tree bersih.
-Rentang yang selesai sesi ini: S-152 (bug _tambah), S-153 (migrasi fase0 masuk repo,
-cache _KOLOM selalu segar), S-154 (journal_mode wal).
-Catatan: baris "S-131" di atas sudah basi; acuan yang sah adalah HEAD.
+## Kendala / keputusan menunggu
+- tidak ada HestiaCP di mana pun (waspadaweb=nginx, persaudaraan=Netlify,
+  juraganit=LiteSpeed cPanel). DoD #3 sudah dipenuhi lewat driver nginx + lxc.
+- aturan izin='manusia' di transisi_status menuju dicabut/tertanam sehingga tidak
+  bisa terpicu probe; usul hidup dari pasangan tak dikenal. Sudah diuji.
+- 3 kunci lapangan (FTP juraganit, sudo waspadaweb, nama netlify persaudaraan)
+  hanya bahan uji - bukan penghalang.
 
-Sisa kerja lokal:
-  - retensi cadangan data/hestia.db.bak.* (sudah 12 berkas, memuat tabel kredensial)
-  - anotasi STEPLOG: S-131 ternyata 2 commit linear (60c49a8 -> 155ae31), bukan korupsi
-  - clientlog di Audit Log dengan penyaring
-  - periksa docs/steps/S-119.md, S-124.md, S-127.md yang tidak ada
-  - _TABEL kode 4 entri vs 21 tabel DB (menunggu keputusan: sengaja atau kurang)
+## Nomor langkah tanpa commit (wajar)
+S-158, S-164, S-166, dan docs/steps/S-119, S-124, S-127.
 
-Tertahan kunci: FTP juraganit.com, sudo waspadaweb.com, netlify persaudaraan.com.
-
-## 2026-10-23 lanjut - Modul 4 aktif
-
-HEAD: a8c1a1c S-167: Modul 4 aktif - driver 301/410 nginx, dry-run, idempotensi, verifikasi origin+publik
-status: Modul 4 minimum AKTIF dan terbukti di server (301 + 410, origin + publik).
-tools/driver.py, data/rules/waspadaweb.json, scripts/bootstrap_sudo.sh sudah ada.
-sudo NOPASSWD administrator sudah dipasang lewat container hx (tanpa sandi).
-bukti: docs/evidence/S-167.txt
-
-sisa kerja (berurut):
-  1. rute HTTP + tombol dashboard untuk driver  (P0)
-  2. ActionLog ke clientlog + tampil di Audit Log
-  3. Modul 5 (Link Rot Monitor)
-  4. unggah berkas lewat dashboard
-  5. papan status teknologi di Ikhtisar
-  6. LIVE: HESTIA_SANDI, serve.sh jadi layanan, host + HTTPS
-
-catatan: 3 dokumen niat (GOAL, Skill Agent, Prompt Tambahan) BELUM ada di repo -
-agen baru harus membacanya dari folder HESTIA-RESUME.
+## Cara melanjutkan
+bash tools/step_guard.sh && bash tools/resume.sh
+baca docs/NEXT.md, docs/evidence/S-17*.txt, docs/evidence/S-18*.txt
+jalankan bash tools/tutup.sh di akhir tiap langkah.

@@ -1,0 +1,13 @@
+S-182 - sinkronkan seluruh jejak ke HEAD (docs/steps, SESSION_STATE, paket resume)
+tanggal: 2026-10-24
+
+masalah:
+  docs/steps/ berhenti di S-176.md padahal commit sudah S-181, karena tutup.sh tidak
+  dijalankan lagi sejak S-177. SESSION_STATE masih menunjuk a8c1a1c (S-168). Akibatnya
+  status terbaca seolah mundur dan agen baru bisa menyangka pekerjaan tidak maju.
+
+perubahan:
+  tools/lengkapi_steps.py dibuat (bisa diulang) dan dijalankan -> S-177..S-181 tertulis.
+  docs/SESSION_STATE.md ditulis ULANG (bukan ditambal): HEAD, yang selesai, sisa kerja,
+  kendala, nomor langkah tanpa commit, cara melanjutkan.
+  docs/ONBOARDING_PROMPT.txt memuat versi chat.
