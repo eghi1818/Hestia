@@ -1,0 +1,21 @@
+S-170 - betulkan pemuatan rules dan tambah percobaan ulang ssh
+tanggal: 2026-10-24
+
+masalah sebenarnya (ditemukan lewat debug, bukan tebakan):
+  _berkas_rules menempelkan .json ke DOMAIN sehingga mencari
+  data/rules/waspadaweb.com.json, sedangkan berkasnya bernama waspadaweb.json.
+  _DIR_RULES sendiri sudah benar; perubahan sebelumnya tidak menyelesaikan ini.
+  Gejala: rules ada=False, plan remove=2 (padahal config sudah benar).
+
+perbaikan:
+  1. berkas rules di-rename jadi data/rules/waspadaweb.com.json supaya kuncinya
+     sama dengan parameter domain. _berkas_rules diberi cadangan label pertama.
+  2. _ssh_host dan _ssh_ct memakai _jalankan() dengan 3 percobaan ulang, karena
+     ssh ke VPS sempat timeout sesaat.
+
+bukti:
+  kompilasi ok
+  rules ada=True
+  plan add=0 update=0 remove=0 noop=2
+  verify [(301, True), (410, True)]
+  dry-run changed=False

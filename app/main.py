@@ -1322,7 +1322,12 @@ def _driver():
 
 
 def _berkas_rules(domain: str) -> str:
-    return _os.path.join(_DIR_RULES, domain + ".json")
+    """Berkas rules dinamai menurut domain penuh. Cadangan: label pertama."""
+    p = _os.path.join(_DIR_RULES, domain + ".json")
+    if _os.path.exists(p):
+        return p
+    pendek = _os.path.join(_DIR_RULES, domain.split(".")[0] + ".json")
+    return pendek if _os.path.exists(pendek) else p
 
 
 def _muat_rules(domain: str):
