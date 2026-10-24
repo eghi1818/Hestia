@@ -43,3 +43,4 @@ PYEOF
 echo "langkah ditutup. DIRTY: $(git status --porcelain | wc -l | tr -d ' ')"
 
 python3 tools/sync_jejak.py --resume
+python3 tools/pangkas_bukti.py --simpan 5000 --r-simpan 50

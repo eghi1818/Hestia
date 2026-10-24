@@ -1,0 +1,13 @@
+S-186 - retensi bukti + log R; tautan status_konten dilindungi
+tanggal: 2026-10-24
+
+masalah: bukti tumbuh ~6 baris tiap pemeriksaan dan log docs/evidence/R-*.txt menumpuk;
+keduanya tanpa retensi.
+
+perubahan:
+  tools/pangkas_bukti.py: pangkas bukti ke N terbaru (bawaan 5000) dan R-*.txt ke M
+  terbaru (bawaan 50). Baris bukti yang masih dirujuk status_konten.bukti_terakhir
+  TIDAK dihapus sehingga tautan tetap sahih. Ada mode --kering.
+  tools/tutup.sh memanggilnya tiap langkah ditutup.
+
+bukti: uji kering + dua kali jalankan tanpa error; tautan putus 0.

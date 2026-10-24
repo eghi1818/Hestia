@@ -1,16 +1,16 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 12:13.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 12:18.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: fd6360a S-184: panel Monitor Modul 5 (tabel status + jalankan pemeriksa dari dashboard)
-branch: main | kotor: ?? docs/steps/S-183.md
-?? docs/steps/S-184.md
-rute app/main.py: 71 | berkas bukti: 79 | dokumen langkah: 159
+HEAD: b491e15 S-185: migrasi fase1 metrik.nilai + satuan, panel menampilkan angka
+branch: main | kotor: ?? docs/steps/S-185.md
+rute app/main.py: 71 | berkas bukti: 80 | dokumen langkah: 160
 
 ## 12 commit terakhir
 
 ```
+b491e15 S-185: migrasi fase1 metrik.nilai + satuan, panel menampilkan angka
 fd6360a S-184: panel Monitor Modul 5 (tabel status + jalankan pemeriksa dari dashboard)
 a4c5c90 S-183: penyinkronan jejak otomatis lewat tutup.sh (SESSION_STATE dihasilkan)
 66fc2d8 S-182: sinkronkan jejak ke HEAD (dokumen langkah, SESSION_STATE, paket resume)
@@ -22,7 +22,6 @@ c54d4c3 S-180: r_nomor numerik dari tabel job; uji runner sesuai bentuk sinkron
 288b1e1 S-175: bukti per-run + job_id + tautan bukti_terakhir, aksi tidak ditimpa
 ac841b1 S-174: tautkan bukti_terakhir ke bukti.id, lengkapi kolom bukti, whitelist
 218b1d1 S-173: Modul 5 pemeriksa status + transisi otomatis (dry-run aman, cek_wajib)
-d8cc1f9 S-172: halaman Driver di dashboard (plan/dry-run/terapkan/verifikasi)
 ```
 
 ## SISA KERJA
