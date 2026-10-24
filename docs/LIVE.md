@@ -31,3 +31,8 @@ memuat `PermissionError ... pyvenv.cfg`.
 Ringkasnya: System Settings > Privacy & Security > Full Disk Access > tambah `/bin/bash`,
 lalu `launchctl kickstart -k gui/$(id -u)/id.hestia.serve`. Selama izin belum diberikan,
 `live.sh pasang` menyalakan `serve.sh` sebagai cadangan agar dashboard tetap hidup.
+
+## Selama izin belum diberikan
+Agen launchd belum bisa membaca repo, jadi `live.sh pasang` menyalakan cadangan
+(uvicorn langsung). Cadangan itu tidak ikut start saat login, sehingga **sesudah reboot
+jalankan `bash tools/live.sh pasang --tls` sekali** sampai izin Full Disk Access diberikan.

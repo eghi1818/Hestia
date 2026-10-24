@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 20:49.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 20:53.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 965d9d3 S-192: kanal HTTPS terpisah di 8788, cadangan TLS-aware
-branch: main | kotor: ?? docs/steps/S-192.md
-rute app/main.py: 73 | berkas bukti: 86 | dokumen langkah: 167
+HEAD: 7f48ad9 S-192: kanal HTTPS terpisah di 8788, cadangan TLS-aware [jejak]
+branch: main | kotor: M docs/steps/S-192.md
+?? docs/evidence/S-192.txt
+rute app/main.py: 73 | berkas bukti: 87 | dokumen langkah: 167
 
 ## 12 commit terakhir
 
 ```
+7f48ad9 S-192: kanal HTTPS terpisah di 8788, cadangan TLS-aware [jejak]
 965d9d3 S-192: kanal HTTPS terpisah di 8788, cadangan TLS-aware
 e92aa35 S-191: LIVE sandi naik, agen launchd, HTTPS self-signed, deteksi TCC [jejak]
 0b2268b S-191: LIVE sandi naik, agen launchd, HTTPS self-signed, deteksi TCC
@@ -21,7 +23,6 @@ f542d30 S-188: halaman Tanam di dashboard, rute /api/tanam tersambung [jejak]
 64b1312 S-188: halaman Tanam di dashboard, rute /api/tanam tersambung
 380597f S-187: tutup.sh berakhir dengan pohon bersih (commit jejak otomatis) [jejak]
 a7060f3 S-187: tutup.sh berakhir dengan pohon bersih (commit jejak otomatis)
-dde51c6 S-186: retensi bukti dan log R, tautan status_konten dilindungi
 ```
 
 ## SISA KERJA

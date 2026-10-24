@@ -1,0 +1,12 @@
+S-192 - kanal HTTPS terpisah di 8788, cadangan TLS-aware
+
+masalah: pada mode TLS, cadangan memakai tools/serve.sh yang selalu HTTP sehingga
+https://127.0.0.1:8788 membalas 000 dan "live.sh pasang --tls" berakhir GAGAL, padahal
+sertifikat sudah dibuat.
+
+perubahan: kanal dipisah. Agen launchd id.hestia.serve melayani HTTP di 8787 (dipakai
+gate), agen id.hestia.serve.tls melayani HTTPS di 8788 (dipakai peramban). Cadangan
+menyalakan keduanya bila plist TLS ada, masing-masing dengan cert di ~/.hestia/tls.
+
+bukti: "live.sh pasang --tls" mencetak "http  :8787 tanpa sandi 401 | dengan sandi 200"
+dan "https :8788 tanpa sandi 401 | dengan sandi 200"; status akhir memuat kedua baris.

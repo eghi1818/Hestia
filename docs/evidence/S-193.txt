@@ -1,0 +1,13 @@
+S-193 - dokumen langkah tidak boleh menunjuk bukti yang belum ada
+
+masalah: docs/steps/S-192.md tertulis "bukti: (belum ada: docs/evidence/S-192.txt)"
+karena catatan S-192 ditempel ke S-191.txt. Gate tidak pernah memeriksa keberadaan
+berkas bukti untuk langkah terakhir, sehingga kondisi itu lolos.
+
+perubahan: docs/evidence/S-192.txt dibuat; docs/steps/S-192.md dihapus lalu diregenerasi
+sync_jejak sehingga rujukan buktinya benar; gate.sh memeriksa bahwa langkah terakhir
+punya docs/evidence/S-<n>.txt dan keluar dengan galat bila tidak; docs/LIVE.md diberi
+catatan bahwa cadangan tidak ikut start saat login sampai izin Full Disk Access diberikan.
+
+bukti: gate memuat bagian "gate: bukti langkah terakhir" dengan status ok; dokumen
+langkah S-192 memuat rujukan bukti yang benar.
