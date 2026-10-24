@@ -1,0 +1,13 @@
+S-201 - SISA-KERJA dibersihkan dari pekerjaan yang sudah selesai
+
+masalah: butir 1 (panel Monitor) dan butir 2 (kolom metrik.nilai) masih tercatat sebagai
+pekerjaan terbuka padahal sudah dikerjakan pada S-184 dan S-185. Butir 7 juga terselip di
+bawah bagian "Kendala", bukan di daftar berurut.
+
+perubahan: butir 1 dan 2 ditandai selesai; butir 7 dipindah ke daftar berurut setelah
+butir 6. Catatan: blok pertama mati di langkah grep karena glob docs/GOAL*.md tidak
+dikutip (zsh), sehingga bukti dan tutup langkah baru dijalankan pada blok kedua.
+
+bukti: isi SISA-KERJA baris 5-13; isi tabel pondasi (kandidat 903, tautan 775, recon 56,
+konten 4, deployment 2, metrik 4, status_konten 3, targets 44, bukti 18); 16 halaman
+dashboard terdaftar.
