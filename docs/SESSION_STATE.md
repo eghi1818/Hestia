@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 22:06.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 22:08.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 12d29be S-199: sajikan /driver.js dan /monitor.js, gate menjaga rute skrip
-branch: main | kotor: M docs/steps/S-199.md
-rute app/main.py: 75 | berkas bukti: 94 | dokumen langkah: 174
+HEAD: c44de49 S-200: gate memprobe rute api utama secara hidup
+branch: main | kotor: M docs/steps/S-200.md
+rute app/main.py: 75 | berkas bukti: 95 | dokumen langkah: 175
 
 ## 12 commit terakhir
 
 ```
+c44de49 S-200: gate memprobe rute api utama secara hidup
+31e44a5 S-199: sajikan /driver.js dan /monitor.js, gate menjaga rute skrip [jejak]
 12d29be S-199: sajikan /driver.js dan /monitor.js, gate menjaga rute skrip
 d532151 S-198: satu kanal 8787, TLS jadi mode bukan kanal kedua [jejak]
 949d9b3 S-198: satu kanal 8787, TLS jadi mode bukan kanal kedua
@@ -20,8 +22,6 @@ bd8dd2c S-196: gate memeriksa bukti langkah yang sedang dikerjakan
 79da088 S-195: bukti sah gate fail-closed pada berkas bukti langkah [jejak]
 9af480f S-195: bukti sah gate fail-closed pada berkas bukti langkah
 ea149ea S-194: betulkan judul seksi gate + bukti fail-closed [jejak]
-345d616 S-194: betulkan judul seksi gate + bukti fail-closed
-64aa6b2 S-193: gate memeriksa bukti langkah terakhir, bukti S-192 dilengkapi [jejak]
 ```
 
 ## SISA KERJA
