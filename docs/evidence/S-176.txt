@@ -1,0 +1,14 @@
+S-176 - buktikan cabang usul dan kedaluwarsa (dari data, bukan asumsi)
+tanggal: 2026-10-24
+
+temuan: tidak ada aturan izin='manusia' yang targetnya bisa dihasilkan probe
+(target probe hanya terverifikasi/kedaluwarsa; aturan manusia menuju dicabut/tertanam).
+Jadi cabang usul diuji lewat pasangan TAK DIKENAL -> izin None -> usul. Ini sekaligus
+membuktikan jalur "minta manusia" untuk pasangan yang belum diatur.
+
+cara: dua konten uji ber-URL 404. Satu status_konten disetel ke 'terverifikasi'
+(pasangan otomatis terverifikasi->kedaluwarsa), satu ke status sah yang pasangannya
+tak ada di tabel.
+
+hasil: dorong memuat terverifikasi->kedaluwarsa dan status BERUBAH; usul memuat
+pasangan tak dikenal dan status TIDAK berubah; bukti verdict='gagal' untuk keduanya.

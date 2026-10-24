@@ -85,3 +85,17 @@ pelajaran operasional:
 - metrik tidak punya kolom nilai; angka disimpan sebagai prosa di catatan dan API yang
   menghitung. Migrasi ke kolom nilai = P2.
 - Belum pernah terbukti: jalur `usul` (butuh manusia) dan jalur `kedaluwarsa` nyata.
+
+## Modul 5 - temuan penting (2026-10-24)
+
+- Probe hanya menghasilkan tujuan `terverifikasi` dan `kedaluwarsa` (PETA 2 entri).
+  Aturan izin='manusia' di transisi_status menuju `dicabut`/`tertanam`, jadi tidak
+  satu pun bisa terpicu lewat probe. Jalur `usul` karena itu hidup dari pasangan
+  (status_lama, tujuan) yang TIDAK ada di tabel -> izin None -> else -> usul.
+  Sudah benar di kode (baris 227: `== "otomatis"`, baris 231: `else -> usul`) dan diuji.
+- Kalau ingin aturan manusia benar-benar terpicu: tambah baris transisi_status
+  (mis. terverifikasi -> dicabut) ATAU perluas PETA probe.
+- Dua konten uji permanen: uji-otomatis-404, uji-usul-404. Selalu terhitung.
+- badungkab.go.id tetap tidak_dapat_disimpulkan (timeout di sisi situs, rc=28).
+- Jebakan: penjaga `"check" in sql.lower()` tapi pemecah `sql.split("check")` -
+  DDL menulis CHECK huruf besar. Pakai regex dengan re.I.
