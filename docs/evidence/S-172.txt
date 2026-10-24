@@ -1,0 +1,17 @@
+S-172 - halaman Driver di dashboard (Modul 4 bisa dipakai tanpa terminal)
+tanggal: 2026-10-24
+
+yang ditambah:
+  dashboard/driver.js  : tombol Rencana / Dry-run / Terapkan / Verifikasi memanggil
+                         /api/driver/plan, /api/driver/apply, /api/driver/verify.
+                         Pilihan domain diisi dari /api/targets. Keluaran mentah
+                         termasuk diff ditampilkan apa adanya.
+  dashboard/index.html : 3 sisipan - item nav "Driver", section #page-driver,
+                         script tag driver.js. Tidak mengubah markup yang sudah ada.
+
+sifat: additive. Tidak ada rute atau berkas lama yang diubah.
+
+bukti:
+  grep menemukan data-page="driver", id="page-driver", driver.js
+  gate LULUS (rujukan id dashboard bertambah; driverDomain + driverOut tervalidasi)
+  plan noop=2, verify [(301, True), (410, True)]
