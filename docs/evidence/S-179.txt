@@ -1,0 +1,15 @@
+S-179 - penyapu job mati; zombie tidak lagi memblokir runner
+tanggal: 2026-10-24
+
+masalah:
+  Job yang dipanggil dari proses singkat (python - <<PY) meninggalkan baris job
+  berstatus 'jalan' karena tugas asyncio ikut mati bersama induknya. Tidak ada yang
+  menutupnya, dan karena batas konkurensi 1, satu zombie memblokir semua job berikut.
+  Terbukti: job 12 berstatus jalan sejak 03:29:14 dengan pid sudah mati, R-12.txt
+  hanya memuat baris 'mulai'.
+
+perubahan:
+  _pid_hidup(pid) + _bersihkan_job_mati(): job berstatus jalan yang pid-nya mati
+  ditutup jadi gagal. Dipanggil sebelum cek konkurensi.
+
+bukti: job 12 jadi gagal, job baru lulus, bukti memuat job_id sesuai jid.

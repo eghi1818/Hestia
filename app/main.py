@@ -973,7 +973,33 @@ def _konsol_aksi():
 
 
 @app.post("/api/konsol/jalankan")
-async def _konsol_jalankan(muatan: dict):
+async def _pid_hidup(pid):
+    try:
+        _os.kill(int(pid), 0)
+        return True
+    except Exception:
+        return False
+
+
+def _bersihkan_job_mati():
+    """Job berstatus jalan yang pid-nya sudah mati ditutup jadi gagal.
+
+    Tanpa ini, satu zombie memblokir semua job berikutnya (batas konkurensi 1).
+    """
+    c = _db_kandidat()
+    waktu = _time.strftime("%Y-%m-%d %H:%M:%S")
+    n = 0
+    for r in c.execute("select id, pid from job where status='jalan'"):
+        if not r["pid"] or not _pid_hidup(r["pid"]):
+            c.execute("update job set status='gagal', selesai=? where id=?", (waktu, r["id"]))
+            n += 1
+    if n:
+        c.commit()
+    c.close()
+    return n
+
+
+def _konsol_jalankan(muatan: dict):
     nama = (muatan.get("aksi") or "").strip()
     a = _aksi_baris(nama)
     if not a:
@@ -1018,6 +1044,7 @@ async def _konsol_jalankan(muatan: dict):
 
 async def _jalankan(jid, argv, rahasia, berkas, batas):
     env = dict(_os.environ)
+    env["HESTIA_JOB_ID"] = str(jid)
     if rahasia:
         env["HESTIA_RAHASIA"] = rahasia
     try:
