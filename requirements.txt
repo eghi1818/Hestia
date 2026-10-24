@@ -1,2 +1,5 @@
 fastapi
 uvicorn[standard]
+
+# uji: starlette TestClient butuh httpx (ditambah S-188)
+httpx

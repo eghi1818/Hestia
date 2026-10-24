@@ -1,0 +1,20 @@
+S-188 - halaman Tanam di dashboard (rute /api/tanam yang tadinya hanya bisa dicapai curl)
+
+keadaan sebelum: POST /api/tanam sudah ada di app/main.py dan sudah menyimpan kredensial
+FTP ke tabel kredensial lalu memanggil tanam.tanam. Tetapi tidak ada data-page="tanam",
+tidak ada seksi page-tanam, dan tidak ada dashboard/tanam.js, sehingga hanya bisa dipakai
+lewat Konsol atau curl.
+
+perubahan: dashboard/tanam.js baru (muat daftar target, isi user/sandi, opsi sapu, kirim);
+rute GET /tanam.js; tombol nav Tanam; seksi page-tanam; butir 3 SISA-KERJA ditutup.
+
+bukti: uji TestClient memuat /tanam.js (HTTP 200) dan halaman utama memuat penanda
+page-tanam serta tag /tanam.js.
+
+catatan: uji pertama lewat python3 sistem gagal (fastapi hanya ada di .venv); diulang
+dengan .venv/bin/python dan lulus.
+
+catatan: venv belum punya httpx (kebutuhan TestClient); dipasang, lalu uji lulus.
+
+catatan: main.py memakai impor relatif (from . import db), sehingga uji harus mengimpor
+paket app.main, bukan modul main telanjang.

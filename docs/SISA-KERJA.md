@@ -7,7 +7,7 @@ Disunting manusia. tools/sync_jejak.py menyalinnya ke SESSION_STATE.
    Pola: tiru dashboard/driver.js (S-172).
 2. metrik belum punya kolom nilai; angka disimpan sebagai prosa di catatan.
    Pertimbangkan migrasi kolom nilai.
-3. Unggah berkas FTP/SFTP lewat dashboard (masih lewat tools/tanam.py).
+3. [selesai S-188] Unggah berkas FTP/SFTP lewat dashboard (halaman Tanam).
 4. Papan status pindai teknologi di Ikhtisar (16 target mati/parkir kosong).
 5. LIVE: HESTIA_SANDI dinaikkan, serve.sh jadi layanan, host 24/7 + HTTPS.
 6. Pertimbangkan kolom bukti.konten_id (kini konten_id tersimpan di keterangan JSON)

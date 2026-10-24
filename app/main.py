@@ -570,6 +570,12 @@ def audit_js():
     return FileResponse("dashboard/audit.js", media_type="application/javascript")
 
 
+@app.get("/tanam.js")
+def tanam_js():
+    from fastapi.responses import FileResponse
+    return FileResponse("dashboard/tanam.js", media_type="application/javascript")
+
+
 # ---------- kredensial / deployment / konten ----------
 _TABEL = {
     "kredensial": ("target TEXT, nama TEXT, tipe TEXT, level TEXT, secret TEXT, "
