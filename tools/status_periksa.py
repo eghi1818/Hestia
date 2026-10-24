@@ -164,7 +164,8 @@ def daftar_metrik(c):
         d = {"nama": nama, "sumber": "uji_probe",
              "status_sumber": nilai_enum(c, "metrik", "status_sumber", ("terisi", "ada")) or "terisi",
              "terisi_terakhir": waktu,
-             "catatan": "jumlah halaman konten berstatus %s; terakhir: %d" % (status, nilai)}
+             "catatan": "jumlah halaman konten berstatus %s" % status,
+             "nilai": float(nilai), "satuan": "halaman"}
         d = {k: v for k, v in d.items() if k in kol}
         ada = c.execute("select 1 from metrik where nama=?", (nama,)).fetchone()
         if ada:

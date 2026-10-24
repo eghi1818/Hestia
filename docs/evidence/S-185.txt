@@ -1,0 +1,20 @@
+S-185 - migrasi fase1: metrik punya kolom nilai + satuan
+tanggal: 2026-10-24
+
+masalah: metrik tidak punya kolom nilai sehingga angka kedaluwarsa hanya tersimpan
+sebagai prosa di catatan dan tidak bisa dibandingkan antar waktu.
+
+perubahan:
+  tools/migrasi_fase1.py: tambah metrik.nilai REAL + metrik.satuan TEXT. Pola sama
+  dengan migrasi_fase0 - cadangan VACUUM INTO + integrity_check, ledger skema_versi,
+  post-condition, retensi cadangan, idempoten, opsi --paksa-gagal/--paksa-akhir.
+  status_periksa.py menulis nilai numerik + satuan.
+  /api/status/ringkas dan dashboard/monitor.js menampilkan nilai + satuan.
+
+kesalahan yang diperbaiki (dua, milik penulis blok):
+  1. nama cadangan berbutir 1 detik -> dua jalankan berturut-turut bertabrakan
+     (output file already exists). Ditambah penanganan tabrakan -1/-2.
+  2. pola pengganti rute terlalu panjang sehingga cocok=0. Diganti pola pendek
+     'terisi_terakhir, catatan"'.
+
+bukti: tiga jalankan rc=0 dan idempoten; metrik bernilai numerik; skema_versi memuat fase1.

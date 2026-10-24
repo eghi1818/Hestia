@@ -1,17 +1,18 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 12:10.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 12:13.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 66fc2d8 S-182: sinkronkan jejak ke HEAD (dokumen langkah, SESSION_STATE, paket resume)
-branch: main | kotor: ?? docs/SISA-KERJA.md
-?? docs/steps/S-182.md
-?? tools/sync_jejak.py
-rute app/main.py: 71 | berkas bukti: 77 | dokumen langkah: 157
+HEAD: fd6360a S-184: panel Monitor Modul 5 (tabel status + jalankan pemeriksa dari dashboard)
+branch: main | kotor: ?? docs/steps/S-183.md
+?? docs/steps/S-184.md
+rute app/main.py: 71 | berkas bukti: 79 | dokumen langkah: 159
 
 ## 12 commit terakhir
 
 ```
+fd6360a S-184: panel Monitor Modul 5 (tabel status + jalankan pemeriksa dari dashboard)
+a4c5c90 S-183: penyinkronan jejak otomatis lewat tutup.sh (SESSION_STATE dihasilkan)
 66fc2d8 S-182: sinkronkan jejak ke HEAD (dokumen langkah, SESSION_STATE, paket resume)
 ba636d3 S-181: HESTIA_JOB_ID diekspor di _jalankan2 (bukan _jalankan)
 c54d4c3 S-180: r_nomor numerik dari tabel job; uji runner sesuai bentuk sinkron
@@ -22,8 +23,6 @@ c54d4c3 S-180: r_nomor numerik dari tabel job; uji runner sesuai bentuk sinkron
 ac841b1 S-174: tautkan bukti_terakhir ke bukti.id, lengkapi kolom bukti, whitelist
 218b1d1 S-173: Modul 5 pemeriksa status + transisi otomatis (dry-run aman, cek_wajib)
 d8cc1f9 S-172: halaman Driver di dashboard (plan/dry-run/terapkan/verifikasi)
-7e2ac84 S-171: percobaan ulang ssh (S-170 gagal) + verify beri alasan + koreksi S-170
-f332d70 S-170: betulkan pemuatan rules (nama berkas) + percobaan ulang ssh
 ```
 
 ## SISA KERJA

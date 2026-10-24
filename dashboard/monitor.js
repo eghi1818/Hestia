@@ -35,7 +35,10 @@
             + "<td>" + (x.diperbarui || "-") + "</td></tr>";
         }).join("");
       }
-      var m = (d.metrik || []).map(function (x) { return x.nama + ": " + (x.catatan || "-"); }).join("\n");
+      var m = (d.metrik || []).map(function (x) {
+        return x.nama + ": " + (x.nilai === null || x.nilai === undefined ? "-" : x.nilai)
+          + (x.satuan ? " " + x.satuan : "");
+      }).join("\n");
       keluar("ringkas status\n" + JSON.stringify(d.per_status) + "\n\ntotal: " + d.total
         + (m ? "\n\nmetrik:\n" + m : ""));
     } catch (e) { keluar("GAGAL: " + e.message); }

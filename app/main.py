@@ -1459,7 +1459,7 @@ def api_status_ringkas(batas: int = 300):
         "  from status_konten s left join konten k on k.id = s.konten_id"
         " order by s.diperbarui desc limit ?", (batas,))]
     metrik = [dict(r) for r in c.execute(
-        "select nama, sumber, status_sumber, terisi_terakhir, catatan"
+        "select nama, sumber, status_sumber, terisi_terakhir, catatan, nilai, satuan"
         "  from metrik order by nama")]
     c.close()
     hitung = {}
