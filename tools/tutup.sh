@@ -44,3 +44,16 @@ echo "langkah ditutup. DIRTY: $(git status --porcelain | wc -l | tr -d ' ')"
 
 python3 tools/sync_jejak.py --resume
 python3 tools/pangkas_bukti.py --simpan 5000 --r-simpan 50
+
+# sync_jejak menulis docs/steps + SESSION_STATE SESUDAH commit, sehingga pohon
+# bisa tetap kotor. Tutup celahnya: commit susulan + dorong ulang.
+if [ -n "$(git status --porcelain)" ]; then
+  git add -A
+  git commit -q -m "$(git log -1 --pretty=%s) [jejak]"
+  for i in 1 2 3 4 5; do
+    git push origin main && break || sleep 5
+  done
+  echo "commit susulan: $(git rev-parse --short HEAD) | DIRTY: $(git status --porcelain | wc -l | tr -d ' ')"
+else
+  echo "pohon bersih setelah sinkron"
+fi

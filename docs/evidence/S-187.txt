@@ -1,0 +1,14 @@
+S-187 - tutup.sh berakhir bersih: commit jejak otomatis
+tanggal: 2026-10-24
+
+masalah: tools/tutup.sh menulis dokumen langkah dan docs/SESSION_STATE.md SESUDAH
+commit, jadi tiap langkah ditutup dengan pohon kotor (tercetak DIRTY: 1 pada S-186).
+Akibatnya langkah berikutnya selalu mewarisi berkas yang belum ter-commit.
+
+perubahan: sesudah pangkas_bukti.py, tutup.sh memeriksa git status; bila masih ada
+berkas berubah, dibuat commit susulan berlabel [jejak] lalu push ulang (5 percobaan).
+Bila sudah bersih, cukup mencetak "pohon bersih setelah sinkron".
+
+bukti: keadaan awal blok ini menunjukkan sisa kotor dari S-186 (dokumen langkah +
+SESSION_STATE). Sesudah tutup.sh dijalankan, DIRTY tercetak 0 dan SESSION_STATE
+menunjuk commit langkah S-187.

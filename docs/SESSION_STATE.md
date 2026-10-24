@@ -1,15 +1,16 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 12:18.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 12:20.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: b491e15 S-185: migrasi fase1 metrik.nilai + satuan, panel menampilkan angka
-branch: main | kotor: ?? docs/steps/S-185.md
-rute app/main.py: 71 | berkas bukti: 80 | dokumen langkah: 160
+HEAD: dde51c6 S-186: retensi bukti dan log R, tautan status_konten dilindungi
+branch: main | kotor: ?? docs/steps/S-186.md
+rute app/main.py: 71 | berkas bukti: 81 | dokumen langkah: 161
 
 ## 12 commit terakhir
 
 ```
+dde51c6 S-186: retensi bukti dan log R, tautan status_konten dilindungi
 b491e15 S-185: migrasi fase1 metrik.nilai + satuan, panel menampilkan angka
 fd6360a S-184: panel Monitor Modul 5 (tabel status + jalankan pemeriksa dari dashboard)
 a4c5c90 S-183: penyinkronan jejak otomatis lewat tutup.sh (SESSION_STATE dihasilkan)
@@ -21,7 +22,6 @@ c54d4c3 S-180: r_nomor numerik dari tabel job; uji runner sesuai bentuk sinkron
 06419fe S-176: buktikan cabang usul (pasangan tak dikenal) dan kedaluwarsa
 288b1e1 S-175: bukti per-run + job_id + tautan bukti_terakhir, aksi tidak ditimpa
 ac841b1 S-174: tautkan bukti_terakhir ke bukti.id, lengkapi kolom bukti, whitelist
-218b1d1 S-173: Modul 5 pemeriksa status + transisi otomatis (dry-run aman, cek_wajib)
 ```
 
 ## SISA KERJA
@@ -35,10 +35,11 @@ Disunting manusia. tools/sync_jejak.py menyalinnya ke SESSION_STATE.
    Pola: tiru dashboard/driver.js (S-172).
 2. metrik belum punya kolom nilai; angka disimpan sebagai prosa di catatan.
    Pertimbangkan migrasi kolom nilai.
-3. Retensi bukti: bukti tumbuh ~jumlah diperiksa tiap run.
-4. Unggah berkas FTP/SFTP lewat dashboard (masih lewat tools/tanam.py).
-5. Papan status pindai teknologi di Ikhtisar (16 target mati/parkir kosong).
-6. LIVE: HESTIA_SANDI dinaikkan, serve.sh jadi layanan, host 24/7 + HTTPS.
+3. Unggah berkas FTP/SFTP lewat dashboard (masih lewat tools/tanam.py).
+4. Papan status pindai teknologi di Ikhtisar (16 target mati/parkir kosong).
+5. LIVE: HESTIA_SANDI dinaikkan, serve.sh jadi layanan, host 24/7 + HTTPS.
+6. Pertimbangkan kolom bukti.konten_id (kini konten_id tersimpan di keterangan JSON)
+   supaya retensi bisa per-konten dan kueri tidak perlu json_extract.
 
 ## Kendala yang menunggu keputusan
 - Tidak ada HestiaCP di mana pun (waspadaweb=nginx, persaudaraan=Netlify,
