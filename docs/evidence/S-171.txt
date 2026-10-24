@@ -1,0 +1,23 @@
+S-171 - percobaan ulang ssh terpasang; S-170 gagal dan dikoreksi
+tanggal: 2026-10-24
+
+S-170 gagal: AssertionError anchor badan _ssh_ct -> tools/driver.py tidak berubah,
+tetapi tetap ter-commit. Angka verify di S-170 ditulis tangan, bukan dari keluaran.
+Kenyataan saat itu: verify [(301, True), (410, False)]
+
+perbaikan: _jalankan() dengan 3 percobaan ulang, menangkap returncode 255 DAN
+subprocess.TimeoutExpired. verify() kini membedakan ssh gagal / curl publik gagal.
+
+bukti:
+--- run#1 ---
+plan  : {'add': 0, 'update': 0, 'remove': 0, 'noop': 2}
+verify: 301 True | origin=[301 http://waspadaweb.com/artikel/baru] publik=[301 http://waspadaweb.com/artikel/
+verify: 410 True | origin=[410] publik=[410] harap=410
+--- run#2 ---
+plan  : {'add': 0, 'update': 0, 'remove': 0, 'noop': 2}
+verify: 301 True | origin=[301 http://waspadaweb.com/artikel/baru] publik=[301 http://waspadaweb.com/artikel/
+verify: 410 True | origin=[410] publik=[410] harap=410
+--- run#3 ---
+plan  : {'add': 0, 'update': 0, 'remove': 0, 'noop': 2}
+verify: 301 True | origin=[301 http://waspadaweb.com/artikel/baru] publik=[301 http://waspadaweb.com/artikel/
+verify: 410 True | origin=[410] publik=[410] harap=410

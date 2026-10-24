@@ -77,6 +77,24 @@ def _env(nama: str, bawaan: str) -> str:
     return os.environ.get(nama, bawaan)
 
 
+def _jalankan(cmd, data=None, timeout: int = 30, ulang: int = 3):
+    """Percobaan ulang ssh: returncode 255 ATAU TimeoutExpired -> ulang."""
+    r = None
+    for coba in range(ulang):
+        try:
+            r = subprocess.run(cmd, input=data, capture_output=True,
+                               text=True, timeout=timeout)
+        except subprocess.TimeoutExpired:
+            if coba == ulang - 1:
+                return 255, "", "timeout setelah %d percobaan" % ulang
+            time.sleep(2 * (coba + 1))
+            continue
+        if r.returncode != 255:
+            return r.returncode, r.stdout, r.stderr
+        time.sleep(2 * (coba + 1))
+    return r.returncode, r.stdout, r.stderr
+
+
 def _ssh_host(script: str, timeout: int = 30):
     cmd = ["ssh", "-i", os.path.expanduser(_env("HESTIA_SSH_KEY", "~/.ssh/wesearch_vps_key")),
            "-p", _env("HESTIA_SSH_PORT", "10053"),
@@ -84,8 +102,7 @@ def _ssh_host(script: str, timeout: int = 30):
            "-o", "ConnectTimeout=10",
            "%s@%s" % (_env("HESTIA_SSH_USER", "administrator"), _env("HESTIA_SSH_HOST", "93.127.133.160")),
            script]
-    r = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
-    return r.returncode, r.stdout, r.stderr
+    return _jalankan(cmd, timeout=timeout)
 
 
 def _ssh_ct(script: str, data: str | None = None, timeout: int = 30):
@@ -96,8 +113,7 @@ def _ssh_ct(script: str, data: str | None = None, timeout: int = 30):
            "-o", "ConnectTimeout=10",
            "%s@%s" % (_env("HESTIA_SSH_USER", "administrator"), _env("HESTIA_SSH_HOST", "93.127.133.160")),
            "lxc exec %s -- sh -c %s" % (ct, shlex.quote(script))]
-    r = subprocess.run(cmd, input=data, capture_output=True, text=True, timeout=timeout)
-    return r.returncode, r.stdout, r.stderr
+    return _jalankan(cmd, data=data, timeout=timeout)
 
 
 class NginxDriver(RedirectDriver):
@@ -220,10 +236,14 @@ class NginxDriver(RedirectDriver):
         rc, out, err = _ssh_host(
             "curl -sS -o /dev/null -w '%s' -H %s http://127.0.0.1%s"
             % (fmt, shlex.quote("Host: " + domain), shlex.quote(rule.path)))
+        if rc != 0:
+            return False, "ssh gagal (rc=%d): %s" % (rc, (err or out).strip()[:120])
         asal = out.strip()
         r2 = subprocess.run(["curl", "-sS", "-o", "/dev/null", "-w", fmt, "--max-time", "15",
                              base_url.rstrip("/") + rule.path],
                             capture_output=True, text=True)
+        if r2.returncode != 0:
+            return False, "curl publik gagal (rc=%d)" % r2.returncode
         publik = r2.stdout.strip()
 
         def cocok(txt: str) -> bool:

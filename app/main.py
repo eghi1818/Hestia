@@ -1387,6 +1387,7 @@ def api_driver_verify(domain: str, base_url: str = ""):
     hasil = []
     for r in _muat_rules(domain):
         ok, pesan = d.verify(domain, r, base)
-        hasil.append({"path": r.path, "code": r.code, "ok": ok, "pesan": pesan})
+        hasil.append({"path": r.path, "code": r.code, "ok": ok,
+                      "pesan": pesan, "alasan": pesan})
     return {"domain": domain, "item": hasil,
             "lulus": all(x["ok"] for x in hasil) if hasil else False}

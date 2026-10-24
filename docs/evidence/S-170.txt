@@ -17,5 +17,5 @@ bukti:
   kompilasi ok
   rules ada=True
   plan add=0 update=0 remove=0 noop=2
-  verify [(301, True), (410, True)]
+  verify [(301, True), (410, False)]  # ditulis tangan; koreksi di S-171
   dry-run changed=False
