@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 21:09.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 21:17.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 9af480f S-195: bukti sah gate fail-closed pada berkas bukti langkah
-branch: main | kotor: ?? docs/steps/S-195.md
-rute app/main.py: 73 | berkas bukti: 90 | dokumen langkah: 170
+HEAD: bd8dd2c S-196: gate memeriksa bukti langkah yang sedang dikerjakan
+branch: main | kotor: M docs/steps/S-196.md
+rute app/main.py: 73 | berkas bukti: 91 | dokumen langkah: 171
 
 ## 12 commit terakhir
 
 ```
+bd8dd2c S-196: gate memeriksa bukti langkah yang sedang dikerjakan
+79da088 S-195: bukti sah gate fail-closed pada berkas bukti langkah [jejak]
 9af480f S-195: bukti sah gate fail-closed pada berkas bukti langkah
 ea149ea S-194: betulkan judul seksi gate + bukti fail-closed [jejak]
 345d616 S-194: betulkan judul seksi gate + bukti fail-closed
@@ -20,8 +22,6 @@ ea149ea S-194: betulkan judul seksi gate + bukti fail-closed [jejak]
 e92aa35 S-191: LIVE sandi naik, agen launchd, HTTPS self-signed, deteksi TCC [jejak]
 0b2268b S-191: LIVE sandi naik, agen launchd, HTTPS self-signed, deteksi TCC
 1ee20f1 S-190: pindai teknologi dari dashboard, target kosong ditandai [jejak]
-5430705 S-190: pindai teknologi dari dashboard, target kosong ditandai
-934cd2a S-189: pemilih target Tanam pakai /api/targets, galat server ditampilkan [jejak]
 ```
 
 ## SISA KERJA
