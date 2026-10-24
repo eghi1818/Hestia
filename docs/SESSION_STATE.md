@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 22:33.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 22:38.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: ac40394 S-204: inventaris rute dan skrip ditulis ke rencana GOAL
-branch: main | kotor: M docs/steps/S-204.md
-rute app/main.py: 75 | berkas bukti: 99 | dokumen langkah: 179
+HEAD: a4b5c2f S-205: rencana GOAL dikoreksi setelah inventaris S-204
+branch: main | kotor: M docs/steps/S-205.md
+rute app/main.py: 75 | berkas bukti: 100 | dokumen langkah: 180
 
 ## 12 commit terakhir
 
 ```
+a4b5c2f S-205: rencana GOAL dikoreksi setelah inventaris S-204
+47d8d1d S-204: inventaris rute dan skrip ditulis ke rencana GOAL [jejak]
 ac40394 S-204: inventaris rute dan skrip ditulis ke rencana GOAL
 ee204bb S-203: rencana menutup 5 modul GOAL ditulis ke repo [jejak]
 0d19999 S-203: rencana menutup 5 modul GOAL ditulis ke repo
@@ -20,8 +22,6 @@ ee204bb S-203: rencana menutup 5 modul GOAL ditulis ke repo [jejak]
 d215832 S-200: gate memprobe rute api utama secara hidup [jejak]
 c44de49 S-200: gate memprobe rute api utama secara hidup
 31e44a5 S-199: sajikan /driver.js dan /monitor.js, gate menjaga rute skrip [jejak]
-12d29be S-199: sajikan /driver.js dan /monitor.js, gate menjaga rute skrip
-d532151 S-198: satu kanal 8787, TLS jadi mode bukan kanal kedua [jejak]
 ```
 
 ## SISA KERJA
@@ -47,18 +47,15 @@ Disunting manusia. tools/sync_jejak.py menyalinnya ke SESSION_STATE.
   terpicu probe; jalur usul hidup dari pasangan tak dikenal (sudah diuji).
 - 3 kunci lapangan hanya bahan uji, bukan penghalang.
 
-## Celah terhadap spesifikasi GOAL (5 modul wajib)
-Diperiksa S-202. Urutan GOAL: modul 5 dan 4 dulu, lalu 1, 2, 3.
-- Modul 4: kurang mesin skor KEEP/301/410/404, antrean bulk, rollback, sebelum/sesudah equity.
-- Modul 5: kurang link rot dari data backlink (inbound/outbound), metrik equity hangus, pipeline reklamasi, template outreach, grafik tren.
-- Modul 1: registry parasite -- perlu dicek terhadap daftar field GOAL (biaya, kontrak, lifespan, heatmap host).
-- Modul 2: snapshot konten (simhash), delta ranking 7/14/30 hari, diff viewer.
-- Modul 3: deteksi kemiripan <30%, cek canonical, penilaian pemegang SERP.
-- DoD #6: alert (email/webhook) belum ada.
-- DoD #7: README setup/kredensial/rollback belum lengkap.
-- UI GOAL: satu halaman ringkasan 5 metrik + angka bisa diklik (drilldown).
-
-Rencana menutup 5 modul GOAL ada di docs/RENCANA-GOAL.md (disusun S-203).
+## Celah terhadap spesifikasi GOAL
+Rincian dan urutan kerja: docs/RENCANA-GOAL.md (dikoreksi S-205; registry + pemeriksa berkala sudah ada).
+- Modul 1: kurang field GOAL (biaya, kontrak, platform, kendali editorial), metrik lifespan/equity/biaya per sitasi, heatmap host.
+- Modul 2: kurang simhash, kata kunci sebelum/sesudah, delta peringkat, diff viewer.
+- Modul 3: kurang simhash, kemiripan <30%, canonical, pemegang SERP.
+- Modul 4: kurang mesin skor KEEP/301/410/404, antrean bulk, rollback, equity.
+- Modul 5: kurang rot tautan keluar/masuk, equity hangus, pipeline reklamasi, outreach, tren.
+- Lintas: halaman ringkasan 5 metrik + drilldown, alert email/webhook, README setup/kredensial/rollback.
+- Menunggu keputusan: sumber data SERP dan backlink.
 
 ## Cara melanjutkan
 
