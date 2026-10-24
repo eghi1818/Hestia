@@ -30,7 +30,7 @@ Tertahan kunci: FTP juraganit.com, sudo waspadaweb.com, netlify persaudaraan.com
 
 ## 2026-10-23 lanjut - Modul 4 aktif
 
-HEAD: <ISI DARI git log -1 --oneline>
+HEAD: a8c1a1c S-167: Modul 4 aktif - driver 301/410 nginx, dry-run, idempotensi, verifikasi origin+publik
 status: Modul 4 minimum AKTIF dan terbukti di server (301 + 410, origin + publik).
 tools/driver.py, data/rules/waspadaweb.json, scripts/bootstrap_sudo.sh sudah ada.
 sudo NOPASSWD administrator sudah dipasang lewat container hx (tanpa sandi).

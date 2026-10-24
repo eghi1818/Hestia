@@ -1,3 +1,5 @@
+Chat: SEO V1.1 (lanjutkan dari SESSION_STATE, jangan menebak)
+
 # ONBOARDING PROMPT - HESTIA
 > Sumber tunggal untuk prompt pembuka chat baru.
 > Salin SELURUH isi di antara garis, tempel ke pesan pertama chat baru.

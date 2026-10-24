@@ -1,0 +1,7 @@
+{
+  "domain": "waspadaweb.com",
+  "rules": [
+    { "path": "/artikel/lama", "code": 301, "target": "/artikel/baru" },
+    { "path": "/halaman-mati", "code": 410 }
+  ]
+}

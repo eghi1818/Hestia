@@ -20,6 +20,7 @@ docs/RESUME-PACK.md
 __pycache__/
 data/*
 !data/tala/
+!data/rules/
 .out/
 docs/HANDOFF.md
 docs/STEPLOG.md

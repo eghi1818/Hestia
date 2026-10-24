@@ -1,0 +1,19 @@
+S-168 - kunci data/rules, dokumen niat ke repo, rapikan state
+tanggal: 2026-10-24
+
+masalah yang diperbaiki:
+  1. data/rules di-gitignore -> data/rules/waspadaweb.json TIDAK ikut commit a8c1a1c.
+     Aturan redirect hilang dari repo. Diperbaiki: !data/rules/ di .gitignore.
+  2. docs/SESSION_STATE.md memuat placeholder <ISI DARI git log -1 --oneline>.
+     Pemeriksa placeholder hanya memindai docs/evidence/*.txt, jadi lolos.
+  3. Klaim "GOAL belum ada di repo" salah: GOAL.md sudah ada di ROOT repo dan
+     diwajibkan gate. Yang belum ada hanya salinan di docs/ dan dokumen Skill/Prompt.
+
+perubahan:
+  .gitignore            : tambah !data/rules/
+  docs/SESSION_STATE.md : placeholder diisi HEAD sebenarnya
+  docs/ONBOARDING_PROMPT.txt : baris versi chat
+  docs/niat/            : salinan GOAL, Skill Agent, Prompt Tambahan (supaya ter-versi)
+  tools/probe_lapangan.sh, tools/probe_whmcs.py : ikut dilacak
+
+bukti uji konvergensi diulang pada blok yang sama.
