@@ -1,15 +1,16 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 12:20.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 12:23.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: dde51c6 S-186: retensi bukti dan log R, tautan status_konten dilindungi
-branch: main | kotor: ?? docs/steps/S-186.md
-rute app/main.py: 71 | berkas bukti: 81 | dokumen langkah: 161
+HEAD: a7060f3 S-187: tutup.sh berakhir dengan pohon bersih (commit jejak otomatis)
+branch: main | kotor: ?? docs/steps/S-187.md
+rute app/main.py: 71 | berkas bukti: 82 | dokumen langkah: 162
 
 ## 12 commit terakhir
 
 ```
+a7060f3 S-187: tutup.sh berakhir dengan pohon bersih (commit jejak otomatis)
 dde51c6 S-186: retensi bukti dan log R, tautan status_konten dilindungi
 b491e15 S-185: migrasi fase1 metrik.nilai + satuan, panel menampilkan angka
 fd6360a S-184: panel Monitor Modul 5 (tabel status + jalankan pemeriksa dari dashboard)
@@ -21,7 +22,6 @@ c54d4c3 S-180: r_nomor numerik dari tabel job; uji runner sesuai bentuk sinkron
 89fee21 S-177: lengkapi dokumen langkah S-153..S-176, perbaiki whitelist, bukti jalur job
 06419fe S-176: buktikan cabang usul (pasangan tak dikenal) dan kedaluwarsa
 288b1e1 S-175: bukti per-run + job_id + tautan bukti_terakhir, aksi tidak ditimpa
-ac841b1 S-174: tautkan bukti_terakhir ke bukti.id, lengkapi kolom bukti, whitelist
 ```
 
 ## SISA KERJA
