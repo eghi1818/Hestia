@@ -267,6 +267,7 @@ tbody tr:last-child td{border-bottom:none}
       <button class="nav-item" data-page="laporan"><span class="ico">📊</span> Laporan</button>
       <button class="nav-item" data-page="audit"><span class="ico">🧾</span> Audit Log</button>
       <button class="nav-item" data-page="driver" onclick="go('driver')"><span class="ico">⇄</span> Driver</button>
+      <button class="nav-item" data-page="monitor" onclick="go('monitor')"><span class="ico">◉</span> Monitor</button>
       <button class="nav-item" data-page="konsol" onclick="go('konsol')"><span class="ico">&#9000;</span> Konsol</button>
       <button class="nav-item" data-page="pengaturan"><span class="ico">⚙️</span> Pengaturan</button>
     </nav>
@@ -314,6 +315,26 @@ tbody tr:last-child td{border-bottom:none}
           <button class="btn btn-ghost" onclick="driverVerifikasi()">Verifikasi</button>
         </div>
         <pre id="driverOut" style="white-space:pre-wrap;font-size:12.5px;line-height:1.55;padding:14px;background:var(--panel);border-radius:10px;min-height:220px;margin-top:12px;overflow-x:auto">(belum ada keluaran)</pre>
+      </section>
+
+      <section class="page" id="page-monitor">
+        <div class="page-head">
+          <div>
+            <div class="page-title">Monitor status halaman</div>
+            <div class="page-desc">Modul 5. Periksa bersifat read-only; Periksa &amp; Terapkan menjalankan transisi yang diizinkan otomatis. Jalur izin manusia hanya jadi usulan. Bukti teratribusi ke job.</div>
+          </div>
+        </div>
+        <div style="padding:14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <select id="monitorDomain" style="min-width:200px"><option value="">semua domain</option></select>
+          <button class="btn btn-ghost" onclick="monitorPeriksa(false)">Periksa (dry-run)</button>
+          <button class="btn" onclick="monitorPeriksa(true)">Periksa &amp; Terapkan</button>
+          <button class="btn btn-ghost" onclick="monitorSegarkan()">Segarkan</button>
+        </div>
+        <table class="tbl" style="width:100%">
+          <thead><tr><th>Halaman</th><th>Status</th><th>Basis</th><th>Bukti</th><th>Diperbarui</th></tr></thead>
+          <tbody id="monitorBody"><tr><td colspan="5" style="opacity:.6">memuat...</td></tr></tbody>
+        </table>
+        <pre id="monitorOut" style="white-space:pre-wrap;font-size:12.5px;line-height:1.55;padding:14px;background:var(--panel);border-radius:10px;min-height:140px;margin-top:12px">(belum ada keluaran)</pre>
       </section>
 
       <section class="page active" id="page-dashboard">
@@ -1185,16 +1206,17 @@ function drawLine(){
 /* ================= INIT ================= */
 renderTargets();renderCreds();renderAlerts();renderLatency();renderChecks();renderDeploy();renderKonten();renderBacklinks();renderOps();renderRecon();drawBar();drawLine();
 </script>
-<script src="/live.js?v=S152-1792741919"></script>
-<script src="/ikhtisar.js?v=S152-1792741919"></script>
-<script src="/tautan.js?v=S152-1792741919"></script>
-<script src="/audit.js?v=S161-1"></script>
-<script src="/konten.js?v=S152-1792741919"></script>
-<script src="/detail.js?v=S152-1792741919"></script>
-<script src="/recon.js?v=S152-1792741919"></script>
-<script src="/ekspor.js?v=S152-1792741919"></script>
-<script src="/aksi.js?v=S152-1792741919"></script>
+<script src="/live.js?v=S184-1792818800"></script>
+<script src="/ikhtisar.js?v=S184-1792818800"></script>
+<script src="/tautan.js?v=S184-1792818800"></script>
+<script src="/audit.js?v=S184-1792818800"></script>
+<script src="/konten.js?v=S184-1792818800"></script>
+<script src="/detail.js?v=S184-1792818800"></script>
+<script src="/recon.js?v=S184-1792818800"></script>
+<script src="/ekspor.js?v=S184-1792818800"></script>
+<script src="/aksi.js?v=S184-1792818800"></script>
 <script src="/konsol.js?v=konsol-4"></script>
 <script src="/driver.js?v=S172-1"></script>
+<script src="/monitor.js?v=S184-1"></script>
 </body>
 </html>

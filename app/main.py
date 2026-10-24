@@ -1450,12 +1450,20 @@ def api_status_periksa(body: dict):
 
 
 @app.get("/api/status/ringkas")
-def api_status_ringkas():
+def api_status_ringkas(batas: int = 300):
     c = _db_kandidat()
     kol = [r[1] for r in c.execute("pragma table_info(status_konten)")]
-    baris = [dict(r) for r in c.execute("select * from status_konten")]
+    baris = [dict(r) for r in c.execute(
+        "select s.konten_id, s.status, s.basis, s.bukti_terakhir, s.diperbarui,"
+        "       k.url, k.target"
+        "  from status_konten s left join konten k on k.id = s.konten_id"
+        " order by s.diperbarui desc limit ?", (batas,))]
+    metrik = [dict(r) for r in c.execute(
+        "select nama, sumber, status_sumber, terisi_terakhir, catatan"
+        "  from metrik order by nama")]
     c.close()
     hitung = {}
     for b in baris:
         hitung[b.get("status")] = hitung.get(b.get("status"), 0) + 1
-    return {"kolom": kol, "total": len(baris), "per_status": hitung}
+    return {"kolom": kol, "total": len(baris), "per_status": hitung,
+            "item": baris, "metrik": metrik}

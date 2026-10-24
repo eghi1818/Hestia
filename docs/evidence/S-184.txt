@@ -1,0 +1,16 @@
+S-184 - panel Monitor untuk Modul 5 di dashboard
+tanggal: 2026-10-24
+
+perubahan:
+  app/main.py: /api/status/ringkas diperluas - ikutkan baris status_konten (join konten
+  untuk url/target), hitungan per status, dan isi metrik.
+  dashboard/monitor.js: tabel status berwarna + tombol Periksa (dry-run),
+  Periksa & Terapkan, Segarkan. Pilihan domain dari /api/targets.
+  dashboard/index.html: 3 sisipan - nav Monitor, section #page-monitor, script tag.
+
+kesalahan yang diperbaiki: pemotongan fungsi memakai index("\n\n\n") padahal
+api_status_ringkas adalah fungsi terakhir -> ValueError. Kini potong sampai @app.
+berikutnya atau akhir berkas.
+
+bukti: rute mengembalikan total/per_status/metrik; gate LULUS dengan id monitorDomain,
+monitorBody, monitorOut tervalidasi.
