@@ -4,6 +4,10 @@ cd "$(dirname "$0")/.." || exit 1
 PY=python3; [ -x .venv/bin/python ] && PY=.venv/bin/python
 [ -f "$HOME/.hestia/live.env" ] && { set -a; . "$HOME/.hestia/live.env"; set +a; }
 pkill -f "app.main" 2>/dev/null; sleep 1
-nohup $PY -m uvicorn app.main:app --host 127.0.0.1 --port 8787 >/tmp/hestia.log 2>&1 &
+TLS_ARGS=""
+if grep -q '^HESTIA_TLS=1' "$HOME/.hestia/live.env" 2>/dev/null; then
+  TLS_ARGS="--ssl-keyfile $HOME/.hestia/tls/hestia.key --ssl-certfile $HOME/.hestia/tls/hestia.crt"
+fi
+nohup $PY -m uvicorn app.main:app --host 127.0.0.1 --port 8787 $TLS_ARGS >/tmp/hestia.log 2>&1 &
 sleep 3
 curl -s -o /dev/null -w "layanan: http %{http_code}\n" http://127.0.0.1:8787/api/targets

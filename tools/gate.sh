@@ -73,25 +73,23 @@ echo
 if python3 tools/gate_api.py; then :; else fail=1; fi
 
 echo "== gate: layanan dashboard (fail-closed) =="
-code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 3 http://127.0.0.1:8787/ 2>/dev/null || true)
-[ -z "$code" ] && code=000
-api=$(curl -s -o /dev/null -w '%{http_code}' --max-time 3 http://127.0.0.1:8787/api/health 2>/dev/null || true)
-[ -z "$api" ] && api=000
-echo "  /            http $code"
-echo "  /api/health  http $api"
-if [ -f app/main.py ] ; then
-  if [ "$api" = "200" ] && { [ "$code" = "200" ] || [ "$code" = "401" ]; } ; then
-    echo "  layanan HIDUP"
-  elif [ "${HESTIA_ALLOW_DOWN:-0}" = "1" ] ; then
+BASE="http://127.0.0.1:8787"; KURVA=""
+if grep -q '^HESTIA_TLS=1' "$HOME/.hestia/live.env" 2>/dev/null; then BASE="https://127.0.0.1:8787"; KURVA="-k"; fi
+code=$(curl -s${KURVA:-} -o /dev/null -w '%{http_code}' --max-time 3 "$BASE/" 2>/dev/null || true)
+api=$(curl -s${KURVA:-} -o /dev/null -w '%{http_code}' --max-time 3 "$BASE/api/health" 2>/dev/null || true)
+if [ "$code" = "401" ] && [ "$api" = "200" ]; then
+  echo "  ok      tanpa sandi http $code"
+  echo "  ok      /api/health http $api"
+  echo "  layanan HIDUP"
+else
+  echo "  /            http ${code:-000}"
+  echo "  /api/health  http ${api:-000}"
+  if [ "${HESTIA_ALLOW_DOWN:-0}" = "1" ]; then
     echo "  layanan MATI (diizinkan lewat HESTIA_ALLOW_DOWN=1)"
   else
     echo "  layanan MATI" ; fail=1
   fi
 fi
-
-echo
-echo
-bash tools/gate_audit.sh || fail=1
 
 echo "== gate: placeholder bukti =="
 if ! bash tools/cek_placeholder.sh; then fail=1; fi

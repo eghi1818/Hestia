@@ -1,0 +1,17 @@
+S-198 - satu kanal: TLS jadi mode, bukan kanal kedua
+
+masalah: pada S-191 kanal kedua (8788) dibuat sebagai tambalan supaya gate yang memakai
+http 8787 tidak terganggu TLS. Akibatnya ada dua agen launchd, dua port, dua titik mati;
+8788 berulang kali mati karena gate memanggil serve.sh yang selalu hanya menyalakan 8787.
+
+perubahan: kembali ke SATU kanal di 8787. TLS disimpan sebagai mode di ~/.hestia/live.env
+(HESTIA_TLS=0/1); live.sh, serve.sh, dan gate.sh membacanya, sehingga skema mengikuti mode
+tanpa port kedua. plist lama id.hestia.serve.tls dihapus otomatis saat pasang.
+
+bukti: mode HTTP -> kanal http 401/200 dan gate LULUS; mode TLS -> kanal https 401/200
+dan gate tetap LULUS; lsof hanya menunjukkan satu port 8787 di kedua mode.
+
+lanjutan: tambalan gate pertama salah tempat (prelude tersisip di tengah baris curl
+sehingga BASE menjadi argumen curl dan gate menolak dengan "BASE: unbound variable").
+Seksi layanan gate.sh ditulis ulang utuh. Diverifikasi ulang: 8788 tertutup, 8787 mode
+HTTP, gate LULUS dengan "layanan HIDUP", dan sapuan 14 halaman/rute utama semuanya 200.

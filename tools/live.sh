@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# HESTIA - layanan hidup 24/7: sandi naik, agen launchd (HTTP 8787), opsi HTTPS (8788).
+# HESTIA - layanan hidup 24/7. SATU kanal di 8787; TLS adalah mode, bukan kanal kedua.
 set -euo pipefail
 
 AKAR="$(cd "$(dirname "$0")/.." && pwd)"
@@ -7,11 +7,9 @@ HOME_H="${HESTIA_HOME:-$HOME/.hestia}"
 ENV="$HOME_H/live.env"
 AGEN="$HOME/Library/LaunchAgents"
 LABEL="id.hestia.serve"
-LABEL_TLS="id.hestia.serve.tls"
 PLIST="$AGEN/$LABEL.plist"
-PLIST_TLS="$AGEN/$LABEL_TLS.plist"
+PLIST_LAMA="$AGEN/$LABEL.tls.plist"
 PORT="${HESTIA_PORT:-8787}"
-PORT_TLS="${HESTIA_PORT_TLS:-8788}"
 LOG="$HOME_H/serve.log"
 TLS="$HOME_H/tls"
 PY="$AKAR/.venv/bin/python"
@@ -19,6 +17,8 @@ PY="$AKAR/.venv/bin/python"
 siap_dir() { mkdir -p "$HOME_H"; chmod 700 "$HOME_H"; }
 sandi() { sed -n 's/^HESTIA_SANDI=//p' "$ENV"; }
 sandi_ada() { [ -f "$ENV" ] && grep -q '^HESTIA_SANDI=' "$ENV"; }
+tls_aktif() { [ -f "$ENV" ] && grep -q '^HESTIA_TLS=1' "$ENV"; }
+tls_args() { if tls_aktif; then printf -- '--ssl-keyfile %s --ssl-certfile %s' "$TLS/hestia.key" "$TLS/hestia.crt"; fi; }
 cek_tcc() { [ -f "$LOG" ] && grep -q "Operation not permitted" "$LOG"; }
 
 sandi_baru() {
@@ -26,6 +26,15 @@ sandi_baru() {
   printf 'HESTIA_SANDI=%s\n' "$(openssl rand -hex 16)" > "$ENV"
   chmod 600 "$ENV"
   echo "sandi baru ditulis ke $ENV (mode 600)"
+}
+
+set_mode() {
+  siap_dir
+  if grep -q '^HESTIA_TLS=' "$ENV" 2>/dev/null; then
+    sed -i '' "s/^HESTIA_TLS=.*/HESTIA_TLS=$1/" "$ENV"
+  else
+    printf 'HESTIA_TLS=%s\n' "$1" >> "$ENV"
+  fi
 }
 
 tls_buat() {
@@ -45,25 +54,25 @@ SEBAB: macOS (TCC) menutup folder Documents bagi proses yang dijalankan launchd.
 PERBAIKAN, sekali saja, lewat GUI:
   1. System Settings > Privacy & Security > Full Disk Access
   2. klik +, Cmd+Shift+G, ketik /bin/bash, pilih, lalu aktifkan
-  3. launchctl kickstart -k gui/$(id -u)/$LABEL
-  4. bash tools/live.sh status
+  3. bash tools/live.sh pasang
 TXT
 }
 
-_tulis_plist() {
-  local label="$1" berkas="$2" port="$3" extra="$4"
-  cat > "$berkas" <<PLISTX
+plist_tulis() {
+  local extra
+  extra="$(tls_args)"
+  cat > "$PLIST" <<PLISTX
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-  <key>Label</key><string>$label</string>
+  <key>Label</key><string>$LABEL</string>
   <key>WorkingDirectory</key><string>$AKAR</string>
   <key>ProgramArguments</key>
   <array>
     <string>/bin/bash</string>
     <string>-c</string>
-    <string>set -a; . \$HOME/.hestia/live.env; set +a; exec $PY -m uvicorn app.main:app --host 127.0.0.1 --port $port$extra</string>
+    <string>set -a; . \$HOME/.hestia/live.env; set +a; exec $PY -m uvicorn app.main:app --host 127.0.0.1 --port $PORT $extra</string>
   </array>
   <key>RunAtLoad</key><true/>
   <key>KeepAlive</key><true/>
@@ -73,71 +82,61 @@ _tulis_plist() {
 </dict>
 </plist>
 PLISTX
-  plutil -lint "$berkas" >/dev/null
+  plutil -lint "$PLIST" >/dev/null
+  echo "plist ditulis: $PLIST"
 }
 
-plist_tulis() {
-  _tulis_plist "$LABEL" "$PLIST" "$PORT" ""
-  echo "plist http ditulis: $PLIST"
-  if [ "${PAKAI_TLS:-0}" = "1" ]; then
-    _tulis_plist "$LABEL_TLS" "$PLIST_TLS" "$PORT_TLS" \
-      " --ssl-keyfile \$HOME/.hestia/tls/hestia.key --ssl-certfile \$HOME/.hestia/tls/hestia.crt"
-    echo "plist https ditulis: $PLIST_TLS"
+buang_plist_lama() {
+  if [ -f "$PLIST_LAMA" ]; then
+    launchctl unload "$PLIST_LAMA" >/dev/null 2>&1 || true
+    rm -f "$PLIST_LAMA"
+    echo "plist kanal lama (8788) dihapus"
   fi
 }
 
 muat_ulang() {
   launchctl unload "$PLIST" >/dev/null 2>&1 || true
-  if [ -f "$PLIST_TLS" ]; then launchctl unload "$PLIST_TLS" >/dev/null 2>&1 || true; fi
   pkill -f "app.main" >/dev/null 2>&1 || true
   sleep 1
   launchctl load "$PLIST"
-  if [ -f "$PLIST_TLS" ]; then launchctl load "$PLIST_TLS"; fi
   sleep 3
 }
 
 uji() {
-  local s a b c d gagal=0
+  local skema="http" k="" s a b
   s="$(sandi 2>/dev/null || true)"
-  a="$(curl -s -o /dev/null -w '%{http_code}' "http://127.0.0.1:$PORT/" || true)"
-  b="$(curl -s -o /dev/null -w '%{http_code}' -u "eghi:$s" "http://127.0.0.1:$PORT/" || true)"
-  echo "http  :$PORT tanpa sandi $a | dengan sandi $b"
-  if [ "$b" != "200" ]; then gagal=1; fi
-  if [ -f "$PLIST_TLS" ]; then
-    c="$(curl -sk -o /dev/null -w '%{http_code}' "https://127.0.0.1:$PORT_TLS/" || true)"
-    d="$(curl -sk -o /dev/null -w '%{http_code}' -u "eghi:$s" "https://127.0.0.1:$PORT_TLS/" || true)"
-    echo "https :$PORT_TLS tanpa sandi $c | dengan sandi $d"
-    if [ "$d" != "200" ]; then gagal=1; fi
-  fi
-  [ "$gagal" = "0" ]
+  if tls_aktif; then skema="https"; k="-k"; fi
+  a="$(curl -s $k -o /dev/null -w '%{http_code}' "$skema://127.0.0.1:$PORT/" || true)"
+  b="$(curl -s $k -o /dev/null -w '%{http_code}' -u "eghi:$s" "$skema://127.0.0.1:$PORT/" || true)"
+  echo "kanal $skema://127.0.0.1:$PORT tanpa sandi $a | dengan sandi $b"
+  [ "$b" = "200" ]
 }
 
 cadangan() {
-  echo "sementara menyalakan uvicorn langsung sebagai cadangan..."
+  echo "menyalakan uvicorn langsung sebagai cadangan..."
   set -a; . "$ENV"; set +a
   pkill -f "app.main" >/dev/null 2>&1 || true
   sleep 1
-  nohup "$PY" -m uvicorn app.main:app --host 127.0.0.1 --port "$PORT" >> "$LOG" 2>&1 &
+  nohup "$PY" -m uvicorn app.main:app --host 127.0.0.1 --port "$PORT" $(tls_args) >> "$LOG" 2>&1 &
   echo $! > "$HOME_H/cadangan.pid"
-  if [ -f "$PLIST_TLS" ]; then
-    nohup "$PY" -m uvicorn app.main:app --host 127.0.0.1 --port "$PORT_TLS" \
-      --ssl-keyfile "$TLS/hestia.key" --ssl-certfile "$TLS/hestia.crt" >> "$LOG" 2>&1 &
-    echo $! > "$HOME_H/cadangan-tls.pid"
-  fi
   sleep 4
 }
 
 case "${1:-status}" in
   pasang)
     shift || true
-    PAKAI_TLS=0
-    for a in "$@"; do if [ "$a" = "--tls" ]; then PAKAI_TLS=1; fi; done
+    for a in "$@"; do
+      if [ "$a" = "--tls" ]; then set_mode 1; fi
+      if [ "$a" = "--tanpa-tls" ]; then set_mode 0; fi
+    done
     if ! sandi_ada; then sandi_baru; fi
-    if [ "$PAKAI_TLS" = "1" ]; then tls_buat; fi
+    if [ ! -f "$ENV" ]; then set_mode 0; fi
+    if tls_aktif; then tls_buat; fi
+    buang_plist_lama
     plist_tulis
     muat_ulang
     if uji; then
-      echo "agen launchd: $LABEL${PAKAI_TLS:+ (+TLS)}"
+      echo "agen launchd: $LABEL | mode: $(tls_aktif && echo TLS || echo HTTP)"
     elif cek_tcc; then
       pesan_tcc
       cadangan
@@ -148,16 +147,16 @@ case "${1:-status}" in
     ;;
   sandi-baru)
     sandi_baru
-    if [ -f "$PLIST" ]; then muat_ulang; if ! uji; then cek_tcc && pesan_tcc; cadangan; uji || true; fi; fi
+    if [ -f "$PLIST" ]; then plist_tulis; muat_ulang; if ! uji; then cek_tcc && pesan_tcc; cadangan; uji || true; fi; fi
     ;;
   status)
     launchctl list | grep "$LABEL" || echo "agen belum terpasang"
     if sandi_ada; then echo "sandi: $(sandi | cut -c1-6)... (dari $ENV)"; else echo "sandi: belum ada, bawaan 'hestia'"; fi
+    echo "mode: $(tls_aktif && echo TLS || echo HTTP)"
     if cek_tcc; then echo "catatan: log memuat penolakan TCC -> agen belum bisa membaca repo"; fi
     if ! uji; then
       if cek_tcc; then
-        echo "ada kanal yang mati; menyalakan ulang cadangan..."
-        cadangan
+        echo "kanal mati; menyalakan ulang cadangan..."; cadangan
         if uji; then echo "layanan hidup kembali (cadangan)."; else echo "layanan masih mati."; pesan_tcc; fi
       else
         echo "layanan tidak melayani; lihat $LOG"
@@ -167,11 +166,11 @@ case "${1:-status}" in
   tcc) pesan_tcc ;;
   hapus)
     launchctl unload "$PLIST" >/dev/null 2>&1 || true
-    launchctl unload "$PLIST_TLS" >/dev/null 2>&1 || true
+    launchctl unload "$PLIST_LAMA" >/dev/null 2>&1 || true
     pkill -f "app.main" >/dev/null 2>&1 || true
-    rm -f "$PLIST" "$PLIST_TLS"
+    rm -f "$PLIST" "$PLIST_LAMA"
     echo "agen dihapus; sandi tetap di $ENV"
     ;;
   *)
-    echo "pakai: live.sh {pasang [--tls]|status|sandi-baru|tcc|hapus}"; exit 2 ;;
+    echo "pakai: live.sh {pasang [--tls|--tanpa-tls]|status|sandi-baru|tcc|hapus}"; exit 2 ;;
 esac

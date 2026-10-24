@@ -41,3 +41,11 @@ jalankan `bash tools/live.sh pasang --tls` sekali** sampai izin Full Disk Access
 Cadangan berjalan lepas dari sesi Terminal dan tidak diawasi launchd (selama izin belum
 diberikan), jadi bisa mati tanpa dihidupkan lagi. `bash tools/live.sh status` kini
 memeriksa kedua kanal dan menyalakan ulang cadangan bila ada yang mati.
+
+## Hanya ada SATU kanal
+Alamatnya cuma `http://127.0.0.1:8787`. TLS bukan kanal kedua melainkan mode:
+
+    bash tools/live.sh pasang --tls        # 8787 menjadi https
+    bash tools/live.sh pasang --tanpa-tls  # kembali ke http
+
+Kanal lama di 8788 sudah dihapus.
