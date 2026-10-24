@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 22:18.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 22:27.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 32e2069 S-201: SISA-KERJA dibersihkan, daftar modul GOAL diperiksa
-branch: main | kotor: M docs/steps/S-201.md
-rute app/main.py: 75 | berkas bukti: 96 | dokumen langkah: 176
+HEAD: 69be252 S-202: spec GOAL masuk repo, celah 5 modul dicatat, gate menjaga spec
+branch: main | kotor: M docs/steps/S-202.md
+rute app/main.py: 75 | berkas bukti: 97 | dokumen langkah: 177
 
 ## 12 commit terakhir
 
 ```
+69be252 S-202: spec GOAL masuk repo, celah 5 modul dicatat, gate menjaga spec
+8cacfc0 S-201: SISA-KERJA dibersihkan, daftar modul GOAL diperiksa [jejak]
 32e2069 S-201: SISA-KERJA dibersihkan, daftar modul GOAL diperiksa
 d215832 S-200: gate memprobe rute api utama secara hidup [jejak]
 c44de49 S-200: gate memprobe rute api utama secara hidup
@@ -20,8 +22,6 @@ d532151 S-198: satu kanal 8787, TLS jadi mode bukan kanal kedua [jejak]
 bae243e S-197: status mengawasi layanan, kanal HTTPS dinyalakan kembali [jejak]
 0fe10d7 S-197: status mengawasi layanan, kanal HTTPS dinyalakan kembali
 565efc3 S-196: gate memeriksa bukti langkah yang sedang dikerjakan [jejak]
-bd8dd2c S-196: gate memeriksa bukti langkah yang sedang dikerjakan
-79da088 S-195: bukti sah gate fail-closed pada berkas bukti langkah [jejak]
 ```
 
 ## SISA KERJA
@@ -46,6 +46,17 @@ Disunting manusia. tools/sync_jejak.py menyalinnya ke SESSION_STATE.
 - Aturan izin='manusia' di transisi_status menuju dicabut/tertanam sehingga tidak bisa
   terpicu probe; jalur usul hidup dari pasangan tak dikenal (sudah diuji).
 - 3 kunci lapangan hanya bahan uji, bukan penghalang.
+
+## Celah terhadap spesifikasi GOAL (5 modul wajib)
+Diperiksa S-202. Urutan GOAL: modul 5 dan 4 dulu, lalu 1, 2, 3.
+- Modul 4: kurang mesin skor KEEP/301/410/404, antrean bulk, rollback, sebelum/sesudah equity.
+- Modul 5: kurang link rot dari data backlink (inbound/outbound), metrik equity hangus, pipeline reklamasi, template outreach, grafik tren.
+- Modul 1: registry parasite -- perlu dicek terhadap daftar field GOAL (biaya, kontrak, lifespan, heatmap host).
+- Modul 2: snapshot konten (simhash), delta ranking 7/14/30 hari, diff viewer.
+- Modul 3: deteksi kemiripan <30%, cek canonical, penilaian pemegang SERP.
+- DoD #6: alert (email/webhook) belum ada.
+- DoD #7: README setup/kredensial/rollback belum lengkap.
+- UI GOAL: satu halaman ringkasan 5 metrik + angka bisa diklik (drilldown).
 
 ## Cara melanjutkan
 
