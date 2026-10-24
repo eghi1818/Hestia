@@ -1,0 +1,11 @@
+S-204 - inventaris apa yang sudah ada, supaya rencana tidak membangun ulang
+
+masalah: keluaran gate S-203 menunjukkan mesin yang sudah hidup tetapi tidak saya hitung
+(#queueStatus, #opsMetrics, #monitorAlerts, #latencyList, #reconQueue, #reconProgress,
+#kandInfo, ekspor.js, tautan.js, recon.js, konten.js, detail.js). Daftar celah di
+RENCANA-GOAL.md bisa jadi melebih-lebihkan kekosongan.
+
+perubahan: inventaris faktual (seluruh rute /api dan pemanggilan /api per skrip dashboard)
+dihasilkan otomatis dan ditulis ke docs/RENCANA-GOAL.md bagian "Inventaris yang sudah ada".
+
+bukti: daftar rute dan pemakaian per skrip tercetak; bagian inventaris ada di dokumen.

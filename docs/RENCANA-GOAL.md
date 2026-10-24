@@ -67,3 +67,71 @@ Selama ini belum diputuskan, kolom metrik terkait tetap berstatus 'tanpa_sumber'
 - konten (4 baris): id, url, target, kata_kunci, template, status_indeks, posisi, peran
 - recon (56 baris): id, target_id, waktu, http_status, server, content_type, redirect, ms, judul, catatan
 - metrik (0 baris): nama, sumber, status_sumber, terisi_terakhir, catatan, nilai, satuan
+
+## Inventaris yang sudah ada (diperiksa S-204)
+
+Rute /api di app/main.py: 47
+
+- /api/anggota
+- /api/anggota/{tid}
+- /api/audit
+- /api/audit/peristiwa
+- /api/clientlog
+- /api/clientlog/bersih
+- /api/deployment
+- /api/deployment/{tid}
+- /api/driver/apply
+- /api/driver/plan
+- /api/driver/rules
+- /api/driver/verify
+- /api/health
+- /api/job/{jid}
+- /api/job/{jid}/batal
+- /api/job/{jid}/log
+- /api/kandidat
+- /api/kandidat.csv
+- /api/kandidat/periksa
+- /api/kandidat/periksa-latar
+- /api/kandidat/periksa-status
+- /api/kandidat/ringkas
+- /api/konsol/aksi
+- /api/konsol/jalankan
+- /api/konten
+- /api/konten/{tid}
+- /api/konten/{tid}/indeks
+- /api/kredensial
+- /api/kredensial-uji
+- /api/kredensial/rotasi
+- /api/kredensial/{kid}/uji
+- /api/kredensial/{tid}
+- /api/monitoring
+- /api/putaran
+- /api/putaran/status
+- /api/recon
+- /api/setelan
+- /api/status/periksa
+- /api/status/ringkas
+- /api/tanam
+- /api/targets
+- /api/targets/{tid}
+- /api/targets/{tid}/recon
+- /api/tautan
+- /api/tautan/ringkas
+- /api/teknologi-ringkas
+- /api/teknologi/pindai
+
+Panggilan /api dari skrip dashboard:
+
+- aksi.js: /api/anggota, /api/clientlog, /api/clientlog/bersih, /api/deployment, /api/deployment/, /api/konten, /api/kredensial/rotasi, /api/monitoring, /api/setelan, /api/tanam, /api/tautan
+- audit.js: /api/audit, /api/audit/peristiwa, /api/clientlog, /api/monitoring
+- detail.js: /api/clientlog, /api/konten, /api/kredensial, /api/targets, /api/targets/
+- driver.js: /api/driver/apply, /api/driver/plan, /api/driver/verify, /api/targets
+- ekspor.js: /api/clientlog, /api/kandidat.csv
+- ikhtisar.js: /api/clientlog, /api/kandidat/ringkas, /api/targets, /api/teknologi-ringkas, /api/teknologi/pindai
+- konsol.js: /api/clientlog, /api/job/, /api/konsol/aksi, /api/konsol/jalankan, /api/kredensial, /api/kredensial-uji, /api/kredensial/
+- konten.js: /api/clientlog, /api/deployment, /api/konten, /api/konten/, /api/kredensial, /api/targets
+- live.js: /api/clientlog, /api/kandidat, /api/kandidat/periksa, /api/kandidat/periksa-latar, /api/kandidat/periksa-status, /api/putaran, /api/putaran/status, /api/targets
+- monitor.js: /api/status/periksa, /api/status/ringkas, /api/targets
+- recon.js: /api/clientlog, /api/recon, /api/targets, /api/targets/
+- tanam.js: /api/tanam, /api/targets
+- tautan.js: /api/clientlog, /api/tautan/ringkas
