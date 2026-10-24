@@ -1,0 +1,11 @@
+S-197 - status mengawasi layanan, kanal HTTPS dinyalakan kembali
+
+masalah: kanal HTTPS 8788 mati sendiri (lsof hanya menampilkan 8787). Cadangan dijalankan
+lepas dari sesi Terminal tanpa pengawas, sedangkan agen launchd masih terhalang TCC,
+sehingga tidak ada yang menyalakannya ulang.
+
+perubahan: cabang status di live.sh memanggil uji() dan, bila gagal sementara log memuat
+penolakan TCC, menjalankan cadangan() lalu menguji lagi; docs/LIVE.md menjelaskan hal ini.
+
+bukti: sesudah "live.sh pasang --tls", uji menampilkan http 8787 dan https 8788 sama-sama
+401 tanpa sandi dan 200 dengan sandi; status mengembalikan 0.

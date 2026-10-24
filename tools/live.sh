@@ -154,7 +154,15 @@ case "${1:-status}" in
     launchctl list | grep "$LABEL" || echo "agen belum terpasang"
     if sandi_ada; then echo "sandi: $(sandi | cut -c1-6)... (dari $ENV)"; else echo "sandi: belum ada, bawaan 'hestia'"; fi
     if cek_tcc; then echo "catatan: log memuat penolakan TCC -> agen belum bisa membaca repo"; fi
-    uji || { echo "layanan tidak melayani"; cek_tcc && pesan_tcc; }
+    if ! uji; then
+      if cek_tcc; then
+        echo "ada kanal yang mati; menyalakan ulang cadangan..."
+        cadangan
+        if uji; then echo "layanan hidup kembali (cadangan)."; else echo "layanan masih mati."; pesan_tcc; fi
+      else
+        echo "layanan tidak melayani; lihat $LOG"
+      fi
+    fi
     ;;
   tcc) pesan_tcc ;;
   hapus)

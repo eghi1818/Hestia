@@ -36,3 +36,8 @@ lalu `launchctl kickstart -k gui/$(id -u)/id.hestia.serve`. Selama izin belum di
 Agen launchd belum bisa membaca repo, jadi `live.sh pasang` menyalakan cadangan
 (uvicorn langsung). Cadangan itu tidak ikut start saat login, sehingga **sesudah reboot
 jalankan `bash tools/live.sh pasang --tls` sekali** sampai izin Full Disk Access diberikan.
+
+## Layanan mati sendiri?
+Cadangan berjalan lepas dari sesi Terminal dan tidak diawasi launchd (selama izin belum
+diberikan), jadi bisa mati tanpa dihidupkan lagi. `bash tools/live.sh status` kini
+memeriksa kedua kanal dan menyalakan ulang cadangan bila ada yang mati.
