@@ -75,3 +75,13 @@ pelajaran operasional:
     Pakai array: SSH=(ssh -i ...) lalu "${SSH[@]}".
   - /etc/sudoers.d mode 750 -> visudo -cf sebagai non-root balik kosong; jalankan dengan sudo.
   - jangan pakai rfind("}") untuk config >1 blok server.
+
+## Catatan Modul 5 (2026-10-24)
+
+- bukti.mata = 1 adalah INDEKS tetap, bukan id. Tidak ada FK, tidak ada tabel rujukan.
+- status_konten.diperbarui kini berarti "terakhir diperiksa/dicatat" (di-set juga oleh
+  tautkan_bukti), BUKAN "terakhir berubah status". Jangan disalahartikan.
+- bukti tumbuh sekitar `diperiksa` baris tiap run. Siapkan kebijakan retensi.
+- metrik tidak punya kolom nilai; angka disimpan sebagai prosa di catatan dan API yang
+  menghitung. Migrasi ke kolom nilai = P2.
+- Belum pernah terbukti: jalur `usul` (butuh manusia) dan jalur `kedaluwarsa` nyata.

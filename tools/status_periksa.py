@@ -89,6 +89,22 @@ def ambil_daftar(c, domain, batas):
     return baris
 
 
+def tautkan_bukti(c, kid, bid):
+    """Tandai bukti terakhir untuk konten tanpa menyentuh status."""
+    kol = kolom(c, "status_konten")
+    if not bid or not kol:
+        return
+    d = {}
+    if "bukti_terakhir" in kol:
+        d["bukti_terakhir"] = bid
+    if "diperbarui" in kol:
+        d["diperbarui"] = time.strftime("%Y-%m-%d %H:%M:%S")
+    if not d:
+        return
+    c.execute("update status_konten set %s where konten_id=?" % ",".join("%s=?" % k for k in d),
+              list(d.values()) + [kid])
+
+
 def catat_bukti(c, kid, hasil):
     """Tulis baris bukti lengkap, kembalikan bukti.id untuk ditautkan."""
     kb = kolom(c, "bukti")
@@ -97,6 +113,7 @@ def catat_bukti(c, kid, hasil):
     kelas = hasil.get("kelas")
     verdict = {"nyata": "lulus", "tidak_ada": "gagal"}.get(kelas, "tak_konklusif")
     d = {"mata": 1, "metode": "uji_probe.uji",
+         "job_id": (int(os.environ["HESTIA_JOB_ID"]) if os.environ.get("HESTIA_JOB_ID") else None),
          "verdict": nilai_enum(c, "bukti", "verdict", (verdict,)) or verdict,
          "nilai": kelas, "keterangan": json.dumps(
              {"konten_id": kid, "url": hasil.get("url"), "kode": hasil.get("kode"),
@@ -135,26 +152,29 @@ def tulis_status(c, kid, tujuan, hasil, bukti_id=None):
 
 
 def daftar_metrik(c):
+    """metrik hanya punya nama/sumber/status_sumber/terisi_terakhir/catatan.
+
+    Angka taruh di catatan; API yang menghitung. Ini registry, bukan penyimpan nilai.
+    """
     kol = kolom(c, "metrik")
     waktu = time.strftime("%Y-%m-%d %H:%M:%S")
-    nama = "konten.kedaluwarsa"
-    ada = c.execute("select 1 from metrik where nama=?", (nama,)).fetchone()
-    nilai = c.execute("select count(*) from status_konten where status='kedaluwarsa'").fetchone()[0]
-    d = {"nama": nama, "sumber": "uji_probe",
-         "status_sumber": nilai_enum(c, "metrik", "status_sumber", ("terisi", "ada")) or "terisi",
-         "terisi_terakhir": waktu, "catatan": "jumlah halaman konten yang mati di pihak host"}
-    k_nilai = pilih(kol, "nilai", "angka", "value", "jumlah", "hasil")
-    if k_nilai:
-        d[k_nilai] = nilai
-    d = {k: v for k, v in d.items() if k in kol}
-    if ada:
-        setel = ",".join("%s=?" % k for k in d if k != "nama")
-        c.execute("update metrik set %s where nama=?" % setel,
-                  [v for k, v in d.items() if k != "nama"] + [nama])
-    else:
-        cek_wajib(c, "metrik", d)
-        c.execute("insert into metrik(%s) values(%s)" % (",".join(d), ",".join("?" * len(d))),
-                  list(d.values()))
+    for nama, status in (("konten.kedaluwarsa", "kedaluwarsa"),
+                         ("konten.terverifikasi", "terverifikasi")):
+        nilai = c.execute("select count(*) from status_konten where status=?", (status,)).fetchone()[0]
+        d = {"nama": nama, "sumber": "uji_probe",
+             "status_sumber": nilai_enum(c, "metrik", "status_sumber", ("terisi", "ada")) or "terisi",
+             "terisi_terakhir": waktu,
+             "catatan": "jumlah halaman konten berstatus %s; terakhir: %d" % (status, nilai)}
+        d = {k: v for k, v in d.items() if k in kol}
+        ada = c.execute("select 1 from metrik where nama=?", (nama,)).fetchone()
+        if ada:
+            setel = ",".join("%s=?" % k for k in d if k != "nama")
+            c.execute("update metrik set %s where nama=?" % setel,
+                      [v for k, v in d.items() if k != "nama"] + [nama])
+        else:
+            cek_wajib(c, "metrik", d)
+            c.execute("insert into metrik(%s) values(%s)" % (",".join(d), ",".join("?" * len(d))),
+                      list(d.values()))
 
 
 def catat_clientlog(c, peristiwa, rincian):
@@ -202,6 +222,7 @@ def main():
         if kls in TIDAK_PASTI:
             tak_pasti.append({"konten_id": kid, "url": url, "kelas": kls})
             tujuan = None
+            aksi = "tak-pasti"
         if tujuan and status_lama and tujuan != status_lama:
             if izin.get((status_lama, tujuan)) == "otomatis":
                 aksi = "transisi"
@@ -213,11 +234,18 @@ def main():
             aksi = "transisi"
             dorong.append({"konten_id": kid, "url": url, "dari": None, "ke": tujuan})
 
-        if a.terapkan and aksi == "transisi":
+        bid = None
+        if a.terapkan:
             bid = catat_bukti(c, kid, h)
-            mode = tulis_status(c, kid, tujuan, h, bid)
-            aksi = "terapkan:" + mode
-        hasil.append({"konten_id": kid, "url": url, "kode": h["kode"], "kelas": kls, "aksi": aksi})
+            if aksi == "transisi":
+                mode = tulis_status(c, kid, tujuan, h, bid)
+                aksi = "terapkan:" + mode
+            else:
+                tautkan_bukti(c, kid, bid)
+        item = {"konten_id": kid, "url": url, "kode": h["kode"], "kelas": kls, "aksi": aksi}
+        if bid:
+            item["bukti"] = bid
+        hasil.append(item)
 
     ringkas = {"diperiksa": len(hasil), "transisi": len(dorong), "usul_manusia": len(usul),
                "tidak_dapat_disimpulkan": len(tak_pasti), "terapkan": bool(a.terapkan)}

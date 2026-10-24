@@ -1,0 +1,17 @@
+S-175 - bukti per-run + job_id + tautan bukti_terakhir; aksi tidak ditimpa
+tanggal: 2026-10-24
+
+masalah:
+  catat_bukti hanya dipanggil saat aksi == "transisi" -> konten stabil hanya punya
+  satu baris bukti selamanya. Lalu patch pertama menimpa aksi jadi "catat-bukti" untuk
+  SEMUA non-transisi, sehingga item tidak lagi membedakan tetap / usul / tak-pasti.
+
+perubahan:
+  bukti ditulis untuk SETIAP url tiap run; aksi dipertahankan apa adanya.
+  kelas tak_dapat_disimpulkan diberi aksi "tak-pasti" (sebelumnya menyamar "tetap").
+  bukti.id disisipkan ke item (sebelumnya h["bukti"] tidak sampai ke hasil).
+  tautkan_bukti() memperbarui bukti_terakhir + diperbarui TANPA menyentuh status.
+  bukti.job_id diisi dari HESTIA_JOB_ID.
+
+catatan: ringkas dihitung dari panjang daftar usul/tak_pasti, bukan dari aksi.
+bukti: lihat keluaran uji - aksi tetap, tak_pasti=1, item[].bukti terisi.
