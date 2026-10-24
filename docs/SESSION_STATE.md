@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 12:30.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 15:19.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 64b1312 S-188: halaman Tanam di dashboard, rute /api/tanam tersambung
-branch: main | kotor: ?? docs/steps/S-188.md
-rute app/main.py: 72 | berkas bukti: 83 | dokumen langkah: 163
+HEAD: 4fe7e9b S-189: pemilih target Tanam pakai /api/targets, galat server ditampilkan
+branch: main | kotor: ?? docs/steps/S-189.md
+rute app/main.py: 72 | berkas bukti: 84 | dokumen langkah: 164
 
 ## 12 commit terakhir
 
 ```
+4fe7e9b S-189: pemilih target Tanam pakai /api/targets, galat server ditampilkan
+f542d30 S-188: halaman Tanam di dashboard, rute /api/tanam tersambung [jejak]
 64b1312 S-188: halaman Tanam di dashboard, rute /api/tanam tersambung
 380597f S-187: tutup.sh berakhir dengan pohon bersih (commit jejak otomatis) [jejak]
 a7060f3 S-187: tutup.sh berakhir dengan pohon bersih (commit jejak otomatis)
@@ -20,8 +22,6 @@ a4c5c90 S-183: penyinkronan jejak otomatis lewat tutup.sh (SESSION_STATE dihasil
 66fc2d8 S-182: sinkronkan jejak ke HEAD (dokumen langkah, SESSION_STATE, paket resume)
 ba636d3 S-181: HESTIA_JOB_ID diekspor di _jalankan2 (bukan _jalankan)
 c54d4c3 S-180: r_nomor numerik dari tabel job; uji runner sesuai bentuk sinkron
-859fcbd S-179: penyapu job mati (zombie tidak lagi memblokir runner)
-89fee21 S-177: lengkapi dokumen langkah S-153..S-176, perbaiki whitelist, bukti jalur job
 ```
 
 ## SISA KERJA
