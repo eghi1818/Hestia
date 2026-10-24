@@ -1,0 +1,11 @@
+S-194 - judul seksi gate yang hilang + bukti gate fail-closed
+
+masalah: pada S-193 judul seksi "== gate: bukti langkah terakhir ==" ditulis sebagai
+baris telanjang, sehingga shell menjalankannya sebagai perintah dan mencetak
+"tools/gate.sh: line 99: ==: command not found". Perilaku pemeriksaannya sendiri benar.
+
+perubahan: baris itu dibungkus echo seperti seksi lain.
+
+bukti: gate tanpa "command not found"; ketika docs/evidence/S-194.txt dipindahkan,
+gate melaporkan KURANG dan keluar dengan status bukan nol; setelah dikembalikan,
+gate melaporkan ok.

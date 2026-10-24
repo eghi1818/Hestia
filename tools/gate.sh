@@ -96,7 +96,7 @@ bash tools/gate_audit.sh || fail=1
 echo "== gate: placeholder bukti =="
 if ! bash tools/cek_placeholder.sh; then fail=1; fi
 
-== gate: bukti langkah terakhir ==
+echo "== gate: bukti langkah terakhir =="
 langkah=$(ls docs/steps/S-*.md 2>/dev/null | sed 's#.*/S-##;s#\.md##' | sort -n | tail -1)
 if [ -n "$langkah" ]; then
   if [ -f "docs/evidence/S-$langkah.txt" ]; then
