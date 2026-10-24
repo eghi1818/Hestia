@@ -1,0 +1,19 @@
+S-191 - LIVE: sandi naik, agen launchd, HTTPS
+
+keadaan sebelum: app/main.py membaca HESTIA_SANDI dengan bawaan "hestia" dan hanya
+tools/serve.sh (nohup) yang menyalakan layanan, sehingga mati begitu sesi terminal tutup.
+
+perubahan: tools/live.sh (pasang/status/sandi-baru/hapus) menulis sandi acak 32 heksa ke
+~/.hestia/live.env mode 600, menulis agen launchd id.hestia.serve (RunAtLoad + KeepAlive,
+log ke ~/.hestia/serve.log), opsi --tls membuat sertifikat self-signed dan menyalakan
+uvicorn dengan ssl-keyfile/ssl-certfile; serve.sh ikut membaca live.env; docs/LIVE.md
+ditulis; butir 5 SISA-KERJA ditutup.
+
+bukti: pasang HTTP -> tanpa sandi 401, dengan sandi 200; pasang --tls -> https dengan
+sandi 200; launchctl list memuat agen dengan PID.
+
+lanjutan: agen launchd terpasang tetapi mati berulang dengan
+"PermissionError: Operation not permitted: .venv/pyvenv.cfg" -- penyebabnya TCC macOS
+yang menutup ~/Documents bagi proses latar. Jalankan manual dari Terminal membalas
+401/200 (sehat), jadi bukan masalah kode atau argumen. live.sh diberi deteksi TCC,
+perintah `tcc`, dan cadangan serve.sh; docs/LIVE.md menjelaskan perbaikan GUI-nya.

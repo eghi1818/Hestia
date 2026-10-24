@@ -9,7 +9,7 @@ Disunting manusia. tools/sync_jejak.py menyalinnya ke SESSION_STATE.
    Pertimbangkan migrasi kolom nilai.
 3. [selesai S-188] Unggah berkas FTP/SFTP lewat dashboard (halaman Tanam).
 4. [selesai S-190] Papan pindai teknologi di Ikhtisar + tombol pindai dari dashboard.
-5. LIVE: HESTIA_SANDI dinaikkan, serve.sh jadi layanan, host 24/7 + HTTPS.
+5. [selesai S-191] LIVE: sandi naik, agen launchd id.hestia.serve, HTTPS self-signed (tools/live.sh, docs/LIVE.md).
 6. Pertimbangkan kolom bukti.konten_id (kini konten_id tersimpan di keterangan JSON)
    supaya retensi bisa per-konten dan kueri tidak perlu json_extract.
 
@@ -19,3 +19,4 @@ Disunting manusia. tools/sync_jejak.py menyalinnya ke SESSION_STATE.
 - Aturan izin='manusia' di transisi_status menuju dicabut/tertanam sehingga tidak bisa
   terpicu probe; jalur usul hidup dari pasangan tak dikenal (sudah diuji).
 - 3 kunci lapangan hanya bahan uji, bukan penghalang.
+7. Beri /bin/bash Full Disk Access (GUI) agar agen launchd menggantikan serve.sh; lihat docs/LIVE.md.
