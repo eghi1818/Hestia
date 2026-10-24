@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 20:54.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 21:03.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 3d97976 S-193: gate memeriksa bukti langkah terakhir, bukti S-192 dilengkapi
-branch: main | kotor: ?? docs/steps/S-193.md
-rute app/main.py: 73 | berkas bukti: 88 | dokumen langkah: 168
+HEAD: 345d616 S-194: betulkan judul seksi gate + bukti fail-closed
+branch: main | kotor: ?? docs/steps/S-194.md
+rute app/main.py: 73 | berkas bukti: 89 | dokumen langkah: 169
 
 ## 12 commit terakhir
 
 ```
+345d616 S-194: betulkan judul seksi gate + bukti fail-closed
+64aa6b2 S-193: gate memeriksa bukti langkah terakhir, bukti S-192 dilengkapi [jejak]
 3d97976 S-193: gate memeriksa bukti langkah terakhir, bukti S-192 dilengkapi
 7f48ad9 S-192: kanal HTTPS terpisah di 8788, cadangan TLS-aware [jejak]
 965d9d3 S-192: kanal HTTPS terpisah di 8788, cadangan TLS-aware
@@ -20,8 +22,6 @@ e92aa35 S-191: LIVE sandi naik, agen launchd, HTTPS self-signed, deteksi TCC [je
 934cd2a S-189: pemilih target Tanam pakai /api/targets, galat server ditampilkan [jejak]
 4fe7e9b S-189: pemilih target Tanam pakai /api/targets, galat server ditampilkan
 f542d30 S-188: halaman Tanam di dashboard, rute /api/tanam tersambung [jejak]
-64b1312 S-188: halaman Tanam di dashboard, rute /api/tanam tersambung
-380597f S-187: tutup.sh berakhir dengan pohon bersih (commit jejak otomatis) [jejak]
 ```
 
 ## SISA KERJA
