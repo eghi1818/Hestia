@@ -17,3 +17,8 @@ lanjutan: agen launchd terpasang tetapi mati berulang dengan
 yang menutup ~/Documents bagi proses latar. Jalankan manual dari Terminal membalas
 401/200 (sehat), jadi bukan masalah kode atau argumen. live.sh diberi deteksi TCC,
 perintah `tcc`, dan cadangan serve.sh; docs/LIVE.md menjelaskan perbaikan GUI-nya.
+
+lanjutan S-192: pada mode TLS cadangan memakai serve.sh yang selalu HTTP sehingga
+https balas 000 dan pasang --tls berakhir GAGAL. Kanal dipisah: agen HTTP di 8787
+(dipakai gate) dan agen HTTPS di 8788 (dipakai peramban), cadangan menyalakan keduanya
+bila plist TLS ada. Diverifikasi: http 401/200 dan https 401/200.
