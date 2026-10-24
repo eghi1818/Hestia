@@ -1391,3 +1391,41 @@ def api_driver_verify(domain: str, base_url: str = ""):
                       "pesan": pesan, "alasan": pesan})
     return {"domain": domain, "item": hasil,
             "lulus": all(x["ok"] for x in hasil) if hasil else False}
+
+
+# ===================== Modul 5: Link Rot Monitor =====================
+import sys as _sys
+
+
+@app.post("/api/status/periksa")
+def api_status_periksa(body: dict):
+    import subprocess
+    b = body or {}
+    argv = [_sys.executable, "-u", "tools/status_periksa.py",
+            "--batas", str(int(b.get("batas") or 3))]
+    if b.get("domain"):
+        argv += ["--domain", str(b["domain"])]
+    if b.get("terapkan"):
+        argv += ["--terapkan"]
+    try:
+        r = subprocess.run(argv, capture_output=True, text=True, timeout=600)
+    except subprocess.TimeoutExpired:
+        return {"ok": False, "kode": 504, "galat": "periksa melewati 600 detik", "hasil": {}}
+    try:
+        data = json.loads(r.stdout or "{}")
+    except Exception:
+        data = {"ringkas": {}, "item": [], "keluaran": (r.stdout or "")[-2000:]}
+    return {"ok": r.returncode == 0, "kode": r.returncode,
+            "galat": (r.stderr or "")[-800:], "hasil": data}
+
+
+@app.get("/api/status/ringkas")
+def api_status_ringkas():
+    c = _db_kandidat()
+    kol = [r[1] for r in c.execute("pragma table_info(status_konten)")]
+    baris = [dict(r) for r in c.execute("select * from status_konten")]
+    c.close()
+    hitung = {}
+    for b in baris:
+        hitung[b.get("status")] = hitung.get(b.get("status"), 0) + 1
+    return {"kolom": kol, "total": len(baris), "per_status": hitung}

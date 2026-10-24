@@ -1,0 +1,22 @@
+S-173 - Modul 5: pemeriksa status + dorong transisi (read-only tanpa --terapkan)
+tanggal: 2026-10-24
+
+alat: tools/status_periksa.py
+  memakai ulang uji_probe.uji/kelas (UA + jeda + probe kontrol).
+  PETA: tidak_ada -> kedaluwarsa, nyata -> terverifikasi.
+  Hanya transisi dengan izin='otomatis' dijalankan; izin='manusia' dicatat sebagai usulan.
+  Kelas blokir/tantangan/tidak_dapat_disimpulkan tidak mengubah status.
+  Dry-run tanpa --terapkan benar-benar read-only.
+  Tulis: status_konten (basis='bukti'), bukti, metrik (konten.kedaluwarsa), clientlog.
+
+rute: POST /api/status/periksa (timeout 600 -> 504 rapi), GET /api/status/ringkas
+
+kelas bug yang diperbaiki di langkah ini:
+  insert menyusun kolom lewat daftar kandidat -> kolom di luar daftar dibuang diam-diam,
+  bukti.mata NOT NULL gagal. Kini semua insert lewat cek_wajib() yang berteriak dengan
+  daftar kolom. Nilai enum dibaca dari CHECK di DDL, bukan dikarang.
+  aturan() membaca kolom transisi_status lewat NAMA, bukan urutan - sebelumnya kolom id
+  di depan akan membuat semua transisi otomatis berubah jadi usul tanpa error.
+  bukti ditulis SEBELUM status_konten (basis='bukti' menunjuk bukti yang harus ada dulu).
+
+keputusan sadar: transisi dari None (baris baru) tidak dicek ke izin.
