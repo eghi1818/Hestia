@@ -195,6 +195,7 @@ def catat_clientlog(c, peristiwa, rincian):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--domain", default="")
+    ap.add_argument("posisi_domain", nargs="?", default="")
     ap.add_argument("--batas", type=int, default=5)
     ap.add_argument("--jeda", type=float, default=uji_probe.JEDA)
     ap.add_argument("--kontrol", default=None)
@@ -202,6 +203,8 @@ def main():
     ap.add_argument("--db", default=DB)
     a = ap.parse_args()
 
+    if not a.domain and a.posisi_domain:
+        a.domain = a.posisi_domain
     c = sqlite3.connect(a.db)
     c.row_factory = sqlite3.Row
     izin = aturan(c)

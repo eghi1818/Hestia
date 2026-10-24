@@ -99,3 +99,13 @@ pelajaran operasional:
 - badungkab.go.id tetap tidak_dapat_disimpulkan (timeout di sisi situs, rc=28).
 - Jebakan: penjaga `"check" in sql.lower()` tapi pemecah `sql.split("check")` -
   DDL menulis CHECK huruf besar. Pakai regex dengan re.I.
+
+## Nomor langkah yang tidak dipakai (2026-10-24)
+
+S-158, S-164, S-166 tidak punya commit - bloknya tidak pernah dijalankan, bukan berkas
+hilang. Juga docs/steps/S-119.md, S-124.md, S-127.md tidak ada (sebelum sesi ini).
+Jangan "melengkapi" nomor-nomor ini tanpa alasan; cukup tahu bahwa celah itu wajar.
+
+PENGINGAT PROSES: tools/tutup.sh menulis docs/steps/S-<n>.md otomatis. Sejak S-152 ia
+tidak pernah dijalankan, sehingga S-153..S-176 harus dibuat menyusul. Jalankan tutup.sh
+di akhir tiap langkah, atau setidaknya sekali per sesi.

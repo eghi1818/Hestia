@@ -1,0 +1,17 @@
+S-177 - lengkapi 21 dokumen langkah, perbaiki whitelist, buktikan jalur job
+tanggal: 2026-10-24
+
+masalah:
+  tools/tutup.sh tidak dijalankan sejak S-152 -> docs/steps/ berhenti di S-152.md
+  padahal commit sudah S-176. 21 langkah tanpa dokumen (S-158/164/166 memang kosong).
+  whitelist.status_periksa salah format: biner='python3' (lainnya jalur absolut venv),
+  argumen_tetap string polos (lainnya JSON array) -> job akan gagal.
+  Uji job memakai nama fungsi salah (api_konsol_jalankan vs _konsol_jalankan).
+
+perubahan:
+  docs/steps/S-153..S-176.md dibuat dari git log (hash, subjek, tanggal, body).
+  whitelist.status_periksa dinormalkan.
+  status_periksa.py menerima domain posisional karena runner menambahkan domain di ujung.
+  NEXT.md mencatat nomor kosong + pengingat menjalankan tutup.sh.
+
+bukti: job lulus, job_log terisi, bukti.job_id terisi.
