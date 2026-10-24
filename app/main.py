@@ -1306,3 +1306,82 @@ def _kredensial_uji_daftar():
     with db.conn() as c:
         r = c.execute("SELECT kredensial_id,metode,hasil,pesan,diuji_pada FROM kredensial_uji ORDER BY id DESC LIMIT 100").fetchall()
     return {"item": [{"kredensial_id": x[0], "metode": x[1], "hasil": x[2], "pesan": x[3], "diuji_pada": x[4]} for x in r]}
+
+
+# ===================== Modul 4: driver redirect 301/410 =====================
+import os as _os
+import time as _time
+
+_DIR_RULES = _os.path.join("data", "rules")
+_os.makedirs(_DIR_RULES, exist_ok=True)
+
+
+def _driver():
+    from tools import driver as drv
+    return drv.DRIVER[_os.environ.get("HESTIA_DRIVER", "nginx")]()
+
+
+def _berkas_rules(domain: str) -> str:
+    return _os.path.join(_DIR_RULES, domain + ".json")
+
+
+def _muat_rules(domain: str):
+    from tools import driver as drv
+    p = _berkas_rules(domain)
+    if not _os.path.exists(p):
+        return []
+    return drv._muat(p)
+
+
+def _catat(peristiwa: str, rincian: str) -> None:
+    try:
+        c = _db_kandidat()
+        c.execute("INSERT INTO clientlog(waktu, peristiwa, rincian) VALUES(?,?,?)",
+                  (_time.strftime("%Y-%m-%d %H:%M:%S"), peristiwa, rincian[:300]))
+        c.commit()
+        c.close()
+    except Exception:
+        pass
+
+
+@app.get("/api/driver/rules")
+def api_driver_rules(domain: str):
+    rules = _muat_rules(domain)
+    return {"domain": domain, "ada": bool(rules),
+            "item": [{"path": r.path, "code": r.code, "target": r.target} for r in rules]}
+
+
+@app.get("/api/driver/plan")
+def api_driver_plan(domain: str):
+    langkah = _driver().plan(domain, _muat_rules(domain))
+    return {"domain": domain,
+            "item": [{"op": s.op, "line": s.rule.line()} for s in langkah],
+            "ringkas": {k: sum(s.op == k for s in langkah)
+                        for k in ("add", "update", "remove", "noop")}}
+
+
+@app.post("/api/driver/apply")
+def api_driver_apply(body: dict):
+    domain = (body or {}).get("domain") or ""
+    terapkan = bool((body or {}).get("terapkan"))
+    if not domain:
+        return {"ok": False, "pesan": "domain kosong"}
+    h = _driver().apply(domain, _muat_rules(domain), dry_run=not terapkan)
+    _catat("driver-terapkan" if terapkan else "driver-rencana",
+           "%s changed=%s applied=%s tested=%s reloaded=%s"
+           % (domain, h["changed"], h["applied"], h["tested"], h["reloaded"]))
+    return {"ok": True,
+            "hasil": {k: h[k] for k in ("domain", "changed", "applied", "tested", "reloaded") if k in h},
+            "diff": h.get("diff", ""), "pesan": h.get("pesan", "")}
+
+
+@app.get("/api/driver/verify")
+def api_driver_verify(domain: str, base_url: str = ""):
+    d = _driver()
+    base = base_url or ("https://" + domain)
+    hasil = []
+    for r in _muat_rules(domain):
+        ok, pesan = d.verify(domain, r, base)
+        hasil.append({"path": r.path, "code": r.code, "ok": ok, "pesan": pesan})
+    return {"domain": domain, "item": hasil,
+            "lulus": all(x["ok"] for x in hasil) if hasil else False}

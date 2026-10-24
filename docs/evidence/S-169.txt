@@ -1,0 +1,26 @@
+S-169 - rute HTTP driver (Modul 4 bisa dipakai tanpa terminal)
+tanggal: 2026-10-24
+
+rute baru di app/main.py:
+  GET  /api/driver/rules   - aturan tersimpan untuk satu domain
+  GET  /api/driver/plan    - rencana add/update/remove/noop (read-only)
+  POST /api/driver/apply   - dry-run bila terapkan=false; satu-satunya jalur write
+  GET  /api/driver/verify  - cek origin DAN publik
+
+ActionLog: setiap apply/rencana menulis ke clientlog (driver-rencana /
+driver-terapkan) sehingga modul 4 punya jejak audit dan muncul di Audit Log.
+
+kesalahan yang diperbaiki di langkah ini:
+  1. Terminator heredoc ditulis PY padahal pembuka <<'TXT' -> shell menggantung
+     di prompt heredoc, perintah git tertelan jadi isi berkas.
+  2. _DIR_RULES dihitung dari __file__ sehingga tidak ketemu saat dipanggil dari
+     cwd lain; driver melaporkan remove=2 padahal rules ada. Disamakan dengan pola
+     _db_kandidat: relatif "data/rules", direktori dipastikan ada.
+
+bukti:
+  kompilasi ok
+  rules ada=True
+  plan ringkas add=0 update=0 remove=0 noop=2
+  verify [(301, True), (410, True)]
+  dry-run changed=False
+  clientlog memuat driver-rencana
