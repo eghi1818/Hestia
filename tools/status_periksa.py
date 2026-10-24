@@ -90,37 +90,35 @@ def ambil_daftar(c, domain, batas):
 
 
 def catat_bukti(c, kid, hasil):
-    try:
-        kb = kolom(c, "bukti")
-    except Exception:
-        return False
+    """Tulis baris bukti lengkap, kembalikan bukti.id untuk ditautkan."""
+    kb = kolom(c, "bukti")
     if not kb:
-        return False
-    d = {}
-    for nama, nilai in (("konten_id", kid), ("jenis", "status-periksa"),
-                        ("isi", json.dumps(hasil, ensure_ascii=False)[:2000]),
-                        ("hasil", hasil.get("kelas")), ("kelas", hasil.get("kelas")),
-                        ("kode", hasil.get("kode")),
-                        ("waktu", time.strftime("%Y-%m-%d %H:%M:%S"))):
-        if nama in kb:
-            d[nama] = nilai
-    if "mata" in kb:
-        d["mata"] = nilai_enum(c, "bukti", "mata", ("uji", "probe", "otomatis")) or "uji_probe"
+        return None
+    kelas = hasil.get("kelas")
+    verdict = {"nyata": "lulus", "tidak_ada": "gagal"}.get(kelas, "tak_konklusif")
+    d = {"mata": 1, "metode": "uji_probe.uji",
+         "verdict": nilai_enum(c, "bukti", "verdict", (verdict,)) or verdict,
+         "nilai": kelas, "keterangan": json.dumps(
+             {"konten_id": kid, "url": hasil.get("url"), "kode": hasil.get("kode"),
+              "kelas": kelas, "catatan": hasil.get("catatan")},
+             ensure_ascii=False)[:2000],
+         "waktu": time.strftime("%Y-%m-%d %H:%M:%S")}
+    d = {k: v for k, v in d.items() if k in kb}
     if not d:
-        return False
+        return None
     cek_wajib(c, "bukti", d)
-    c.execute("insert into bukti(%s) values(%s)" % (",".join(d), ",".join("?" * len(d))),
-              list(d.values()))
-    return True
+    cur = c.execute("insert into bukti(%s) values(%s)" % (",".join(d), ",".join("?" * len(d))),
+                    list(d.values()))
+    return cur.lastrowid
 
 
-def tulis_status(c, kid, tujuan, hasil):
+def tulis_status(c, kid, tujuan, hasil, bukti_id=None):
     kol = kolom(c, "status_konten")
     waktu = time.strftime("%Y-%m-%d %H:%M:%S")
     ada = c.execute("select 1 from status_konten where konten_id=?", (kid,)).fetchone()
     d = {}
     for nama, nilai in (("status", tujuan), ("basis", "bukti" if "bukti" in kol else None),
-                        ("bukti_terakhir", (int(time.time()) if "INT" in tipe_kolom(c, "status_konten", "bukti_terakhir") else time.strftime("%Y-%m-%d %H:%M:%S")) if "bukti_terakhir" in kol else None),
+                        ("bukti_terakhir", bukti_id if "bukti_terakhir" in kol else None),
                         ("diperbarui", waktu)):
         if nama in kol and nilai is not None:
             d[nama] = nilai
@@ -216,8 +214,8 @@ def main():
             dorong.append({"konten_id": kid, "url": url, "dari": None, "ke": tujuan})
 
         if a.terapkan and aksi == "transisi":
-            catat_bukti(c, kid, h)
-            mode = tulis_status(c, kid, tujuan, h)
+            bid = catat_bukti(c, kid, h)
+            mode = tulis_status(c, kid, tujuan, h, bid)
             aksi = "terapkan:" + mode
         hasil.append({"konten_id": kid, "url": url, "kode": h["kode"], "kelas": kls, "aksi": aksi})
 

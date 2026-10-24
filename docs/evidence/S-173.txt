@@ -20,3 +20,12 @@ kelas bug yang diperbaiki di langkah ini:
   bukti ditulis SEBELUM status_konten (basis='bukti' menunjuk bukti yang harus ada dulu).
 
 keputusan sadar: transisi dari None (baris baru) tidak dicek ke izin.
+
+koreksi (S-174): commit 218b1d1 menyimpan alat yang belum terbukti - keluaran bagian
+terapkan dan gate tidak terverifikasi saat itu. Dump skema membongkar:
+  bukti WAJIB: mata (INTEGER), metode, verdict (enum lulus/gagal/tak_konklusif)
+  bukti TIDAK punya konten_id; penghubungnya job_id, dan status_konten.bukti_terakhir
+  bertipe INTEGER sehingga itu adalah bukti.id.
+Perbaikan: catat_bukti menulis baris lengkap dan mengembalikan bukti.id; tulis_status
+menautkan bukti_terakhir ke id itu. mata diisi 1 (integer), verdict dipetakan dari kelas.
+whitelist: baris status_periksa ditambahkan agar bisa dijalankan sebagai job.
