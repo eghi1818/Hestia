@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 23:06.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 23:07.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 14f8f9b S-206: Modul 1 langkah 1, tabel registri sesuai GOAL
-branch: main | kotor: M docs/steps/S-206.md
+HEAD: fe12cd5 S-206: Modul 1 langkah 1, tabel registri sesuai GOAL
+branch: main | kotor: (bersih)
 rute app/main.py: 75 | berkas bukti: 101 | dokumen langkah: 181
 
 ## 12 commit terakhir
 
 ```
+fe12cd5 S-206: Modul 1 langkah 1, tabel registri sesuai GOAL
+8f032f7 S-206: Modul 1 langkah 1, tabel registri sesuai GOAL [jejak]
 14f8f9b S-206: Modul 1 langkah 1, tabel registri sesuai GOAL
 9877517 S-205: rencana GOAL dikoreksi setelah inventaris S-204 [jejak]
 a4b5c2f S-205: rencana GOAL dikoreksi setelah inventaris S-204
@@ -20,8 +22,6 @@ ee204bb S-203: rencana menutup 5 modul GOAL ditulis ke repo [jejak]
 448db18 S-202: spec GOAL masuk repo, celah 5 modul dicatat, gate menjaga spec [jejak]
 69be252 S-202: spec GOAL masuk repo, celah 5 modul dicatat, gate menjaga spec
 8cacfc0 S-201: SISA-KERJA dibersihkan, daftar modul GOAL diperiksa [jejak]
-32e2069 S-201: SISA-KERJA dibersihkan, daftar modul GOAL diperiksa
-d215832 S-200: gate memprobe rute api utama secara hidup [jejak]
 ```
 
 ## SISA KERJA
