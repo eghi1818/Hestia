@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 15:19.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 15:26.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 4fe7e9b S-189: pemilih target Tanam pakai /api/targets, galat server ditampilkan
-branch: main | kotor: ?? docs/steps/S-189.md
-rute app/main.py: 72 | berkas bukti: 84 | dokumen langkah: 164
+HEAD: 5430705 S-190: pindai teknologi dari dashboard, target kosong ditandai
+branch: main | kotor: ?? docs/steps/S-190.md
+rute app/main.py: 73 | berkas bukti: 85 | dokumen langkah: 165
 
 ## 12 commit terakhir
 
 ```
+5430705 S-190: pindai teknologi dari dashboard, target kosong ditandai
+934cd2a S-189: pemilih target Tanam pakai /api/targets, galat server ditampilkan [jejak]
 4fe7e9b S-189: pemilih target Tanam pakai /api/targets, galat server ditampilkan
 f542d30 S-188: halaman Tanam di dashboard, rute /api/tanam tersambung [jejak]
 64b1312 S-188: halaman Tanam di dashboard, rute /api/tanam tersambung
@@ -20,8 +22,6 @@ b491e15 S-185: migrasi fase1 metrik.nilai + satuan, panel menampilkan angka
 fd6360a S-184: panel Monitor Modul 5 (tabel status + jalankan pemeriksa dari dashboard)
 a4c5c90 S-183: penyinkronan jejak otomatis lewat tutup.sh (SESSION_STATE dihasilkan)
 66fc2d8 S-182: sinkronkan jejak ke HEAD (dokumen langkah, SESSION_STATE, paket resume)
-ba636d3 S-181: HESTIA_JOB_ID diekspor di _jalankan2 (bukan _jalankan)
-c54d4c3 S-180: r_nomor numerik dari tabel job; uji runner sesuai bentuk sinkron
 ```
 
 ## SISA KERJA
@@ -36,7 +36,7 @@ Disunting manusia. tools/sync_jejak.py menyalinnya ke SESSION_STATE.
 2. metrik belum punya kolom nilai; angka disimpan sebagai prosa di catatan.
    Pertimbangkan migrasi kolom nilai.
 3. [selesai S-188] Unggah berkas FTP/SFTP lewat dashboard (halaman Tanam).
-4. Papan status pindai teknologi di Ikhtisar (16 target mati/parkir kosong).
+4. [selesai S-190] Papan pindai teknologi di Ikhtisar + tombol pindai dari dashboard.
 5. LIVE: HESTIA_SANDI dinaikkan, serve.sh jadi layanan, host 24/7 + HTTPS.
 6. Pertimbangkan kolom bukti.konten_id (kini konten_id tersimpan di keterangan JSON)
    supaya retensi bisa per-konten dan kueri tidak perlu json_extract.
