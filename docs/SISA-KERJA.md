@@ -29,3 +29,5 @@ Diperiksa S-202. Urutan GOAL: modul 5 dan 4 dulu, lalu 1, 2, 3.
 - DoD #6: alert (email/webhook) belum ada.
 - DoD #7: README setup/kredensial/rollback belum lengkap.
 - UI GOAL: satu halaman ringkasan 5 metrik + angka bisa diklik (drilldown).
+
+Rencana menutup 5 modul GOAL ada di docs/RENCANA-GOAL.md (disusun S-203).

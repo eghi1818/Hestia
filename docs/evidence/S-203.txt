@@ -1,0 +1,11 @@
+S-203 - rencana menutup 5 modul GOAL ditulis ke repo
+
+masalah: hasil S-202 menunjukkan 9 dari 13 sinyal inti GOAL tidak ada sama sekali,
+sehingga jelas modul 1-3 baru berupa pondasi. Tanpa rencana tertulis, urutan kerja
+berikutnya mudah tersesat.
+
+perubahan: docs/RENCANA-GOAL.md ditulis berisi status jujur per modul, kebutuhan API,
+urutan kerja yang diusulkan (lokal dulu), keputusan yang menunggu pemilik proyek, dan
+daftar kolom tabel yang tersedia; SISA-KERJA menautkannya.
+
+bukti: berkas ada, kolom tabel kandidat/tautan/konten/recon/metrik tercatat apa adanya.
