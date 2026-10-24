@@ -3,6 +3,15 @@
 set -u
 cd "$(dirname "$0")/.." || exit 1
 MSG="${1:?pesan commit wajib}"
+# siapkan dokumen langkah lebih awal agar pemeriksaan bukti di gate menilai
+# langkah yang sedang dikerjakan, bukan langkah sebelumnya
+_langkah=$(printf '%s' "${1:-}" | grep -oE 'S-[0-9]+' | head -1)
+if [ -n "$_langkah" ] && [ ! -f "docs/steps/$_langkah.md" ]; then
+  mkdir -p docs/steps
+  printf '# %s\n\n- commit: (menyusul)\n- bukti: docs/evidence/%s.txt\n' "${1:-}" "$_langkah" > "docs/steps/$_langkah.md"
+  echo "+ dokumen langkah disiapkan lebih awal: docs/steps/$_langkah.md"
+fi
+
 if bash tools/gate.sh; then
   bash tools/stempel.sh "$MSG" >/dev/null 2>&1
   git add -A
@@ -42,6 +51,10 @@ PYEOF
 # dokumen ikut masuk commit langkah berikutnya. DIRTY dicetak di bawah agar jujur.
 echo "langkah ditutup. DIRTY: $(git status --porcelain | wc -l | tr -d ' ')"
 
+# buang stub (tanpa commit) agar sync_jejak menulis dokumen langkah yang lengkap
+if [ -n "${_langkah:-}" ] && [ -f "docs/steps/$_langkah.md" ] && grep -q '(menyusul)' "docs/steps/$_langkah.md"; then
+  rm -f "docs/steps/$_langkah.md"
+fi
 python3 tools/sync_jejak.py --resume
 python3 tools/pangkas_bukti.py --simpan 5000 --r-simpan 50
 

@@ -1,0 +1,12 @@
+S-196 - gate memeriksa bukti langkah yang sedang dikerjakan
+
+masalah: tutup.sh memanggil gate sebelum dokumen langkah ditulis, sehingga pemeriksaan
+"bukti langkah terakhir" selalu menilai langkah sebelumnya (terlihat pada S-195, yang
+menilai S-194). Akibatnya langkah tanpa berkas bukti baru ketahuan satu langkah telat.
+
+perubahan: tutup.sh menyiapkan docs/steps/S-<n>.md sebagai stub lebih awal (sebelum
+gate) dan membuang stub itu sebelum sync_jejak, sehingga sync_jejak menulis dokumen
+lengkap dengan hash commit.
+
+bukti: keluaran gate pada tutup langkah ini memuat "ok docs/evidence/S-196.txt (S-196)"
+dan dokumen langkah akhir tidak lagi memuat "(menyusul)".
