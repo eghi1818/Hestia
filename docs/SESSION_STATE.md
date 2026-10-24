@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 22:31.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 22:33.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 0d19999 S-203: rencana menutup 5 modul GOAL ditulis ke repo
-branch: main | kotor: M docs/steps/S-203.md
-rute app/main.py: 75 | berkas bukti: 98 | dokumen langkah: 178
+HEAD: ac40394 S-204: inventaris rute dan skrip ditulis ke rencana GOAL
+branch: main | kotor: M docs/steps/S-204.md
+rute app/main.py: 75 | berkas bukti: 99 | dokumen langkah: 179
 
 ## 12 commit terakhir
 
 ```
+ac40394 S-204: inventaris rute dan skrip ditulis ke rencana GOAL
+ee204bb S-203: rencana menutup 5 modul GOAL ditulis ke repo [jejak]
 0d19999 S-203: rencana menutup 5 modul GOAL ditulis ke repo
 448db18 S-202: spec GOAL masuk repo, celah 5 modul dicatat, gate menjaga spec [jejak]
 69be252 S-202: spec GOAL masuk repo, celah 5 modul dicatat, gate menjaga spec
@@ -20,8 +22,6 @@ c44de49 S-200: gate memprobe rute api utama secara hidup
 31e44a5 S-199: sajikan /driver.js dan /monitor.js, gate menjaga rute skrip [jejak]
 12d29be S-199: sajikan /driver.js dan /monitor.js, gate menjaga rute skrip
 d532151 S-198: satu kanal 8787, TLS jadi mode bukan kanal kedua [jejak]
-949d9b3 S-198: satu kanal 8787, TLS jadi mode bukan kanal kedua
-bae243e S-197: status mengawasi layanan, kanal HTTPS dinyalakan kembali [jejak]
 ```
 
 ## SISA KERJA
