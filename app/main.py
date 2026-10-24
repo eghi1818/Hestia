@@ -1136,6 +1136,7 @@ async def _konsol_startup():
 # ===== PATCH S-137: runner v2 (denyut, stdin DEVNULL, grup proses) =====
 async def _jalankan2(jid, argv, rahasia, berkas, batas):
     env = dict(_os.environ)
+    env["HESTIA_JOB_ID"] = str(jid)
     if rahasia:
         env["HESTIA_RAHASIA"] = rahasia
     f = open(berkas, "a", encoding="utf-8")

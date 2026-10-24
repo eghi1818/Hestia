@@ -120,3 +120,12 @@ di akhir tiap langkah, atau setidaknya sekali per sesi.
   asyncio.run() membunuh tugas karena loop ditutup saat korutina selesai.
 - r_nomor TEXT 'R-<n>'; penomoran kini numerik dari SELURUH tabel job.
 - Penyapu _bersihkan_job_mati() menutup zombie dan menulis sebab ke R-<n>.txt.
+
+## Catatan penting (2026-10-24)
+
+- ADA DUA fungsi mirip: _jalankan (1047) dan _jalankan2 (1137). _konsol_jalankan
+  memanggil _jalankan, tetapi pembangun env subprocess yang sebenarnya ada di
+  _jalankan2. Menambal di fungsi yang salah tidak berefek - HESTIA_JOB_ID sempat
+  masuk ke _jalankan dan bukti.job_id tetap NULL.
+- push ke github bisa gagal sesaat (kex_exchange_identification timeout port 22).
+  Ulangi push; bukan masalah kredensial.

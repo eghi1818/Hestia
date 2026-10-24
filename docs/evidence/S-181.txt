@@ -1,0 +1,15 @@
+S-181 - HESTIA_JOB_ID diekspor di _jalankan2; bukti.job_id benar-benar terisi
+tanggal: 2026-10-24
+
+masalah:
+  Patch S-178 menambahkan env["HESTIA_JOB_ID"] di _jalankan, padahal subprocess
+  dibangun di _jalankan2. Terbukti: job 15 lulus dan item[].bukti terisi, tetapi
+  bukti.job_id tetap NULL.
+  git push gagal sesaat (kex_exchange_identification timeout) sehingga c54d4c3
+  tertinggal di lokal.
+
+perubahan:
+  env["HESTIA_JOB_ID"] ditambahkan di _jalankan2 (pembangun env yang benar).
+  NEXT.md mencatat adanya dua fungsi mirip agar tidak salah tambal lagi.
+
+bukti: job lulus dan bukti memuat job_id sesuai jid.
