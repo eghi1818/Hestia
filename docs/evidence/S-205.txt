@@ -1,0 +1,13 @@
+S-205 - rencana dikoreksi setelah inventaris S-204
+
+masalah: daftar celah S-203 melebih-lebihkan kekosongan. Inventaris S-204 menunjukkan 47
+rute /api dan 41 perkakas sudah ada, termasuk registry kandidat dengan http_status,
+latensi_ms, diperiksa_at, pemeriksa berkala (/api/putaran), monitoring + alert dasar
+(/api/monitoring), ekspor CSV, recon, tautan, konten, driver, status konten, dan tanam.
+
+perubahan: docs/RENCANA-GOAL.md ditulis ulang dengan bagian "Yang SUDAH ada dan dipakai
+ulang" dan celah nyata per modul; bagian inventaris dipertahankan; bagian celah di
+SISA-KERJA diselaraskan dan diarahkan ke dokumen rencana.
+
+bukti: isi dokumen rencana sesudah pembaruan; urutan kerja dan keputusan yang menunggu
+tercatat.

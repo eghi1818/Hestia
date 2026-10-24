@@ -19,15 +19,12 @@ Disunting manusia. tools/sync_jejak.py menyalinnya ke SESSION_STATE.
   terpicu probe; jalur usul hidup dari pasangan tak dikenal (sudah diuji).
 - 3 kunci lapangan hanya bahan uji, bukan penghalang.
 
-## Celah terhadap spesifikasi GOAL (5 modul wajib)
-Diperiksa S-202. Urutan GOAL: modul 5 dan 4 dulu, lalu 1, 2, 3.
-- Modul 4: kurang mesin skor KEEP/301/410/404, antrean bulk, rollback, sebelum/sesudah equity.
-- Modul 5: kurang link rot dari data backlink (inbound/outbound), metrik equity hangus, pipeline reklamasi, template outreach, grafik tren.
-- Modul 1: registry parasite -- perlu dicek terhadap daftar field GOAL (biaya, kontrak, lifespan, heatmap host).
-- Modul 2: snapshot konten (simhash), delta ranking 7/14/30 hari, diff viewer.
-- Modul 3: deteksi kemiripan <30%, cek canonical, penilaian pemegang SERP.
-- DoD #6: alert (email/webhook) belum ada.
-- DoD #7: README setup/kredensial/rollback belum lengkap.
-- UI GOAL: satu halaman ringkasan 5 metrik + angka bisa diklik (drilldown).
-
-Rencana menutup 5 modul GOAL ada di docs/RENCANA-GOAL.md (disusun S-203).
+## Celah terhadap spesifikasi GOAL
+Rincian dan urutan kerja: docs/RENCANA-GOAL.md (dikoreksi S-205; registry + pemeriksa berkala sudah ada).
+- Modul 1: kurang field GOAL (biaya, kontrak, platform, kendali editorial), metrik lifespan/equity/biaya per sitasi, heatmap host.
+- Modul 2: kurang simhash, kata kunci sebelum/sesudah, delta peringkat, diff viewer.
+- Modul 3: kurang simhash, kemiripan <30%, canonical, pemegang SERP.
+- Modul 4: kurang mesin skor KEEP/301/410/404, antrean bulk, rollback, equity.
+- Modul 5: kurang rot tautan keluar/masuk, equity hangus, pipeline reklamasi, outreach, tren.
+- Lintas: halaman ringkasan 5 metrik + drilldown, alert email/webhook, README setup/kredensial/rollback.
+- Menunggu keputusan: sumber data SERP dan backlink.
