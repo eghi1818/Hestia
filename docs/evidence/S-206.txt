@@ -1,0 +1,14 @@
+S-206 - Modul 1 langkah 1: tabel registri sesuai GOAL
+
+masalah: Modul 1 GOAL memerlukan registry halaman yang ditayangkan di domain pihak ketiga,
+dengan field platform, jenis penempatan, tanggal tayang, kata kunci, biaya, kontrak,
+pemilik host, dan kendali editorial. Yang ada baru tabel kandidat (registry HOST), belum
+ada registry HALAMAN.
+
+perubahan: tools/migrasi_fase2.py ditulis (idempoten) membuat tabel registri dengan field
+GOAL + tiga indeks (host, status, tayang_at), memakai pola yang sama seperti fase1:
+cadangan VACUUM INTO ke data/backup dengan penanganan bentrok nama, integrity_check, dan
+catatan di skema_versi.
+
+bukti: migrasi dijalankan, integritas ok, kolom registri tercetak; dijalankan kedua kali
+tetap aman (idempoten).
