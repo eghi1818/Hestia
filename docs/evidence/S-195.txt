@@ -1,0 +1,12 @@
+S-195 - bukti sah bahwa gate fail-closed pada berkas bukti langkah
+
+masalah: uji negatif di S-194 memindahkan docs/evidence/S-194.txt padahal saat itu
+docs/steps/S-194.md belum ada (ditulis oleh tutup.sh di akhir), sehingga gate memeriksa
+langkah S-193 yang buktinya ada dan tetap lulus. Klaim fail-closed di S-194.txt belum sah.
+
+perubahan: tidak ada perubahan kode; langkah ini murni verifikasi dengan metode benar,
+yaitu memindahkan berkas bukti milik langkah terakhir yang sebenarnya (ditentukan dari
+docs/steps), lalu menjalankan gate.
+
+bukti: gate melaporkan "KURANG docs/evidence/S-<langkah>.txt" dan keluar dengan status
+bukan nol; setelah berkas dikembalikan, gate melaporkan ok dan GATE: LULUS.
