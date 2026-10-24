@@ -576,6 +576,18 @@ def tanam_js():
     return FileResponse("dashboard/tanam.js", media_type="application/javascript")
 
 
+@app.get("/driver.js")
+def driver_js():
+    from fastapi.responses import FileResponse
+    return FileResponse("dashboard/driver.js", media_type="application/javascript")
+
+
+@app.get("/monitor.js")
+def monitor_js():
+    from fastapi.responses import FileResponse
+    return FileResponse("dashboard/monitor.js", media_type="application/javascript")
+
+
 # ---------- kredensial / deployment / konten ----------
 _TABEL = {
     "kredensial": ("target TEXT, nama TEXT, tipe TEXT, level TEXT, secret TEXT, "

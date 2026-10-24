@@ -1,0 +1,13 @@
+S-199 - skrip halaman Driver dan Monitor tidak pernah disajikan
+
+masalah: sapuan rute S-198 menemukan GET /driver.js dan GET /monitor.js membalas 404,
+padahal index.html memuat tag skrip untuk keduanya dan tombol nav-nya ada. Akibatnya
+halaman Driver dan Monitor tampil kosong di peramban. Rute skrip lain (ikhtisar, audit,
+konsol, live, tanam) sudah ada, jadi hanya dua ini yang terlewat.
+
+perubahan: rute GET /driver.js dan GET /monitor.js ditambahkan dengan pola yang sama
+seperti rute skrip lain; gate mendapat pemeriksaan "skrip dashboard disajikan" yang
+membandingkan setiap <script src> di index.html dengan rute di app/main.py.
+
+bukti: setiap skrip yang diminta index.html membalas 200, termasuk /driver.js dan
+/monitor.js; gate memuat seksi "skrip dashboard disajikan" dengan status ok.

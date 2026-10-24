@@ -105,4 +105,13 @@ if [ -n "$langkah" ]; then
   fi
 fi
 
+echo "== gate: skrip dashboard disajikan =="
+for berkas in $(grep -o '<script src="/[a-z0-9_-]*\.js' dashboard/index.html | sed 's#.*/##' | sort -u); do
+  if grep -q "@app.get(\"/$berkas\")" app/main.py; then
+    echo "  ok      /$berkas"
+  else
+    echo "  KURANG  /$berkas tidak punya rute di app/main.py"; fail=1
+  fi
+done
+
 if [ "$fail" -eq 0 ]; then echo "GATE: LULUS" ; exit 0 ; else echo "GATE: GAGAL" ; exit 1 ; fi
