@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 21:17.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 21:47.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: bd8dd2c S-196: gate memeriksa bukti langkah yang sedang dikerjakan
-branch: main | kotor: M docs/steps/S-196.md
-rute app/main.py: 73 | berkas bukti: 91 | dokumen langkah: 171
+HEAD: 0fe10d7 S-197: status mengawasi layanan, kanal HTTPS dinyalakan kembali
+branch: main | kotor: M docs/steps/S-197.md
+rute app/main.py: 73 | berkas bukti: 92 | dokumen langkah: 172
 
 ## 12 commit terakhir
 
 ```
+0fe10d7 S-197: status mengawasi layanan, kanal HTTPS dinyalakan kembali
+565efc3 S-196: gate memeriksa bukti langkah yang sedang dikerjakan [jejak]
 bd8dd2c S-196: gate memeriksa bukti langkah yang sedang dikerjakan
 79da088 S-195: bukti sah gate fail-closed pada berkas bukti langkah [jejak]
 9af480f S-195: bukti sah gate fail-closed pada berkas bukti langkah
@@ -20,8 +22,6 @@ ea149ea S-194: betulkan judul seksi gate + bukti fail-closed [jejak]
 7f48ad9 S-192: kanal HTTPS terpisah di 8788, cadangan TLS-aware [jejak]
 965d9d3 S-192: kanal HTTPS terpisah di 8788, cadangan TLS-aware
 e92aa35 S-191: LIVE sandi naik, agen launchd, HTTPS self-signed, deteksi TCC [jejak]
-0b2268b S-191: LIVE sandi naik, agen launchd, HTTPS self-signed, deteksi TCC
-1ee20f1 S-190: pindai teknologi dari dashboard, target kosong ditandai [jejak]
 ```
 
 ## SISA KERJA
