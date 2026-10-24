@@ -1,0 +1,15 @@
+S-189 - pemilih target Tanam memakai rute yang benar, pesan galat server ditampilkan
+
+masalah: /api/target tidak ada (404) sehingga tanam.js membuang satu ronde permintaan
+sebelum jatuh ke /api/targets. Selain itu minta() hanya melaporkan kode status, tanpa
+pesan dari server (misal "target tidak ada").
+
+perubahan: daftarTarget() langsung memakai /api/targets (bentuk {item:[...]}, 44 baris);
+nilai opsi = id, label = domain + tipe + status; minta() membaca badan respons sehingga
+galat tampil beserta pesannya; tanamKirim menolak bila target belum dipilih.
+
+bukti: GET /api/targets 200 (44 target); POST /api/tanam membalas 200 (bukan 422),
+menandakan pemetaan target_id/user/sandi/sapu cocok dengan model rute.
+
+catatan: /api/targets membalas array telanjang (bukan {item:[...]}); tanam.js sudah
+menangani kedua bentuk, hanya uji yang perlu membaca bentuk array.
