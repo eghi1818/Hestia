@@ -1,0 +1,14 @@
+S-202 - spec GOAL masuk repo, celah 5 modul dicatat
+
+masalah: dokumen spec (GOAL, Skill, Prompt) hanya ada di ~/Desktop; GOAL.md di akar
+isinya dokumen pendek yang berbeda, sehingga tidak ada penggaris resmi di repo. Selain itu
+butir 1 dan 2 SISA-KERJA masih tercatat terbuka padahal sudah selesai (S-184, S-185).
+
+perubahan: docs/GOAL-Hestia-SEO.md, docs/SKILL-AGENT-HESTIA.md,
+docs/PROMPT-TAMBAHAN-AGENT-DASHBOARD.md, docs/KENDALA-HESTIA.md dan
+docs/KENDALA-HESTIA-DASHBOARD.md disalin dari Desktop (sha256 dicatat); salinan 5-7 juga
+ditaruh di folder resume; bagian "Celah terhadap spesifikasi GOAL" ditambahkan ke
+SISA-KERJA; gate mendapat pemeriksaan keberadaan tiga dokumen spec.
+
+bukti: berkas spec ada di docs/ dengan sha256; gate memuat seksi "dokumen spec" status ok;
+hitungan kata kunci sinyal GOAL dicetak untuk menilai cakupan modul 1-3.

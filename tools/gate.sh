@@ -131,4 +131,9 @@ else
   echo "  lewat   sandi live belum ada"
 fi
 
+echo "== gate: dokumen spec =="
+for f in docs/GOAL-Hestia-SEO.md docs/SKILL-AGENT-HESTIA.md docs/PROMPT-TAMBAHAN-AGENT-DASHBOARD.md; do
+  if [ -f "$f" ]; then echo "  ok      $f"; else echo "  KURANG  $f"; fail=1; fi
+done
+
 if [ "$fail" -eq 0 ]; then echo "GATE: LULUS" ; exit 0 ; else echo "GATE: GAGAL" ; exit 1 ; fi

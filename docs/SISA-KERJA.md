@@ -18,3 +18,14 @@ Disunting manusia. tools/sync_jejak.py menyalinnya ke SESSION_STATE.
 - Aturan izin='manusia' di transisi_status menuju dicabut/tertanam sehingga tidak bisa
   terpicu probe; jalur usul hidup dari pasangan tak dikenal (sudah diuji).
 - 3 kunci lapangan hanya bahan uji, bukan penghalang.
+
+## Celah terhadap spesifikasi GOAL (5 modul wajib)
+Diperiksa S-202. Urutan GOAL: modul 5 dan 4 dulu, lalu 1, 2, 3.
+- Modul 4: kurang mesin skor KEEP/301/410/404, antrean bulk, rollback, sebelum/sesudah equity.
+- Modul 5: kurang link rot dari data backlink (inbound/outbound), metrik equity hangus, pipeline reklamasi, template outreach, grafik tren.
+- Modul 1: registry parasite -- perlu dicek terhadap daftar field GOAL (biaya, kontrak, lifespan, heatmap host).
+- Modul 2: snapshot konten (simhash), delta ranking 7/14/30 hari, diff viewer.
+- Modul 3: deteksi kemiripan <30%, cek canonical, penilaian pemegang SERP.
+- DoD #6: alert (email/webhook) belum ada.
+- DoD #7: README setup/kredensial/rollback belum lengkap.
+- UI GOAL: satu halaman ringkasan 5 metrik + angka bisa diklik (drilldown).
