@@ -27,3 +27,22 @@ Sisa kerja lokal:
   - _TABEL kode 4 entri vs 21 tabel DB (menunggu keputusan: sengaja atau kurang)
 
 Tertahan kunci: FTP juraganit.com, sudo waspadaweb.com, netlify persaudaraan.com.
+
+## 2026-10-23 lanjut - Modul 4 aktif
+
+HEAD: <ISI DARI git log -1 --oneline>
+status: Modul 4 minimum AKTIF dan terbukti di server (301 + 410, origin + publik).
+tools/driver.py, data/rules/waspadaweb.json, scripts/bootstrap_sudo.sh sudah ada.
+sudo NOPASSWD administrator sudah dipasang lewat container hx (tanpa sandi).
+bukti: docs/evidence/S-167.txt
+
+sisa kerja (berurut):
+  1. rute HTTP + tombol dashboard untuk driver  (P0)
+  2. ActionLog ke clientlog + tampil di Audit Log
+  3. Modul 5 (Link Rot Monitor)
+  4. unggah berkas lewat dashboard
+  5. papan status teknologi di Ikhtisar
+  6. LIVE: HESTIA_SANDI, serve.sh jadi layanan, host + HTTPS
+
+catatan: 3 dokumen niat (GOAL, Skill Agent, Prompt Tambahan) BELUM ada di repo -
+agen baru harus membacanya dari folder HESTIA-RESUME.

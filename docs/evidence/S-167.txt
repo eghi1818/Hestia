@@ -1,0 +1,34 @@
+S-167 - Modul 4 minimum aktif: driver 301/410 pada nginx, terbukti di server
+tanggal: 2026-10-23
+
+DoD modul 4: eksekusi 301/410 lewat minimal satu driver pada minimal satu target,
+terverifikasi berubah di server, dengan dry-run dan audit. TERPENUHI.
+
+yang dibangun:
+  tools/driver.py        : RedirectDriver (ABC) + NginxDriver. read/plan/verify read-only;
+                           apply(dry_run=True) read-only; apply(dry_run=False) satu-satunya write.
+  data/rules/waspadaweb.json : 2 aturan (/artikel/lama -> 301 /artikel/baru, /halaman-mati -> 410)
+  scripts/bootstrap_sudo.sh  : beri administrator sudo NOPASSWD lewat root container, idempoten
+
+keputusan teknis penting:
+  - nginx -t dan reload TIDAK bisa lewat container hx: container Alpine (musl), nginx host glibc.
+  - /run dan /proc host TIDAK terlihat di container (bind tidak rekursif), jadi pid file kosong.
+  - Jalan keluar: container root menulis /etc/sudoers.d/90-hestia NOPASSWD -> sudo -n jalan
+    tanpa pengguna menyerahkan sandi.
+  - Sudoers/visudo sebelumnya dilaporkan "kosong" karena /etc/sudoers.d mode 750; harus lewat sudo.
+
+cacat yang diperbaiki di langkah ini:
+  _sisip punya DUA jalur (sudah ada region vs belum) sehingga file tidak konvergen.
+  Diganti satu jalur: buang region dulu, baru sisip. Ditambah assert fixed point di apply().
+
+bukti uji:
+  apply#1 changed=True (jalur sisip); apply#2..4 changed=False dengan sha identik -> 3/3
+  plan  : add=0 update=0 remove=0 noop=2
+  verify: ok x2 - origin=[301 http://waspadaweb.com/artikel/baru] publik=[301 ...] ; [410]
+  dry-run: sha tidak berubah
+  bootstrap_sudo.sh: "/etc/sudoers.d/90-hestia: parsed OK", "sudo tanpa sandi: siap"
+
+batasan yang diketahui (jangan dianggap bug):
+  - penyisipan memakai rfind("}") -> config dengan >1 blok server perlu penyesuaian
+  - redirect level-URL memang bukan fitur HestiaCP; HestiaCP hanya punya redirect level-domain
+  - Cloudflare bisa meng-cache 301 di edge; verify memeriksa origin DAN publik

@@ -59,3 +59,19 @@ DoD #3 diubah: "Modul 4 bisa mengeksekusi 301/410 lewat MINIMAL SATU DRIVER pada
 minimal satu target, terverifikasi berubah di server, dengan dry-run dan audit log."
 Bukan "lewat HestiaCP API" - bukti menunjukkan tidak ada HestiaCP di waspadaweb.com
 (tidak ada port 8083) dan persaudaraan.com di Netlify (tanpa v-*).
+
+## Modul 4 - status dan lanjutan (2026-10-23)
+
+SELESAI: driver 301/410 pada nginx, dry-run, idempotensi, verifikasi origin+publik.
+Bukti: docs/evidence/S-167.txt. Target uji: waspadaweb.com (driver nginx lewat container hx).
+
+lanjutan modul 4:
+  - rute HTTP + tombol dashboard (sekarang masih lewat python -m tools.driver)
+  - catat setiap apply ke clientlog sebagai ActionLog (modul 4 wajib punya jejak audit di UI)
+  - driver kedua bila perlu (netlify) supaya tidak bergantung satu panel
+
+pelajaran operasional:
+  - zsh TIDAK memecah variabel tak dikutip. "SSH=ssh -i ..." lalu $SSH gagal.
+    Pakai array: SSH=(ssh -i ...) lalu "${SSH[@]}".
+  - /etc/sudoers.d mode 750 -> visudo -cf sebagai non-root balik kosong; jalankan dengan sudo.
+  - jangan pakai rfind("}") untuk config >1 blok server.
