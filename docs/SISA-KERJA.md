@@ -8,7 +8,7 @@ Disunting manusia. tools/sync_jejak.py menyalinnya ke SESSION_STATE.
 2. metrik belum punya kolom nilai; angka disimpan sebagai prosa di catatan.
    Pertimbangkan migrasi kolom nilai.
 3. [selesai S-188] Unggah berkas FTP/SFTP lewat dashboard (halaman Tanam).
-4. Papan status pindai teknologi di Ikhtisar (16 target mati/parkir kosong).
+4. [selesai S-190] Papan pindai teknologi di Ikhtisar + tombol pindai dari dashboard.
 5. LIVE: HESTIA_SANDI dinaikkan, serve.sh jadi layanan, host 24/7 + HTTPS.
 6. Pertimbangkan kolom bukti.konten_id (kini konten_id tersimpan di keterangan JSON)
    supaya retensi bisa per-konten dan kueri tidak perlu json_extract.

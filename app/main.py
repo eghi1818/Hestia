@@ -867,7 +867,42 @@ def teknologi_ringkas():
         kanal = [dict(r) for r in c.execute("select coalesce(kanal,'-') as kanal, count(*) as n from targets group by kanal order by n desc limit 12")]
         teknologi = [dict(r) for r in c.execute("select coalesce(teknologi,'-') as teknologi, count(*) as n from targets group by teknologi order by n desc limit 12")]
         pintu = c.execute("select count(*) from targets where pintu is not null and pintu != '-'").fetchone()[0]
-    return {"waf": waf, "kanal": kanal, "teknologi": teknologi, "ada_pintu": pintu}
+        kosong = c.execute("select count(*) from targets where coalesce(teknologi,'')=''").fetchone()[0]
+    return {"waf": waf, "kanal": kanal, "teknologi": teknologi, "ada_pintu": pintu, "kosong": kosong}
+
+
+@app.post("/api/teknologi/pindai")
+def teknologi_pindai(body: dict):
+    import datetime as _dt
+    try:
+        import teknologi
+    except ImportError:
+        from tools import teknologi
+    tid = body.get("target_id")
+    batas = int(body.get("batas") or 0)
+    hari = _dt.date.today().isoformat()
+    with db.conn() as c:
+        if tid:
+            rows = [dict(r) for r in c.execute("select id, domain from targets where id=?", (tid,))]
+        elif body.get("kosong"):
+            rows = [dict(r) for r in c.execute("select id, domain from targets where coalesce(teknologi,'')='' order by id")]
+        else:
+            rows = [dict(r) for r in c.execute("select id, domain from targets order by id")]
+    if batas:
+        rows = rows[:batas]
+    hasil = []
+    for r in rows:
+        try:
+            d = teknologi.periksa(r["domain"])
+        except Exception as e:
+            hasil.append({"id": r["id"], "domain": r["domain"], "galat": str(e)[:120]})
+            continue
+        with db.conn() as c:
+            c.execute("update targets set teknologi=?, server=?, waf=?, pintu=?, kanal=?, dianalisa=? where id=?",
+                      (d["teknologi"], d["server"], d["waf"], d["pintu"], d["kanal"], hari, r["id"]))
+        hasil.append({"id": r["id"], "domain": r["domain"], "teknologi": d["teknologi"] or "-",
+                      "waf": d["waf"] or "-", "pintu": d["pintu"] or "-"})
+    return {"ok": True, "diperiksa": len(hasil), "tanggal": hari, "item": hasil}
 
 
 @app.post("/api/tanam")

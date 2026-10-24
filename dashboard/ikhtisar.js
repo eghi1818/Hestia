@@ -92,9 +92,25 @@
         '<div style="opacity:.7;font-size:12px">target dengan pintu terbuka: <b>' + (d.ada_pintu || 0) + '</b></div>' +
         '<div style="margin-top:8px"><b>WAF</b><br>' + chip(d.waf, "waf") + '</div>' +
         '<div style="margin-top:8px"><b>Kanal</b><br>' + chip(d.kanal, "kanal") + '</div>' +
-        '<div style="margin-top:8px"><b>Teknologi</b><br>' + chip(d.teknologi, "teknologi") + '</div>';
+        '<div style="margin-top:8px"><b>Teknologi</b><br>' + chip(d.teknologi, "teknologi") + '</div>' +
+        '<div style="margin-top:10px">teknologi kosong: <b>' + (d.kosong || 0) + '</b> ' +
+        '<button class="btn btn-ghost" onclick="pindaiKosong()">Pindai yang kosong</button> ' +
+        '<span style="opacity:.7;font-size:12px">' + (el.getAttribute("data-pindai") || "siap") + '</span></div>';
     }).catch(function () {});
   }
+  window.pindaiKosong = function () {
+    var el = document.getElementById("teknoRingkas");
+    if (el) { el.setAttribute("data-pindai", "berjalan..."); muat(); }
+    fetch("/api/teknologi/pindai", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ kosong: true })
+    }).then(function (r) { return r.json(); }).then(function (d) {
+      if (el) { el.setAttribute("data-pindai", "selesai, " + (d.diperiksa || 0) + " target diperiksa"); }
+      muat();
+    }).catch(function () { if (el) { el.setAttribute("data-pindai", "gagal"); muat(); } });
+  };
+
   muat();
   setInterval(muat, 10000);
 })();

@@ -1,0 +1,13 @@
+S-190 - pindai teknologi bisa dijalankan dari dashboard, target kosong ditandai
+
+keadaan sebelum: /api/teknologi-ringkas dan panel #teknoRingkas sudah ada sejak S-109,
+tetapi pemindaian hanya bisa dijalankan dari terminal (tools/teknologi.py). 21 dari 44
+target berteknologi kosong dan panel tidak membedakan "belum dipindai" dari "mati".
+
+perubahan: rute POST /api/teknologi/pindai (target_id / kosong / batas), menimpa kolom
+dianalisa dengan tanggal hari ini (sebelumnya periksa() memakai tanggal hardcoded);
+ringkasan menambah kunci kosong; panel Ikhtisar menampilkan jumlah kosong + tombol
+Pindai yang kosong + status berjalan/selesai; butir 4 SISA-KERJA ditutup.
+
+bukti: POST /api/teknologi/pindai {kosong, batas} membalas 200 dengan item per target,
+dan GET /api/teknologi-ringkas memuat kunci kosong.
