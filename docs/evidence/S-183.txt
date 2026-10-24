@@ -1,0 +1,16 @@
+S-183 - penyinkronan jejak jadi otomatis (tidak lagi blok kejar-kejaran)
+tanggal: 2026-10-24
+
+masalah:
+  SESSION_STATE ditulis tangan sehingga selalu tertinggal; tutup.sh yang seharusnya
+  menyinkronkan tidak pernah dipanggil sejak S-152. Tiap beberapa langkah kita harus
+  membuat blok "sinkronkan" tersendiri (mis. S-182).
+
+perubahan:
+  docs/SISA-KERJA.md: sisa kerja & kendala, disunting manusia (satu sumber).
+  tools/sync_jejak.py: menulis dokumen langkah yang kurang + MENGHASILKAN
+  docs/SESSION_STATE.md dari keadaan nyata (HEAD, status, hitungan, 12 commit terakhir,
+  isi SISA-KERJA). --resume juga menjalankan siapkan_newchat.sh.
+  tools/tutup.sh memanggil sync_jejak.py --resume di akhir.
+
+aturan baru: setiap blok ditutup dengan `bash tools/tutup.sh`, bukan commit manual.

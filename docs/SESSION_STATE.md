@@ -1,48 +1,55 @@
 # SESSION STATE - Hestia
 
-Ditulis: 2026-10-24. Chat: SEO V1.1.
-HEAD saat dokumen ini ditulis: ba636d3 S-181: HESTIA_JOB_ID diekspor di _jalankan2 (bukan _jalankan)
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-24 12:10.
+JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-## Keadaan
-- branch main, tree bersih, gate LULUS, GATE-AUDIT LULUS, smoke 3/0
-- 46 rute, 70 rujukan id dashboard tervalidasi, placeholder ok
-- layanan :8787 hidup di balik Basic auth
+HEAD: 66fc2d8 S-182: sinkronkan jejak ke HEAD (dokumen langkah, SESSION_STATE, paket resume)
+branch: main | kotor: ?? docs/SISA-KERJA.md
+?? docs/steps/S-182.md
+?? tools/sync_jejak.py
+rute app/main.py: 71 | berkas bukti: 77 | dokumen langkah: 157
 
-## Yang sudah SELESAI dan tidak perlu diulang
-- Fondasi: auth, gate fail-closed, audit, WAL, migrasi fase0, retensi cadangan,
-  pemeriksa placeholder, sinkron state
-- Modul 4 (driver 301/410): tools/driver.py + data/rules + rute /api/driver/*
-  + halaman Driver di dashboard + ActionLog ke clientlog
-  Bukti: docs/evidence/S-167.txt, S-169.txt, S-172.txt
-- Modul 5 (Link Rot Monitor): tools/status_periksa.py + rute /api/status/*
-  + transisi otomatis vs usul + bukti teratribusi ke job
-  Bukti: docs/evidence/S-173.txt .. S-181.txt
-  Empat cabang teruji: tetap, tak-pasti, transisi(otomatis), usul(izin None)
-- Runner job: r_nomor kebal bentrok, penyapu zombie, HESTIA_JOB_ID diekspor
-  Bukti: docs/evidence/S-179.txt, S-180.txt, S-181.txt
+## 12 commit terakhir
 
-## SISA KERJA (berurut)
-1. Panel Monitor di dashboard untuk Modul 5 (rute /api/status/* sudah ada,
-   halaman belum). Pola: tiru dashboard/driver.js (S-172).
+```
+66fc2d8 S-182: sinkronkan jejak ke HEAD (dokumen langkah, SESSION_STATE, paket resume)
+ba636d3 S-181: HESTIA_JOB_ID diekspor di _jalankan2 (bukan _jalankan)
+c54d4c3 S-180: r_nomor numerik dari tabel job; uji runner sesuai bentuk sinkron
+859fcbd S-179: penyapu job mati (zombie tidak lagi memblokir runner)
+89fee21 S-177: lengkapi dokumen langkah S-153..S-176, perbaiki whitelist, bukti jalur job
+06419fe S-176: buktikan cabang usul (pasangan tak dikenal) dan kedaluwarsa
+288b1e1 S-175: bukti per-run + job_id + tautan bukti_terakhir, aksi tidak ditimpa
+ac841b1 S-174: tautkan bukti_terakhir ke bukti.id, lengkapi kolom bukti, whitelist
+218b1d1 S-173: Modul 5 pemeriksa status + transisi otomatis (dry-run aman, cek_wajib)
+d8cc1f9 S-172: halaman Driver di dashboard (plan/dry-run/terapkan/verifikasi)
+7e2ac84 S-171: percobaan ulang ssh (S-170 gagal) + verify beri alasan + koreksi S-170
+f332d70 S-170: betulkan pemuatan rules (nama berkas) + percobaan ulang ssh
+```
+
+## SISA KERJA
+
+# SISA KERJA
+
+Disunting manusia. tools/sync_jejak.py menyalinnya ke SESSION_STATE.
+
+## Berurut
+1. Panel Monitor di dashboard untuk Modul 5 (rute /api/status/* sudah ada, halaman belum).
+   Pola: tiru dashboard/driver.js (S-172).
 2. metrik belum punya kolom nilai; angka disimpan sebagai prosa di catatan.
-   Pertimbangkan migrasi kolom nilai (P2).
+   Pertimbangkan migrasi kolom nilai.
 3. Retensi bukti: bukti tumbuh ~jumlah diperiksa tiap run.
-4. unggah berkas FTP/SFTP lewat dashboard (masih lewat tools/tanam.py)
-5. papan status pindai teknologi di Ikhtisar (16 target mati/parkir kosong)
-6. LIVE: HESTIA_SANDI dinaikkan, serve.sh jadi layanan, host 24/7 + HTTPS
+4. Unggah berkas FTP/SFTP lewat dashboard (masih lewat tools/tanam.py).
+5. Papan status pindai teknologi di Ikhtisar (16 target mati/parkir kosong).
+6. LIVE: HESTIA_SANDI dinaikkan, serve.sh jadi layanan, host 24/7 + HTTPS.
 
-## Kendala / keputusan menunggu
-- tidak ada HestiaCP di mana pun (waspadaweb=nginx, persaudaraan=Netlify,
+## Kendala yang menunggu keputusan
+- Tidak ada HestiaCP di mana pun (waspadaweb=nginx, persaudaraan=Netlify,
   juraganit=LiteSpeed cPanel). DoD #3 sudah dipenuhi lewat driver nginx + lxc.
-- aturan izin='manusia' di transisi_status menuju dicabut/tertanam sehingga tidak
-  bisa terpicu probe; usul hidup dari pasangan tak dikenal. Sudah diuji.
-- 3 kunci lapangan (FTP juraganit, sudo waspadaweb, nama netlify persaudaraan)
-  hanya bahan uji - bukan penghalang.
-
-## Nomor langkah tanpa commit (wajar)
-S-158, S-164, S-166, dan docs/steps/S-119, S-124, S-127.
+- Aturan izin='manusia' di transisi_status menuju dicabut/tertanam sehingga tidak bisa
+  terpicu probe; jalur usul hidup dari pasangan tak dikenal (sudah diuji).
+- 3 kunci lapangan hanya bahan uji, bukan penghalang.
 
 ## Cara melanjutkan
+
 bash tools/step_guard.sh && bash tools/resume.sh
-baca docs/NEXT.md, docs/evidence/S-17*.txt, docs/evidence/S-18*.txt
-jalankan bash tools/tutup.sh di akhir tiap langkah.
+baca docs/NEXT.md, docs/evidence/ terbaru, lalu kerjakan sisa kerja di atas.

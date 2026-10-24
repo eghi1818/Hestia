@@ -41,3 +41,5 @@ PYEOF
 # catatan: dokumen ditulis SESUDAH commit (hash baru ada setelah commit), jadi
 # dokumen ikut masuk commit langkah berikutnya. DIRTY dicetak di bawah agar jujur.
 echo "langkah ditutup. DIRTY: $(git status --porcelain | wc -l | tr -d ' ')"
+
+python3 tools/sync_jejak.py --resume
