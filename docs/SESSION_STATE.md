@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-25 19:49.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-25 19:52.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 7410e97 S-219 F-3: uji tulis jalur waspadaweb J5 dengan penanda
-branch: main | kotor: D docs/steps/S-219.md
-rute app/main.py: 75 | berkas bukti: 114 | dokumen langkah: 192
+HEAD: 37e9c07 S-220 F-3b: diagnosa 403 baca publik, chmod 644 penanda
+branch: main | kotor: D docs/steps/S-220.md
+rute app/main.py: 75 | berkas bukti: 115 | dokumen langkah: 192
 
 ## 12 commit terakhir
 
 ```
+37e9c07 S-220 F-3b: diagnosa 403 baca publik, chmod 644 penanda
+b8bd036 S-219 F-3: uji tulis jalur waspadaweb J5 dengan penanda [jejak]
 7410e97 S-219 F-3: uji tulis jalur waspadaweb J5 dengan penanda
 8acc50f S-218 F-2c: tutup kebocoran stub dokumen langkah [jejak]
 45e509c S-218 F-2c: tutup kebocoran stub dokumen langkah
@@ -20,8 +22,6 @@ rute app/main.py: 75 | berkas bukti: 114 | dokumen langkah: 192
 97eb838 F-1: migrasi skema jalur dan tabel pendukung M0-M4 [jejak]
 4a44587 F-1: migrasi skema jalur dan tabel pendukung M0-M4
 d7176cd S-214: tuntaskan S-211 (VPS.md), selaraskan dokumen ke F-blok [jejak]
-cf42fb7 S-214: tuntaskan S-211 (VPS.md), selaraskan dokumen ke F-blok
-7fcca2a S-213: GOAL baru dijadikan landasan di onboarding, SOP, README, dan gate [jejak]
 ```
 
 ## SISA KERJA
