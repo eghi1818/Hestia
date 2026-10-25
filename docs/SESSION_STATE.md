@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-25 11:20.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-25 11:32.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: cf42fb7 S-214: tuntaskan S-211 (VPS.md), selaraskan dokumen ke F-blok
-branch: main | kotor: M docs/steps/S-214.md
-rute app/main.py: 75 | berkas bukti: 109 | dokumen langkah: 189
+HEAD: 4a44587 F-1: migrasi skema jalur dan tabel pendukung M0-M4
+branch: main | kotor: (bersih)
+rute app/main.py: 75 | berkas bukti: 110 | dokumen langkah: 189
 
 ## 12 commit terakhir
 
 ```
+4a44587 F-1: migrasi skema jalur dan tabel pendukung M0-M4
+d7176cd S-214: tuntaskan S-211 (VPS.md), selaraskan dokumen ke F-blok [jejak]
 cf42fb7 S-214: tuntaskan S-211 (VPS.md), selaraskan dokumen ke F-blok
 7fcca2a S-213: GOAL baru dijadikan landasan di onboarding, SOP, README, dan gate [jejak]
 ad1f56a S-213: GOAL baru dijadikan landasan di onboarding, SOP, README, dan gate
@@ -20,8 +22,6 @@ a97e648 S-210: kebutuhan data SERP/backlink dirinci, backlog ditandai lokal vs A
 ac58b4c S-209: backlog 16 blok ditulis, sesi berikutnya mulai dari B-1 [jejak]
 4642a22 S-209: backlog 16 blok ditulis, sesi berikutnya mulai dari B-1
 c57e29b S-208: Modul 1 langkah 2, registri diisi dari tautan dan kandidat [jejak]
-42f3a50 S-208: Modul 1 langkah 2, registri diisi dari tautan dan kandidat
-1e7cd85 S-207: perbaiki catatan versi migrasi fase2 [jejak]
 ```
 
 ## SISA KERJA
