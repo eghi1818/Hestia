@@ -60,14 +60,25 @@ def conf_tulis(teks):
     return ct('printf "%%s" %s | base64 -d > %s' % (b64, CONF))
 
 
-def reload_nginx():
-    for c in ("nginx -t && nginx -s reload",
-              "systemctl reload nginx",
-              "nsenter -t 1 -m -u -i -n -p -- nginx -s reload",
-              "nsenter -t 1 -m -u -i -n -p -- systemctl reload nginx"):
+def reload_nginx(bisu=True):
+    """Reload nginx. Driver memakai host langsung (_ssh_host), bukan lxc."""
+    kandidat_host = ("nginx -t && nginx -s reload",
+                     "sudo nginx -t && sudo nginx -s reload",
+                     "sudo systemctl reload nginx",
+                     "systemctl reload nginx",
+                     "sudo service nginx reload")
+    for c in kandidat_host:
+        h = ssh(c)
+        if h.returncode == 0:
+            return "host:" + c
+        if not bisu:
+            print("    gagal host:", c, "|", (h.stderr or h.stdout).strip()[:90])
+    for c in ("nginx -t && nginx -s reload", "systemctl reload nginx"):
         h = ssh("lxc exec %s -- sh -c %s" % (KONTAINER, shq(c)))
         if h.returncode == 0:
-            return c
+            return "lxc:" + c
+        if not bisu:
+            print("    gagal lxc:", c, "|", (h.stderr or h.stdout).strip()[:90])
     return None
 
 
@@ -206,10 +217,14 @@ def main():
             x.add_argument("--dry-run", action="store_true")
     s = sub.add_parser("siapkan")
     s.add_argument("--path", default="/uji-hestia/")
+    sub.add_parser("cek-reload")
     st = sub.add_parser("status")
     st.add_argument("--path", required=True)
     a = ap.parse_args()
 
+    if a.cmd == "cek-reload":
+        print("cara reload:", reload_nginx(bisu=False))
+        return
     if a.cmd == "siapkan":
         siapkan_halaman(a.path)
     elif a.cmd == "status":

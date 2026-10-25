@@ -1,0 +1,12 @@
+BLOK: S-223 / F-4b (Fase 1, M3 BUNUH) - perbaiki mekanisme reload nginx
+STATUS: (lihat keluaran)
+JALUR: J5 (host langsung untuk reload; lxc untuk menyentuh /mnt/host)
+BUKTI: sha256 conf sebelum/sesudah + status dari 2 vantage + bukti per vantage
+SNAPSHOT: data/snapshot/nginx-waspadaweb-<cap>.conf
+ROLLBACK: pulih (hapus region bertanda) -> verifikasi kembali 200
+IDEMPOTEN: marker sudah ada; pasang ulang tidak menggandakan region
+YANG GAGAL: percobaan pertama S-222 gagal di reload karena keempat kandidat memakai lxc,
+padahal driver memakai host langsung (_ssh_host).
+
+Catatan: conf pada S-222 sudah berhasil diubah (sha ea36ca8f -> f18e46e8); yang gagal hanya
+penerapan (reload).
