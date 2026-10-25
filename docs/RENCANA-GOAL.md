@@ -80,13 +80,13 @@ lewat tools/tutup.sh. Kriteria terima ditulis di akhir tiap blok.
 - B-10: grafik tren + metrik equity hangus. Terima: grafik tampil dari data nyata.
 
 ### Modul 3 -- URL Hijacking Radar (butuh sumber SERP)
-- B-11: simhash halaman + deteksi kemiripan <30% + cek canonical. Terima: pasangan mirip
+- B-11 [LOKAL]: simhash halaman + deteksi kemiripan <30% + cek canonical. Terima: pasangan mirip
   terdeteksi.
-- B-12: penilaian pemegang SERP + peta sengketa + alert.
+- B-12 [BUTUH SERP]: penilaian pemegang SERP + peta sengketa + alert.
 
 ### Modul 2 -- Content Replacement Monitor (butuh sumber peringkat)
-- B-13: snapshot konten + simhash + kata kunci sebelum/sesudah + tanggal perubahan.
-- B-14: delta peringkat 7/14/30 hari + tanda ketidakcocokan + diff viewer.
+- B-13 [LOKAL]: snapshot konten + simhash + kata kunci sebelum/sesudah + tanggal perubahan.
+- B-14 [BUTUH PERINGKAT]: delta peringkat 7/14/30 hari + tanda tidakcocokan + diff viewer.
 
 ### Lintas modul
 - B-15: halaman ringkasan 5 metrik + angka bisa diklik (drilldown).
@@ -96,6 +96,8 @@ lewat tools/tutup.sh. Kriteria terima ditulis di akhir tiap blok.
 - Sumber posisi SERP: Google Search Console API (gratis, perlu OAuth) atau Brave Search API.
 - Sumber backlink: Brave Search API atau layanan berbayar.
 Tanpa keputusan ini, B-11..B-14 tetap tertahan; B-1..B-10 dan B-15..B-16 bisa jalan.
+
+Sumber data SERP/backlink: docs/DATA-SUMBER.md (disusun S-210).
 
 ## Titik mulai untuk sesi berikutnya
 Mulai dari B-1. Bacaan wajib: docs/RENCANA-GOAL.md ini, docs/SISA-KERJA.md, dan

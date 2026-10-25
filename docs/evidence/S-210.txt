@@ -1,0 +1,13 @@
+S-210 - kebutuhan data SERP/backlink dirinci, backlog ditandai lokal vs butuh API
+
+masalah: keputusan sumber SERP/backlink menahan sebagian backlog, tetapi rinciannya belum
+tertulis dan Backlog masih menandai B-11..B-14 seolah semuanya butuh API. Padahal backlink
+bisa diturunkan lokal dari crawl, dan GSC hanya mencakup properti terverifikasi.
+
+perubahan: docs/DATA-SUMBER.md ditulis (fakta penentu, dua pilihan sumber beserta
+kebutuhan dan batasannya, cara menyimpan kunci di ~/.hestia/live.env karena repo publik,
+empat hal yang diminta dari pemilik proyek, dampak ke backlog); B-11 dan B-13 ditandai
+LOKAL, B-12 dan B-14 ditandai butuh API.
+
+bukti: berkas DATA-SUMBER.md ada; empat baris B-11..B-14 memuat tanda [LOKAL] atau
+[BUTUH ...].
