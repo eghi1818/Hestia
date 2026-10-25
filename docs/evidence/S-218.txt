@@ -1,0 +1,15 @@
+BLOK: S-218 (tutup kebocoran stub dokumen langkah)
+STATUS: lulus
+JALUR: belum menyentuh jalur
+BUKTI: docs/steps/S-217.md kini memuat hash sebenarnya, bukan (menyusul)
+SNAPSHOT: -
+ROLLBACK: hapus penjaga terakhir di tutup.sh
+IDEMPOTEN: penjaga hanya jalan bila stub masih memuat (menyusul)
+YANG GAGAL: -
+
+masalah: stub yang disiapkan lebih awal tidak terhapus oleh sync_jejak, sehingga
+"dokumen langkah ditulis: tidak ada" dan docs/steps/S-217.md tetap memuat (menyusul)
+alih-alih hash commit.
+
+perubahan: tutup.sh mendapat penjaga terakhir yang menulis ulang stub dengan judul dan hash
+sebenarnya lalu membuat commit dokumen; docs/steps/S-217.md diperbaiki sekarang.

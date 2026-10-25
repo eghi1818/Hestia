@@ -78,3 +78,19 @@ if [ -n "$(git status --porcelain)" ]; then
 else
   echo "pohon bersih setelah sinkron"
 fi
+
+# jaga terakhir: kalau stub masih memuat (menyusul), tulis ulang dengan hash sebenarnya
+if [ -n "${_langkah:-}" ] && [ -f "docs/steps/$_langkah.md" ] && grep -q '(menyusul)' "docs/steps/$_langkah.md"; then
+  _hash=$(git log -1 --pretty=%h)
+  _judul=$(git log -1 --pretty=%s)
+  printf '# %s\n\n- commit: %s\n- bukti: docs/evidence/%s.txt\n' "$_judul" "$_hash" "$_langkah" > "docs/steps/$_langkah.md"
+  echo "dokumen langkah diperbaiki: docs/steps/$_langkah.md"
+  if [ -n "$(git status --porcelain)" ]; then
+    git add -A
+    git commit -q -m "$_judul [dokumen]"
+    for i in 1 2 3 4 5; do
+      git push origin main && break || sleep 5
+    done
+    echo "commit dokumen: $(git rev-parse --short HEAD) | DIRTY: $(git status --porcelain | wc -l | tr -d ' ')"
+  fi
+fi
