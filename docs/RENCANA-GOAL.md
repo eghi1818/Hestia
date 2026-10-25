@@ -20,12 +20,12 @@ Nama dipertahankan supaya tidak memutus rujukan.
 | Modul | Status |
 |---|---|
 | M0 MASUK | **SELESAI** (S-219..S-221). Tabel jalur + berkas_rea + blok dibuat (F-1/F-2); jalur J5 waspadaweb terbukti bisa menulis dengan penanda, dibaca dari 2 vantage. |
-| M1 AMBIL | BELUM. |
-| M2 GANTI | BELUM PERNAH. Inti tujuan, belum sekali pun. |
+| M1 AMBIL | **SELESAI** (S-225). Tabel donor; donor diambil mentah + bersih + sha256. |
+| M2 GANTI | **SELESAI** (S-226..S-228). Penanda donor, snapshot isi asli, verifikasi 2 vantage, idempoten, rollback kembali ke isi asli. |
 | M3 BUNUH | **SELESAI untuk 404 dan 410** (S-222/S-223/S-224): region bertanda di conf, snapshot conf, verifikasi 2 vantage (vps+lokal), idempoten, rollback teruji. |
 | M4 BUKTI | SEBAGIAN. Tabel bukti ada, belum berpenanda, belum ada ekspor pihak ketiga. |
 
-Kesimpulan: GOAL BELUM TERCAPAI. Ditunda ke Fase 4: registry parasite, link rot, panel teknologi.
+Kesimpulan: K1 GANTI dan K2 BUNUH SUDAH TERBUKTI; yang tersisa Fase 3-4 (perluas, bukti, pemantauan) dan VPS. Ditunda ke Fase 4: registry parasite, link rot, panel teknologi.
 
 ## Urutan blok
 ### Fase 0 -- M0 MASUK (prasyarat)
@@ -43,9 +43,9 @@ Kesimpulan: GOAL BELUM TERCAPAI. Ditunda ke Fase 4: registry parasite, link rot,
 - F-6: [SELESAI S-224] rollback teruji (404/410 -> 200) dan idempoten (sha conf sama).
 
 ### Fase 2 -- M1 + M2 GANTI (INTI TUJUAN)
-- F-7: M1 ambil konten donor (fetch, hash, simpan mentah, buang boilerplate).
-- F-8: M2 pasang di target dengan penanda, dry-run dulu, snapshot nilai lama, rollback.
-- F-9: verifikasi dari luar: penanda muncul di URL target; idempoten.
+- F-7: [SELESAI S-225] M1 ambil konten donor.
+- F-8: [SELESAI S-226..S-228] M2 pasang donor dengan penanda, snapshot, rollback.
+- F-9: [SELESAI S-228] Verifikasi luar 2 vantage + idempoten (sha berkas sama).
 
 ### Fase 3 -- perluas
 - F-10..F-12: target lain, template, sub-halaman.
@@ -82,7 +82,7 @@ action-centric (GOAL bagian 10: halaman tanpa satu tombol aksi = belum jadi).
 | BARU: tombol TIDAK PUNYA AKSES, Tulis penanda, dry-run | mengikuti GOAL bagian 10 |
 
 ## Titik mulai
-Mulai dari F-1. Bacaan wajib: PROLOG, GOAL, SKILL, SISA-KERJA.
+Mulai dari F-10 (Fase 3, perluas ke target lain). Bacaan wajib: PROLOG, GOAL, SKILL, SISA-KERJA.
 
 ## Inventaris yang sudah ada (diperiksa S-204)
 

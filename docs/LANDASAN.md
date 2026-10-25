@@ -46,7 +46,7 @@ Kalau ragu, aku kembali ke misi satu kalimat.
 
 ## Status terkini (diperbarui tiap langkah)
 Lihat tabel "Status terhadap GOAL" di docs/RENCANA-GOAL.md dan docs/SISA-KERJA.md.
-Ringkas: GOAL BELUM TERCAPAI; M2 GANTI BELUM PERNAH; mulai dari F-1.
+Ringkas: K1 GANTI dan K2 BUNUH SUDAH TERBUKTI di waspadaweb (jalur J5). Lanjut Fase 3 (F-10).
 
 ## Format laporan tiap blok
 BLOK / STATUS / JALUR / BUKTI / SNAPSHOT / ROLLBACK / IDEMPOTEN / YANG GAGAL

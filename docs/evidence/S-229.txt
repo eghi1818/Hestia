@@ -1,0 +1,13 @@
+BLOK: S-229 / F-9b - layanan dinyalakan, semantik rollback diperjelas, handover ditutup
+STATUS: (lihat keluaran)
+JALUR: J5
+BUKTI: ISI ASLI kembali setelah pulih, penanda hilang, idempoten sha berkas sama
+SNAPSHOT: ditetapkan eksplisit lewat "ganti.py asli" (menghapus riwayat ganti page itu)
+ROLLBACK: pulih kembali ke isi asli yang ditetapkan, bukan ke snapshot event terakhir
+IDEMPOTEN: pasang dua kali -> sha berkas identik
+YANG GAGAL: S-228 gate GAGAL karena layanan dashboard mati (http 000); ter-commit bersama S-229
+
+masalah: (1) gate menolak commit S-228 karena layanan mati; (2) "ISI ASLI: False" setelah
+pulih karena pulih memakai snapshot paling awal (halaman belum ada) sehingga kembali kosong.
+perubahan: layanan dinyalakan; ganti.py mendapat subcommand "asli" untuk menetapkan dasar
+rollback secara eksplisit; docs/steps/S-228.md ditulis; docs/LANJUTKAN.txt + resume/9 dibuat.

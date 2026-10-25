@@ -1,29 +1,27 @@
 #!/usr/bin/env python3
-"""M2 GANTI: pasang konten donor ke halaman target lewat jalur J5 (blok F-8).
+"""M2 GANTI: pasang konten donor ke halaman target lewat jalur J5 (blok F-8/F-9).
 
-Penanda wajib. Snapshot isi lama lebih dulu. Verifikasi dari 2 vantage. Idempoten karena
-isi berkas adalah fungsi murni dari (donor, path). Bisa dipulihkan.
+Aturan: penanda wajib, snapshot diambil HANYA saat halaman belum pernah disentuh Hestia,
+verifikasi dari 2 vantage, idempoten, dan rollback kembali ke isi asli.
 """
 import argparse
 import base64
 import hashlib
 import html
 import json
-import os
-import shutil
 import sqlite3
 import sys
 import time
 from pathlib import Path
-from urllib.request import Request, urlopen
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from tools import bunuh as B  # ssh/ct/baca/status/UA yang sudah terbukti
+from tools import bunuh as B
 
 AKAR = Path(__file__).resolve().parents[1]
 DB = AKAR / "data" / "hestia.db"
 SNAP = AKAR / "data" / "snapshot"
 DOCROOT = B.DOCROOT
+TANDA = "hestia-ganti donor="
 
 
 def baca_file(path):
@@ -70,26 +68,59 @@ def ambil_donor(donor_id):
     return dict(r) if r else None
 
 
+def pid_dan_snap_asli(target_id, url):
+    """id page, dan snapshot asli (event ganti paling awal) bila ada."""
+    with sqlite3.connect(DB) as c:
+        c.execute("insert or ignore into page (target_id,url) values (?,?)", (target_id, url))
+        pid = c.execute("select id from page where target_id=? and url=?", (target_id, url)).fetchone()[0]
+        r = c.execute("select nilai_lama from change_event where jenis in ('ganti','ganti-asli')"
+                      " and page_id=? order by id asc limit 1", (pid,)).fetchone()
+    nama = None
+    if r and r[0]:
+        try:
+            nama = json.loads(r[0]).get("snapshot")
+        except Exception:
+            nama = None
+    return pid, nama
+
+
+def asli(target_id, path, url=None):
+    """Tetapkan isi SEKARANG sebagai isi asli (dasar rollback). Hapus riwayat ganti page ini."""
+    url = url or ("https://waspadaweb.com%s" % path)
+    with sqlite3.connect(DB) as c:
+        c.execute("insert or ignore into page (target_id,url) values (?,?)", (target_id, url))
+        pid = c.execute("select id from page where target_id=? and url=?", (target_id, url)).fetchone()[0]
+        c.execute("delete from change_event where page_id=?", (pid,))
+        c.commit()
+    snap, sha, ada = snapshot_halaman(path)
+    with sqlite3.connect(DB) as c:
+        c.execute("insert into change_event (target_id,page_id,jenis,jalur,nilai_lama,nilai_baru,penanda,vantage,waktu)"
+                  " values (?,?,?,?,?,?,?,?,?)",
+                  (target_id, pid, "ganti-asli", "J5", json.dumps({"snapshot": str(snap)}),
+                   sha[:16], 0, "lokal", time.strftime("%Y-%m-%dT%H:%M:%S")))
+        c.commit()
+    print("isi asli ditetapkan:", snap.name, "| sha:", sha[:16], "| ada isi:", ada)
+    return 0
+
+
 def snapshot_halaman(path):
     SNAP.mkdir(parents=True, exist_ok=True)
-    berkas = "%s%sindex.html" % (DOCROOT, path)
-    lama = baca_file(berkas)
+    lama = baca_file("%s%sindex.html" % (DOCROOT, path))
     cap = time.strftime("%Y%m%d-%H%M%S")
     nama = "halaman-%s-%s.html" % (path.strip("/").replace("/", "-") or "akar", cap)
     p = SNAP / nama
     n = 0
     while p.exists():
         n += 1
-        p = SNAP / (nama.replace(".html", "-%d.html" % n))
+        p = SNAP / nama.replace(".html", "-%d.html" % n)
     p.write_text(lama, encoding="utf-8")
     return p, hashlib.sha256(lama.encode("utf-8")).hexdigest(), bool(lama.strip())
 
 
-def catat(target_id, path, url, sha, st, penanda_ada, snap, aksi):
+def catat(target_id, pid, path, url, sha, st, penanda_ada, snap, aksi, harap_penanda):
     cap = time.strftime("%Y-%m-%dT%H:%M:%S")
+    lulus = (st.get("lokal") == "200") and (bool(penanda_ada) == bool(harap_penanda))
     with sqlite3.connect(DB) as c:
-        c.execute("insert or ignore into page (target_id,url) values (?,?)", (target_id, url))
-        pid = c.execute("select id from page where target_id=? and url=?", (target_id, url)).fetchone()[0]
         c.execute("update page set status_http=?, sha256_konten=?, penanda_ada=?, diambil=?, vantage=? where id=?",
                   (int(st.get("lokal", "0")) if st.get("lokal", "").isdigit() else 0, sha,
                    1 if penanda_ada else 0, cap, "vps+lokal", pid))
@@ -103,10 +134,12 @@ def catat(target_id, path, url, sha, st, penanda_ada, snap, aksi):
                       (pid, url, int(nilai) if nilai.isdigit() else 0, vantage, sha, cap))
             c.execute("insert into bukti (mata,metode,verdict,nilai,sha256,keterangan,waktu)"
                       " values (?,?,?,?,?,?,?)",
-                      (1, aksi, "lulus" if (nilai == "200" and penanda_ada) else "gagal", vantage, sha,
+                      (1, aksi, "lulus" if lulus else "gagal", vantage, sha,
                        json.dumps({"target_id": target_id, "path": path, "url": url, "vantage": vantage,
-                                   "penanda_ada": penanda_ada, "snapshot": str(snap)}), cap))
+                                   "penanda_ada": penanda_ada, "harap_penanda": harap_penanda,
+                                   "snapshot": str(snap)}), cap))
         c.commit()
+    return lulus
 
 
 def pasang(target_id, path, donor_id, url=None, dry_run=False):
@@ -114,8 +147,17 @@ def pasang(target_id, path, donor_id, url=None, dry_run=False):
     if not donor:
         sys.exit("donor id=%s tidak ada" % donor_id)
     url = url or ("https://waspadaweb.com%s" % path)
-    snap, sha_lama, ada_lama = snapshot_halaman(path)
-    print("snapshot isi lama:", snap.name, "| ada isi lama:", ada_lama, "| sha lama:", sha_lama[:16])
+    pid, snap_asli = pid_dan_snap_asli(target_id, url)
+    isi_lama = baca_file("%s%sindex.html" % (DOCROOT, path))
+
+    if TANDA in isi_lama and snap_asli and Path(snap_asli).exists():
+        snap = Path(snap_asli)
+        sha_lama = hashlib.sha256(snap.read_text(encoding="utf-8").encode("utf-8")).hexdigest()
+        print("sudah pernah diganti; snapshot asli dipakai:", snap.name)
+    else:
+        snap, sha_lama, _ = snapshot_halaman(path)
+        print("snapshot asli dibuat:", snap.name, "| sha isi asli:", sha_lama[:16])
+
     isi = bangun(donor)
     sha_baru = hashlib.sha256(isi.encode("utf-8")).hexdigest()
     print("penanda:", penanda(donor))
@@ -125,40 +167,34 @@ def pasang(target_id, path, donor_id, url=None, dry_run=False):
         return 0
     tulis_file("%s%sindex.html" % (DOCROOT, path), isi)
     st = B.status(url)
-    badan = B.baca_penuh(url)[1]
-    pen = penanda(donor) in badan
+    pen = penanda(donor) in B.baca_penuh(url)[1]
     print("status:", st, "| penanda terlihat publik:", pen)
-    catat(target_id, path, url, sha_baru, st, pen, snap, "ganti")
-    return 0 if (st.get("lokal") == "200" and pen) else 1
+    lulus = catat(target_id, pid, path, url, sha_baru, st, pen, snap, "ganti", True)
+    print("HASIL:", "LULUS" if lulus else "GAGAL")
+    return 0 if lulus else 1
 
 
 def pulih(target_id, path, url=None):
-    """Kembalikan isi dari snapshot yang diambil SAAT pasang, bukan saat pulih."""
     url = url or ("https://waspadaweb.com%s" % path)
+    pid, snap_asli = pid_dan_snap_asli(target_id, url)
     berkas = "%s%sindex.html" % (DOCROOT, path)
-    nama = None
-    with sqlite3.connect(DB) as c:
-        r = c.execute("select nilai_lama from change_event where jenis='ganti' order by id desc limit 1").fetchone()
-    if r and r[0]:
-        try:
-            nama = json.loads(r[0]).get("snapshot")
-        except Exception:
-            nama = None
-    isi_lama = ""
-    if nama and Path(nama).exists():
-        isi_lama = Path(nama).read_text(encoding="utf-8")
-    if isi_lama.strip():
-        tulis_file(berkas, isi_lama)
-        print("dipulihkan dari snapshot pasang:", Path(nama).name)
+    isi_asli = ""
+    if snap_asli and Path(snap_asli).exists():
+        isi_asli = Path(snap_asli).read_text(encoding="utf-8")
+    if isi_asli.strip():
+        tulis_file(berkas, isi_asli)
+        print("dipulihkan dari snapshot ASLI:", Path(snap_asli).name)
     else:
         hapus_file(berkas)
-        print("tidak ada isi lama di snapshot; berkas dihapus")
+        print("tidak ada isi asli; berkas dihapus")
     st = B.status(url)
-    pen = "hestia-ganti" in B.baca_penuh(url)[1]
-    sha_isi = hashlib.sha256(isi_lama.encode("utf-8")).hexdigest()
-    print("status:", st, "| penanda ganti masih ada:", pen)
-    catat(target_id, path, url, sha_isi, st, pen, Path(nama) if nama else SNAP, "pulih-ganti")
-    return 0 if st.get("lokal") == "200" and not pen else 1
+    pen = TANDA in B.baca_penuh(url)[1]
+    sha = hashlib.sha256(isi_asli.encode("utf-8")).hexdigest()
+    print("status:", st, "| penanda ganti masih ada:", pen, "(harus False)")
+    lulus = catat(target_id, pid, path, url, sha, st, pen, Path(snap_asli) if snap_asli else SNAP,
+                  "pulih-ganti", False)
+    print("HASIL:", "LULUS" if lulus else "GAGAL")
+    return 0 if lulus else 1
 
 
 def main():
@@ -170,6 +206,10 @@ def main():
     p.add_argument("--donor-id", type=int, required=True)
     p.add_argument("--url")
     p.add_argument("--dry-run", action="store_true")
+    x = sub.add_parser("asli")
+    x.add_argument("--target-id", type=int, required=True)
+    x.add_argument("--path", required=True)
+    x.add_argument("--url")
     q = sub.add_parser("pulih")
     q.add_argument("--target-id", type=int, required=True)
     q.add_argument("--path", required=True)
@@ -179,6 +219,8 @@ def main():
     a = ap.parse_args()
     if a.cmd == "pasang":
         sys.exit(pasang(a.target_id, a.path, a.donor_id, a.url, a.dry_run))
+    if a.cmd == "asli":
+        sys.exit(asli(a.target_id, a.path, a.url))
     if a.cmd == "pulih":
         sys.exit(pulih(a.target_id, a.path, a.url))
     print(B.status("https://waspadaweb.com%s" % a.path))

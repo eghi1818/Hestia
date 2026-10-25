@@ -20,11 +20,8 @@ Disunting manusia. tools/sync_jejak.py menyalinnya ke SESSION_STATE.
 - 3 kunci lapangan hanya bahan uji, bukan penghalang.
 
 ## Status terhadap GOAL (M0-M4)
-Rencana lengkap: docs/RENCANA-GOAL.md. GOAL BELUM TERCAPAI.
-- M0 MASUK: belum (skema jalur + uji tulis).
-- M1 AMBIL: belum.
-- M2 GANTI: belum pernah -- inti tujuan.
-- M3 BUNUH: sebagian (301/410 hidup di waspadaweb, tanpa penanda/snapshot/rollback).
-- M4 BUKTI: sebagian.
-- Ditunda ke Fase 4: registry parasite, link rot, panel teknologi.
-- Target uji: waspadaweb.com lebih dulu.
+Rencana: docs/RENCANA-GOAL.md. **K1 GANTI dan K2 BUNUH SUDAH TERBUKTI** (waspadaweb, jalur J5).
+- M0 MASUK: selesai. M1 AMBIL: selesai. M2 GANTI: selesai. M3 BUNUH: selesai (404 + 410).
+- M4 BUKTI: sebagian (ekspor pihak ketiga belum).
+- Sisa: Fase 3 (F-10..F-12 perluas), Fase 4 (F-13..F-16), F-17 VPS.
+- Target uji: waspadaweb.com.

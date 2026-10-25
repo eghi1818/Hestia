@@ -1,0 +1,32 @@
+HESTIA -- LANJUTKAN DARI SINI
+Diperbarui: S-229
+
+STATUS: K1 GANTI dan K2 BUNUH SUDAH TERBUKTI di waspadaweb.com lewat jalur J5.
+  - M0 MASUK selesai (jalur + uji tulis penanda, 2 vantage)
+  - M1 AMBIL selesai (tabel donor)
+  - M2 GANTI selesai (penanda donor, snapshot asli, idempoten, rollback kembali ke isi asli)
+  - M3 BUNUH selesai (404 dan 410, penanda, snapshot, idempoten, rollback)
+  - M4 BUKTI sebagian (ekspor pihak ketiga belum)
+
+LANGKAH BERIKUT: F-10 (Fase 3, perluas ke target lain), lalu F-11, F-12, Fase 4 (F-13..F-16),
+terakhir F-17 (pindah VPS).
+
+BACA DULU: docs/LANDASAN.md, docs/PROLOG-HESTIA-DASHBOARD.md, docs/GOAL-Hestia-SEO.md,
+docs/SKILL-AGENT-HESTIA.md, docs/RENCANA-GOAL.md, docs/SISA-KERJA.md.
+
+ALAT YANG SUDAH ADA (jangan dibangun ulang):
+  tools/jalur.py   uji tulis jalur (J5 waspadaweb terbukti)
+  tools/donor.py   M1 ambil donor
+  tools/ganti.py   M2 GANTI (pasang / pulih / asli)
+  tools/bunuh.py   M3 BUNUH 404/410 (pasang / pulih)
+  tools/rea.py     pengurai berkas REA
+  tools/live.sh    layanan (pasang / status / tcc / hapus)
+
+CATATAN LAPANGAN WAJIB (docs/CATATAN-LAPANGAN.md):
+  - reload nginx harus lewat HOST: sudo nginx -t && sudo nginx -s reload
+  - di dalam container, nginx host ada di /mnt/host/etc/nginx
+  - Cloudflare menolak User-Agent bawaan python; pakai HESTIA_UA
+  - tools/bunuh.baca() mengembalikan INT; pakai baca_penuh() untuk (status, badan)
+
+ATURAN: bukti = penanda; snapshot sebelum menimpa; verifikasi dari luar; idempoten; rollback.
+Tutup tiap blok dengan: bash tools/tutup.sh "S-<n> F-<m>: <ringkas>"

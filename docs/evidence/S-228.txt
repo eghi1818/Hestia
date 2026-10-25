@@ -1,0 +1,12 @@
+BLOK: S-228 / F-8c + F-9 (Fase 2, M2 GANTI) - rollback sah + handover ditutup
+STATUS: (lihat keluaran)
+JALUR: J5
+BUKTI: penanda donor terlihat publik; sha berkas idempoten; setelah pulih ISI ASLI kembali dan penanda hilang
+SNAPSHOT: diambil HANYA saat halaman belum pernah diganti; nama disimpan di change_event.nilai_lama (event ganti paling awal)
+ROLLBACK: pulih membaca snapshot ASLI, bukan snapshot saat pulih
+IDEMPOTEN: pasang ulang -> sha berkas identik, snapshot asli tidak ditimpa
+YANG GAGAL: S-226 gagal karena tipe balikan baca(); S-227 gagal karena pulih memakai snapshot event terakhir (yang berisi isi sudah terganti) dan verdict tidak membedakan harapan
+
+Tutup Fase 2: GANTI terbukti dengan penanda, snapshot asli, dua vantage, idempoten, dan
+rollback yang benar-benar mengembalikan isi asli. Dokumen handover diperbarui; nama chat
+berikutnya menjadi SEO V1.2.
