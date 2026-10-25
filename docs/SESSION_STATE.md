@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-25 08:34.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-25 08:40.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 4642a22 S-209: backlog 16 blok ditulis, sesi berikutnya mulai dari B-1
-branch: main | kotor: M docs/steps/S-209.md
-rute app/main.py: 75 | berkas bukti: 104 | dokumen langkah: 184
+HEAD: a97e648 S-210: kebutuhan data SERP/backlink dirinci, backlog ditandai lokal vs API
+branch: main | kotor: M docs/steps/S-210.md
+rute app/main.py: 75 | berkas bukti: 105 | dokumen langkah: 185
 
 ## 12 commit terakhir
 
 ```
+a97e648 S-210: kebutuhan data SERP/backlink dirinci, backlog ditandai lokal vs API
+ac58b4c S-209: backlog 16 blok ditulis, sesi berikutnya mulai dari B-1 [jejak]
 4642a22 S-209: backlog 16 blok ditulis, sesi berikutnya mulai dari B-1
 c57e29b S-208: Modul 1 langkah 2, registri diisi dari tautan dan kandidat [jejak]
 42f3a50 S-208: Modul 1 langkah 2, registri diisi dari tautan dan kandidat
@@ -20,8 +22,6 @@ fe12cd5 S-206: Modul 1 langkah 1, tabel registri sesuai GOAL
 8f032f7 S-206: Modul 1 langkah 1, tabel registri sesuai GOAL [jejak]
 14f8f9b S-206: Modul 1 langkah 1, tabel registri sesuai GOAL
 9877517 S-205: rencana GOAL dikoreksi setelah inventaris S-204 [jejak]
-a4b5c2f S-205: rencana GOAL dikoreksi setelah inventaris S-204
-47d8d1d S-204: inventaris rute dan skrip ditulis ke rencana GOAL [jejak]
 ```
 
 ## SISA KERJA
