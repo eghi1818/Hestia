@@ -1,0 +1,12 @@
+S-208 - Modul 1 langkah 2: registri diisi dari data yang sudah ada
+
+masalah: tabel registri (dibuat S-206, diperbaiki S-207) masih 0 baris, sehingga Modul 1
+belum punya isi.
+
+perubahan: backfill adaptif membaca kolom tabel tautan dan kandidat apa adanya (memilih
+kolom url/host dari daftar kandidat nama), mengurai host dari URL, dan mengisi registri
+dengan INSERT OR IGNORE (url UNIQUE) sambil menandai sumber backfill:tautan atau
+backfill:kandidat.
+
+bukti: jumlah baris masuk per sumber, total registri, sebaran sumber, dan lima host
+terbanyak dicetak.
