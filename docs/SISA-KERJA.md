@@ -28,3 +28,5 @@ Rincian dan urutan kerja: docs/RENCANA-GOAL.md (dikoreksi S-205; registry + peme
 - Modul 5: kurang rot tautan keluar/masuk, equity hangus, pipeline reklamasi, outreach, tren.
 - Lintas: halaman ringkasan 5 metrik + drilldown, alert email/webhook, README setup/kredensial/rollback.
 - Menunggu keputusan: sumber data SERP dan backlink.
+
+Backlog berurut 16 blok (B-1..B-16) ada di docs/RENCANA-GOAL.md; mulai dari B-1.

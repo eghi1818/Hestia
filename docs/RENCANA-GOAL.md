@@ -44,18 +44,62 @@ metrik equity hangus, pipeline reklamasi, template outreach, grafik tren.
 Halaman ringkasan 5 metrik + angka bisa diklik (drilldown); alert email/webhook (DoD #6);
 README setup/kredensial/rollback (DoD #7).
 
-## Urutan kerja
-1. Modul 1: field GOAL + metrik + heatmap host (lokal).
-2. Modul 4: mesin skor + antrean bulk + rollback (lokal).
-3. Modul 5: rot tautan keluar + pipeline reklamasi + grafik tren (lokal).
-4. Keputusan sumber data SERP dan backlink.
-5. Modul 3, lalu Modul 2 (setelah sumber data ada).
-6. Lintas modul.
+## Fakta terkini (S-208)
+- registri: 903 baris (dari kandidat; level HOST, belum level HALAMAN).
+- tautan: 775 baris berbentuk graf host (kolom dari, ke, dibuat) -- bukan daftar URL.
+- kandidat: 903 baris, punya http_status, latensi_ms, diperiksa_at, dicrawl, ukuran, hollow.
+- 47 rute /api, 13 skrip dashboard, gate 10 seksi penjaga, 183 dokumen langkah.
+
+## Backlog berurut (tiap blok = satu langkah tutup penuh)
+Aturan tiap blok: patch ber-assert, bukti di docs/evidence/S-<n>.txt, gate lulus, commit
+lewat tools/tutup.sh. Kriteria terima ditulis di akhir tiap blok.
+
+### Modul 1 -- Registry Parasite SEO (lokal, tanpa API)
+- B-1: petakan HALAMAN per host (pakai tools/scrape.py yang sudah ada), isi registri level
+  url + jenis penempatan. Terima: registri memuat url halaman, bukan hanya host.
+- B-2: metrik registry (lifespan, equity terlantar, biaya per sitasi, hit rate 90 hari),
+  tiap metrik berlabel sumber di tabel metrik. Terima: nilai terisi, bukan 'tanpa_sumber'.
+- B-3: panel Registry (tabel + filter + ekspor) meniru pola ekspor.js. Terima: rute +
+  halaman + ekspor CSV berjalan, gate memeriksa rutenya.
+- B-4: heatmap host + alert (pakai /api/putaran dan /api/monitoring). Terima: heatmap
+  tampil; alert muncul saat status host jatuh.
+
+### Modul 4 -- Prune Manager (lokal)
+- B-5: mesin skor KEEP/301/410/404 dari sinyal (status konten, tautan masuk, duplikat,
+  kedalaman) + tabel keputusan. Terima: skor bisa dihitung ulang dan diuji.
+- B-6: antrean bulk + eksekusi bertahap lewat driver + audit. Terima: dry-run dulu, lalu
+  terapkan sebagian, semua tercatat.
+- B-7: rollback + laporan sebelum/sesudah equity. Terima: satu perintah mengembalikan
+  keadaan sebelum.
+
+### Modul 5 -- Link Rot Monitor (lokal)
+- B-8: rot tautan keluar: ambil tautan dari tabel tautan, probe, tulis baris bukti.
+  Terima: tautan mati terdaftar dengan bukti.
+- B-9: pipeline reklamasi + template outreach (tabel + panel). Terima: status pipeline
+  berubah dan terekam.
+- B-10: grafik tren + metrik equity hangus. Terima: grafik tampil dari data nyata.
+
+### Modul 3 -- URL Hijacking Radar (butuh sumber SERP)
+- B-11: simhash halaman + deteksi kemiripan <30% + cek canonical. Terima: pasangan mirip
+  terdeteksi.
+- B-12: penilaian pemegang SERP + peta sengketa + alert.
+
+### Modul 2 -- Content Replacement Monitor (butuh sumber peringkat)
+- B-13: snapshot konten + simhash + kata kunci sebelum/sesudah + tanggal perubahan.
+- B-14: delta peringkat 7/14/30 hari + tanda ketidakcocokan + diff viewer.
+
+### Lintas modul
+- B-15: halaman ringkasan 5 metrik + angka bisa diklik (drilldown).
+- B-16: alert email/webhook (DoD #6) + README setup/kredensial/rollback (DoD #7).
 
 ## Keputusan yang menunggu pemilik proyek
 - Sumber posisi SERP: Google Search Console API (gratis, perlu OAuth) atau Brave Search API.
 - Sumber backlink: Brave Search API atau layanan berbayar.
-Selama belum diputuskan, kolom metrik terkait tetap berstatus 'tanpa_sumber'.
+Tanpa keputusan ini, B-11..B-14 tetap tertahan; B-1..B-10 dan B-15..B-16 bisa jalan.
+
+## Titik mulai untuk sesi berikutnya
+Mulai dari B-1. Bacaan wajib: docs/RENCANA-GOAL.md ini, docs/SISA-KERJA.md, dan
+docs/SKILL-AGENT-HESTIA.md. Jangan membangun ulang apa pun di bagian "Yang SUDAH ada".
 
 ## Inventaris yang sudah ada (diperiksa S-204)
 

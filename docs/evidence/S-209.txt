@@ -1,0 +1,11 @@
+S-209 - backlog 16 blok ditulis ke repo supaya sesi berikutnya tahu posisi
+
+masalah: urutan kerja di RENCANA-GOAL.md masih berupa tabel kasar tanpa kriteria terima,
+sehingga sesi baru harus menafsir ulang. Fakta baru S-208 (registri 903 baris level host,
+tautan berbentuk graf host dari->ke) juga belum tercatat.
+
+perubahan: bagian "Urutan kerja" diganti "Backlog berurut" berisi 16 blok (B-1..B-16) per
+modul dengan kriteria terima, catatan "Fakta terkini", daftar keputusan yang menunggu, dan
+titik mulai untuk sesi berikutnya; SISA-KERJA diarahkan ke backlog.
+
+bukti: 16 baris B- tercetak; dokumen memuat kriteria terima per blok.
