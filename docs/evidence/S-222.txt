@@ -1,0 +1,11 @@
+BLOK: S-222 / F-4 (Fase 1, M3 BUNUH) - halaman uji dibunuh menjadi 404
+STATUS: (lihat keluaran)
+JALUR: J5 (ssh -> lxc hx -> /mnt/host/etc/nginx)
+BUKTI: penanda region bertanda, sha256 conf sebelum/sesudah, status dari 2 vantage (vps, lokal), baris bukti per vantage
+SNAPSHOT: data/snapshot/nginx-waspadaweb-<cap>.conf
+ROLLBACK: pulih (hapus region bertanda) lalu verifikasi kembali 200
+IDEMPOTEN: pasang dua kali -> sha conf sama
+YANG GAGAL: dicatat apa adanya
+
+Aturan GOAL dipatuhi: snapshot dulu, penanda (marker) di conf, verifikasi dari luar, rollback
+teruji, dan jalur dicatat.
