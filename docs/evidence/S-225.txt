@@ -1,0 +1,11 @@
+BLOK: S-225 / F-7 (Fase 2, M1 AMBIL) - mesin pengambil donor
+STATUS: (lihat keluaran)
+JALUR: J1 (baca dari luar, cukup internet + User-Agent)
+BUKTI: sha256 isi mentah donor, status http, panjang mentah/bersih, judul
+SNAPSHOT: isi mentah donor disimpan utuh di kolom isi_mentah
+ROLLBACK: baris donor sha256 sama dihapus lebih dulu sebelum insert
+IDEMPOTEN: ambil ulang url sama dengan isi sama -> satu baris
+YANG GAGAL: dicatat apa adanya
+
+Catatan: ini langkah pertama menuju GANTI. Donor disimpan mentah (untuk bukti) dan bersih
+(tag dibuang, untuk dipasang).
