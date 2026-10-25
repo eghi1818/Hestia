@@ -1,107 +1,73 @@
-# Rencana menutup 5 modul GOAL
+# Rencana Hestia -- dipetakan ke GOAL (M0-M4, Fase 0-4)
 
-Disusun S-203, DIPERBARUI S-205 setelah inventaris S-204. Rujukan spec: docs/GOAL-Hestia-SEO.md.
-Urutan GOAL: modul 5, lalu 4, lalu 1, 2, 3.
+Ditulis ulang S-212 setelah GOAL, PROLOG, dan SKILL diperbarui. Dokumen yang mengikat:
+docs/PROLOG-HESTIA-DASHBOARD.md (menang bila bertentangan), docs/GOAL-Hestia-SEO.md,
+docs/SKILL-AGENT-HESTIA.md.
 
-## Koreksi S-205 (penting)
-Daftar celah S-203 melebih-lebihkan kekosongan. Repo ini sudah memuat 47 rute /api, 41
-perkakas, dan halaman untuk kandidat, konten, tautan, recon, monitoring, deployment,
-kredensial, audit, konsol, ekspor, detail.
+Catatan nama: berkas GOAL masih bernama "-SEO" padahal GOAL-nya sudah bukan soal SEO.
+Nama dipertahankan supaya tidak memutus rujukan.
 
-## Yang SUDAH ada dan dipakai ulang (jangan dibangun ulang)
-- Registry kandidat: tabel kandidat (903 baris), /api/kandidat, /api/kandidat/ringkas,
-  /api/kandidat.csv, /api/kandidat/periksa, /api/kandidat/periksa-latar,
-  /api/kandidat/periksa-status; kolom http_status, latensi_ms, diperiksa_at, catatan.
-- Pemeriksa berkala: /api/putaran, /api/putaran/status (dipakai live.js).
-- Monitoring + alert dasar: /api/monitoring (alerts, riwayat, kesehatan), monitorAlerts,
-  latencyList, opsMetrics.
-- Recon: /api/recon, /api/targets/{tid}/recon, recon.js, tools/scrape.py, net.py, jalur.py.
-- Tautan: tabel tautan (775 baris), /api/tautan, /api/tautan/ringkas, tautan.js.
-- Konten: /api/konten, /api/konten/{tid}, /api/konten/{tid}/indeks, konten.js.
-- Driver: /api/driver/{rules,plan,apply,verify}, tools/driver.py (301/410, dry-run, audit).
-- Status konten: /api/status/{periksa,ringkas}, tools/status_periksa.py, monitor.js.
-- Ekspor: /api/kandidat.csv, ekspor.js. Konsol/pekerjaan: /api/konsol/*, /api/job/*.
-- Tanam: /api/tanam, tools/tanam.py, tools/tanam_ssh.py, tanam.js.
+## Yang mengikat (dari GOAL)
+- Hanya dua kemampuan: K1 GANTI, K2 BUNUH. Fitur lain yang tidak melayani keduanya: TUNDA.
+- Tanpa jalur masuk di atas J1, kita hanya bisa membaca.
+- Peta jalur dulu, baru bertindak. Validasi jalur tidak boleh dilewatkan.
+- Bukti = penanda. Tanpa penanda, belum selesai.
+- DILARANG membangun monitoring dulu.
+- Jangan janji 410/403 kalau jalurnya belum ada (SQLi hanya 404 dan blank).
+- Pindah VPS hanya setelah terbukti lokal.
 
-## Celah NYATA per modul
-### Modul 1 -- Registry Parasite SEO
-Kurang: field GOAL (platform, jenis penempatan, tanggal tayang, kata kunci, biaya, kontrak,
-pemilik host, kendali editorial); metrik lifespan, equity terlantar, biaya per sitasi, hit
-rate 90 hari; heatmap host.
-### Modul 2 -- Content Replacement Monitor
-Kurang: snapshot simhash, kata kunci sebelum/sesudah, tanggal perubahan, delta peringkat
-7/14/30 hari, tanda ketidakcocokan, diff viewer.
-### Modul 3 -- URL Hijacking Radar
-Kurang: simhash, deteksi kemiripan <30%, cek canonical, pemegang SERP, peta sengketa.
-### Modul 4 -- Prune Manager
-Kurang: mesin skor KEEP/301/410/404 dari sinyal, antrean bulk, rollback, sebelum/sesudah
-equity.
-### Modul 5 -- Link Rot Monitor
-Kurang: rot tautan keluar (crawl + probe), rot tautan masuk (butuh sumber backlink),
-metrik equity hangus, pipeline reklamasi, template outreach, grafik tren.
+## Status terhadap GOAL (jujur)
+| Modul | Status |
+|---|---|
+| M0 MASUK | BELUM. Tabel jalur belum ada; uji tulis belum formal. |
+| M1 AMBIL | BELUM. |
+| M2 GANTI | BELUM PERNAH. Inti tujuan, belum sekali pun. |
+| M3 BUNUH | SEBAGIAN. 301/410 hidup di waspadaweb lewat nginx (S-175..S-180), tanpa penanda, snapshot, rollback, 2 vantage. 404 belum diuji. |
+| M4 BUKTI | SEBAGIAN. Tabel bukti ada, belum berpenanda, belum ada ekspor pihak ketiga. |
 
-## Lintas modul
-Halaman ringkasan 5 metrik + angka bisa diklik (drilldown); alert email/webhook (DoD #6);
-README setup/kredensial/rollback (DoD #7).
+Kesimpulan: GOAL BELUM TERCAPAI. Ditunda ke Fase 4: registry parasite, link rot, panel teknologi.
 
-## Fakta terkini (S-208)
-- registri: 903 baris (dari kandidat; level HOST, belum level HALAMAN).
-- tautan: 775 baris berbentuk graf host (kolom dari, ke, dibuat) -- bukan daftar URL.
-- kandidat: 903 baris, punya http_status, latensi_ms, diperiksa_at, dicrawl, ukuran, hollow.
-- 47 rute /api, 13 skrip dashboard, gate 10 seksi penjaga, 183 dokumen langkah.
+## Urutan blok
+### Fase 0 -- M0 MASUK (prasyarat)
+- F-1: migrasi skema: jalur (kode_J, bukti, terbukti_bisa_tulis, waktu_uji), berkas_rea
+  (provenance + sha256), blok (asli + normalisasi), page, change_event, status_check.
+  Terima: tabel ada, idempoten.
+- F-2: urai berkas REA (JSON/CSV/MD, deteksi dari isi, blok tetap, alias, simpan asli).
+  Terima: terurai tanpa menebak; field wajib hilang ditandai.
+- F-3: uji tulis jalur: tulis penanda -> baca ulang -> hapus, catat ke tabel jalur.
+  Terima: minimal satu jalur (waspadaweb J5) tercatat terbukti_bisa_tulis + bukti.
 
-## Backlog berurut (tiap blok = satu langkah tutup penuh)
-Aturan tiap blok: patch ber-assert, bukti di docs/evidence/S-<n>.txt, gate lulus, commit
-lewat tools/tutup.sh. Kriteria terima ditulis di akhir tiap blok.
+### Fase 1 -- M3 BUNUH (batas 2 blok; kalau lewat, lompat ke Fase 2)
+- F-4: 404 di satu halaman waspadaweb + penanda + snapshot + verifikasi 2 vantage.
+- F-5: 410 di halaman itu, penanda, verifikasi ulang 2x dari 2 vantage.
+- F-6: rollback teruji + idempoten (eksekusi kedua tidak mengubah apa pun).
 
-### Modul 1 -- Registry Parasite SEO (lokal, tanpa API)
-- B-1: petakan HALAMAN per host (pakai tools/scrape.py yang sudah ada), isi registri level
-  url + jenis penempatan. Terima: registri memuat url halaman, bukan hanya host.
-- B-2: metrik registry (lifespan, equity terlantar, biaya per sitasi, hit rate 90 hari),
-  tiap metrik berlabel sumber di tabel metrik. Terima: nilai terisi, bukan 'tanpa_sumber'.
-- B-3: panel Registry (tabel + filter + ekspor) meniru pola ekspor.js. Terima: rute +
-  halaman + ekspor CSV berjalan, gate memeriksa rutenya.
-- B-4: heatmap host + alert (pakai /api/putaran dan /api/monitoring). Terima: heatmap
-  tampil; alert muncul saat status host jatuh.
+### Fase 2 -- M1 + M2 GANTI (INTI TUJUAN)
+- F-7: M1 ambil konten donor (fetch, hash, simpan mentah, buang boilerplate).
+- F-8: M2 pasang di target dengan penanda, dry-run dulu, snapshot nilai lama, rollback.
+- F-9: verifikasi dari luar: penanda muncul di URL target; idempoten.
 
-### Modul 4 -- Prune Manager (lokal)
-- B-5: mesin skor KEEP/301/410/404 dari sinyal (status konten, tautan masuk, duplikat,
-  kedalaman) + tabel keputusan. Terima: skor bisa dihitung ulang dan diuji.
-- B-6: antrean bulk + eksekusi bertahap lewat driver + audit. Terima: dry-run dulu, lalu
-  terapkan sebagian, semua tercatat.
-- B-7: rollback + laporan sebelum/sesudah equity. Terima: satu perintah mengembalikan
-  keadaan sebelum.
+### Fase 3 -- perluas
+- F-10..F-12: target lain, template, sub-halaman.
 
-### Modul 5 -- Link Rot Monitor (lokal)
-- B-8: rot tautan keluar: ambil tautan dari tabel tautan, probe, tulis baris bukti.
-  Terima: tautan mati terdaftar dengan bukti.
-- B-9: pipeline reklamasi + template outreach (tabel + panel). Terima: status pipeline
-  berubah dan terekam.
-- B-10: grafik tren + metrik equity hangus. Terima: grafik tampil dari data nyata.
+### Fase 4 -- bukti & pemantauan
+- F-13: ekspor bukti siap pihak ketiga (status sebelum/sesudah, hash, header, curl luar,
+  waktu UTC, vantage, SHA-256).
+- F-14..F-16: pemantauan, link rot, registry parasite.
+- F-17: systemd + Let's Encrypt + firewall + backup terjadwal.
 
-### Modul 3 -- URL Hijacking Radar (butuh sumber SERP)
-- B-11 [LOKAL]: simhash halaman + deteksi kemiripan <30% + cek canonical. Terima: pasangan mirip
-  terdeteksi.
-- B-12 [BUTUH SERP]: penilaian pemegang SERP + peta sengketa + alert.
+## Target uji
+waspadaweb.com lebih dulu. Kalau GANTI dan BUNUH belum terbukti di situ, jangan lanjut.
 
-### Modul 2 -- Content Replacement Monitor (butuh sumber peringkat)
-- B-13 [LOKAL]: snapshot konten + simhash + kata kunci sebelum/sesudah + tanggal perubahan.
-- B-14 [BUTUH PERINGKAT]: delta peringkat 7/14/30 hari + tanda tidakcocokan + diff viewer.
+## Perkiraan
+13-17 blok, 4-6 sesi. Fase 0 dan 1 (F-1..F-6) yang menentukan.
 
-### Lintas modul
-- B-15: halaman ringkasan 5 metrik + angka bisa diklik (drilldown).
-- B-16: alert email/webhook (DoD #6) + README setup/kredensial/rollback (DoD #7).
+## Sumber data (koreksi)
+GSC TIDAK BISA dipakai (butuh verifikasi kepemilikan). Pakai Ahrefs/Semrush/Moz/
+Open PageRank/Common Crawl.
 
-## Keputusan yang menunggu pemilik proyek
-- Sumber posisi SERP: Google Search Console API (gratis, perlu OAuth) atau Brave Search API.
-- Sumber backlink: Brave Search API atau layanan berbayar.
-Tanpa keputusan ini, B-11..B-14 tetap tertahan; B-1..B-10 dan B-15..B-16 bisa jalan.
-
-Sumber data SERP/backlink: docs/DATA-SUMBER.md (disusun S-210).
-
-## Titik mulai untuk sesi berikutnya
-Mulai dari B-1. Bacaan wajib: docs/RENCANA-GOAL.md ini, docs/SISA-KERJA.md, dan
-docs/SKILL-AGENT-HESTIA.md. Jangan membangun ulang apa pun di bagian "Yang SUDAH ada".
+## Titik mulai
+Mulai dari F-1. Bacaan wajib: PROLOG, GOAL, SKILL, SISA-KERJA.
 
 ## Inventaris yang sudah ada (diperiksa S-204)
 

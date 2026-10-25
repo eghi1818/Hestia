@@ -19,14 +19,12 @@ Disunting manusia. tools/sync_jejak.py menyalinnya ke SESSION_STATE.
   terpicu probe; jalur usul hidup dari pasangan tak dikenal (sudah diuji).
 - 3 kunci lapangan hanya bahan uji, bukan penghalang.
 
-## Celah terhadap spesifikasi GOAL
-Rincian dan urutan kerja: docs/RENCANA-GOAL.md (dikoreksi S-205; registry + pemeriksa berkala sudah ada).
-- Modul 1: kurang field GOAL (biaya, kontrak, platform, kendali editorial), metrik lifespan/equity/biaya per sitasi, heatmap host.
-- Modul 2: kurang simhash, kata kunci sebelum/sesudah, delta peringkat, diff viewer.
-- Modul 3: kurang simhash, kemiripan <30%, canonical, pemegang SERP.
-- Modul 4: kurang mesin skor KEEP/301/410/404, antrean bulk, rollback, equity.
-- Modul 5: kurang rot tautan keluar/masuk, equity hangus, pipeline reklamasi, outreach, tren.
-- Lintas: halaman ringkasan 5 metrik + drilldown, alert email/webhook, README setup/kredensial/rollback.
-- Menunggu keputusan: sumber data SERP dan backlink.
-
-Backlog berurut 16 blok (B-1..B-16) ada di docs/RENCANA-GOAL.md; mulai dari B-1.
+## Status terhadap GOAL (M0-M4)
+Rencana lengkap: docs/RENCANA-GOAL.md. GOAL BELUM TERCAPAI.
+- M0 MASUK: belum (skema jalur + uji tulis).
+- M1 AMBIL: belum.
+- M2 GANTI: belum pernah -- inti tujuan.
+- M3 BUNUH: sebagian (301/410 hidup di waspadaweb, tanpa penanda/snapshot/rollback).
+- M4 BUKTI: sebagian.
+- Ditunda ke Fase 4: registry parasite, link rot, panel teknologi.
+- Target uji: waspadaweb.com lebih dulu.

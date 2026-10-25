@@ -1,0 +1,13 @@
+S-212 - GOAL diperbarui: rencana dipetakan ulang ke M0-M4 dan Fase 0-4
+
+masalah: GOAL baru membingkai ulang tujuan menjadi M0-M4 dengan dua kemampuan inti
+(K1 GANTI, K2 BUNUH), dan melarang membangun monitoring dulu. Rencana lama masih memakai
+"5 modul SEO", sehingga prioritas salah.
+
+perubahan: docs/GOAL-Hestia-SEO.md dan docs/SKILL-AGENT-HESTIA.md diperbarui;
+docs/PROLOG-HESTIA-DASHBOARD.md ditambahkan; gate memeriksa PROLOG; RENCANA-GOAL.md
+ditulis ulang dengan status jujur per modul, urutan Fase 0-4, target waspadaweb lebih dulu,
+koreksi GSC; SISA-KERJA diselaraskan.
+
+bukti: dokumen spec versi baru ada di repo; rencana memuat tabel status yang menyatakan
+M2 GANTI BELUM PERNAH dan GOAL BELUM TERCAPAI.

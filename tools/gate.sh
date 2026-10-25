@@ -132,7 +132,7 @@ else
 fi
 
 echo "== gate: dokumen spec =="
-for f in docs/GOAL-Hestia-SEO.md docs/SKILL-AGENT-HESTIA.md docs/PROMPT-TAMBAHAN-AGENT-DASHBOARD.md; do
+for f in docs/PROLOG-HESTIA-DASHBOARD.md docs/GOAL-Hestia-SEO.md docs/SKILL-AGENT-HESTIA.md docs/PROMPT-TAMBAHAN-AGENT-DASHBOARD.md; do
   if [ -f "$f" ]; then echo "  ok      $f"; else echo "  KURANG  $f"; fail=1; fi
 done
 
