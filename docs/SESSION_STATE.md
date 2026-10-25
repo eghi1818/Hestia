@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-25 20:05.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-25 20:07.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 4f92a12 S-224 F-5/F-6: BUNUH 410 + idempoten dan rollback teruji
-branch: main | kotor: D docs/steps/S-224.md
-rute app/main.py: 75 | berkas bukti: 119 | dokumen langkah: 192
+HEAD: 12529e1 S-225 F-7: mesin pengambil donor (M1 AMBIL)
+branch: main | kotor: D docs/steps/S-225.md
+rute app/main.py: 75 | berkas bukti: 120 | dokumen langkah: 192
 
 ## 12 commit terakhir
 
 ```
+12529e1 S-225 F-7: mesin pengambil donor (M1 AMBIL)
+3dd8106 S-224 F-5/F-6: BUNUH 410 + idempoten dan rollback teruji [jejak]
 4f92a12 S-224 F-5/F-6: BUNUH 410 + idempoten dan rollback teruji
 576bd89 S-223 F-4b: reload nginx lewat host, BUNUH 404 terbukti [jejak]
 4b2f840 S-223 F-4b: reload nginx lewat host, BUNUH 404 terbukti
@@ -20,8 +22,6 @@ d5ee9f2 S-221 F-3c: perbaiki pembaca publik (UA), jalur J5 terbukti menulis
 4003715 S-220 F-3b: diagnosa 403 baca publik, chmod 644 penanda [jejak]
 37e9c07 S-220 F-3b: diagnosa 403 baca publik, chmod 644 penanda
 b8bd036 S-219 F-3: uji tulis jalur waspadaweb J5 dengan penanda [jejak]
-7410e97 S-219 F-3: uji tulis jalur waspadaweb J5 dengan penanda
-8acc50f S-218 F-2c: tutup kebocoran stub dokumen langkah [jejak]
 ```
 
 ## SISA KERJA
