@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-25 11:17.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-25 11:20.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: ad1f56a S-213: GOAL baru dijadikan landasan di onboarding, SOP, README, dan gate
-branch: main | kotor: M docs/steps/S-213.md
-rute app/main.py: 75 | berkas bukti: 107 | dokumen langkah: 187
+HEAD: cf42fb7 S-214: tuntaskan S-211 (VPS.md), selaraskan dokumen ke F-blok
+branch: main | kotor: M docs/steps/S-214.md
+rute app/main.py: 75 | berkas bukti: 109 | dokumen langkah: 189
 
 ## 12 commit terakhir
 
 ```
+cf42fb7 S-214: tuntaskan S-211 (VPS.md), selaraskan dokumen ke F-blok
+7fcca2a S-213: GOAL baru dijadikan landasan di onboarding, SOP, README, dan gate [jejak]
 ad1f56a S-213: GOAL baru dijadikan landasan di onboarding, SOP, README, dan gate
 31b6e46 S-212: GOAL baru, rencana dipetakan ulang ke M0-M4 Fase 0-4 [jejak]
 131a9a5 S-212: GOAL baru, rencana dipetakan ulang ke M0-M4 Fase 0-4
@@ -20,8 +22,6 @@ ac58b4c S-209: backlog 16 blok ditulis, sesi berikutnya mulai dari B-1 [jejak]
 c57e29b S-208: Modul 1 langkah 2, registri diisi dari tautan dan kandidat [jejak]
 42f3a50 S-208: Modul 1 langkah 2, registri diisi dari tautan dan kandidat
 1e7cd85 S-207: perbaiki catatan versi migrasi fase2 [jejak]
-bf657b1 S-207: perbaiki catatan versi migrasi fase2
-81047d0 S-206: Modul 1 langkah 1, tabel registri sesuai GOAL [jejak]
 ```
 
 ## SISA KERJA
