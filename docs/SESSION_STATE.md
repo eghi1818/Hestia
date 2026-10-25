@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-25 08:40.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-25 11:14.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: a97e648 S-210: kebutuhan data SERP/backlink dirinci, backlog ditandai lokal vs API
-branch: main | kotor: M docs/steps/S-210.md
-rute app/main.py: 75 | berkas bukti: 105 | dokumen langkah: 185
+HEAD: 131a9a5 S-212: GOAL baru, rencana dipetakan ulang ke M0-M4 Fase 0-4
+branch: main | kotor: M docs/steps/S-212.md
+rute app/main.py: 75 | berkas bukti: 106 | dokumen langkah: 186
 
 ## 12 commit terakhir
 
 ```
+131a9a5 S-212: GOAL baru, rencana dipetakan ulang ke M0-M4 Fase 0-4
+fe473ec S-210: kebutuhan data SERP/backlink dirinci, backlog ditandai lokal vs API [jejak]
 a97e648 S-210: kebutuhan data SERP/backlink dirinci, backlog ditandai lokal vs API
 ac58b4c S-209: backlog 16 blok ditulis, sesi berikutnya mulai dari B-1 [jejak]
 4642a22 S-209: backlog 16 blok ditulis, sesi berikutnya mulai dari B-1
@@ -20,8 +22,6 @@ bf657b1 S-207: perbaiki catatan versi migrasi fase2
 81047d0 S-206: Modul 1 langkah 1, tabel registri sesuai GOAL [jejak]
 fe12cd5 S-206: Modul 1 langkah 1, tabel registri sesuai GOAL
 8f032f7 S-206: Modul 1 langkah 1, tabel registri sesuai GOAL [jejak]
-14f8f9b S-206: Modul 1 langkah 1, tabel registri sesuai GOAL
-9877517 S-205: rencana GOAL dikoreksi setelah inventaris S-204 [jejak]
 ```
 
 ## SISA KERJA
@@ -47,17 +47,15 @@ Disunting manusia. tools/sync_jejak.py menyalinnya ke SESSION_STATE.
   terpicu probe; jalur usul hidup dari pasangan tak dikenal (sudah diuji).
 - 3 kunci lapangan hanya bahan uji, bukan penghalang.
 
-## Celah terhadap spesifikasi GOAL
-Rincian dan urutan kerja: docs/RENCANA-GOAL.md (dikoreksi S-205; registry + pemeriksa berkala sudah ada).
-- Modul 1: kurang field GOAL (biaya, kontrak, platform, kendali editorial), metrik lifespan/equity/biaya per sitasi, heatmap host.
-- Modul 2: kurang simhash, kata kunci sebelum/sesudah, delta peringkat, diff viewer.
-- Modul 3: kurang simhash, kemiripan <30%, canonical, pemegang SERP.
-- Modul 4: kurang mesin skor KEEP/301/410/404, antrean bulk, rollback, equity.
-- Modul 5: kurang rot tautan keluar/masuk, equity hangus, pipeline reklamasi, outreach, tren.
-- Lintas: halaman ringkasan 5 metrik + drilldown, alert email/webhook, README setup/kredensial/rollback.
-- Menunggu keputusan: sumber data SERP dan backlink.
-
-Backlog berurut 16 blok (B-1..B-16) ada di docs/RENCANA-GOAL.md; mulai dari B-1.
+## Status terhadap GOAL (M0-M4)
+Rencana lengkap: docs/RENCANA-GOAL.md. GOAL BELUM TERCAPAI.
+- M0 MASUK: belum (skema jalur + uji tulis).
+- M1 AMBIL: belum.
+- M2 GANTI: belum pernah -- inti tujuan.
+- M3 BUNUH: sebagian (301/410 hidup di waspadaweb, tanpa penanda/snapshot/rollback).
+- M4 BUKTI: sebagian.
+- Ditunda ke Fase 4: registry parasite, link rot, panel teknologi.
+- Target uji: waspadaweb.com lebih dulu.
 
 ## Cara melanjutkan
 
