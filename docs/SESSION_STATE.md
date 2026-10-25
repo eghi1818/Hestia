@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-25 11:32.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-25 11:38.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 4a44587 F-1: migrasi skema jalur dan tabel pendukung M0-M4
+HEAD: 50f6ae6 F-2: pengurai berkas REA (deteksi format dari isi, simpan asli + sha256)
 branch: main | kotor: (bersih)
-rute app/main.py: 75 | berkas bukti: 110 | dokumen langkah: 189
+rute app/main.py: 75 | berkas bukti: 111 | dokumen langkah: 189
 
 ## 12 commit terakhir
 
 ```
+50f6ae6 F-2: pengurai berkas REA (deteksi format dari isi, simpan asli + sha256)
+97eb838 F-1: migrasi skema jalur dan tabel pendukung M0-M4 [jejak]
 4a44587 F-1: migrasi skema jalur dan tabel pendukung M0-M4
 d7176cd S-214: tuntaskan S-211 (VPS.md), selaraskan dokumen ke F-blok [jejak]
 cf42fb7 S-214: tuntaskan S-211 (VPS.md), selaraskan dokumen ke F-blok
@@ -20,8 +22,6 @@ ad1f56a S-213: GOAL baru dijadikan landasan di onboarding, SOP, README, dan gate
 fe473ec S-210: kebutuhan data SERP/backlink dirinci, backlog ditandai lokal vs API [jejak]
 a97e648 S-210: kebutuhan data SERP/backlink dirinci, backlog ditandai lokal vs API
 ac58b4c S-209: backlog 16 blok ditulis, sesi berikutnya mulai dari B-1 [jejak]
-4642a22 S-209: backlog 16 blok ditulis, sesi berikutnya mulai dari B-1
-c57e29b S-208: Modul 1 langkah 2, registri diisi dari tautan dan kandidat [jejak]
 ```
 
 ## SISA KERJA
