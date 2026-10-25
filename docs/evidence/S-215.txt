@@ -1,0 +1,14 @@
+BLOK: F-1 (Fase 0, M0 MASUK) - migrasi skema jalur
+STATUS: lulus
+JALUR: belum menyentuh jalur; ini baru skemanya
+BUKTI: cadangan VACUUM INTO di data/backup + integrity_check ok + sha256 DDL dicatat di
+  skema_versi sebagai versi 'fase3'
+SNAPSHOT: data/backup/hestia-<cap>.db
+ROLLBACK: idempoten; menjalankan ulang aman, tidak menyentuh tabel lama
+IDEMPOTEN: dijalankan dua kali, catatan versi fase3 tetap satu baris
+YANG GAGAL: -
+
+Tabel yang dibuat: jalur (target_id, kode_J, bukti, terbukti_bisa_tulis, waktu_uji,
+cara_tulis), berkas_rea (provenance + sha256 + isi asli), blok (asli + normalisasi),
+page (url, status_http, penanda_ada, sha256_konten, vantage), change_event (jenis, jalur,
+nilai lama/baru, penanda), status_check (status_http, vantage, sha256_konten).
