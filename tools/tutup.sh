@@ -1,4 +1,12 @@
 #!/usr/bin/env bash
+# S-<n> otomatis: judul langkah wajib memuat S-<n> supaya dokumen langkah dan
+# pemeriksaan bukti selalu selaras, walau judul ditulis dengan penamaan F-<n>.
+if ! printf '%s' "${1:-}" | grep -qE 'S-[0-9]+'; then
+  _s=$(git log --oneline --pretty=%s 2>/dev/null | grep -oE 'S-[0-9]+' | grep -oE '[0-9]+' | sort -n | tail -1)
+  _s=$(( ${_s:-0} + 1 ))
+  set -- "S-$_s ${1:-}"
+fi
+
 # HESTIA - tutup langkah: gate -> commit -> push -> segarkan. Commit HARUS terakhir.
 set -u
 cd "$(dirname "$0")/.." || exit 1

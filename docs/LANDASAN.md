@@ -55,3 +55,8 @@ Kalau gagal: jangan lanjut, kirim keluaran mentahnya.
 ## Berkas pendukung
 - docs/DATA-SUMBER.md  -- SERP/backlink (GSC tidak bisa dipakai)
 - docs/VPS.md          -- rencana pindah VPS (systemd, Let's Encrypt)
+
+## Konvensi judul langkah
+Setiap blok ditutup dengan: bash tools/tutup.sh "S-<n> F-<m>: <ringkas>"
+Nomor S wajib ada di judul supaya dokumen langkah dan pemeriksaan bukti selaras.
+Contoh: bash tools/tutup.sh "S-218 F-3: uji tulis jalur waspadaweb J5"

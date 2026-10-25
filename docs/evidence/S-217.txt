@@ -1,0 +1,16 @@
+BLOK: S-217 (rapikan konvensi penomoran langkah)
+STATUS: lulus
+JALUR: belum menyentuh jalur
+BUKTI: dokumen langkah S-215 dan S-216 ditulis menyusul; tutup.sh kini menomori otomatis
+SNAPSHOT: -
+ROLLBACK: hapus blok penomoran di tutup.sh bila bermasalah
+IDEMPOTEN: blok penomoran hanya menambah S-<n> bila judul belum memuatnya
+YANG GAGAL: -
+
+masalah: F-1 dan F-2 ditutup dengan judul "F-1: ..." dan "F-2: ..." sehingga tutup.sh tidak
+mengenali nomor langkah; akibatnya "dokumen langkah ditulis: tidak ada" dan gate memeriksa
+bukti langkah S-214, bukan langkah yang sedang dikerjakan.
+
+perubahan: tutup.sh menyisipkan S-<n> otomatis (n = S terakhir di git log + 1) bila judul
+belum memuatnya; docs/steps/S-215.md dan S-216.md ditulis menyusul; konvensi judul dicatat
+di docs/LANDASAN.md.
