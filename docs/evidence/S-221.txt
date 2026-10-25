@@ -1,0 +1,13 @@
+BLOK: S-221 / F-3c (Fase 0, M0 MASUK) - perbaiki pembaca publik (User-Agent) dan buktikan ulang
+STATUS: (lihat keluaran)
+JALUR: J5 (ssh -> lxc hx -> /mnt/host/var/www/waspadaweb)
+BUKTI: penanda + sha256, dibaca dari 2 vantage (lxc dan publik dengan UA wajar), baris bukti ditulis
+SNAPSHOT: penanda dihapus sesudah uji
+ROLLBACK: rm -f penanda
+IDEMPOTEN: nonce baru tiap jalan; jalur memakai insert or replace
+YANG GAGAL: -
+
+akar masalah 403: bukan mode berkas (sudah 644 root:root, docroot 755) melainkan Cloudflare
+menolak User-Agent bawaan python-urllib; curl -I membalas 200 dengan content-length 52.
+perbaikan: baca_publik memakai header User-Agent (HESTIA_UA); path conf di cek diperbaiki ke
+/mnt/host/etc/nginx/...; temuan dicatat di docs/CATATAN-LAPANGAN.md.

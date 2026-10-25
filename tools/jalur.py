@@ -14,7 +14,7 @@ import subprocess
 import sys
 import time
 from pathlib import Path
-from urllib.request import urlopen
+from urllib.request import Request, urlopen
 
 AKAR = Path(__file__).resolve().parents[1]
 DB = AKAR / "data" / "hestia.db"
@@ -56,9 +56,15 @@ def jalankan(perintah_host):
     return None, ""
 
 
-def baca_publik(url):
+UA = os.environ.get("HESTIA_UA", "Mozilla/5.0 (Hestia uji-jalur) Hestia/1.0")
+
+
+def baca_publik(url, ua=None):
+    """Baca dari luar. User-Agent penting: Cloudflare menolak UA bawaan python-urllib."""
     try:
-        with urlopen(url, timeout=20) as r:
+        req = Request(url, headers={"User-Agent": ua or UA, "Accept": "*/*",
+                                    "Cache-Control": "no-cache"})
+        with urlopen(req, timeout=20) as r:
             return r.status, r.read().decode("utf-8", "replace")
     except Exception as e:
         return getattr(e, "code", 0), ""
@@ -124,7 +130,7 @@ def uji(target_id, kode_j="J5", docroot="/var/www/waspadaweb", url_publik=None, 
 
     status, badan = baca_publik(url)
     ok_pub = status == 200 and isi in badan
-    print("baca publik :", "cocok (%s)" % status if ok_pub else "TIDAK cocok (status %s)" % status)
+    print("baca publik :", ("cocok (%s, UA %s)" % (status, UA[:34])) if ok_pub else "TIDAK cocok (status %s)" % status)
     if not ok_pub:
         gagal.append("publik")
 
@@ -152,7 +158,7 @@ def cek(docroot, url):
     print("ls docroot :", (jalankan("ls -ld %s" % ("%s%s" % (AKAR_HOST, docroot)))[1] or "").strip())
     print("ls berkas  :", (jalankan("ls -l %s" % berkas)[1] or "").strip() or "(tidak ada)")
     print("worker user:", (jalankan("ps aux | grep -m1 '[n]ginx' | awk '{print $1}'")[1] or "").strip())
-    for f in ("/etc/nginx/sites-enabled/waspadaweb.com", "/etc/nginx/sites-available/waspadaweb.com"):
+    for f in ("%s/etc/nginx/sites-enabled/waspadaweb.com" % AKAR_HOST, "%s/etc/nginx/sites-available/waspadaweb.com" % AKAR_HOST):
         o = (jalankan("test -f %s && grep -n 'root\|location\|\.txt\|deny' %s | head -20" % (f, f))[1] or "").strip()
         print("--- %s" % f)
         print(o[:700] or "(tidak ada)")
