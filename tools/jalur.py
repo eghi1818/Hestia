@@ -1,106 +1,167 @@
 #!/usr/bin/env python3
-"""Cari webserver sebenarnya dan jalur tulis tanpa sandi di host yang melayani domain target."""
+"""Uji tulis jalur (blok F-3 / M0 MASUK).
+
+Menulis penanda ke docroot target lewat jalur SSH -> lxc -> host root (J5), membaca ulang
+dari dua vantage (lxc dan publik), lalu menghapus penanda. Hasil dicatat ke tabel jalur,
+page, status_check, change_event, dan bukti.
+"""
+import argparse
+import hashlib
+import json
+import os
+import sqlite3
 import subprocess
 import sys
+import time
 from pathlib import Path
+from urllib.request import urlopen
 
-CFG = Path.home() / ".ssh" / "config"
+AKAR = Path(__file__).resolve().parents[1]
+DB = AKAR / "data" / "hestia.db"
 
-REMOTE = (
-    'echo "== proses-web =="; ps -eo user,pid,args | grep -Ei "nginx|apache|lsws|litespeed|caddy|httpd|php-fpm|panel" | grep -v grep | head -20; '
-    'echo "== porta-dengar =="; ss -lntp 2>/dev/null | head -25; '
-    'echo "== usr-local =="; ls /usr/local 2>/dev/null; '
-    'echo "== kandidat-konfig =="; ls -d /etc/nginx /etc/nginx/conf.d /etc/nginx/sites-enabled /etc/apache2/sites-enabled /usr/local/lsws/conf /usr/local/lsws/conf/vhosts /etc/caddy /etc/openlitespeed 2>/dev/null; '
-    'echo "== cari-vhost =="; grep -rhn -m2 -E "server_name|DocumentRoot|docroot|root " /etc/nginx /usr/local/lsws/conf /etc/apache2 /etc/caddy 2>/dev/null | head -25; '
-    'echo "== var-www =="; ls -la /var/www 2>/dev/null; '
-    'echo "== docroot =="; ls -la /var/www/waspadaweb 2>/dev/null; '
-    'echo "== bisa-ditulis =="; find /var/www -maxdepth 4 -writable 2>/dev/null | head -15; '
-    'echo "== skrip-bisa-ditulis =="; find /etc /usr/local /opt /srv -maxdepth 3 -name "*.sh" -writable 2>/dev/null | head -15; '
-    'echo "== crontab-sistem =="; cat /etc/crontab 2>/dev/null; ls -la /etc/cron.d 2>/dev/null; cat /etc/cron.d/* 2>/dev/null | head -20; '
-    'echo "== crontab-user =="; crontab -l 2>/dev/null; '
-    'echo "== systemd-kustom =="; ls /etc/systemd/system/*.service 2>/dev/null; grep -h -E "ExecStart|WorkingDirectory" /etc/systemd/system/*.service 2>/dev/null | head -20; '
-    'echo "== grup =="; id; getent group sudo adm docker www-data 2>/dev/null; '
-    'echo "== setuid =="; find / -maxdepth 4 -perm -4000 -type f 2>/dev/null | head -15; '
-    'echo "== firewall =="; (ufw status 2>/dev/null || iptables -S 2>/dev/null) | head -12; '
-    'echo "== home =="; ls -la /home 2>/dev/null; '
-    'echo "== root-ssh =="; ls -la /root/.ssh 2>/dev/null; '
-    'echo "== php-fpm =="; ls -la /etc/php/*/fpm/pool.d 2>/dev/null; '
-    'echo "== sudo-n =="; sudo -n -l 2>&1 | head -8'
-)
+VPS = os.environ.get("HESTIA_VPS", "administrator@93.127.133.160")
+PORT = os.environ.get("HESTIA_VPS_PORT", "10053")
+KUNCI = os.environ.get("HESTIA_VPS_KEY", str(Path.home() / ".ssh" / "wesearch_vps_key"))
+KONTAINER = os.environ.get("HESTIA_LCX", "hx")
+AKAR_HOST = os.environ.get("HESTIA_HOST_ROOT", "/mnt/host")
 
 
-def blok():
-    if not CFG.exists():
-        return []
-    hasil, kini = [], None
-    for baris in CFG.read_text(errors="ignore").splitlines():
-        b = baris.strip()
-        if b.lower().startswith("host ") and not b.lower().startswith("hostname"):
-            if kini:
-                hasil.append(kini)
-            kini = {"alias": b.split(None, 1)[1].strip(), "hostname": "", "port": "22", "key": "", "user": ""}
-        elif kini is not None and b and not b.startswith("#"):
-            k, _, v = b.partition(" ")
-            k, v = k.strip().lower(), v.strip()
-            if k == "hostname":
-                kini["hostname"] = v
-            elif k == "port":
-                kini["port"] = v
-            elif k == "identityfile":
-                kini["key"] = v
-            elif k == "user":
-                kini["user"] = v
-    if kini:
-        hasil.append(kini)
-    return hasil
+def shq(s):
+    return "'" + s.replace("'", "'\\''") + "'"
 
 
-def main():
-    if len(sys.argv) < 2:
-        print("pakai: jalur.py <domain>")
-        return 2
-    target = sys.argv[1]
-    akar = target.split(".")[0]
-    for b in blok():
-        if not b["hostname"]:
-            continue
-        key = Path(b["key"].replace("~", str(Path.home())))
-        if not key.exists():
-            continue
-        user = b["user"] or ("wesearch" if "wesearch" in b["alias"] else b["alias"])
+def ssh(perintah_remote, waktu=25):
+    dasar = ["ssh", "-i", KUNCI, "-p", PORT, "-o", "BatchMode=yes",
+             "-o", "StrictHostKeyChecking=accept-new",
+             "-o", "ConnectTimeout=%d" % waktu, VPS, perintah_remote]
+    return subprocess.run(dasar, capture_output=True, text=True, timeout=waktu + 15)
+
+
+def rantai(perintah_host):
+    """kandidat rantai; dipilih yang berhasil saat dipakai"""
+    return [
+        ("lxc", "lxc exec %s -- sh -c %s" % (KONTAINER, shq(perintah_host))),
+        ("sudo-lxc", "sudo lxc exec %s -- sh -c %s" % (KONTAINER, shq(perintah_host))),
+    ]
+
+
+def jalankan(perintah_host):
+    for nama, cmd in rantai(perintah_host):
         try:
-            r = subprocess.run(["ssh", "-i", str(key), "-p", b["port"],
-                                "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=accept-new",
-                                "-o", "ConnectTimeout=8", "%s@%s" % (user, b["hostname"]), REMOTE],
-                               capture_output=True, text=True, timeout=90)
-        except Exception as e:
-            print("ssh %s gagal: %r" % (b["alias"], e))
+            h = ssh(cmd)
+        except subprocess.TimeoutExpired:
             continue
-        keluar = (r.stdout or "") + (r.stderr or "")
-        if akar not in keluar and "/var/www" not in keluar:
-            print("--- %s tidak menyebut target, dilewati" % b["alias"])
-            continue
-        print("### host=%s porta=%s user=%s" % (b["hostname"], b["port"], user))
-        for l in keluar.splitlines():
-            print(l)
-        tulis, skrip, bagian = [], [], ""
-        for l in keluar.splitlines():
-            if l.startswith("== "):
-                bagian = l.strip()
-                continue
-            if not l.strip():
-                continue
-            if bagian == "== bisa-ditulis ==":
-                tulis.append(l)
-            elif bagian == "== skrip-bisa-ditulis ==":
-                skrip.append(l)
-        print("RINGKAS: bisa-ditulis=%d skrip-bisa-ditulis=%d" % (len(tulis), len(skrip)))
-        if not tulis and not skrip:
-            print("JALUR TANPA SANDI: TIDAK ADA -> sandi sudo wajib")
-        else:
-            print("JALUR TANPA SANDI: MUNGKIN -> periksa daftar di atas")
+        if h.returncode == 0:
+            return nama, h.stdout
+    return None, ""
+
+
+def baca_publik(url):
+    try:
+        with urlopen(url, timeout=20) as r:
+            return r.status, r.read().decode("utf-8", "replace")
+    except Exception as e:
+        return getattr(e, "code", 0), ""
+
+
+def catat(conn, target_id, kode_j, url, isi, sha, vantage_ok, vantage_gagal, cara):
+    cap = time.strftime("%Y-%m-%dT%H:%M:%S")
+    conn.execute(
+        "insert or replace into jalur (target_id,kode_J,bukti,terbukti_bisa_tulis,waktu_uji,cara_tulis,catatan,diperbarui)"
+        " values (?,?,?,?,?,?,?,?)",
+        (target_id, kode_j, "%s sha256=%s" % (url, sha), 1 if not vantage_gagal else 0,
+         cap, cara, "uji tulis penanda; gagal: %s" % (",".join(vantage_gagal) or "-"), cap))
+    conn.execute("insert or ignore into page (target_id,url,dibuat_dummy) values (?,?,?)"
+                 if False else
+                 "insert or ignore into page (target_id,url) values (?,?)", (target_id, url))
+    pid = conn.execute("select id from page where target_id=? and url=?", (target_id, url)).fetchone()[0]
+    conn.execute("update page set status_http=?, sha256_konten=?, penanda_ada=?, diambil=?, vantage=? where id=?",
+                 (200 if not vantage_gagal else 0, sha, 1 if not vantage_gagal else 0, cap,
+                  "lxc+publik", pid))
+    for vantage, ok in (("lxc", "lxc" not in vantage_gagal), ("publik", "publik" not in vantage_gagal)):
+        conn.execute("insert into status_check (page_id,url,status_http,vantage,sha256_konten,waktu)"
+                     " values (?,?,?,?,?,?)", (pid, url, 200 if ok else 0, vantage, sha, cap))
+    for vantage, ok in (("lxc", "lxc" not in vantage_gagal), ("publik", "publik" not in vantage_gagal)):
+        conn.execute("insert into bukti (mata,metode,verdict,nilai,sha256,keterangan,waktu)"
+                     " values (?,?,?,?,?,?,?)",
+                     (1, "uji-tulis-jalur", "lulus" if ok else "gagal", vantage, sha,
+                      json.dumps({"target_id": target_id, "kode_j": kode_j, "url": url,
+                                  "vantage": vantage, "cara": cara}), cap))
+    conn.execute("insert into change_event (target_id,page_id,jenis,jalur,nilai_baru,penanda,vantage,waktu)"
+                 " values (?,?,?,?,?,?,?,?)",
+                 (target_id, pid, "uji-tulis", kode_j, url, sha, "lxc+publik", cap))
+    conn.commit()
+
+
+def uji(target_id, kode_j="J5", docroot="/var/www/waspadaweb", url_publik=None, bersihkan=True):
+    nonce = os.urandom(6).hex()
+    cap = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    isi = "hestia-penanda %s %s %s" % (target_id, nonce, cap)
+    sha = hashlib.sha256(isi.encode("utf-8")).hexdigest()
+    berkas_host = "%s%s/hestia-penanda.txt" % (AKAR_HOST, docroot)
+    url = url_publik or ("https://waspadaweb.com/hestia-penanda.txt")
+
+    print("penanda:", isi)
+    print("sha256 :", sha[:16])
+
+    perintah_tulis = 'echo "%s" > %s' % (isi, berkas_host)
+    cara, _ = jalankan(perintah_tulis)
+    print("tulis  :", cara or "GAGAL SEMUA RANTAI")
+    if not cara:
+        return 1
+
+    gagal = []
+    _, keluaran = jalankan("cat %s" % berkas_host)
+    ok_lxc = isi in keluaran
+    print("baca lxc    :", "cocok" if ok_lxc else "TIDAK cocok")
+    if not ok_lxc:
+        gagal.append("lxc")
+
+    status, badan = baca_publik(url)
+    ok_pub = status == 200 and isi in badan
+    print("baca publik :", "cocok (%s)" % status if ok_pub else "TIDAK cocok (status %s)" % status)
+    if not ok_pub:
+        gagal.append("publik")
+
+    with sqlite3.connect(DB) as conn:
+        catat(conn, target_id, kode_j, url, isi, sha, [], gagal, cara)
+
+    if bersihkan:
+        jalankan("rm -f %s" % berkas_host)
+        status2, _ = baca_publik(url)
+        print("hapus       : selesai, baca ulang status", status2)
+        with sqlite3.connect(DB) as conn:
+            conn.execute("update jalur set catatan=? where target_id=? and kode_J=?",
+                         ("penanda dihapus; baca ulang status %s" % status2, target_id, kode_j))
+            conn.commit()
+
+    if gagal:
+        print("HASIL: GAGAL pada vantage", ",".join(gagal))
+        return 1
+    print("HASIL: LULUS, jalur %s terbukti bisa menulis" % kode_j)
     return 0
 
 
+def daftar():
+    with sqlite3.connect(DB) as c:
+        for r in c.execute("select target_id,kode_J,terbukti_bisa_tulis,waktu_uji,cara_tulis from jalur order by target_id"):
+            print("  ", r)
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    sub = ap.add_subparsers(dest="cmd", required=True)
+    u = sub.add_parser("uji")
+    u.add_argument("--target-id", type=int, required=True)
+    u.add_argument("--kode", default="J5")
+    u.add_argument("--docroot", default="/var/www/waspadaweb")
+    u.add_argument("--url")
+    sub.add_parser("daftar")
+    a = ap.parse_args()
+    if a.cmd == "uji":
+        sys.exit(uji(a.target_id, a.kode, a.docroot, a.url))
+    daftar()
+
+
 if __name__ == "__main__":
-    sys.exit(main())
+    main()

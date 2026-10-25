@@ -1,0 +1,11 @@
+BLOK: S-219 / F-3 (Fase 0, M0 MASUK) - uji tulis jalur dengan penanda
+STATUS: (lihat keluaran)
+JALUR: J5 (ssh -> lxc hx -> host root /mnt/host)
+BUKTI: penanda "hestia-penanda <target> <nonce> <UTC>" + sha256, dibaca dari 2 vantage (lxc dan publik), baris bukti ditulis
+SNAPSHOT: penanda dihapus sesudah uji; isi penanda tercatat di keterangan bukti
+ROLLBACK: rm -f penanda; tabel jalur memakai insert or replace
+IDEMPOTEN: nonce baru tiap jalan, baris jalur diganti bukan ditambah
+YANG GAGAL: lihat vantage gagal pada keluaran
+
+Aturan GOAL yang dipatuhi: bukti = penanda; baca dari luar (publik) bukan hanya dari dalam;
+dicatat ke tabel jalur sebagai terbukti_bisa_tulis.
