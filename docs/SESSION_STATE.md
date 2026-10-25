@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-25 19:59.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-25 20:02.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 480b775 S-222 F-4: BUNUH 404 halaman uji lewat jalur J5, snapshot + rollback
-branch: main | kotor: D docs/steps/S-222.md
-rute app/main.py: 75 | berkas bukti: 117 | dokumen langkah: 192
+HEAD: 4b2f840 S-223 F-4b: reload nginx lewat host, BUNUH 404 terbukti
+branch: main | kotor: D docs/steps/S-223.md
+rute app/main.py: 75 | berkas bukti: 118 | dokumen langkah: 192
 
 ## 12 commit terakhir
 
 ```
+4b2f840 S-223 F-4b: reload nginx lewat host, BUNUH 404 terbukti
+ed36908 S-222 F-4: BUNUH 404 halaman uji lewat jalur J5, snapshot + rollback [jejak]
 480b775 S-222 F-4: BUNUH 404 halaman uji lewat jalur J5, snapshot + rollback
 3473304 S-221 F-3c: perbaiki pembaca publik (UA), jalur J5 terbukti menulis [jejak]
 d5ee9f2 S-221 F-3c: perbaiki pembaca publik (UA), jalur J5 terbukti menulis
@@ -20,8 +22,6 @@ b8bd036 S-219 F-3: uji tulis jalur waspadaweb J5 dengan penanda [jejak]
 8acc50f S-218 F-2c: tutup kebocoran stub dokumen langkah [jejak]
 45e509c S-218 F-2c: tutup kebocoran stub dokumen langkah
 191a521 S-217 F-2b: perbaiki konvensi penomoran langkah, rapikan dokumen S-215/S-216 [jejak]
-0e590a9 S-217 F-2b: perbaiki konvensi penomoran langkah, rapikan dokumen S-215/S-216
-11b00c1 F-2: pengurai berkas REA (deteksi format dari isi, simpan asli + sha256) [jejak]
 ```
 
 ## SISA KERJA
