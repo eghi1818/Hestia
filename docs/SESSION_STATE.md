@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-25 08:19.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-25 08:30.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: bf657b1 S-207: perbaiki catatan versi migrasi fase2
-branch: main | kotor: M docs/steps/S-207.md
-rute app/main.py: 75 | berkas bukti: 102 | dokumen langkah: 182
+HEAD: 42f3a50 S-208: Modul 1 langkah 2, registri diisi dari tautan dan kandidat
+branch: main | kotor: M docs/steps/S-208.md
+rute app/main.py: 75 | berkas bukti: 103 | dokumen langkah: 183
 
 ## 12 commit terakhir
 
 ```
+42f3a50 S-208: Modul 1 langkah 2, registri diisi dari tautan dan kandidat
+1e7cd85 S-207: perbaiki catatan versi migrasi fase2 [jejak]
 bf657b1 S-207: perbaiki catatan versi migrasi fase2
 81047d0 S-206: Modul 1 langkah 1, tabel registri sesuai GOAL [jejak]
 fe12cd5 S-206: Modul 1 langkah 1, tabel registri sesuai GOAL
@@ -20,8 +22,6 @@ a4b5c2f S-205: rencana GOAL dikoreksi setelah inventaris S-204
 47d8d1d S-204: inventaris rute dan skrip ditulis ke rencana GOAL [jejak]
 ac40394 S-204: inventaris rute dan skrip ditulis ke rencana GOAL
 ee204bb S-203: rencana menutup 5 modul GOAL ditulis ke repo [jejak]
-0d19999 S-203: rencana menutup 5 modul GOAL ditulis ke repo
-448db18 S-202: spec GOAL masuk repo, celah 5 modul dicatat, gate menjaga spec [jejak]
 ```
 
 ## SISA KERJA
