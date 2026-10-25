@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-25 19:52.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-25 19:55.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 37e9c07 S-220 F-3b: diagnosa 403 baca publik, chmod 644 penanda
-branch: main | kotor: D docs/steps/S-220.md
-rute app/main.py: 75 | berkas bukti: 115 | dokumen langkah: 192
+HEAD: d5ee9f2 S-221 F-3c: perbaiki pembaca publik (UA), jalur J5 terbukti menulis
+branch: main | kotor: D docs/steps/S-221.md
+rute app/main.py: 75 | berkas bukti: 116 | dokumen langkah: 192
 
 ## 12 commit terakhir
 
 ```
+d5ee9f2 S-221 F-3c: perbaiki pembaca publik (UA), jalur J5 terbukti menulis
+4003715 S-220 F-3b: diagnosa 403 baca publik, chmod 644 penanda [jejak]
 37e9c07 S-220 F-3b: diagnosa 403 baca publik, chmod 644 penanda
 b8bd036 S-219 F-3: uji tulis jalur waspadaweb J5 dengan penanda [jejak]
 7410e97 S-219 F-3: uji tulis jalur waspadaweb J5 dengan penanda
@@ -20,8 +22,6 @@ b8bd036 S-219 F-3: uji tulis jalur waspadaweb J5 dengan penanda [jejak]
 11b00c1 F-2: pengurai berkas REA (deteksi format dari isi, simpan asli + sha256) [jejak]
 50f6ae6 F-2: pengurai berkas REA (deteksi format dari isi, simpan asli + sha256)
 97eb838 F-1: migrasi skema jalur dan tabel pendukung M0-M4 [jejak]
-4a44587 F-1: migrasi skema jalur dan tabel pendukung M0-M4
-d7176cd S-214: tuntaskan S-211 (VPS.md), selaraskan dokumen ke F-blok [jejak]
 ```
 
 ## SISA KERJA
