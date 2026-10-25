@@ -64,7 +64,7 @@ def baca_publik(url):
         return getattr(e, "code", 0), ""
 
 
-def catat(conn, target_id, kode_j, url, isi, sha, vantage_ok, vantage_gagal, cara):
+def catat(conn, target_id, kode_j, url, isi, sha, vantage_ok, vantage_gagal, cara, mode=""):
     cap = time.strftime("%Y-%m-%dT%H:%M:%S")
     conn.execute(
         "insert or replace into jalur (target_id,kode_J,bukti,terbukti_bisa_tulis,waktu_uji,cara_tulis,catatan,diperbarui)"
@@ -86,7 +86,7 @@ def catat(conn, target_id, kode_j, url, isi, sha, vantage_ok, vantage_gagal, car
                      " values (?,?,?,?,?,?,?)",
                      (1, "uji-tulis-jalur", "lulus" if ok else "gagal", vantage, sha,
                       json.dumps({"target_id": target_id, "kode_j": kode_j, "url": url,
-                                  "vantage": vantage, "cara": cara}), cap))
+                                  "vantage": vantage, "cara": cara, "mode": mode}), cap))
     conn.execute("insert into change_event (target_id,page_id,jenis,jalur,nilai_baru,penanda,vantage,waktu)"
                  " values (?,?,?,?,?,?,?,?)",
                  (target_id, pid, "uji-tulis", kode_j, url, sha, "lxc+publik", cap))
@@ -110,6 +110,11 @@ def uji(target_id, kode_j="J5", docroot="/var/www/waspadaweb", url_publik=None, 
     if not cara:
         return 1
 
+    # berkas dibuat sebagai root; nginx worker bukan root -> harus bisa dibaca semua
+    jalankan("chmod 644 %s" % berkas_host)
+    mode = (jalankan("ls -l %s" % berkas_host)[1] or "").strip()
+    print("mode   :", mode[:90])
+
     gagal = []
     _, keluaran = jalankan("cat %s" % berkas_host)
     ok_lxc = isi in keluaran
@@ -124,7 +129,7 @@ def uji(target_id, kode_j="J5", docroot="/var/www/waspadaweb", url_publik=None, 
         gagal.append("publik")
 
     with sqlite3.connect(DB) as conn:
-        catat(conn, target_id, kode_j, url, isi, sha, [], gagal, cara)
+        catat(conn, target_id, kode_j, url, isi, sha, [], gagal, cara, mode)
 
     if bersihkan:
         jalankan("rm -f %s" % berkas_host)
@@ -142,6 +147,19 @@ def uji(target_id, kode_j="J5", docroot="/var/www/waspadaweb", url_publik=None, 
     return 0
 
 
+def cek(docroot, url):
+    berkas = "%s%s/hestia-penanda.txt" % (AKAR_HOST, docroot)
+    print("ls docroot :", (jalankan("ls -ld %s" % ("%s%s" % (AKAR_HOST, docroot)))[1] or "").strip())
+    print("ls berkas  :", (jalankan("ls -l %s" % berkas)[1] or "").strip() or "(tidak ada)")
+    print("worker user:", (jalankan("ps aux | grep -m1 '[n]ginx' | awk '{print $1}'")[1] or "").strip())
+    for f in ("/etc/nginx/sites-enabled/waspadaweb.com", "/etc/nginx/sites-available/waspadaweb.com"):
+        o = (jalankan("test -f %s && grep -n 'root\|location\|\.txt\|deny' %s | head -20" % (f, f))[1] or "").strip()
+        print("--- %s" % f)
+        print(o[:700] or "(tidak ada)")
+    st, badan = baca_publik(url)
+    print("publik     : status", st, "| panjang", len(badan))
+
+
 def daftar():
     with sqlite3.connect(DB) as c:
         for r in c.execute("select target_id,kode_J,terbukti_bisa_tulis,waktu_uji,cara_tulis from jalur order by target_id"):
@@ -157,9 +175,15 @@ def main():
     u.add_argument("--docroot", default="/var/www/waspadaweb")
     u.add_argument("--url")
     sub.add_parser("daftar")
+    k = sub.add_parser("cek")
+    k.add_argument("--docroot", default="/var/www/waspadaweb")
+    k.add_argument("--url", default="https://waspadaweb.com/hestia-penanda.txt")
     a = ap.parse_args()
     if a.cmd == "uji":
         sys.exit(uji(a.target_id, a.kode, a.docroot, a.url))
+    if a.cmd == "cek":
+        cek(a.docroot, a.url)
+        return
     daftar()
 
 

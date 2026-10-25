@@ -1,0 +1,14 @@
+BLOK: S-220 / F-3b (Fase 0, M0 MASUK) - diagnosa dan perbaikan 403 pada baca publik
+STATUS: (lihat keluaran)
+JALUR: J5 (ssh -> lxc hx -> /mnt/host)
+BUKTI: penanda + sha256; header HTTP; mode berkas; aturan nginx yang menyentuh .txt
+SNAPSHOT: penanda dihapus sesudah uji
+ROLLBACK: rm -f penanda
+IDEMPOTEN: nonce baru tiap jalan
+YANG GAGAL: dicatat apa adanya
+
+Catatan: percobaan pertama F-3 menunjukkan tulis BERHASIL (lxc) tetapi baca publik 403,
+bukan 404 -- artinya berkas ada tetapi tidak boleh dibaca. Dugaan utama: berkas dibuat
+sebagai root mode 600 sehingga nginx worker tidak bisa membacanya; dugaan kedua: ada aturan
+server di depan. Diagnosa mencetak mode berkas, pengguna worker nginx, aturan nginx pada
+berkas .txt, dan header HTTP supaya tidak menebak.
