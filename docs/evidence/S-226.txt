@@ -1,0 +1,11 @@
+BLOK: S-226 / F-8 (Fase 2, M2 GANTI) - pasang konten donor ke halaman target
+STATUS: (lihat keluaran)
+JALUR: J5 (ssh -> lxc hx -> /mnt/host/var/www/waspadaweb)
+BUKTI: penanda HTML berisi url donor + sha donor + nonce + utc; sha berkas; status 2 vantage; penanda terlihat dari publik
+SNAPSHOT: data/snapshot/halaman-uji-ganti-<cap>.html
+ROLLBACK: pulih dari snapshot; bila belum ada isi lama berkas dihapus
+IDEMPOTEN: isi berkas adalah fungsi murni (donor, path) -> pasang ulang sha sama
+YANG GAGAL: dicatat apa adanya
+
+Ini inti tujuan GOAL: mengganti konten di situs orang dengan konten dari situs lain.
+Donor: persaudaraan.com (disimpan mentah + bersih di tabel donor).
