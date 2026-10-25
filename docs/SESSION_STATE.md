@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-25 11:40.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-25 11:43.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 0e590a9 S-217 F-2b: perbaiki konvensi penomoran langkah, rapikan dokumen S-215/S-216
-branch: main | kotor: D docs/steps/S-217.md
-rute app/main.py: 75 | berkas bukti: 112 | dokumen langkah: 191
+HEAD: 45e509c S-218 F-2c: tutup kebocoran stub dokumen langkah
+branch: main | kotor: D docs/steps/S-218.md
+rute app/main.py: 75 | berkas bukti: 113 | dokumen langkah: 192
 
 ## 12 commit terakhir
 
 ```
+45e509c S-218 F-2c: tutup kebocoran stub dokumen langkah
+191a521 S-217 F-2b: perbaiki konvensi penomoran langkah, rapikan dokumen S-215/S-216 [jejak]
 0e590a9 S-217 F-2b: perbaiki konvensi penomoran langkah, rapikan dokumen S-215/S-216
 11b00c1 F-2: pengurai berkas REA (deteksi format dari isi, simpan asli + sha256) [jejak]
 50f6ae6 F-2: pengurai berkas REA (deteksi format dari isi, simpan asli + sha256)
@@ -20,8 +22,6 @@ cf42fb7 S-214: tuntaskan S-211 (VPS.md), selaraskan dokumen ke F-blok
 7fcca2a S-213: GOAL baru dijadikan landasan di onboarding, SOP, README, dan gate [jejak]
 ad1f56a S-213: GOAL baru dijadikan landasan di onboarding, SOP, README, dan gate
 31b6e46 S-212: GOAL baru, rencana dipetakan ulang ke M0-M4 Fase 0-4 [jejak]
-131a9a5 S-212: GOAL baru, rencana dipetakan ulang ke M0-M4 Fase 0-4
-fe473ec S-210: kebutuhan data SERP/backlink dirinci, backlog ditandai lokal vs API [jejak]
 ```
 
 ## SISA KERJA
