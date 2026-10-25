@@ -62,8 +62,9 @@ def conf_tulis(teks):
 
 def reload_nginx(bisu=True):
     """Reload nginx. Driver memakai host langsung (_ssh_host), bukan lxc."""
-    kandidat_host = ("nginx -t && nginx -s reload",
-                     "sudo nginx -t && sudo nginx -s reload",
+    kandidat_host = ("sudo nginx -t && sudo nginx -s reload",
+                     "sudo -n nginx -t && sudo -n nginx -s reload",
+                     "nginx -t && nginx -s reload",
                      "sudo systemctl reload nginx",
                      "systemctl reload nginx",
                      "sudo service nginx reload")

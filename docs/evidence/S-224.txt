@@ -1,0 +1,11 @@
+BLOK: S-224 / F-5 + F-6 (Fase 1, M3 BUNUH) - 410 dan pembuktian idempoten/rollback
+STATUS: (lihat keluaran)
+JALUR: J5 (reload lewat host: sudo nginx -t && sudo nginx -s reload)
+BUKTI: sha256 conf, status dari 2 vantage (vps, lokal), baris bukti per vantage
+SNAPSHOT: data/snapshot/nginx-waspadaweb-<cap>.conf
+ROLLBACK: pulih -> status kembali 200, marker terhapus (dihitung ulang)
+IDEMPOTEN: pasang 410 dua kali -> sha conf identik, region marker tetap satu
+YANG GAGAL: dicatat apa adanya
+
+Menutup Fase 1: 404 (S-222/S-223) dan 410 (S-224) terbukti, masing-masing dengan penanda,
+snapshot, verifikasi dua vantage, idempoten, dan rollback teruji.

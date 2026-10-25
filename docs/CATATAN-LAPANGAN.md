@@ -18,3 +18,9 @@ Aturan driver terlihat di conf: /artikel/lama -> 301, /halaman-mati -> 410.
 ## S-219/F-3 -- jalur J5 bisa menulis
 ssh -> lxc exec hx -> tulis ke /mnt/host/var/www/... berhasil (rc 0).
 Tulis jalan tanpa sudo; rantai "lxc" dipakai, "sudo-lxc" cadangan.
+
+## S-223 -- reload nginx harus lewat HOST langsung
+Empat kandidat lewat "lxc exec hx -- ..." semuanya gagal. Yang bekerja:
+  sudo nginx -t && sudo nginx -s reload        (dijalankan via ssh ke host, bukan lewat lxc)
+driver.py sudah memakai pola ini di _ssh_host/_coba; _ssh_ct hanya untuk menyentuh
+/mnt/host. Pelajaran: baca dulu mesin yang sudah ada sebelum menulis kandidat baru.

@@ -19,10 +19,10 @@ Nama dipertahankan supaya tidak memutus rujukan.
 ## Status terhadap GOAL (jujur)
 | Modul | Status |
 |---|---|
-| M0 MASUK | BELUM. Tabel jalur belum ada; uji tulis belum formal. |
+| M0 MASUK | **SELESAI** (S-219..S-221). Tabel jalur + berkas_rea + blok dibuat (F-1/F-2); jalur J5 waspadaweb terbukti bisa menulis dengan penanda, dibaca dari 2 vantage. |
 | M1 AMBIL | BELUM. |
 | M2 GANTI | BELUM PERNAH. Inti tujuan, belum sekali pun. |
-| M3 BUNUH | SEBAGIAN. 301/410 hidup di waspadaweb lewat nginx (S-175..S-180), tanpa penanda, snapshot, rollback, 2 vantage. 404 belum diuji. |
+| M3 BUNUH | **SELESAI untuk 404 dan 410** (S-222/S-223/S-224): region bertanda di conf, snapshot conf, verifikasi 2 vantage (vps+lokal), idempoten, rollback teruji. |
 | M4 BUKTI | SEBAGIAN. Tabel bukti ada, belum berpenanda, belum ada ekspor pihak ketiga. |
 
 Kesimpulan: GOAL BELUM TERCAPAI. Ditunda ke Fase 4: registry parasite, link rot, panel teknologi.
@@ -38,9 +38,9 @@ Kesimpulan: GOAL BELUM TERCAPAI. Ditunda ke Fase 4: registry parasite, link rot,
   Terima: minimal satu jalur (waspadaweb J5) tercatat terbukti_bisa_tulis + bukti.
 
 ### Fase 1 -- M3 BUNUH (batas 2 blok; kalau lewat, lompat ke Fase 2)
-- F-4: 404 di satu halaman waspadaweb + penanda + snapshot + verifikasi 2 vantage.
-- F-5: 410 di halaman itu, penanda, verifikasi ulang 2x dari 2 vantage.
-- F-6: rollback teruji + idempoten (eksekusi kedua tidak mengubah apa pun).
+- F-4: [SELESAI S-222/S-223] 404 di halaman uji + penanda + snapshot + 2 vantage.
+- F-5: [SELESAI S-224] 410 di halaman uji kedua + penanda + 2 vantage.
+- F-6: [SELESAI S-224] rollback teruji (404/410 -> 200) dan idempoten (sha conf sama).
 
 ### Fase 2 -- M1 + M2 GANTI (INTI TUJUAN)
 - F-7: M1 ambil konten donor (fetch, hash, simpan mentah, buang boilerplate).
