@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-25 11:38.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-25 11:40.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 50f6ae6 F-2: pengurai berkas REA (deteksi format dari isi, simpan asli + sha256)
-branch: main | kotor: (bersih)
-rute app/main.py: 75 | berkas bukti: 111 | dokumen langkah: 189
+HEAD: 0e590a9 S-217 F-2b: perbaiki konvensi penomoran langkah, rapikan dokumen S-215/S-216
+branch: main | kotor: D docs/steps/S-217.md
+rute app/main.py: 75 | berkas bukti: 112 | dokumen langkah: 191
 
 ## 12 commit terakhir
 
 ```
+0e590a9 S-217 F-2b: perbaiki konvensi penomoran langkah, rapikan dokumen S-215/S-216
+11b00c1 F-2: pengurai berkas REA (deteksi format dari isi, simpan asli + sha256) [jejak]
 50f6ae6 F-2: pengurai berkas REA (deteksi format dari isi, simpan asli + sha256)
 97eb838 F-1: migrasi skema jalur dan tabel pendukung M0-M4 [jejak]
 4a44587 F-1: migrasi skema jalur dan tabel pendukung M0-M4
@@ -20,8 +22,6 @@ ad1f56a S-213: GOAL baru dijadikan landasan di onboarding, SOP, README, dan gate
 31b6e46 S-212: GOAL baru, rencana dipetakan ulang ke M0-M4 Fase 0-4 [jejak]
 131a9a5 S-212: GOAL baru, rencana dipetakan ulang ke M0-M4 Fase 0-4
 fe473ec S-210: kebutuhan data SERP/backlink dirinci, backlog ditandai lokal vs API [jejak]
-a97e648 S-210: kebutuhan data SERP/backlink dirinci, backlog ditandai lokal vs API
-ac58b4c S-209: backlog 16 blok ditulis, sesi berikutnya mulai dari B-1 [jejak]
 ```
 
 ## SISA KERJA
