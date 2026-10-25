@@ -66,6 +66,21 @@ waspadaweb.com lebih dulu. Kalau GANTI dan BUNUH belum terbukti di situ, jangan 
 GSC TIDAK BISA dipakai (butuh verifikasi kepemilikan). Pakai Ahrefs/Semrush/Moz/
 Open PageRank/Common Crawl.
 
+## Dampak ke dashboard (dicatat S-214)
+Tidak ada fitur yang dihapus. Yang berubah: prioritas, dan dashboard harus menjadi
+action-centric (GOAL bagian 10: halaman tanpa satu tombol aksi = belum jadi).
+
+| Fitur sekarang | Perlakuan |
+|---|---|
+| Ikhtisar, Kandidat, Recon, Kredensial, Deployment, Konten, Tautan, Backlink, Laporan | tetap, prioritas ditunda |
+| Driver (plan/apply/verify) | ditingkatkan menjadi mesin aksi K2 BUNUH (404/410, penanda, dry-run) |
+| Tanam (FTP/SSH) | ditingkatkan menjadi jalur K1 GANTI |
+| Monitor (status konten), Audit | tetap, menjadi tempat bukti M4 |
+| Konsol | tetap |
+| Panel teknologi | ditunda ke Fase 4 |
+| BARU: halaman Jalur (peta J1-J7 + uji tulis) | Fase 0 |
+| BARU: tombol TIDAK PUNYA AKSES, Tulis penanda, dry-run | mengikuti GOAL bagian 10 |
+
 ## Titik mulai
 Mulai dari F-1. Bacaan wajib: PROLOG, GOAL, SKILL, SISA-KERJA.
 

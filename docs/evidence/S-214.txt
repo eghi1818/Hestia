@@ -1,0 +1,15 @@
+S-214 - menuntaskan S-211 yang tidak ter-commit, dokumen diselaraskan ke F-blok
+
+masalah: git log tidak memuat commit S-211 dan docs/VPS.md tidak ada, sehingga blok S-211
+dinyatakan tidak pernah selesai (hanya docs/DATA-SUMBER.md yang jalan lalu tersapu ke
+commit S-212). Blok S-214 pertama juga mati di langkah pertama karena
+"ls docs/DATA-SUMBER.md docs/VPS.md" mengembalikan galat saat satu berkas tidak ada,
+sementara set -e memutus skrip.
+
+perubahan: docs/VPS.md dibuat; DATA-SUMBER.md dilengkapi penjelasan istilah dan bagian
+"Dampak ke rencana" berbasis F-blok; RENCANA-GOAL.md mendapat bagian "Dampak ke dashboard";
+docs/evidence/S-211.txt dan docs/steps/S-211.md dibuat supaya catatan tidak menggantung;
+blok ini memakai set -uo pipefail tanpa -e.
+
+bukti: daftar ADA/HILANG per berkas; DATA-SUMBER.md memuat "Dampak ke rencana";
+VPS.md ada; F-17 merujuk VPS.md.

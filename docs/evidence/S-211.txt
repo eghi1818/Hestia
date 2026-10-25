@@ -1,0 +1,8 @@
+S-211 - penjelasan istilah data + rencana VPS (dituntaskan S-214)
+
+CATATAN: blok S-211 mati sebelum tutup.sh, sehingga TIDAK ADA commit bernama S-211.
+Hanya langkah pertamanya yang jalan, yaitu menulis docs/DATA-SUMBER.md, dan berkas itu
+kemudian ikut tersapu ke commit S-212 oleh git add -A. docs/VPS.md baru dibuat pada S-214.
+
+isi yang dimaksud: docs/DATA-SUMBER.md (penjelasan SERP, backlink, GSC, Brave, tabel modul
+pemakai, cara menyimpan kunci) dan docs/VPS.md (rencana pemindahan ke VPS).

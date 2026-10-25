@@ -35,9 +35,10 @@ Disusun S-210. Menjawab satu-satunya keputusan yang menahan Modul 2 dan 3.
 3. Daftar 3-10 host dan 5-20 kata kunci untuk uji awal.
 4. Konfirmasi penyimpanan kunci di ~/.hestia/live.env.
 
-## Dampak ke backlog
-- B-11 (simhash + kemiripan <30% + canonical): LOKAL, tidak menunggu.
-- B-12 (pemegang SERP + peta sengketa): butuh sumber SERP.
-- B-13 (snapshot konten + kata kunci sebelum/sesudah): LOKAL.
-- B-14 (delta peringkat 7/14/30 hari): butuh sumber peringkat.
-- B-1..B-10 dan B-15..B-16: LOKAL, tidak menunggu.
+## Dampak ke rencana (diperbarui S-214)
+Penamaan blok mengikuti docs/RENCANA-GOAL.md (F-1..F-17).
+- Fase 0-2 (M0 MASUK, M3 BUNUH, M2 GANTI): LOKAL, tidak butuh SERP maupun backlink.
+- Fase 3: simhash LOKAL; penilaian pemegang SERP butuh sumber SERP.
+- Fase 4: delta peringkat butuh sumber peringkat; link rot bisa lokal dari crawl.
+- GSC TIDAK BISA dipakai (butuh verifikasi kepemilikan); pakai Ahrefs/Semrush/Moz/
+  Open PageRank/Common Crawl.
