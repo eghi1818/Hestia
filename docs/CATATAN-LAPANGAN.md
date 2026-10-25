@@ -24,3 +24,11 @@ Empat kandidat lewat "lxc exec hx -- ..." semuanya gagal. Yang bekerja:
   sudo nginx -t && sudo nginx -s reload        (dijalankan via ssh ke host, bukan lewat lxc)
 driver.py sudah memakai pola ini di _ssh_host/_coba; _ssh_ct hanya untuk menyentuh
 /mnt/host. Pelajaran: baca dulu mesin yang sudah ada sebelum menulis kandidat baru.
+
+## S-227 -- dua jebakan di tools/ganti.py (F-8 percobaan 1)
+1. tools/bunuh.baca() mengembalikan INT (status saja). ganti.py memanggilnya sebagai
+   B.baca(url)[1] -> TypeError, sehingga verifikasi penanda dan pencatatan change_event/bukti
+   tidak jalan. Perbaikan: tambah bunuh.baca_penuh() -> (status, badan); baca() tetap int.
+2. pulih() memotret isi SAAT INI lalu menulisnya kembali, jadi rollback tidak mengembalikan
+   isi lama. Perbaikan: snapshot diambil saat pasang dan namanya disimpan di
+   change_event.nilai_lama; pulih membacanya dari situ.

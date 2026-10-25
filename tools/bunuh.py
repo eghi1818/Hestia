@@ -120,6 +120,16 @@ def hapus_region(teks):
     return "\n".join([b for b in sisa.splitlines() if b.strip() != "" or True]) + "\n"
 
 
+def baca_penuh(url, ua=None):
+    """Kembalikan (status, badan). baca() sengaja tetap mengembalikan status saja."""
+    try:
+        req = Request(url, headers={"User-Agent": ua or UA, "Cache-Control": "no-cache"})
+        with urlopen(req, timeout=20) as r:
+            return r.status, r.read().decode("utf-8", "replace")
+    except Exception as e:
+        return getattr(e, "code", 0), ""
+
+
 def baca(url):
     try:
         with urlopen(Request(url, headers={"User-Agent": UA, "Cache-Control": "no-cache"}), timeout=20) as r:

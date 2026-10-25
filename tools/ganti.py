@@ -95,7 +95,8 @@ def catat(target_id, path, url, sha, st, penanda_ada, snap, aksi):
                    1 if penanda_ada else 0, cap, "vps+lokal", pid))
         c.execute("insert into change_event (target_id,page_id,jenis,jalur,nilai_lama,nilai_baru,penanda,vantage,waktu)"
                   " values (?,?,?,?,?,?,?,?,?)",
-                  (target_id, pid, aksi, "J5", json.dumps(st), sha[:16], penanda_ada, "vps+lokal", cap))
+                  (target_id, pid, aksi, "J5", json.dumps({"status": st, "snapshot": str(snap)}),
+                   sha[:16], penanda_ada, "vps+lokal", cap))
         for vantage, nilai in st.items():
             c.execute("insert into status_check (page_id,url,status_http,vantage,sha256_konten,waktu)"
                       " values (?,?,?,?,?,?)",
@@ -124,7 +125,7 @@ def pasang(target_id, path, donor_id, url=None, dry_run=False):
         return 0
     tulis_file("%s%sindex.html" % (DOCROOT, path), isi)
     st = B.status(url)
-    badan = B.baca(url)[1]
+    badan = B.baca_penuh(url)[1]
     pen = penanda(donor) in badan
     print("status:", st, "| penanda terlihat publik:", pen)
     catat(target_id, path, url, sha_baru, st, pen, snap, "ganti")
@@ -132,22 +133,32 @@ def pasang(target_id, path, donor_id, url=None, dry_run=False):
 
 
 def pulih(target_id, path, url=None):
+    """Kembalikan isi dari snapshot yang diambil SAAT pasang, bukan saat pulih."""
     url = url or ("https://waspadaweb.com%s" % path)
     berkas = "%s%sindex.html" % (DOCROOT, path)
-    snap, sha_lama, ada_lama = snapshot_halaman(path)
-    if ada_lama:
-        tulis_file(berkas, baca_file(berkas))  # placeholder, isi lama diambil dari snapshot
-        isi_lama = snap.read_text(encoding="utf-8")
+    nama = None
+    with sqlite3.connect(DB) as c:
+        r = c.execute("select nilai_lama from change_event where jenis='ganti' order by id desc limit 1").fetchone()
+    if r and r[0]:
+        try:
+            nama = json.loads(r[0]).get("snapshot")
+        except Exception:
+            nama = None
+    isi_lama = ""
+    if nama and Path(nama).exists():
+        isi_lama = Path(nama).read_text(encoding="utf-8")
+    if isi_lama.strip():
         tulis_file(berkas, isi_lama)
-        print("dipulihkan dari:", snap.name)
+        print("dipulihkan dari snapshot pasang:", Path(nama).name)
     else:
         hapus_file(berkas)
-        print("tidak ada isi lama; berkas dihapus")
+        print("tidak ada isi lama di snapshot; berkas dihapus")
     st = B.status(url)
-    pen = "hestia-ganti" in B.baca(url)[1]
-    print("status:", st, "| penanda masih ada:", pen)
-    catat(target_id, path, url, sha_lama, st, pen, snap, "pulih-ganti")
-    return 0
+    pen = "hestia-ganti" in B.baca_penuh(url)[1]
+    sha_isi = hashlib.sha256(isi_lama.encode("utf-8")).hexdigest()
+    print("status:", st, "| penanda ganti masih ada:", pen)
+    catat(target_id, path, url, sha_isi, st, pen, Path(nama) if nama else SNAP, "pulih-ganti")
+    return 0 if st.get("lokal") == "200" and not pen else 1
 
 
 def main():

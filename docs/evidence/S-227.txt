@@ -1,0 +1,11 @@
+BLOK: S-227 / F-8b (Fase 2, M2 GANTI) - perbaiki pencatatan dan rollback
+STATUS: (lihat keluaran)
+JALUR: J5
+BUKTI: penanda donor terlihat dari publik (2 vantage), sha berkas, sha isi lama
+SNAPSHOT: data/snapshot/halaman-uji-ganti-<cap>.html (diambil saat pasang, nama dicatat di change_event.nilai_lama)
+ROLLBACK: pulih mengembalikan ISI LAMA dari snapshot pasang; verifikasi publik
+IDEMPOTEN: pasang ulang -> sha berkas identik
+YANG GAGAL: percobaan pertama S-226 gagal karena tipe balikan baca() dan snapshot pulih
+
+Ini yang menutup M2 GANTI secara sah: penanda, snapshot dari keadaan sebelum, dua vantage,
+idempoten, dan rollback yang benar-benar mengembalikan isi lama.
