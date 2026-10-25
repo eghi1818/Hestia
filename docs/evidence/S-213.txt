@@ -1,0 +1,15 @@
+S-213 - GOAL baru dijadikan landasan resmi di onboarding, SOP, dan README
+
+masalah: dokumen spec baru sudah masuk repo (S-212) tetapi belum menjadi pedoman yang
+pasti dibaca lebih dulu. Catatan: verifikasi G pada blok pertama gagal karena pola grep
+"M2 GANTI BELUM PERNAH" tidak ada harfiah (di dokumen berbentuk baris tabel), dan karena
+set -e ditambah exit 1 blok berhenti sehingga S-213 baru dijalankan pada blok kedua.
+
+perubahan: docs/LANDASAN.md ditulis sebagai titik masuk tunggal (urutan kekuatan, misi,
+mantra, ikrar, 12 aturan, status terkini, format laporan, berkas pendukung); blok LANDASAN
+disisipkan di awal docs/ONBOARDING_PROMPT.txt, docs/SOP-NEW-CHAT.md, dan README.md secara
+idempoten; gate memeriksa docs/LANDASAN.md; folder resume dirapikan (duplikat penomoran
+dihapus, berkas 5-8 disegarkan dari Desktop).
+
+bukti: LANDASAN.md ada; ketiga berkas memuat penanda LANDASAN di awal; verifikasi memuat
+"BELUM PERNAH" dan "GOAL BELUM TERCAPAI"; daftar folder resume tercetak.
