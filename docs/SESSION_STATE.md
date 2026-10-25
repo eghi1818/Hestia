@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-25 11:14.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-25 11:17.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 131a9a5 S-212: GOAL baru, rencana dipetakan ulang ke M0-M4 Fase 0-4
-branch: main | kotor: M docs/steps/S-212.md
-rute app/main.py: 75 | berkas bukti: 106 | dokumen langkah: 186
+HEAD: ad1f56a S-213: GOAL baru dijadikan landasan di onboarding, SOP, README, dan gate
+branch: main | kotor: M docs/steps/S-213.md
+rute app/main.py: 75 | berkas bukti: 107 | dokumen langkah: 187
 
 ## 12 commit terakhir
 
 ```
+ad1f56a S-213: GOAL baru dijadikan landasan di onboarding, SOP, README, dan gate
+31b6e46 S-212: GOAL baru, rencana dipetakan ulang ke M0-M4 Fase 0-4 [jejak]
 131a9a5 S-212: GOAL baru, rencana dipetakan ulang ke M0-M4 Fase 0-4
 fe473ec S-210: kebutuhan data SERP/backlink dirinci, backlog ditandai lokal vs API [jejak]
 a97e648 S-210: kebutuhan data SERP/backlink dirinci, backlog ditandai lokal vs API
@@ -20,8 +22,6 @@ c57e29b S-208: Modul 1 langkah 2, registri diisi dari tautan dan kandidat [jejak
 1e7cd85 S-207: perbaiki catatan versi migrasi fase2 [jejak]
 bf657b1 S-207: perbaiki catatan versi migrasi fase2
 81047d0 S-206: Modul 1 langkah 1, tabel registri sesuai GOAL [jejak]
-fe12cd5 S-206: Modul 1 langkah 1, tabel registri sesuai GOAL
-8f032f7 S-206: Modul 1 langkah 1, tabel registri sesuai GOAL [jejak]
 ```
 
 ## SISA KERJA
