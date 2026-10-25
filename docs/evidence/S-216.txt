@@ -1,0 +1,12 @@
+BLOK: F-2 (Fase 0, M0 MASUK) - pengurai berkas REA
+STATUS: lulus
+JALUR: belum menyentuh jalur; ini pengurai berkasnya
+BUKTI: sha256 berkas + isi asli disimpan di berkas_rea; normalisasi + sha256 per blok di blok
+SNAPSHOT: isi asli berkas disimpan utuh di kolom isi_asli
+ROLLBACK: baris berkas_rea sha256 sama dihapus lebih dulu sebelum insert
+IDEMPOTEN: diuji dengan menyimpan berkas yang sama dua kali; berkas_rea tetap 1 baris
+YANG GAGAL: -
+
+Format dideteksi dari ISI (json/csv/md), bukan ekstensi. Field tidak dikenal tetap disimpan
+dengan namanya sendiri; alias hanya untuk pelabelan. Field wajib (kode_j, target) yang
+hilang ditandai di kolom catatan. Diuji pada tiga format contoh.
