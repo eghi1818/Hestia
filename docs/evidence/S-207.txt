@@ -1,0 +1,14 @@
+S-207 - perbaiki catatan versi migrasi fase2 (NOT NULL dijalankan_pada)
+
+masalah: catat_versi di tools/migrasi_fase2.py menebak nama kolom skema_versi
+(versi/keterangan/waktu) padahal kolom sebenarnya (nama, dijalankan_pada, hash), sehingga
+INSERT gagal dengan "NOT NULL constraint failed: skema_versi.dijalankan_pada". Tabel
+registri sendiri berhasil dibuat (18 kolom, 4 indeks). Galat lolos karena blok S-206
+memakai set -uo pipefail tanpa -e, jadi gate tetap lulus dan langkah ter-commit.
+
+perubahan: catat_versi membaca kolom yang ada, memakai kunci 'nama' (atau 'versi'), menghapus
+baris versi yang sama lebih dulu supaya idempoten, dan menghitung hash sha256 pendek dari
+DDL; main() memverifikasi catatan versi benar-benar tertulis dan keluar bila tidak.
+
+bukti: migrasi LULUS, catatan versi fase2 ada tepat satu baris setelah dijalankan dua kali,
+kolom registri tetap 18.

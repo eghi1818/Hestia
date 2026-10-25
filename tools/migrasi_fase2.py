@@ -51,19 +51,22 @@ def cadangkan():
 
 
 def catat_versi(c, versi, keterangan):
+    """Catat versi memakai kolom skema_versi yang benar-benar ada."""
+    import hashlib
     kol = [r[1] for r in c.execute("PRAGMA table_info(skema_versi)")]
     if not kol:
         print("  (skema_versi tidak ada, lewati catatan versi)")
         return
-    kandidat = {
-        "versi": versi, "nama": versi, "keterangan": keterangan,
-        "waktu": time.strftime("%Y-%m-%d %H:%M:%S"),
-        "diterapkan": time.strftime("%Y-%m-%d %H:%M:%S"),
-    }
-    nilai = {k: v for k, v in kandidat.items() if k in kol}
+    kunci = "nama" if "nama" in kol else "versi"
+    cap = time.strftime("%Y-%m-%dT%H:%M:%S")
+    h = hashlib.sha256((DDL + versi).encode("utf-8")).hexdigest()[:16]
+    peta = [("nama", versi), ("versi", versi), ("keterangan", keterangan),
+            ("dijalankan_pada", cap), ("waktu", cap), ("diterapkan", cap), ("hash", h)]
+    nilai = {k: v for k, v in peta if k in kol}
     if not nilai:
         print("  (kolom skema_versi tidak dikenali, lewati)")
         return
+    c.execute("DELETE FROM skema_versi WHERE %s=?" % kunci, (versi,))
     kolom = ", ".join(nilai)
     tanda = ", ".join("?" * len(nilai))
     c.execute("INSERT INTO skema_versi (%s) VALUES (%s)" % (kolom, tanda), tuple(nilai.values()))
@@ -83,6 +86,10 @@ def main():
     with sqlite3.connect(DB) as c:
         c.executescript(DDL)
         catat_versi(c, "fase2", "tabel registri untuk Modul 1 GOAL" + (" (dipaksa)" if a.paksa_akhir else ""))
+        n_versi = c.execute("select count(*) from skema_versi where nama=?", ("fase2",)).fetchone()[0]
+        print("catatan versi fase2:", n_versi)
+        if n_versi < 1:
+            sys.exit("GAGAL: catatan versi tidak tertulis")
         integritas = c.execute("PRAGMA integrity_check").fetchone()[0]
         print("integritas:", integritas)
         if integritas != "ok":
