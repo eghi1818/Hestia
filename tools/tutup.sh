@@ -61,7 +61,7 @@ echo "langkah ditutup. DIRTY: $(git status --porcelain | wc -l | tr -d ' ')"
 
 # buang stub (tanpa commit) agar sync_jejak menulis dokumen langkah yang lengkap
 if [ -n "${_langkah:-}" ] && [ -f "docs/steps/$_langkah.md" ] && grep -q '(menyusul)' "docs/steps/$_langkah.md"; then
-  rm -f "docs/steps/$_langkah.md"
+  : # stub dipertahankan
 fi
 python3 tools/sync_jejak.py --resume
 python3 tools/pangkas_bukti.py --simpan 5000 --r-simpan 50

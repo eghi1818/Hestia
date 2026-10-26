@@ -13,7 +13,7 @@ else
   nohup bash tools/live.sh pasang >> "$LOG" 2>&1 &
   echo $! > "$PIDF"
   disown 2>/dev/null || true
-  sleep 6
+  for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do curl -s -o /dev/null --max-time 2 "http://127.0.0.1:$PORT/api/health" && break; sleep 2; done
   echo "  dimulai pid $(cat "$PIDF")"
 fi
 echo -n "  ppid: "; ps -o ppid= -p "$(cat "$PIDF" 2>/dev/null)" 2>/dev/null | tr -d ' ' || echo "-"

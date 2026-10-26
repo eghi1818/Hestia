@@ -1,0 +1,287 @@
+BLOK: S-260 / F-19 - pulihkan dokumen langkah yang bolong + perbaiki tunggu-siap layanan lepas
+STATUS: (lihat keluaran)
+JALUR: J5
+BUKTI: daftar dan jumlah dokumen langkah, syarat di tutup.sh, hasil pembuatan ulang, tunggu-siap sehat
+SNAPSHOT: tools/layanan_lepas.sh versi lama ada di git
+ROLLBACK: git checkout -- tools/layanan_lepas.sh
+IDEMPOTEN: ya (hanya membuat yang belum ada)
+YANG GAGAL: (lihat keluaran)
+== S-260 / F-19 ==
+-- 0. sisa kotor --
+ M docs/evidence/S-259.txt
+?? docs/evidence/S-260.txt
+-- 1. keadaan dokumen langkah --
+  jumlah berkas:      226
+-- 20 terakhir --
+S-232.md
+S-233.md
+S-234.md
+S-235.md
+S-236.md
+S-237.md
+S-238.md
+S-239.md
+S-240.md
+S-241.md
+S-242.md
+S-243.md
+S-244.md
+S-245.md
+S-246.md
+S-247.md
+S-248.md
+S-249.md
+S-258.md
+arsip
+-- yang bolong (ada commit/bukti, tak ada dokumen) --
+  ada commit: 222 langkah | dokumen ada: 225 | bolong: 9
+  bolong: [250, 251, 252, 253, 254, 255, 256, 257, 259]
+]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/Hestia]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/Hestia-- 2. syarat dokumen langkah di tools/tutup.sh --
+]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/Hestia2:# S-<n> otomatis: judul langkah wajib memuat S-<n> supaya dokumen langkah dan
+14:# siapkan dokumen langkah lebih awal agar pemeriksaan bukti di gate menilai
+17:if [ -n "$_langkah" ] && [ ! -f "docs/steps/$_langkah.md" ]; then
+19:  printf '# %s\n\n- commit: (menyusul)\n- bukti: docs/evidence/%s.txt\n' "${1:-}" "$_langkah" > "docs/steps/$_langkah.md"
+20:  echo "+ dokumen langkah disiapkan lebih awal: docs/steps/$_langkah.md"
+39:# tulis dokumen langkah untuk commit ini
+48:    f = "docs/steps/S-%s.md" % n
+55:        print("+ dokumen langkah ditulis: %s" % f)
+62:# buang stub (tanpa commit) agar sync_jejak menulis dokumen langkah yang lengkap
+63:if [ -n "${_langkah:-}" ] && [ -f "docs/steps/$_langkah.md" ] && grep -q '(menyusul)' "docs/steps/$_langkah.md"; then
+64:  rm -f "docs/steps/$_langkah.md"
+83:if [ -n "${_langkah:-}" ] && [ -f "docs/steps/$_langkah.md" ] && grep -q '(menyusul)' "docs/steps/$_langkah.md"; then
+86:  printf '# %s\n\n- commit: %s\n- bukti: docs/evidence/%s.txt\n' "$_judul" "$_hash" "$_langkah" > "docs/steps/$_langkah.md"
+87:  echo "dokumen langkah diperbaiki: docs/steps/$_langkah.md"
+]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/Hestia]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/Hestia-- 3. buat ulang dokumen yang bolong --
+]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/Hestia  File "<stdin>", line 12
+    elif best[n][    elif best[n][    elif best[n][    elif best[n][    elif best[n][    elif best[n][    elif best[n][    elif best[n][    elif best[n][    elif best[n][    elif best[n][    elif best[n][    elif best[n][    elif best[n][    elif best[n][    elif best[n][    elif best[n][    elif best[n][    elif best[n][    elif best[n][    elif best[n][    elif best[n][    elif best[n][    elif best[n][    e h[:7]))
+                     ^
+SyntaxError: invalid syntax
+]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/Hestia  jumlah berkas sesudah:      226
+]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/HestiaS-238.md
+S-239.md
+S-240.md
+S-241.md
+S-242.md
+S-243.md
+S-244.md
+S-245.md
+S-246.md
+S-247.md
+S-248.md
+S-249.md
+S-258.md
+arsip
+]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/Hestia]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/Hestia
+Saving session...
+...copying shared history...
+...saving history...truncating history files...
+...completed.
+== S-260-C bersih (tanpa kurung, tanpa heredoc) ==
+ M docs/evidence/S-259.txt
+?? docs/evidence/S-260.txt
+-- 1. daftar langkah dari git --
+     225
+-- 2. buat dokumen langkah yang hilang --
+  dibuat: docs/steps/S-259.md
+  dibuat: docs/steps/S-257.md
+  dibuat: docs/steps/S-256.md
+  dibuat: docs/steps/S-255.md
+  dibuat: docs/steps/S-254.md
+  dibuat: docs/steps/S-253.md
+  dibuat: docs/steps/S-252.md
+  dibuat: docs/steps/S-251.md
+  dibuat: docs/steps/S-250.md
+  jumlah berkas sekarang:      235
+S-247.md
+S-248.md
+S-249.md
+S-250.md
+S-251.md
+S-252.md
+S-253.md
+S-254.md
+S-255.md
+S-256.md
+S-257.md
+S-258.md
+S-259.md
+arsip
+-- 3. tutup.sh: jangan buang stub --
+  tutup.sh ok
+64:  : # stub dipertahankan
+-- 4. tunggu-siap layanan lepas --
+  layanan_lepas.sh ok
+16:  for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do curl -s -o /dev/null --max-time 2 "http://127.0.0.1:$PORT/api/health" && break; sleep 2; done
+-- 5. layanan lepas --
+  dimulai pid 23956
+  ppid: 23952
+  /              -> 401
+  /api/health    -> 200
+  /api/targets   -> 401
+  /api/audit     -> 401
+-- 6. tutup --
++ dokumen langkah disiapkan lebih awal: docs/steps/S-260.md
+== gate: berkas wajib ==
+  ok      README.md
+  ok      CHANGELOG.md
+  ok      GOAL.md
+  ok      docs/PRD-Authority-Hosting-v1.5.md
+  ok      docs/CONTEXT.md
+  ok      docs/EKSPERIMEN.md
+  ok      docs/ONBOARDING_PROMPT.txt
+  ok      docs/SOP-NEW-CHAT.md
+
+== gate: sterilisasi pada artefak tim ==
+  bersih  README.md
+  bersih  CHANGELOG.md
+  bersih  docs/PRD-Authority-Hosting-v1.5.md
+  bersih  dashboard/README.md
+  bersih  dashboard/aksi.js
+  bersih  dashboard/audit.js
+  bersih  dashboard/detail.js
+  bersih  dashboard/driver.js
+  bersih  dashboard/ekspor.js
+  bersih  dashboard/ikhtisar.js
+  bersih  dashboard/index.html
+  bersih  dashboard/konsol.js
+  bersih  dashboard/konten.js
+  bersih  dashboard/live.js
+  bersih  dashboard/monitor.js
+  bersih  dashboard/recon.js
+  bersih  dashboard/tanam.js
+  bersih  dashboard/tautan.js
+  bersih  app/__init__.py
+  bersih  app/db.py
+  bersih  app/main.py
+
+== gate: integrasi skrip dashboard dengan index.html ==
+  ok      #auditBatas
+  ok      #auditBody
+  ok      #auditCari
+  ok      #auditPeristiwa
+  ok      #backlinkBody
+  ok      #cLevel
+  ok      #cName
+  ok      #cSecret
+  ok      #cTarget
+  ok      #cType
+  ok      #cValid
+  ok      #checkBody
+  ok      #credBody
+  ok      #credRotasi
+  ok      #dPath
+  ok      #dTarget
+  ok      #dTpl
+  ok      #deployBody
+  ok      #detailChecks
+  ok      #detailCredBody
+  ok      #detailHealth
+  ok      #detailKv
+  ok      #detailPageBody
+  ok      #detailTimeline
+  ok      #driverDomain
+  ok      #driverOut
+  ok      #fDomain
+  ok      #fNote
+  ok      #fOwner
+  ok      #fTags
+  ok      #fType
+  ok      #fpKv
+  ok      #ikhtisarBersih
+  ok      #kandBody
+  ok      #kandCari
+  ok      #kandInfo
+  ok      #kandLagi
+  ok      #kandPeriksa
+  ok      #kandStatus
+  ok      #kandTanpaInfra
+  ok      #kandTanpaKosong
+  ok      #konsolAksi
+  ok      #konsolBatal
+  ok      #konsolDomain
+  ok      #konsolExtra
+  ok      #konsolJalankan
+  ok      #konsolLog
+  ok      #konsolPaksa
+  ok      #konsolSegarkan
+  ok      #konsolStatus
+  ok      #kontenBody
+  ok      #kunciBody
+  ok      #kunciLevel
+  ok      #kunciNama
+  ok      #kunciSecret
+  ok      #kunciSegarkan
+  ok      #kunciStatus
+  ok      #kunciTambah
+  ok      #kunciTarget
+  ok      #kunciTipe
+  ok      #latencyList
+  lewat   #liveBadge (dibuat live.js/ikhtisar.js)
+  ok      #monitorAlerts
+  ok      #monitorBody
+  ok      #monitorDomain
+  ok      #monitorOut
+  ok      #navKandCount
+  ok      #opsMetrics
+  ok      #page-dashboard
+  ok      #queueStatus
+  ok      #reconProgress
+  ok      #reconQueue
+  ok      #tanamOut
+  ok      #tanamSandi
+  ok      #tanamSapu
+  ok      #tanamTarget
+  ok      #tanamUser
+  ok      #teknoRingkas
+  total rujukan diperiksa: 78
+
+== gate: dokumen internal (boleh memuat istilah) ==
+  GOAL.md memuat 'parasite': 3 baris
+  docs/CONTEXT.md memuat 'parasite': 7 baris
+  docs/EKSPERIMEN.md memuat 'parasite': 0 baris
+  docs/ONBOARDING_PROMPT.txt memuat 'parasite': 1 baris
+  docs/SOP-NEW-CHAT.md memuat 'parasite': 2 baris
+
+== gate: sintaks python ==
+  ok      app/main.py bisa dikompilasi
+
+== gate: rute api dipakai dashboard ==
+  rute di app/main.py: 47
+  ok      semua rute api ada di app/main.py
+== gate: layanan dashboard (fail-closed) ==
+  ok      tanpa sandi http 401
+  ok      /api/health http 200
+  layanan HIDUP
+== gate: placeholder bukti ==
+  ok      tidak ada placeholder
+== gate: bukti langkah terakhir ==
+  ok      docs/evidence/S-260.txt (S-260)
+== gate: skrip dashboard disajikan ==
+  ok      /aksi.js
+  ok      /audit.js
+  ok      /detail.js
+  ok      /driver.js
+  ok      /ekspor.js
+  ok      /ikhtisar.js
+  ok      /konsol.js
+  ok      /konten.js
+  ok      /live.js
+  ok      /monitor.js
+  ok      /recon.js
+  ok      /tanam.js
+  ok      /tautan.js
+== gate: rute api utama (hidup) ==
+  ok      /api/health -> 200
+  ok      /api/targets -> 200
+  ok      /api/teknologi-ringkas -> 200
+  ok      /api/status/ringkas -> 200
+  ok      /api/audit -> 200
+  ok      /api/driver/rules?domain=waspadaweb.com -> 200
+  ok      /api/driver/plan?domain=waspadaweb.com -> 200
+== gate: dokumen spec ==
+  ok      docs/LANDASAN.md
+  ok      docs/PROLOG-HESTIA-DASHBOARD.md
+  ok      docs/GOAL-Hestia-SEO.md
+  ok      docs/SKILL-AGENT-HESTIA.md
+  ok      docs/PROMPT-TAMBAHAN-AGENT-DASHBOARD.md
+GATE: LULUS
