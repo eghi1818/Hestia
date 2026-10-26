@@ -1,17 +1,16 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 07:41.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 07:42.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: e06344c S-234 F-13: ekspor bukti siap pihak ketiga (2 vantage + MANIFEST sha256) [jejak]
-branch: main | kotor: M docs/CATATAN-LAPANGAN.md
- M tools/bukti_ekspor.py
-?? docs/steps/S-234.md
-rute app/main.py: 75 | berkas bukti: 129 | dokumen langkah: 196
+HEAD: bfdfa3d S-235: perbandingan vantage dinormalisasi, status otomatis di folder resume
+branch: main | kotor: M docs/steps/S-235.md
+rute app/main.py: 75 | berkas bukti: 130 | dokumen langkah: 197
 
 ## 12 commit terakhir
 
 ```
+bfdfa3d S-235: perbandingan vantage dinormalisasi, status otomatis di folder resume
 e06344c S-234 F-13: ekspor bukti siap pihak ketiga (2 vantage + MANIFEST sha256) [jejak]
 5db3463 S-234 F-13: ekspor bukti siap pihak ketiga (2 vantage + MANIFEST sha256)
 85494f0 S-233 F-12: label dari docs/CHAT.md, GANTI berulang aman [jejak]
@@ -23,7 +22,6 @@ c74db14 S-231 F-10: label chat V1.2, kombinasi GANTI lalu BUNUH pada satu halama
 a08cc54 S-230: folder resume dilengkapi, label chat V1.2, status K1+K2 terbukti [jejak]
 fb532f8 S-230: folder resume dilengkapi, label chat V1.2, status K1+K2 terbukti
 32dc9d4 S-229 F-9b: layanan dinyalakan, dasar rollback eksplisit, handover lengkap [jejak]
-34bb42f S-229 F-9b: layanan dinyalakan, dasar rollback eksplisit, handover lengkap
 ```
 
 ## SISA KERJA
