@@ -1,15 +1,18 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 14:27.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 14:35.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 76f2825 S-264: inject wecash.ai tanpa banner + mode auto supaya isi tampil
-branch: main | kotor: M docs/evidence/S-264.txt
-rute app/main.py: 75 | berkas bukti: 159 | dokumen langkah: 238
+HEAD: cfbd6b6 S-265: aset halaman inject diperbaiki via base href (gambar/logo tampil)
+branch: main | kotor: M docs/evidence/S-265.txt
+rute app/main.py: 75 | berkas bukti: 160 | dokumen langkah: 239
 
 ## 12 commit terakhir
 
 ```
+cfbd6b6 S-265: aset halaman inject diperbaiki via base href (gambar/logo tampil)
+e6ce511 S-264: inject wecash.ai tanpa banner + mode auto supaya isi tampil [jejak] [dokumen]
+69cba36 S-264: inject wecash.ai tanpa banner + mode auto supaya isi tampil [jejak]
 76f2825 S-264: inject wecash.ai tanpa banner + mode auto supaya isi tampil
 5a5bd2f S-263: inject wecash.ai -> waspadaweb.com terbukti dari luar (jalur J5) [jejak] [dokumen]
 d762583 S-263: inject wecash.ai -> waspadaweb.com terbukti dari luar (jalur J5) [jejak]
@@ -19,9 +22,6 @@ d67d274 S-263: inject wecash.ai -> waspadaweb.com terbukti dari luar (jalur J5)
 778dab3 S-261 F-15: pemeriksa link rot (tautan mati) + tempel ke timer pemantauan
 e4ba46f S-260 F-19: dokumen langkah bolong dipulihkan, stub tutup.sh tidak dibuang, tunggu-siap diperbaiki [jejak] [dokumen]
 71adaef S-260 F-19: dokumen langkah bolong dipulihkan, stub tutup.sh tidak dibuang, tunggu-siap diperbaiki [jejak]
-f836fa6 S-260 F-19: dokumen langkah bolong dipulihkan, stub tutup.sh tidak dibuang, tunggu-siap diperbaiki
-56d3341 S-259 F-18b: layanan lepas didelegasikan ke live.sh (env benar, rute api kembali 200) [jejak]
-7c02627 S-259 F-18b: layanan lepas didelegasikan ke live.sh (env benar, rute api kembali 200)
 ```
 
 ## SISA KERJA
