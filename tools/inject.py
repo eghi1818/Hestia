@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Bukti A->B: ambil konten situs A, tulis ke berkas situs B lewat jalur J5.
-Mode auto: salin (HTML) / bingkai (iframe) / teks (bersih). Jalankan di VPS dengan HESTIA_LOKAL=1."""
+Base href membuat semua URL relatif menunjuk ke situs A, jadi aset ikut tampil.
+Jalankan di VPS dengan HESTIA_LOKAL=1."""
 import argparse, datetime, hashlib, os, re, sqlite3, subprocess, urllib.request
 
 DB = "data/hestia.db"
@@ -43,11 +44,19 @@ def boleh_bingkai(hdr):
 
 def rapikan(html, dasar):
     d = dasar.rstrip("/")
-    html = re.sub(r'((?:href|src)=")//', r"\1@@", html)
+    sisip = ""
+    if "<base" not in html.lower():
+        sisip += '<base href="%s/">' % d
+    if re.search(r"(?is)<head[^>]*>", html):
+        html = re.sub(r"(?is)(<head[^>]*>)", r"\1" + sisip, html, count=1)
+    else:
+        html = sisip + html
+    html = re.sub(r'((?:href|src|srcset|action)=")(?!https?:|//|/|#|data:|mailto:|javascript:)([^"]+)"',
+                  r"\1" + d + r'/\2"', html)
     html = re.sub(r'((?:href|src|srcset|action)=")/', r"\1" + d + "/", html)
     html = re.sub(r"url\((/[^)]*)\)", r"url(" + d + r"\1)", html)
     html = html.replace('"/_next', '"' + d + '/_next').replace("'/_next", "'" + d + "/_next")
-    return html.replace("@@", "//")
+    return html
 
 
 def halaman_bingkai(dasar, judul):
@@ -98,13 +107,13 @@ def utama():
     m = re.search(r"(?is)<title[^>]*>(.*?)</title>", html)
     judul = (m.group(1).strip()[:80] if m else a.dari)
     teks = teks_terlihat(html)
-    print("  A %s http=%s sha256=%s panjang=%d teks_terlihat=%d judul=%r"
-          % (a.dari, kode, sha[:16], len(html), len(teks), judul))
+    print("  A %s http=%s sha256=%s panjang=%d teks_terlihat=%d"
+          % (a.dari, kode, sha[:16], len(html), len(teks)))
 
     mode = a.mode
     if mode == "auto":
         mode = "salin" if len(teks) >= 300 else ("bingkai" if boleh_bingkai(hdr) else "teks")
-    print("  mode dipakai: %s | boleh dibingkai: %s" % (mode, boleh_bingkai(hdr)))
+    print("  mode dipakai: %s" % mode)
 
     if mode == "salin":
         isi = rapikan(html, a.dari)
@@ -117,11 +126,14 @@ def utama():
         bar = ('<div id="hestia-penanda" style="font:14px/1.5 -apple-system,sans-serif;'
                'background:#111;color:#eee;padding:10px 14px"><b>%s</b> &middot; %s &middot; sha256 %s</div>'
                % (a.penanda, a.dari, sha[:16]))
-        isi = isi.replace("</body>", bar + "</body>") if mode == "bingkai" else isi.replace("<body>", "<body>" + bar, 1)
+        isi = isi.replace("</body>", bar + "</body>")
 
-    isi = ("<!-- %s sumber=%s sha256=%s mode=%s waktu=%s -->\n"
-           % (a.penanda, a.dari, sha, mode,
-              datetime.datetime.now().astimezone().isoformat(timespec="seconds"))) + isi
+    cap = "<!-- %s sumber=%s sha256=%s mode=%s waktu=%s -->" % (
+        a.penanda, a.dari, sha, mode, datetime.datetime.now().astimezone().isoformat(timespec="seconds"))
+    if re.search(r"(?is)<head[^>]*>", isi):
+        isi = re.sub(r"(?is)(<head[^>]*>)", r"\1" + cap, isi, count=1)
+    else:
+        isi = cap + isi
 
     rc, asli, _ = sh("sudo cat %s" % a.berkas)
     ada = asli.strip() != "" and "No such file" not in asli
@@ -142,7 +154,8 @@ def utama():
     c = sqlite3.connect(a.db)
     kols = [r[1] for r in c.execute("pragma table_info(change_event)")]
     b = {"jenis": "inject-a-b", "jalur": "J5", "nilai_lama": hashlib.sha256(asli.encode()).hexdigest()[:16],
-         "nilai_baru": sha[:16], "vantage": "lokal+vps", "catatan": "%s -> %s (mode %s)" % (a.dari, a.ke, mode),
+         "nilai_baru": sha[:16], "vantage": "lokal+vps",
+         "catatan": "%s -> %s (mode %s, base href)" % (a.dari, a.ke, mode),
          "waktu": datetime.datetime.now().astimezone().isoformat(timespec="seconds")}
     b = {k: v for k, v in b.items() if k in kols}
     c.execute("insert into change_event (%s) values (%s)" % (", ".join(b), ", ".join("?" * len(b))), tuple(b.values()))
