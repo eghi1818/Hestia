@@ -38,3 +38,13 @@ Ekspor bukti pertama: status lokal dan VPS sama-sama 200, tetapi sha256 badan BE
 (panjang 482 bita padahal berkas kita ~120). Cloudflare menambahkan elemen ke HTML.
 Pelajaran: bandingkan badan TERNORMALISASI (spasi dirapatkan) + penanda, jangan badan mentah.
 tools/bukti_ekspor.py kini mencatat cocok_mentah, cocok_normal, dan status_sama.
+
+## S-239 -- port 8791 tertutup dari luar; pakai port 80 dengan server_name = IP
+Uji luar ke 8791 membalas 000 walau ufw sudah mengizinkan, jadi penutupnya ada di depan
+(provider). Solusi: vhost tambahan di port 80 dengan server_name 93.127.133.160 sehingga
+permintaan ke IP jatuh ke Hestia, sedangkan waspadaweb.com tetap ke vhost-nya (exact match
+server_name menang atas default_server). Berkas: deploy/nginx-hestia-ip.conf.
+
+## S-239 -- DB di VPS adalah SALINAN, bukan kanonik
+Repo di-rsync ke /opt/hestia termasuk data/hestia.db. Sampai ada sinkronisasi, DB di laptop
+adalah sumber kebenaran dan DB di VPS bisa menyimpang. Catat sebagai butir lanjutan.

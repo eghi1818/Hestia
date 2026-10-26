@@ -1,0 +1,11 @@
+BLOK: S-239 / F-17c - akses luar lewat port 80, bukti data scrape di VPS
+STATUS: (lihat keluaran)
+JALUR: J5
+BUKTI: jumlah tabel di DB VPS (targets, kandidat, tautan, konten, donor, jalur, bukti), status dari VPS dan dari laptop
+SNAPSHOT: data/backup di VPS (cron 03:17)
+ROLLBACK: rm /etc/nginx/sites-enabled/hestia-ip.conf && systemctl reload nginx
+IDEMPOTEN: vhost ditulis ulang, symlink dibuat ulang
+YANG GAGAL: 8791 tidak terjangkau dari luar (000) walau ufw mengizinkan -> penutup di provider; ditangani dengan vhost port 80
+
+Tujuan: dashboard dapat dibuka dari laptop tanpa membuka port baru dan tanpa mengganggu
+waspadaweb.com. Sekaligus membuktikan data hasil scrape (targets/kandidat) masih ada di VPS.
