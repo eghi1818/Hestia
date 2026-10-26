@@ -1,0 +1,11 @@
+BLOK: S-231 / F-10 - label chat V1.2 + kombinasi K1 lalu K2 pada satu halaman
+STATUS: (lihat keluaran)
+JALUR: J5
+BUKTI: penanda donor kedua terlihat publik; berkas tetap utuh saat 404; rollback berurutan kembali ke isi asli
+SNAPSHOT: dari ganti.py asli (isi asli ditetapkan eksplisit)
+ROLLBACK: pulih BUNUH dulu -> isi ganti kembali; pulih GANTI -> isi asli kembali
+IDEMPOTEN: tidak diuji ulang di blok ini (sudah di S-228/S-229)
+YANG GAGAL: label chat sebelumnya tidak berubah karena guard "sudah ada V1.2" membuat tools/sync_jejak.py terlewati
+
+Poin F-10: membuktikan K2 (BUNUH) tidak merusak isi yang sudah dipasang K1 (GANTI), dan
+rollback berurutan mengembalikan keadaan dengan benar.

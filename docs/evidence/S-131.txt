@@ -36,7 +36,7 @@ cek "live.js"   "/live.js"
 -rw-r--r--  1 eghi  staff  1218 Oct 22 17:23 2-SESSION-STATE.md
 -rw-r--r--  1 eghi  staff  1121 Oct 22 17:23 3-KELUARAN-RESUME.txt
 -rw-r--r--  1 eghi  staff  9716 Oct 22 17:23 4-SERAH-TERIMA-lengkap.md
-chat ini: SEO V1.0  ->  buat chat baru bernama: SEO V1.1
+chat ini: SEO V1.1  ->  buat chat baru bernama: SEO V1.2
    0-CARA-PAKAI.txt
    1-ONBOARDING-PROMPT.txt
    2-SESSION-STATE.md
@@ -70,7 +70,7 @@ cek "live.js"   "/live.js"
 -rw-r--r--  1 eghi  staff   599 Oct 22 17:24 2-SESSION-STATE.md
 -rw-r--r--  1 eghi  staff  1043 Oct 22 17:24 3-KELUARAN-RESUME.txt
 -rw-r--r--  1 eghi  staff  9658 Oct 22 17:24 4-SERAH-TERIMA-lengkap.md
-chat ini: SEO V1.0  ->  buat chat baru bernama: SEO V1.1
+chat ini: SEO V1.1  ->  buat chat baru bernama: SEO V1.2
    0-CARA-PAKAI.txt
    1-ONBOARDING-PROMPT.txt
    2-SESSION-STATE.md
