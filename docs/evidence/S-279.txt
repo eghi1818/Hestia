@@ -1,0 +1,324 @@
+===== A. balik nama + sertifikat + port dua IP kandidat =====
+--- 3.64.163.50
+PTR: ec2-3-64-163-50.eu-central-1.compute.amazonaws.com. 
+rDNS: 3.64.163.50 ec2-3-64-163-50.eu-central-1.compute.amazonaws.com
+-- sertifikat TLS (SNI wecash.ai):
+subject= /CN=newsletter.theapolis.de
+issuer= /C=US/O=Amazon/CN=Amazon RSA 2048 M04
+notBefore=Jan 29 00:00:00 2026 GMT
+notAfter=Feb 27 23:59:59 2027 GMT
+            X509v3 Subject Alternative Name: 
+                DNS:newsletter.theapolis.de
+-- port terbuka:
+   buka 80
+   buka 443
+   buka 8080
+--- 52.128.23.153
+PTR: 
+rDNS: No PTR records found
+-- sertifikat TLS (SNI wecash.ai):
+-- port terbuka:
+   buka 80
+   buka 443
+   buka 8080
+
+===== B. passive DNS ber-tanggal (OTX) =====
+wecash.ai status=429 panjang=80
+www.wecash.ai status=429 panjang=80
+dev.wecash.ai status=429 panjang=80
+api.wecash.ai status=429 panjang=80
+
+===== C. crt.sh + siapa lagi di dua IP itu =====
+crt=200 panjang=18064
+rapid1=200 panjang=92913
+rapid2=200 panjang=93581
+=== OTX /tmp/otx_api.wecash.ai.json
+  catatan: 0
+=== OTX /tmp/otx_dev.wecash.ai.json
+  catatan: 0
+=== OTX /tmp/otx_wecash.ai.json
+  catatan: 0
+=== OTX /tmp/otx_www.wecash.ai.json
+  catatan: 0
+=== crt.sh nama unik: 4
+    *.dev.wecash.ai
+    *.wecash.ai
+    wecash.ai
+    www.wecash.ai
+=== /tmp/rip1.html baris domain: 100
+    4bucak.com adagencyomaha.com adventureservices.net alquilaria.com angliaauctions.com autodiscover.dizz.co baltimoreelevator.com beautyproductenkopen.nl bermudarentals.net brandstrategy.co.uk cleartext.org clickarabic.info continental-adventures.com corporate.amacpa.com cpanel.firmaprofil.no cpanel.fourpawspetservices.com cpanel.trib.eatdigi.com cpcalendars.skinandsoul.art cpcalendars.velvetnotes.com cpcontacts.liabrl.no cpcontacts.velvetnotes.com dentistlosangelesca.com destination-x.com digitalmarketingmaine.com downwester.com dsa.xyz emergingmarketresearch.com f2.web.dizz.co financialadvisorslosangeles.com financialjobs.biz flyy.app garip.net giftsforcollegestudents.com git.tips giz.no guerrillaproduction.com hostmaster.alpacacapital.com immerse.us jinx.me legacyboards.com lingocube.com macro.ie mail.breakfaststudios.com mail.trib.eatdigi.com mail.wolfandshield.com mail.wp.eatdigi.com maverickranch.com medseva.com mexicaninsurancecoverage.com mynewsdepot.com numeric.app obsidianproperties.com office.teamignition.com productexperiencemanagement.com property.resources.eatdigi.com psichain.com pwliexteriorcleaning.com quantumasaservice.com redprotege.com seva.yoga silknation.com staging.crm.amacpa.com stldwiattorney.com stlflatroof.com undiscoveredbounty.com unusualconnection.com unusualconnections.com vintnerservices.com virtual-maps.net webdisk.brlportalen.no
+    memuat 'wecash': []
+=== /tmp/rip2.html baris domain: 100
+    _dmarc.mx.callcanna.com _dmarc.mx.easyramp.com _dmarc.mx.mx.callcanna.com _dmarc.mx.mx.easyramp.com admin.finportal.com admin.wefixbugs.com agentdesigns.com andi.ca arafanelli.com augment.top autodiscover.easternman.com autodiscover.zorwell.com b2.zold.io bestcandles.com clevelandlasersurgery.com cliffs.org community.oasis.com computerscripts.com cpanel.sajt.me cpanel.zorwell.com cpcalendars.zorwell.com cpcontacts.zorwell.com debtanxiety.com dev-api.oasis.com dlin.sajt.me eprocexch01.easternman.com eprocexch02.easternman.com eprocmailrelay.easternman.com eprocowa.easternman.com freedomanddemocracy.com gss.oasis.com hdwinc.com healthandcontentment.com healthscreeningjapan.com heavytrucking.com hostmaster.buddytrade.com hostmaster.cliffs.org hostmaster.finportal.com hostmaster.freedomanddemocracy.com hostmaster.hostmaster.freedomanddemocracy.com hostmaster.hostmaster.hostmaster.buddytrade.com hostmaster.hostmaster.hostmaster.freedomanddemocracy.com hostmaster.hostmaster.hostmaster.www.freedomanddemocracy.com hostmaster.hostmaster.www.freedomanddemocracy.com hostmaster.poisonivycure.com hostmaster.www.freedomanddemocracy.com ignorantrump.com jira.trakx.com jovo.net lazycenter.com mail.extremefire.com mail.nyclow.com mail.sajt.me mail.zorwell.com maxreward.com minionz.com mtwab.com mx.callcanna.com mx.easyramp.com mx.mx.easyramp.com mx.mx.mx.mx.callcanna.com mx.mx.mx.mx.easyramp.com mx.zorwell.com nantucketflights.com nationglobe.com nhtaxi.com oa-exc-2010.oasis.com paralab.com.paralab.pt priv.oasis.com pub102.oasis.com
+    memuat 'wecash': []
+
+===== D. matriks Host ke ALB 3.64.163.50 =====
+--- Host: wecash.ai
+HTTP/1.1 301 Moved Permanently
+Server: awselb/2.0
+Date: Mon, 26 Oct 2026 09:35:30 GMT
+Content-Type: text/html
+Content-Length: 134
+Connection: keep-alive
+Location: https://wecash.ai:443/
+
+HTTP/2 503 
+server: awselb/2.0
+date: Mon, 26 Oct 2026 09:35:31 GMT
+content-type: text/plain; charset=utf-8
+content-length: 0
+
+--- Host: www.wecash.ai
+HTTP/1.1 301 Moved Permanently
+Server: awselb/2.0
+Date: Mon, 26 Oct 2026 09:35:31 GMT
+Content-Type: text/html
+Content-Length: 134
+Connection: keep-alive
+Location: https://www.wecash.ai:443/
+
+HTTP/2 503 
+server: awselb/2.0
+date: Mon, 26 Oct 2026 09:35:32 GMT
+content-type: text/plain; charset=utf-8
+content-length: 0
+
+--- Host: dev.wecash.ai
+HTTP/1.1 301 Moved Permanently
+Server: awselb/2.0
+Date: Mon, 26 Oct 2026 09:35:32 GMT
+Content-Type: text/html
+Content-Length: 134
+Connection: keep-alive
+Location: https://dev.wecash.ai:443/
+
+HTTP/2 503 
+server: awselb/2.0
+date: Mon, 26 Oct 2026 09:35:33 GMT
+content-type: text/plain; charset=utf-8
+content-length: 0
+
+--- Host: api.wecash.ai
+HTTP/1.1 301 Moved Permanently
+Server: awselb/2.0
+Date: Mon, 26 Oct 2026 09:35:34 GMT
+Content-Type: text/html
+Content-Length: 134
+Connection: keep-alive
+Location: https://api.wecash.ai:443/
+
+HTTP/2 503 
+server: awselb/2.0
+date: Mon, 26 Oct 2026 09:35:35 GMT
+content-type: text/plain; charset=utf-8
+content-length: 0
+
+--- Host dev/api ke 52.128.23.153
+--- Host: dev.wecash.ai
+--- Host: api.wecash.ai
+
+===== E. subdomain hidup lewat Cloudflare =====
+--- api.wecash.ai
+status=404 panjang=1249
+HTTP/2 404 
+date: Mon, 26 Oct 2026 09:35:43 GMT
+content-type: text/html
+cache-control: private, no-cache, max-age=0
+pragma: no-cache
+server: cloudflare
+x-turbo-charged-by: LiteSpeed
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=nf7PeqtG3zNJwbH1wclETCC7FNew%2F7njFKqSJ4H%2B3iUt4ZMoJCvcKei9KPGzZHp4hIJAbNul4yr3TcCTKE4CghgqUE%2FcA%2FAdTsymrMFJgvaQximYTVXreOpMdVMn2YPb"}]}
+vary: Accept-Encoding
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-cache-status: DYNAMIC
+cf-ray: a50878f61c3c8546-HKG
+alt-svc: h3=":443"; ma=86400
+
+<!DOCTYPE html>
+<html style="height:100%">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title> 404 Not Found
+</title><style>@media (prefers-color-sch
+--- dev.wecash.ai
+status=522 panjang=16
+HTTP/2 522 
+date: Mon, 26 Oct 2026 09:36:02 GMT
+content-type: text/plain; charset=UTF-8
+content-length: 16
+cache-control: private, max-age=0, no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+expires: Thu, 01 Jan 1970 00:00:01 GMT
+referrer-policy: same-origin
+x-frame-options: SAMEORIGIN
+server: cloudflare
+cf-ray: a50878f7aab2fe15-SIN
+alt-svc: h3=":443"; ma=86400
+
+error code: 522
+
+===== TUTUP =====
++ dokumen langkah disiapkan lebih awal: docs/steps/S-279.md
+== gate: berkas wajib ==
+  ok      README.md
+  ok      CHANGELOG.md
+  ok      GOAL.md
+  ok      docs/PRD-Authority-Hosting-v1.5.md
+  ok      docs/CONTEXT.md
+  ok      docs/EKSPERIMEN.md
+  ok      docs/ONBOARDING_PROMPT.txt
+  ok      docs/SOP-NEW-CHAT.md
+
+== gate: sterilisasi pada artefak tim ==
+  bersih  README.md
+  bersih  CHANGELOG.md
+  bersih  docs/PRD-Authority-Hosting-v1.5.md
+  bersih  dashboard/README.md
+  bersih  dashboard/aksi.js
+  bersih  dashboard/audit.js
+  bersih  dashboard/detail.js
+  bersih  dashboard/driver.js
+  bersih  dashboard/ekspor.js
+  bersih  dashboard/ikhtisar.js
+  bersih  dashboard/index.html
+  bersih  dashboard/konsol.js
+  bersih  dashboard/konten.js
+  bersih  dashboard/live.js
+  bersih  dashboard/monitor.js
+  bersih  dashboard/recon.js
+  bersih  dashboard/tanam.js
+  bersih  dashboard/tautan.js
+  bersih  app/__init__.py
+  bersih  app/db.py
+  bersih  app/main.py
+
+== gate: integrasi skrip dashboard dengan index.html ==
+  ok      #auditBatas
+  ok      #auditBody
+  ok      #auditCari
+  ok      #auditPeristiwa
+  ok      #backlinkBody
+  ok      #cLevel
+  ok      #cName
+  ok      #cSecret
+  ok      #cTarget
+  ok      #cType
+  ok      #cValid
+  ok      #checkBody
+  ok      #credBody
+  ok      #credRotasi
+  ok      #dPath
+  ok      #dTarget
+  ok      #dTpl
+  ok      #deployBody
+  ok      #detailChecks
+  ok      #detailCredBody
+  ok      #detailHealth
+  ok      #detailKv
+  ok      #detailPageBody
+  ok      #detailTimeline
+  ok      #driverDomain
+  ok      #driverOut
+  ok      #fDomain
+  ok      #fNote
+  ok      #fOwner
+  ok      #fTags
+  ok      #fType
+  ok      #fpKv
+  ok      #ikhtisarBersih
+  ok      #kandBody
+  ok      #kandCari
+  ok      #kandInfo
+  ok      #kandLagi
+  ok      #kandPeriksa
+  ok      #kandStatus
+  ok      #kandTanpaInfra
+  ok      #kandTanpaKosong
+  ok      #konsolAksi
+  ok      #konsolBatal
+  ok      #konsolDomain
+  ok      #konsolExtra
+  ok      #konsolJalankan
+  ok      #konsolLog
+  ok      #konsolPaksa
+  ok      #konsolSegarkan
+  ok      #konsolStatus
+  ok      #kontenBody
+  ok      #kunciBody
+  ok      #kunciLevel
+  ok      #kunciNama
+  ok      #kunciSecret
+  ok      #kunciSegarkan
+  ok      #kunciStatus
+  ok      #kunciTambah
+  ok      #kunciTarget
+  ok      #kunciTipe
+  ok      #latencyList
+  lewat   #liveBadge (dibuat live.js/ikhtisar.js)
+  ok      #monitorAlerts
+  ok      #monitorBody
+  ok      #monitorDomain
+  ok      #monitorOut
+  ok      #navKandCount
+  ok      #opsMetrics
+  ok      #page-dashboard
+  ok      #queueStatus
+  ok      #reconProgress
+  ok      #reconQueue
+  ok      #tanamOut
+  ok      #tanamSandi
+  ok      #tanamSapu
+  ok      #tanamTarget
+  ok      #tanamUser
+  ok      #teknoRingkas
+  total rujukan diperiksa: 78
+
+== gate: dokumen internal (boleh memuat istilah) ==
+  GOAL.md memuat 'parasite': 3 baris
+  docs/CONTEXT.md memuat 'parasite': 7 baris
+  docs/EKSPERIMEN.md memuat 'parasite': 0 baris
+  docs/ONBOARDING_PROMPT.txt memuat 'parasite': 1 baris
+  docs/SOP-NEW-CHAT.md memuat 'parasite': 2 baris
+
+== gate: sintaks python ==
+  ok      app/main.py bisa dikompilasi
+
+== gate: rute api dipakai dashboard ==
+  rute di app/main.py: 47
+  ok      semua rute api ada di app/main.py
+== gate: layanan dashboard (fail-closed) ==
+  ok      tanpa sandi http 401
+  ok      /api/health http 200
+  layanan HIDUP
+== gate: placeholder bukti ==
+  ok      tidak ada placeholder
+== gate: bukti langkah terakhir ==
+  ok      docs/evidence/S-279.txt (S-279)
+== gate: skrip dashboard disajikan ==
+  ok      /aksi.js
+  ok      /audit.js
+  ok      /detail.js
+  ok      /driver.js
+  ok      /ekspor.js
+  ok      /ikhtisar.js
+  ok      /konsol.js
+  ok      /konten.js
+  ok      /live.js
+  ok      /monitor.js
+  ok      /recon.js
+  ok      /tanam.js
+  ok      /tautan.js
+== gate: rute api utama (hidup) ==
+  ok      /api/health -> 200
+  ok      /api/targets -> 200
+  ok      /api/teknologi-ringkas -> 200
+  ok      /api/status/ringkas -> 200
+  ok      /api/audit -> 200
+  ok      /api/driver/rules?domain=waspadaweb.com -> 200
+  ok      /api/driver/plan?domain=waspadaweb.com -> 200
+== gate: dokumen spec ==
+  ok      docs/LANDASAN.md
+  ok      docs/PROLOG-HESTIA-DASHBOARD.md
+  ok      docs/GOAL-Hestia-SEO.md
+  ok      docs/SKILL-AGENT-HESTIA.md
+  ok      docs/PROMPT-TAMBAHAN-AGENT-DASHBOARD.md
+GATE: LULUS
