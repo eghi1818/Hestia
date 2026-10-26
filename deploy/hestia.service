@@ -1,0 +1,20 @@
+[Unit]
+Description=Hestia Dashboard
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=hestia
+Group=hestia
+WorkingDirectory=/opt/hestia
+EnvironmentFile=/etc/hestia/live.env
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/hestia/.venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8787
+Restart=always
+RestartSec=3
+StandardOutput=append:/var/log/hestia/serve.log
+StandardError=append:/var/log/hestia/serve.log
+
+[Install]
+WantedBy=multi-user.target

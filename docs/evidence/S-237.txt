@@ -1,0 +1,10 @@
+BLOK: S-237 / F-17a - artefak deploy VPS ditulis dan divalidasi
+STATUS: (lihat keluaran)
+JALUR: belum menyentuh jalur
+BUKTI: daftar artefak + sintaks pasang.sh + recon VPS
+SNAPSHOT: -
+ROLLBACK: lihat deploy/README.md bagian Rollback
+IDEMPOTEN: pasang.sh tidak menimpa user/venv/live.env bila sudah ada
+YANG GAGAL: tempelan S-237 pertama tersangkut di heredoc karena enam heredoc bersarang; ditulis ulang lewat satu heredoc python
+
+Artefak: deploy/hestia.service, deploy/nginx-hestia.conf, deploy/pasang.sh, deploy/README.md.
