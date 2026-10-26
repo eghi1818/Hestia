@@ -1,15 +1,18 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 16:43.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 16:58.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 1faabf7 S-280 F-0: baseline pokok soal, kejar api.wecash.ai (LiteSpeed/cPanel), meta DNS, riwayat bertanggal, kontrol ALB, gate_misi
-branch: main | kotor: M docs/evidence/S-280.txt
-rute app/main.py: 75 | berkas bukti: 174 | dokumen langkah: 246
+HEAD: e3f9cd5 S-281 F-0: mnemonic bertanggal, sisir nama tak-diproksikan, panel cPanel lewat Cloudflare, Location ALB utuh, jejak REA, sisir 3.64.0.0/16
+branch: main | kotor: M docs/evidence/S-281.txt
+rute app/main.py: 75 | berkas bukti: 175 | dokumen langkah: 247
 
 ## 12 commit terakhir
 
 ```
+e3f9cd5 S-281 F-0: mnemonic bertanggal, sisir nama tak-diproksikan, panel cPanel lewat Cloudflare, Location ALB utuh, jejak REA, sisir 3.64.0.0/16
+e0e1c15 S-280 F-0: baseline pokok soal, kejar api.wecash.ai (LiteSpeed/cPanel), meta DNS, riwayat bertanggal, kontrol ALB, gate_misi [jejak] [dokumen]
+cf53e96 S-280 F-0: baseline pokok soal, kejar api.wecash.ai (LiteSpeed/cPanel), meta DNS, riwayat bertanggal, kontrol ALB, gate_misi [jejak]
 1faabf7 S-280 F-0: baseline pokok soal, kejar api.wecash.ai (LiteSpeed/cPanel), meta DNS, riwayat bertanggal, kontrol ALB, gate_misi
 03a74d9 S-279 F-0: paksa alamat asal wecash.ai - passive DNS bertanggal, crt.sh, sameip, PTR+TLS+port dua IP kandidat, matriks Host ke ALB [jejak] [dokumen]
 8b4d7f7 S-279 F-0: paksa alamat asal wecash.ai - passive DNS bertanggal, crt.sh, sameip, PTR+TLS+port dua IP kandidat, matriks Host ke ALB [jejak]
@@ -19,9 +22,6 @@ fe4e79c S-278 F-0: kenali asal wecash.ai - sidik jari penyedia, subdomain tak di
 5d34b5d S-278 F-0: kenali asal wecash.ai - sidik jari penyedia, subdomain tak diproksikan, riwayat DNS, probe asal langsung
 0ee09be S-277 F-0: ambil SEBELUM /tentang/profile/, daftar rute utuh, kepala aset untuk sidik jari tempat asal [jejak] [dokumen]
 a850e39 S-277 F-0: ambil SEBELUM /tentang/profile/, daftar rute utuh, kepala aset untuk sidik jari tempat asal [jejak]
-1219d39 S-277 F-0: ambil SEBELUM /tentang/profile/, daftar rute utuh, kepala aset untuk sidik jari tempat asal
-4807533 S-268: waspadaweb dikembalikan ke Wecash + vhost wecash.ai disiapkan berisi Gacor [jejak] [dokumen]
-6ebb75f S-268: waspadaweb dikembalikan ke Wecash + vhost wecash.ai disiapkan berisi Gacor [jejak]
 ```
 
 ## SISA KERJA
