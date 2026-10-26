@@ -54,3 +54,9 @@ Menambah vhost dengan server_name = IP TIDAK cukup: permintaan ke IP tetap dilay
 "default" (bukti: dari VPS balas 200 tanpa sandi, dari laptop 404). Yang bekerja: jadikan
 vhost default sebagai proxy ke 127.0.0.1:8787. Salinan asli dicadangkan di
 /etc/nginx/sites-available/default.orig.
+
+## S-241 -- sites-enabled/default bisa berupa BERKAS BIASA
+Mengganti /etc/nginx/sites-available/default saja tidak cukup bila
+/etc/nginx/sites-enabled/default bukan symlink. Gejala: dari VPS balas 200 (vhost default
+lama, root /var/www/html) sementara dari laptop 404. Perbaikan: tulis vhost yang sama
+langsung ke sites-enabled/default bila bukan symlink, lalu nginx -t && systemctl reload nginx.

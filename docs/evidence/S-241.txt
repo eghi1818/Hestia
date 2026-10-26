@@ -1,0 +1,11 @@
+BLOK: S-241 / F-17e - perbaiki akses luar (sites-enabled bukan symlink)
+STATUS: (lihat keluaran)
+JALUR: J5
+BUKTI: jenis berkas sites-enabled/default, jumlah proxy_pass di berkas aktif, status dari VPS dan dari laptop
+SNAPSHOT: /etc/nginx/sites-available/default.orig
+ROLLBACK: cp default.orig ke sites-available/default dan sites-enabled/default, lalu reload nginx
+IDEMPOTEN: vhost ditulis ulang tiap jalan; salinan asli hanya dibuat sekali
+YANG GAGAL: mengganti sites-available/default tidak berpengaruh bila sites-enabled/default bukan symlink; gejala dari VPS 200 sementara dari laptop 404
+
+Catatan: tempelan blok S-241 tersangkut di dalam heredoc sehingga bagian akhir tidak jalan;
+blok pendek ini menuntaskan berkas lokal dan bukti.
