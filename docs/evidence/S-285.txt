@@ -1,0 +1,87 @@
+===== A. ambil vhost + snippet untuk dilihat dan ditambal =====
+ok
+--- vhost SEBELUM:
+server {
+    listen 80;
+    server_name wecash.ai www.wecash.ai dev.wecash.ai;
+    root /var/www/wecash;
+    index index.html;
+    location / { try_files $uri $uri/ /index.html; }
+    include /etc/nginx/snippets/hestia-path.conf;
+}
+--- snippet:
+    # >>> hestia-path >>> jalan masuk dashboard: https://waspadaweb.com/hestia/
+    location = /hestia { return 301 /hestia/; }
+    location /hestia/ {
+        proxy_pass http://127.0.0.1:8787/;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 300s;
+    }
+    location /api/ {
+        proxy_pass http://127.0.0.1:8787/api/;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+    location ~ ^/(aksi|audit|detail|driver|ekspor|ikhtisar|konsol|konten|live|monitor|recon|tanam|tautan)\.js$ {
+        proxy_pass http://127.0.0.1:8787;
+        proxy_set_header Host $host;
+    }
+    # <<< hestia-path <<<
+
+===== B. BANGUN ULANG CERMIN - alat benar, gagal bersuara =====
+rute target: 15
+halaman terambil: 10
+artikel dari tautan+REA: 0
+halaman total setelah artikel: 10
+rujukan lokal: 75 | calon aset: 59
+aset tersimpan: 59 + css: 0
+halaman dengan rujukan belum ada: 8 [('/', 1, ['/cdn-cgi/l/email-protection#20535550504f5254605745434153480e4149']), ('/keunggulan', 1, ['/cdn-cgi/l/email-protection#74070104041b06003403111715071c5a151d']), ('/merchant', 1, ['/cdn-cgi/l/email-protection#45363035352a37310532202624362d6b242c']), ('/privacy-policy', 3, ['/cdn-cgi/l/email-protection#16656366667964625661737577657e38777f', '/cdn-cgi/l/email-protection#40333530302f323400372533232133286e2129', '/cdn-cgi/l/email-protection#47343237372835330730222426342f69262e']), ('/produk', 1, ['/cdn-cgi/l/email-protection#f685838686998482b681939597859ed8979f']), ('/qris', 1, ['/cdn-cgi/l/email-protection#04777174746b76704473616765776c2a656d'])]
+donor menempel: panjang 613610 sha donor 17827c82e2d8
+  aset donor /assets/css/9XKimii_-1.3.14.css -> 404
+  aset donor /assets/css/GeCHvoZf-1.3.14.css -> 404
+  aset donor /assets/css/e4mgZbqd-1.3.14.css -> 404
+  aset donor /assets/css/BI3bMdQd-1.3.14.css -> 404
+  COCOK /401
+  COCOK /home
+PEMBANDINGAN: cocok 2 | beda 8 | halaman target 10
+BEDA: [('/', 28888, 28888), ('/keunggulan', 31135, 31135), ('/merchant', 29501, 29501), ('/privacy-policy', 33839, 33839), ('/produk', 30155, 30155), ('/qris', 27879, 27879), ('/tentang/profile', 28789, 613518), ('/terms-and-conditions', 117613, 117613)]
+GAGAL: [('/404', 'status 404'), ('/500', 'status 500'), ('/_app', 'status 404'), ('/_error', 'status 404'), ('/artikel/[title]', 'status 404'), ('/404', 'status 404'), ('/404/', 'status 404')]
+vhost: try_files -> =404
+vhost: error_page 404 ditambahkan
+STATUS CERMIN: GAGAL
+kode_python=1
+
+===== C. pasang vhost berteriak =====
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+RELOAD-OK
+
+===== D. pasang cermin + uji TERIAK + uji semua rute dari VPS =====
+berkas: 67
+harus404=404
+404berkas=404
+/401/                                          200
+/home/                                         200
+/produk/                                       200
+/terms-and-conditions/                         200
+/tentang/profile/                              200
+/keunggulan/                                   200
+/privacy-policy/                               200
+/merchant/                                     200
+/_next/image/                                  200
+/                                              200
+/qris/                                         200
+<title>BOSGACOR > Situs Terpopuler Agen Slot Gacor Resmi Gampang Menang Hari Ini</title>
+cermin=200
+waspadaweb=200
+hestia=401
+
+===== STATUS BLOK =====
+GAGAL
