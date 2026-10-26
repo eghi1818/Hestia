@@ -1,0 +1,12 @@
+BLOK: S-235 - perbaiki perbandingan vantage, catatan Cloudflare, status otomatis di resume
+STATUS: (lihat keluaran)
+JALUR: J5
+BUKTI: meta.json kini memuat cocok_mentah, cocok_normal, status_sama; bundel diekspor ulang
+SNAPSHOT: data/bukti/<slug>-<cap>/
+ROLLBACK: hapus bundel
+IDEMPOTEN: nama bundel memakai cap waktu
+YANG GAGAL: ekspor S-234 menandai cocok=False karena membandingkan badan mentah; Cloudflare menyuntik HTML sehingga badan berbeda antar vantage meski status sama 200
+
+perubahan: tools/bukti_ekspor.py memakai normalisasi; docs/CATATAN-LAPANGAN.md mencatat temuan
+Cloudflare; docs/steps/S-234.md dirapikan; tools/sync_jejak.py menambahkan baris LANGKAH
+TERAKHIR ke berkas resume supaya status selalu terlihat.

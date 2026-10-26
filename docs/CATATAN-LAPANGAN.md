@@ -32,3 +32,9 @@ driver.py sudah memakai pola ini di _ssh_host/_coba; _ssh_ct hanya untuk menyent
 2. pulih() memotret isi SAAT INI lalu menulisnya kembali, jadi rollback tidak mengembalikan
    isi lama. Perbaikan: snapshot diambil saat pasang dan namanya disimpan di
    change_event.nilai_lama; pulih membacanya dari situ.
+
+## S-234 -- Cloudflare menyuntik HTML, badan mentah beda antar vantage
+Ekspor bukti pertama: status lokal dan VPS sama-sama 200, tetapi sha256 badan BERBEDA
+(panjang 482 bita padahal berkas kita ~120). Cloudflare menambahkan elemen ke HTML.
+Pelajaran: bandingkan badan TERNORMALISASI (spasi dirapatkan) + penanda, jangan badan mentah.
+tools/bukti_ekspor.py kini mencatat cocok_mentah, cocok_normal, dan status_sama.

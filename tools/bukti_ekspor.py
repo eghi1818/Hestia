@@ -45,6 +45,11 @@ def ambil_vps(url):
     return h.stdout, badan
 
 
+def normal(teks):
+    """Bandingkan isi yang bermakna: buang spasi berlebih (Cloudflare menyuntik HTML)."""
+    return " ".join((teks or "").split())
+
+
 def baris_db(url):
     with sqlite3.connect(DB) as c:
         c.row_factory = sqlite3.Row
@@ -85,7 +90,9 @@ def ekspor(target_id, path, url=None):
         "url": url, "target_id": target_id, "jalur": "J5", "waktu_utc": utc,
         "vantage": {"lokal": st_lokal, "vps": st_vps},
         "sha256_badan": {"lokal": sha(bd_lokal), "vps": sha(bd_vps)},
-        "cocok": bd_lokal == bd_vps and st_lokal == int(st_vps or 0),
+        "cocok_mentah": bd_lokal == bd_vps,
+        "cocok_normal": normal(bd_lokal) == normal(bd_vps),
+        "status_sama": str(st_lokal) == str(st_vps),
         "penanda_ganti": "hestia-ganti donor=" in bd_lokal,
         "panjang_badan": len(bd_lokal),
     }, indent=2, ensure_ascii=False), encoding="utf-8")
@@ -108,7 +115,10 @@ def ekspor(target_id, path, url=None):
 
     print("bundel:", d.relative_to(AKAR))
     print("vantage: lokal", st_lokal, "| vps", st_vps)
-    print("cocok antara vantage:", bd_lokal == bd_vps)
+    print("status sama:", str(st_lokal) == str(st_vps),
+          "| badan identik mentah:", bd_lokal == bd_vps,
+          "| identik ternormalisasi:", normal(bd_lokal) == normal(bd_vps))
+    print("catatan: Cloudflare menyuntik HTML, jadi badan mentah bisa berbeda antar vantage")
     print("sha256 bundel:", sha_bundel[:32])
     for b in baris_manifest:
         print("  ", b[:16], b.split("  ")[-1])
