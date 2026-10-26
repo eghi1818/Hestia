@@ -1,0 +1,12 @@
+BLOK: S-236 - dokumen langkah hilang dibuat ulang, kriteria bukti ekspor diperbaiki
+STATUS: (lihat keluaran)
+JALUR: J5
+BUKTI: daftar dokumen langkah hilang, jumlah sesudah perbaikan, meta.json dengan status_sama + variasi_lokal + penanda per vantage
+SNAPSHOT: data/bukti/<slug>-<cap>/
+ROLLBACK: hapus dokumen langkah yang dibuat ulang
+IDEMPOTEN: perbaiki_steps hanya membuat yang belum ada
+YANG GAGAL: dokumen langkah S-218..S-227 dan S-231..S-233 tidak pernah dibuat karena judul commit saat itu memakai F-<m> tanpa S-<n>; kriteria "badan identik" pada ekspor juga salah karena Cloudflare menyuntik HTML berbeda antar permintaan
+
+perubahan: tools/perbaiki_steps.py dibuat dan dijalankan (membuat dokumen langkah dari berkas
+bukti + commit yang menambahkannya); tools/bukti_ekspor.py memakai kriteria status_sama,
+mencatat variasi_lokal dan penanda per vantage.

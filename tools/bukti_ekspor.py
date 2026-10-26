@@ -74,6 +74,7 @@ def ekspor(target_id, path, url=None):
     d.mkdir(parents=True, exist_ok=True)
 
     st_lokal, hd_lokal, bd_lokal = ambil_lokal(url)
+    _, _, bd_lokal2 = ambil_lokal(url)  # permintaan kedua: ukur variasi Cloudflare
     hd_vps, bd_vps = ambil_vps(url)
     st_vps = "000"
     for baris in hd_vps.splitlines():
@@ -90,9 +91,12 @@ def ekspor(target_id, path, url=None):
         "url": url, "target_id": target_id, "jalur": "J5", "waktu_utc": utc,
         "vantage": {"lokal": st_lokal, "vps": st_vps},
         "sha256_badan": {"lokal": sha(bd_lokal), "vps": sha(bd_vps)},
-        "cocok_mentah": bd_lokal == bd_vps,
-        "cocok_normal": normal(bd_lokal) == normal(bd_vps),
         "status_sama": str(st_lokal) == str(st_vps),
+        "badan_identik_mentah": bd_lokal == bd_vps,
+        "badan_identik_normal": normal(bd_lokal) == normal(bd_vps),
+        "penanda_vantage": {"lokal": "hestia-ganti donor=" in bd_lokal,
+                            "vps": "hestia-ganti donor=" in bd_vps},
+        "variasi_lokal": bd_lokal == bd_lokal2,
         "penanda_ganti": "hestia-ganti donor=" in bd_lokal,
         "panjang_badan": len(bd_lokal),
     }, indent=2, ensure_ascii=False), encoding="utf-8")
@@ -116,13 +120,14 @@ def ekspor(target_id, path, url=None):
     print("bundel:", d.relative_to(AKAR))
     print("vantage: lokal", st_lokal, "| vps", st_vps)
     print("status sama:", str(st_lokal) == str(st_vps),
-          "| badan identik mentah:", bd_lokal == bd_vps,
-          "| identik ternormalisasi:", normal(bd_lokal) == normal(bd_vps))
-    print("catatan: Cloudflare menyuntik HTML, jadi badan mentah bisa berbeda antar vantage")
+          "| badan stabil antar permintaan:", bd_lokal == bd_lokal2,
+          "| penanda lokal/vps:", "hestia-ganti donor=" in bd_lokal, "/", "hestia-ganti donor=" in bd_vps)
+    print("catatan: Cloudflare menyuntik HTML, jadi badan mentah tidak dapat dipakai sebagai kriteria")
     print("sha256 bundel:", sha_bundel[:32])
     for b in baris_manifest:
         print("  ", b[:16], b.split("  ")[-1])
-    return 0 if st_lokal == 200 and st_vps == "200" else 1
+    # kriteria: status kedua vantage 200 dan sama. Bukan kesamaan badan mentah.
+    return 0 if (st_lokal == 200 and st_vps == "200" and str(st_lokal) == str(st_vps)) else 1
 
 
 def main():
