@@ -1,0 +1,486 @@
+===== L1. BASELINE POKOK SOAL (formal, tanpa saring) =====
+url=https://wecash.ai/tentang/profile/ status=200 panjang=   29339
+5e71f6d058f602316dbb5556143110386e5bed7e677adcaf68d2110bfa33d08d  docs/evidence/S-280-baseline.html
+-- kepala UTUH:
+HTTP/2 200 
+date: Mon, 26 Oct 2026 09:41:40 GMT
+content-type: text/html; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=r5nrzX1TjjwREITWkjdGZvkPHemLvuFvx8jAqr5OdMhwsHx7U0BE6RbbykT8N9fwy9%2FIdbe7wseesjW8jUaouO5CMWZ2mZ2iXCIc2i7ZzQP89Bj%2FiRAJZRlUk%2FM%3D"}]}
+vary: Accept-Encoding
+x-powered-by: Next.js
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a50881ad48803e62-SIN
+alt-svc: h3=":443"; ma=86400
+
+-- judul:
+<title>Profile -  Wecash</title>
+-- pembanding: 404 asal dan beranda
+404 status=308 panjang=21
+c24a46e020bef10d
+beranda status=200 panjang=29357
+manifes status=200 panjang=1617
+
+===== L2. KEJAR YANG HIDUP: api.wecash.ai (tanpa saring) =====
+root status=404 panjang=1249
+-- kepala UTUH:
+HTTP/2 404 
+date: Mon, 26 Oct 2026 09:41:42 GMT
+content-type: text/html
+cache-control: private, no-cache, max-age=0
+pragma: no-cache
+server: cloudflare
+x-turbo-charged-by: LiteSpeed
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=zCzR5cUFw766In5f0H4UbYH5%2FjZtQoWlxK2fYJiQK4%2BqVxEgbn4%2BWCT7hvWvz9UVlJPuhNkqZ04fDzhxY7U4RwvhUIunvIsbYgnJyCWkPk4pKMbPyLn2Z3T3vAM1e5BC"}]}
+vary: Accept-Encoding
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-cache-status: DYNAMIC
+cf-ray: a50881bbac5ac6a5-MRS
+alt-svc: h3=":443"; ma=86400
+
+-- badan UTUH:
+<!DOCTYPE html>
+<html style="height:100%">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title> 404 Not Found
+</title><style>@media (prefers-color-scheme:dark){body{background-color:#000!important}}</style></head>
+<body style="color: #444; margin:0;font: normal 14px/20px Arial, Helvetica, sans-serif; height:100%; background-color: #fff;">
+<div style="height:auto; min-height:100%; ">     <div style="text-align: center; width:800px; margin-left: -400px; position:absolute; top: 30%; left:50%;">
+        <h1 style="margin:0; font-size:150px; line-height:150px; font-weight:bold;">404</h1>
+<h2 style="margin-top:20px;font-size: 30px;">Not Found
+</h2>
+<p>The resource requested could not be found on this server!</p>
+</div></div><div style="color:#f0f0f0; font-size:12px;margin:auto;padding:0px 30px 0px 30px;position:relative;clear:both;height:100px;margin-top:-101px;background-color:#474747;border-top: 1px solid rgba(0,0,0,0.15);box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset;">
+<br>Proudly powered by LiteSpeed Web Server<p>Please be advised that LiteSpeed Technologies Inc. is not a web hosting company and, as such, has no control over content found on this site.</p></div></body></html>
+-- pemisah direktori kosong vs ada tanpa halaman depan:
+/index.html                        status=404 panjang=1249 tipe=text/html lokasi=
+/index.php                         status=404 panjang=1249 tipe=text/html lokasi=
+/index.htm                         status=404 panjang=1249 tipe=text/html lokasi=
+/robots.txt                        status=200 panjang=1248 tipe=text/plain; charset=utf-8 lokasi=
+/sitemap.xml                       status=404 panjang=1249 tipe=text/html lokasi=
+/favicon.ico                       status=404 panjang=1249 tipe=text/html lokasi=
+/.well-known/                      status=404 panjang=1249 tipe=text/html lokasi=
+/api/                              status=404 panjang=1249 tipe=text/html lokasi=
+/api/v1/                           status=404 panjang=1249 tipe=text/html lokasi=
+/v1/                               status=404 panjang=1249 tipe=text/html lokasi=
+/v2/                               status=404 panjang=1249 tipe=text/html lokasi=
+/health                            status=404 panjang=1249 tipe=text/html lokasi=
+/status                            status=404 panjang=1249 tipe=text/html lokasi=
+/ping                              status=404 panjang=1249 tipe=text/html lokasi=
+/cpanel                            status=404 panjang=1249 tipe=text/html lokasi=
+/webmail                           status=404 panjang=1249 tipe=text/html lokasi=
+/whm                               status=404 panjang=1249 tipe=text/html lokasi=
+/phpmyadmin                        status=404 panjang=1249 tipe=text/html lokasi=
+/icons/                            status=404 panjang=1249 tipe=text/html lokasi=
+/cgi-sys/defaultwebpage.cgi        status=404 panjang=1249 tipe=text/html lokasi=
+/cgi-bin/                          status=404 panjang=1249 tipe=text/html lokasi=
+/server-status                     status=404 panjang=1249 tipe=text/html lokasi=
+/whm-server-status                 status=404 panjang=1249 tipe=text/html lokasi=
+/.htaccess                         status=404 panjang=1249 tipe=text/html lokasi=
+/docs                              status=404 panjang=1249 tipe=text/html lokasi=
+/swagger                           status=404 panjang=1249 tipe=text/html lokasi=
+/openapi.json                      status=404 panjang=1249 tipe=text/html lokasi=
+-- bocoran nama pengguna panel:
+/~root       status=404 panjang=1249
+/~admin      status=404 panjang=1249
+/~wecash     status=404 panjang=1249
+/~user       status=404 panjang=1249
+/~webmaster  status=404 panjang=1249
+/~cpanel     status=404 panjang=1249
+/~nobody     status=404 panjang=1249
+-- /cpanel kepala penuh (cari nama server):
+HTTP/2 404 
+date: Mon, 26 Oct 2026 09:42:08 GMT
+content-type: text/html
+cache-control: private, no-cache, max-age=0
+pragma: no-cache
+server: cloudflare
+x-turbo-charged-by: LiteSpeed
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=9mPKR7tuulsjkVmq03Q87%2BTyLHaU0Fb2mzPKF4EShAOfQRqICf4O3qQeIjx%2FHvcSHE9NaHabFmOm1qJNgk5nja4MyHtdp6ghVdoO1qV%2FndlXNUmGPGKFZlrmB0%2FW4kZZ"}]}
+vary: Accept-Encoding
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-cache-status: DYNAMIC
+cf-ray: a508825bff05b486-SIN
+alt-svc: h3=":443"; ma=86400
+
+
+===== L3. META DNS - cari alamat yang TIDAK diproksikan =====
+NS    dilbert.ns.cloudflare.com. eve.ns.cloudflare.com. 
+SOA   dilbert.ns.cloudflare.com. dns.cloudflare.com. 2416260653 10000 2400 604800 1800 
+MX    1 aspmx.l.google.com. 10 alt3.aspmx.l.google.com. 10 alt4.aspmx.l.google.com. 5 alt1.aspmx.l.google.com. 5 alt2.aspmx.l.google.com. 
+TXT   "google-site-verification=G6_g0w9jehAvoXLB06Ud_0iqnS0w2ccb5jILbUG2ypQ" "v=spf1 include:_spf.google.com -all" 
+CAA   
+_dmarc 
+mail           
+ftp            
+cpanel         
+webmail        
+autodiscover   
+autoconfig     
+smtp           
+imap           
+pop            
+panel          
+sso            
+git            
+staging        
+admin          
+blog           
+shop           
+store          
+m              
+app            
+my             
+dashboard      
+node           
+test           
+
+===== L4. RIWAYAT bertanggal - kegagalan dibiarkan bersuara =====
+crt.sh=000 panjang=0
+mnemonic wecash.ai=200 panjang=389
+mnemonic dev.wecash.ai=200 panjang=221
+mnemonic api.wecash.ai=200 panjang=221
+mnemonic 3.64.163.50=200 panjang=7155
+mnemonic 52.128.23.153=200 panjang=7856
+rapiddns-sub=200 panjang=41861
+viewdns=403 panjang=5723
+sameip-ip2-hal1=200 panjang=93581
+sameip-ip2-hal2=200 panjang=93581
+sameip-ip2-hal3=200 panjang=93581
+
+===== L5. KONTROL + port 80 IP2 =====
+--- Host: tidak-ada-xyz.invalid
+HTTP/1.1 301 Moved Permanently
+Server: awselb/2.0
+Date: Mon, 26 Oct 2026 09:43:12 GMT
+Content-Type: text/html
+Content-Length: 134
+Connection: keep-alive
+HTTP/2 503 
+server: awselb/2.0
+date: Mon, 26 Oct 2026 09:43:13 GMT
+content-type: text/plain; charset=utf-8
+content-length: 0
+
+--- Host: sesuatu.example.org
+HTTP/1.1 301 Moved Permanently
+Server: awselb/2.0
+Date: Mon, 26 Oct 2026 09:43:13 GMT
+Content-Type: text/html
+Content-Length: 134
+Connection: keep-alive
+HTTP/2 503 
+server: awselb/2.0
+date: Mon, 26 Oct 2026 09:43:14 GMT
+content-type: text/plain; charset=utf-8
+content-length: 0
+
+--- Host: wecash.ai
+HTTP/1.1 301 Moved Permanently
+Server: awselb/2.0
+Date: Mon, 26 Oct 2026 09:43:14 GMT
+Content-Type: text/html
+Content-Length: 134
+Connection: keep-alive
+HTTP/2 503 
+server: awselb/2.0
+date: Mon, 26 Oct 2026 09:43:15 GMT
+content-type: text/plain; charset=utf-8
+content-length: 0
+
+--- IP2 port 80 dan 443 (HTTP belum pernah dikirim):
+=== L1 VERDICT ===
+rute target: 15
+VERDICT: ADA -> pekerjaan = MENGUBAH
+baseline status: 200 panjang: 29339 sha256: 5e71f6d058f60231
+=== crt.sh TANPA DEDUP ===
+jumlah sertifikat: 60
+  penerbit: 22 C=US, O=Google Trust Services, CN=WE1
+  penerbit: 16 C=US, O=Let's Encrypt, CN=R3
+  penerbit: 8 C=US, O=Google Trust Services, CN=WR1
+  penerbit: 6 C=US, O=Let's Encrypt, CN=E7
+  penerbit: 4 C=US, O=Let's Encrypt, CN=YE2
+  penerbit: 2 C=US, O=Let's Encrypt, CN=E8
+  penerbit: 2 C=US, O=Let's Encrypt, CN=E5
+nama unik: 4
+   *.dev.wecash.ai *.wecash.ai wecash.ai www.wecash.ai
+SERTIFIKAT BUKAN CLOUDFLARE: 60
+    ('2026-08-01', "C=US, O=Let's Encrypt, CN=YE2", '*.wecash.ai wecash.ai')
+    ('2026-08-01', "C=US, O=Let's Encrypt, CN=YE2", '*.wecash.ai wecash.ai')
+    ('2026-07-14', 'C=US, O=Google Trust Services, CN=WE1', '*.dev.wecash.ai *.wecash.ai wecash.ai')
+    ('2026-07-14', 'C=US, O=Google Trust Services, CN=WE1', '*.dev.wecash.ai *.wecash.ai wecash.ai')
+    ('2026-07-14', 'C=US, O=Google Trust Services, CN=WR1', '*.dev.wecash.ai *.wecash.ai wecash.ai')
+    ('2026-07-14', 'C=US, O=Google Trust Services, CN=WE1', '*.dev.wecash.ai *.wecash.ai wecash.ai')
+    ('2026-07-14', 'C=US, O=Google Trust Services, CN=WR1', '*.dev.wecash.ai *.wecash.ai wecash.ai')
+    ('2026-07-10', 'C=US, O=Google Trust Services, CN=WE1', '*.wecash.ai wecash.ai')
+    ('2026-06-03', "C=US, O=Let's Encrypt, CN=YE2", '*.wecash.ai wecash.ai')
+    ('2026-06-03', "C=US, O=Let's Encrypt, CN=YE2", '*.wecash.ai wecash.ai')
+    ('2026-05-16', 'C=US, O=Google Trust Services, CN=WE1', '*.dev.wecash.ai *.wecash.ai wecash.ai')
+    ('2026-05-16', 'C=US, O=Google Trust Services, CN=WE1', '*.dev.wecash.ai *.wecash.ai wecash.ai')
+    ('2026-05-16', 'C=US, O=Google Trust Services, CN=WR1', '*.dev.wecash.ai *.wecash.ai wecash.ai')
+    ('2026-05-12', 'C=US, O=Google Trust Services, CN=WE1', '*.wecash.ai wecash.ai')
+    ('2026-03-20', "C=US, O=Let's Encrypt, CN=E7", '*.wecash.ai wecash.ai')
+    ('2026-03-20', "C=US, O=Let's Encrypt, CN=E7", '*.wecash.ai wecash.ai')
+    ('2026-03-18', 'C=US, O=Google Trust Services, CN=WE1', '*.dev.wecash.ai *.wecash.ai wecash.ai')
+    ('2026-03-18', 'C=US, O=Google Trust Services, CN=WE1', '*.dev.wecash.ai *.wecash.ai wecash.ai')
+    ('2026-03-18', 'C=US, O=Google Trust Services, CN=WR1', '*.dev.wecash.ai *.wecash.ai wecash.ai')
+    ('2026-03-14', 'C=US, O=Google Trust Services, CN=WE1', '*.wecash.ai wecash.ai')
+    ('2026-01-18', "C=US, O=Let's Encrypt, CN=E7", '*.wecash.ai wecash.ai')
+    ('2026-01-18', "C=US, O=Let's Encrypt, CN=E7", '*.wecash.ai wecash.ai')
+    ('2026-01-18', 'C=US, O=Google Trust Services, CN=WE1', '*.dev.wecash.ai *.wecash.ai wecash.ai')
+    ('2026-01-18', 'C=US, O=Google Trust Services, CN=WE1', '*.dev.wecash.ai *.wecash.ai wecash.ai')
+    ('2026-01-18', 'C=US, O=Google Trust Services, CN=WR1', '*.dev.wecash.ai *.wecash.ai wecash.ai')
+=== mnemonic passive DNS (bertanggal) ===
+--- mn-3_64_163_50.json jumlah: 25
+    001117.xyz -> 3.64.163.50 a  .. 
+    001118.xyz -> 3.64.163.50 a  .. 
+    0042.xyz -> 3.64.163.50 a  .. 
+    001616.com -> 3.64.163.50 a  .. 
+    0.wales -> 3.64.163.50 a  .. 
+    0057.xyz -> 3.64.163.50 a  .. 
+    0034.xyz -> 3.64.163.50 a  .. 
+    002.kr -> 3.64.163.50 a  .. 
+    003.kr -> 3.64.163.50 a  .. 
+    0016.site -> 3.64.163.50 a  .. 
+    0.reise -> 3.64.163.50 a  .. 
+    005.kr -> 3.64.163.50 a  .. 
+    004.kr -> 3.64.163.50 a  .. 
+    001.vc -> 3.64.163.50 a  .. 
+    000sales.com -> 3.64.163.50 a  .. 
+    001.fund -> 3.64.163.50 a  .. 
+    004u.com -> 3.64.163.50 a  .. 
+    0-1s.com -> 3.64.163.50 a  .. 
+    001.ai -> 3.64.163.50 a  .. 
+    000equity.com -> 3.64.163.50 a  .. 
+    000065.com -> 3.64.163.50 a  .. 
+    000inc.com -> 3.64.163.50 a  .. 
+    000green.com -> 3.64.163.50 a  .. 
+    000roulette.com -> 3.64.163.50 a  .. 
+    001977.com -> 3.64.163.50 a  .. 
+--- mn-52_128_23_153.json jumlah: 25
+    0.org -> 52.128.23.153 a  .. 
+    0.ubar.com -> 52.128.23.153 a  .. 
+    007agent.co -> 52.128.23.153 a  .. 
+    0027.com -> 52.128.23.153 a  .. 
+    00484.9.org -> 52.128.23.153 a  .. 
+    0198.9.org -> 52.128.23.153 a  .. 
+    0494.9.org -> 52.128.23.153 a  .. 
+    000.la -> 52.128.23.153 a  .. 
+    0.174.108.dnsbl.openresolvers.org -> 52.128.23.153 a  .. 
+    017.us -> 52.128.23.153 a  .. 
+    0.fees.net -> 52.128.23.153 a  .. 
+    010.kr -> 52.128.23.153 a  .. 
+    047.com -> 52.128.23.153 a  .. 
+    01289.9.org -> 52.128.23.153 a  .. 
+    010net.com -> 52.128.23.153 a  .. 
+    010stock.com -> 52.128.23.153 a  .. 
+    010movie.com -> 52.128.23.153 a  .. 
+    047.2022.it -> 52.128.23.153 a  .. 
+    0.50.cotas.com.bo.local.net -> 52.128.23.153 a  .. 
+    0.0.1.org -> 52.128.23.153 a  .. 
+    0.1.org -> 52.128.23.153 a  .. 
+    02games.com -> 52.128.23.153 a  .. 
+    04.local.net -> 52.128.23.153 a  .. 
+    010316.com -> 52.128.23.153 a  .. 
+    0-0.com -> 52.128.23.153 a  .. 
+--- mn-api_wecash_ai.json jumlah: 0
+--- mn-dev_wecash_ai.json jumlah: 0
+--- mn-wecash_ai.json jumlah: 1
+    wecash.ai -> 3.64.163.50 a  .. 
+=== rapiddns subdomain ===
+sel: 51 | memuat wecash: ['wecash.ai']
+=== rapiddns sameip IP2 (3 halaman) ===
+  halaman 1: sel=300 wecash=[]
+  halaman 2: sel=300 wecash=[]
+  halaman 3: sel=300 wecash=[]
+=== viewdns ===
+<!DOCTYPE html><html lang="en-US"><head><title>Just a moment...</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=Edge"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="content-security-policy" content="default-src &#39;none&#39;; script-src &#39
+MISI.md dan tools/gate_misi.sh ditulis
+
+===== PEMISAHAN MESIN (empat baris, tidak dicampur) =====
+E1 3.64.163.50 | hidup(80/443/8080) | awselb + PTR ec2 eu-central-1 | hubungan ke wecash: BELUM TERBUKTI
+E2 52.128.23.153 | port buka tapi HTTP/TLS bisu | tanpa PTR | hubungan: BELUM TERBUKTI
+E3 api.wecash.ai | HIDUP | LiteSpeed + cPanel | hubungan: subdomain zona wecash: YA
+E4 wecash.ai | HIDUP | Next.js | alamat asal: BELUM DIKETAHUI
+
+===== GATE MISI =====
+MISI: CATATAN - pokok soal BELUM berubah dari luar
+MISI: OK - baseline pokok soal lengkap
+kode_gate_misi=0
+
+===== DISIPLIN =====
+A  docs/MISI.md
+M  docs/evidence/S-279.txt
+A  docs/evidence/S-280-api-root.hdr
+A  docs/evidence/S-280-api-root.html
+A  docs/evidence/S-280-baseline.hdr
+A  docs/evidence/S-280-baseline.html
+A  docs/evidence/S-280.txt
+A  tools/gate_misi.sh
++ dokumen langkah disiapkan lebih awal: docs/steps/S-280.md
+== gate: berkas wajib ==
+  ok      README.md
+  ok      CHANGELOG.md
+  ok      GOAL.md
+  ok      docs/PRD-Authority-Hosting-v1.5.md
+  ok      docs/CONTEXT.md
+  ok      docs/EKSPERIMEN.md
+  ok      docs/ONBOARDING_PROMPT.txt
+  ok      docs/SOP-NEW-CHAT.md
+
+== gate: sterilisasi pada artefak tim ==
+  bersih  README.md
+  bersih  CHANGELOG.md
+  bersih  docs/PRD-Authority-Hosting-v1.5.md
+  bersih  dashboard/README.md
+  bersih  dashboard/aksi.js
+  bersih  dashboard/audit.js
+  bersih  dashboard/detail.js
+  bersih  dashboard/driver.js
+  bersih  dashboard/ekspor.js
+  bersih  dashboard/ikhtisar.js
+  bersih  dashboard/index.html
+  bersih  dashboard/konsol.js
+  bersih  dashboard/konten.js
+  bersih  dashboard/live.js
+  bersih  dashboard/monitor.js
+  bersih  dashboard/recon.js
+  bersih  dashboard/tanam.js
+  bersih  dashboard/tautan.js
+  bersih  app/__init__.py
+  bersih  app/db.py
+  bersih  app/main.py
+
+== gate: integrasi skrip dashboard dengan index.html ==
+  ok      #auditBatas
+  ok      #auditBody
+  ok      #auditCari
+  ok      #auditPeristiwa
+  ok      #backlinkBody
+  ok      #cLevel
+  ok      #cName
+  ok      #cSecret
+  ok      #cTarget
+  ok      #cType
+  ok      #cValid
+  ok      #checkBody
+  ok      #credBody
+  ok      #credRotasi
+  ok      #dPath
+  ok      #dTarget
+  ok      #dTpl
+  ok      #deployBody
+  ok      #detailChecks
+  ok      #detailCredBody
+  ok      #detailHealth
+  ok      #detailKv
+  ok      #detailPageBody
+  ok      #detailTimeline
+  ok      #driverDomain
+  ok      #driverOut
+  ok      #fDomain
+  ok      #fNote
+  ok      #fOwner
+  ok      #fTags
+  ok      #fType
+  ok      #fpKv
+  ok      #ikhtisarBersih
+  ok      #kandBody
+  ok      #kandCari
+  ok      #kandInfo
+  ok      #kandLagi
+  ok      #kandPeriksa
+  ok      #kandStatus
+  ok      #kandTanpaInfra
+  ok      #kandTanpaKosong
+  ok      #konsolAksi
+  ok      #konsolBatal
+  ok      #konsolDomain
+  ok      #konsolExtra
+  ok      #konsolJalankan
+  ok      #konsolLog
+  ok      #konsolPaksa
+  ok      #konsolSegarkan
+  ok      #konsolStatus
+  ok      #kontenBody
+  ok      #kunciBody
+  ok      #kunciLevel
+  ok      #kunciNama
+  ok      #kunciSecret
+  ok      #kunciSegarkan
+  ok      #kunciStatus
+  ok      #kunciTambah
+  ok      #kunciTarget
+  ok      #kunciTipe
+  ok      #latencyList
+  lewat   #liveBadge (dibuat live.js/ikhtisar.js)
+  ok      #monitorAlerts
+  ok      #monitorBody
+  ok      #monitorDomain
+  ok      #monitorOut
+  ok      #navKandCount
+  ok      #opsMetrics
+  ok      #page-dashboard
+  ok      #queueStatus
+  ok      #reconProgress
+  ok      #reconQueue
+  ok      #tanamOut
+  ok      #tanamSandi
+  ok      #tanamSapu
+  ok      #tanamTarget
+  ok      #tanamUser
+  ok      #teknoRingkas
+  total rujukan diperiksa: 78
+
+== gate: dokumen internal (boleh memuat istilah) ==
+  GOAL.md memuat 'parasite': 3 baris
+  docs/CONTEXT.md memuat 'parasite': 7 baris
+  docs/EKSPERIMEN.md memuat 'parasite': 0 baris
+  docs/ONBOARDING_PROMPT.txt memuat 'parasite': 1 baris
+  docs/SOP-NEW-CHAT.md memuat 'parasite': 2 baris
+
+== gate: sintaks python ==
+  ok      app/main.py bisa dikompilasi
+
+== gate: rute api dipakai dashboard ==
+  rute di app/main.py: 47
+  ok      semua rute api ada di app/main.py
+== gate: layanan dashboard (fail-closed) ==
+  ok      tanpa sandi http 401
+  ok      /api/health http 200
+  layanan HIDUP
+== gate: placeholder bukti ==
+  ok      tidak ada placeholder
+== gate: bukti langkah terakhir ==
+  ok      docs/evidence/S-280.txt (S-280)
+== gate: skrip dashboard disajikan ==
+  ok      /aksi.js
+  ok      /audit.js
+  ok      /detail.js
+  ok      /driver.js
+  ok      /ekspor.js
+  ok      /ikhtisar.js
+  ok      /konsol.js
+  ok      /konten.js
+  ok      /live.js
+  ok      /monitor.js
+  ok      /recon.js
+  ok      /tanam.js
+  ok      /tautan.js
+== gate: rute api utama (hidup) ==
+  ok      /api/health -> 200
+  ok      /api/targets -> 200
+  ok      /api/teknologi-ringkas -> 200
+  ok      /api/status/ringkas -> 200
+  ok      /api/audit -> 200
+  ok      /api/driver/rules?domain=waspadaweb.com -> 200
+  ok      /api/driver/plan?domain=waspadaweb.com -> 200
+== gate: dokumen spec ==
+  ok      docs/LANDASAN.md
+  ok      docs/PROLOG-HESTIA-DASHBOARD.md
+  ok      docs/GOAL-Hestia-SEO.md
+  ok      docs/SKILL-AGENT-HESTIA.md
+  ok      docs/PROMPT-TAMBAHAN-AGENT-DASHBOARD.md
+GATE: LULUS
