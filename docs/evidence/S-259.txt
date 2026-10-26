@@ -1,0 +1,301 @@
+BLOK: S-259 / F-18b - layanan lepas didelegasikan ke live.sh (env benar) supaya rute api kembali 200
+STATUS: (lihat keluaran)
+JALUR: J5
+BUKTI: cara live.sh menjalankan layanan, plist, env asli, logika auth, pid/ppid, 401/200 tanpa dan dengan sandi
+SNAPSHOT: tools/layanan_lepas.sh versi lama ada di git
+ROLLBACK: git checkout -- tools/layanan_lepas.sh ; pkill -f uvicorn ; bash tools/layanan_lepas.sh
+IDEMPOTEN: ya
+YANG GAGAL: (lihat keluaran)
+== S-259 / F-18b ==
+-- 0. sisa kotor --
+ M docs/evidence/S-257.txt
+?? docs/evidence/S-258.txt
+?? docs/evidence/S-259.txt
+?? docs/steps/S-258.md
+?? tools/db_sync.sh
+?? tools/layanan_lepas.sh
+-- 1. cara live.sh menjalankan layanan + env sebenarnya --
+  else
+    printf 'HESTIA_TLS=%s\n' "$1" >> "$ENV"
+  fi
+}
+
+tls_buat() {
+  siap_dir; mkdir -p "$TLS"; chmod 700 "$TLS"
+  if [ ! -f "$TLS/hestia.key" ]; then
+    openssl req -x509 -newkey rsa:2048 -nodes -days 825 \
+      -keyout "$TLS/hestia.key" -out "$TLS/hestia.crt" \
+      -subj "/CN=hestia.local" >/dev/null 2>&1
+    chmod 600 "$TLS/hestia.key"
+    echo "TLS: sertifikat self-signed dibuat di $TLS"
+  fi
+}
+
+pesan_tcc() {
+  cat <<TXT
+SEBAB: macOS (TCC) menutup folder Documents bagi proses yang dijalankan launchd.
+PERBAIKAN, sekali saja, lewat GUI:
+  1. System Settings > Privacy & Security > Full Disk Access
+  2. klik +, Cmd+Shift+G, ketik /bin/bash, pilih, lalu aktifkan
+  3. bash tools/live.sh pasang
+TXT
+}
+
+plist_tulis() {
+  local extra
+  extra="$(tls_args)"
+  cat > "$PLIST" <<PLISTX
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>$LABEL</string>
+  <key>WorkingDirectory</key><string>$AKAR</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>-c</string>
+    <string>set -a; . \$HOME/.hestia/live.env; set +a; exec $PY -m uvicorn app.main:app --host 127.0.0.1 --port $PORT $extra</string>
+  </array>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><true/>
+  <key>ThrottleInterval</key><integer>10</integer>
+  <key>StandardOutPath</key><string>$LOG</string>
+  <key>StandardErrorPath</key><string>$LOG</string>
+</dict>
+</plist>
+PLISTX
+  plutil -lint "$PLIST" >/dev/null
+  echo "plist ditulis: $PLIST"
+}
+
+buang_plist_lama() {
+  if [ -f "$PLIST_LAMA" ]; then
+    launchctl unload "$PLIST_LAMA" >/dev/null 2>&1 || true
+    rm -f "$PLIST_LAMA"
+    echo "plist kanal lama (8788) dihapus"
+  fi
+}
+
+muat_ulang() {
+  launchctl unload "$PLIST" >/dev/null 2>&1 || true
+  pkill -f "app.main" >/dev/null 2>&1 || true
+  sleep 1
+-- plist --
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>id.hestia.serve</string>
+  <key>WorkingDirectory</key><string>/Users/eghi/Documents/REPO/Hestia</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>-c</string>
+    <string>set -a; . $HOME/.hestia/live.env; set +a; exec /Users/eghi/Documents/REPO/Hestia/.venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8787 </string>
+  </array>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><true/>
+  <key>ThrottleInterval</key><integer>10</integer>
+  <key>StandardOutPath</key><string>/Users/eghi/.hestia/serve.log</string>
+  <key>StandardErrorPath</key><string>/Users/eghi/.hestia/serve.log</string>
+</dict>
+</plist>
+-- isi ~/.hestia --
+total 10040
+-rw-r--r--  1 eghi  staff        5 Oct 24 21:47 cadangan-tls.pid
+-rw-r--r--  1 eghi  staff        5 Oct 26 12:26 cadangan.pid
+-rw-------  1 eghi  staff       59 Oct 24 21:58 live.env
+-rw-r--r--  1 eghi  staff  4379222 Oct 26 13:19 serve.log
+drwx------  4 eghi  staff      128 Oct 24 20:36 tls
+HESTIA_SANDI=<isi>
+HESTIA_TLS=<isi>
+-- logika auth di app/main.py --
+946:    sandi = _o.environ.get("HESTIA_SANDI", "hestia")
+1339:                                   headers={"Authorization": "Bearer " + (secret or "")})
+1354:            hdr["Authorization"] = "Basic " + base64.b64encode(("%s:%s" % (nama, secret or "")).encode()).decode()
+-- 2. tulis ulang tools/layanan_lepas.sh (delegasi ke live.sh) --
+  sintaks ok
+-- 3. matikan yang salah, jalankan ulang lepas --
+  port bebas
+  dimulai pid 92767
+  ppid: 92763
+  /              -> 000
+000
+  /api/health    -> 000
+000
+  /api/targets   -> 000
+000
+  /api/audit     -> 000
+000
+-- 4. bukti dengan sandi --
+  /api/targets +sandi -> 000
+000
+  / +sandi -> 000
+000
+-- 5. tutup --
++ dokumen langkah disiapkan lebih awal: docs/steps/S-259.md
+== gate: berkas wajib ==
+  ok      README.md
+  ok      CHANGELOG.md
+  ok      GOAL.md
+  ok      docs/PRD-Authority-Hosting-v1.5.md
+  ok      docs/CONTEXT.md
+  ok      docs/EKSPERIMEN.md
+  ok      docs/ONBOARDING_PROMPT.txt
+  ok      docs/SOP-NEW-CHAT.md
+
+== gate: sterilisasi pada artefak tim ==
+  bersih  README.md
+  bersih  CHANGELOG.md
+  bersih  docs/PRD-Authority-Hosting-v1.5.md
+  bersih  dashboard/README.md
+  bersih  dashboard/aksi.js
+  bersih  dashboard/audit.js
+  bersih  dashboard/detail.js
+  bersih  dashboard/driver.js
+  bersih  dashboard/ekspor.js
+  bersih  dashboard/ikhtisar.js
+  bersih  dashboard/index.html
+  bersih  dashboard/konsol.js
+  bersih  dashboard/konten.js
+  bersih  dashboard/live.js
+  bersih  dashboard/monitor.js
+  bersih  dashboard/recon.js
+  bersih  dashboard/tanam.js
+  bersih  dashboard/tautan.js
+  bersih  app/__init__.py
+  bersih  app/db.py
+  bersih  app/main.py
+
+== gate: integrasi skrip dashboard dengan index.html ==
+  ok      #auditBatas
+  ok      #auditBody
+  ok      #auditCari
+  ok      #auditPeristiwa
+  ok      #backlinkBody
+  ok      #cLevel
+  ok      #cName
+  ok      #cSecret
+  ok      #cTarget
+  ok      #cType
+  ok      #cValid
+  ok      #checkBody
+  ok      #credBody
+  ok      #credRotasi
+  ok      #dPath
+  ok      #dTarget
+  ok      #dTpl
+  ok      #deployBody
+  ok      #detailChecks
+  ok      #detailCredBody
+  ok      #detailHealth
+  ok      #detailKv
+  ok      #detailPageBody
+  ok      #detailTimeline
+  ok      #driverDomain
+  ok      #driverOut
+  ok      #fDomain
+  ok      #fNote
+  ok      #fOwner
+  ok      #fTags
+  ok      #fType
+  ok      #fpKv
+  ok      #ikhtisarBersih
+  ok      #kandBody
+  ok      #kandCari
+  ok      #kandInfo
+  ok      #kandLagi
+  ok      #kandPeriksa
+  ok      #kandStatus
+  ok      #kandTanpaInfra
+  ok      #kandTanpaKosong
+  ok      #konsolAksi
+  ok      #konsolBatal
+  ok      #konsolDomain
+  ok      #konsolExtra
+  ok      #konsolJalankan
+  ok      #konsolLog
+  ok      #konsolPaksa
+  ok      #konsolSegarkan
+  ok      #konsolStatus
+  ok      #kontenBody
+  ok      #kunciBody
+  ok      #kunciLevel
+  ok      #kunciNama
+  ok      #kunciSecret
+  ok      #kunciSegarkan
+  ok      #kunciStatus
+  ok      #kunciTambah
+  ok      #kunciTarget
+  ok      #kunciTipe
+  ok      #latencyList
+  lewat   #liveBadge (dibuat live.js/ikhtisar.js)
+  ok      #monitorAlerts
+  ok      #monitorBody
+  ok      #monitorDomain
+  ok      #monitorOut
+  ok      #navKandCount
+  ok      #opsMetrics
+  ok      #page-dashboard
+  ok      #queueStatus
+  ok      #reconProgress
+  ok      #reconQueue
+  ok      #tanamOut
+  ok      #tanamSandi
+  ok      #tanamSapu
+  ok      #tanamTarget
+  ok      #tanamUser
+  ok      #teknoRingkas
+  total rujukan diperiksa: 78
+
+== gate: dokumen internal (boleh memuat istilah) ==
+  GOAL.md memuat 'parasite': 3 baris
+  docs/CONTEXT.md memuat 'parasite': 7 baris
+  docs/EKSPERIMEN.md memuat 'parasite': 0 baris
+  docs/ONBOARDING_PROMPT.txt memuat 'parasite': 1 baris
+  docs/SOP-NEW-CHAT.md memuat 'parasite': 2 baris
+
+== gate: sintaks python ==
+  ok      app/main.py bisa dikompilasi
+
+== gate: rute api dipakai dashboard ==
+  rute di app/main.py: 47
+  ok      semua rute api ada di app/main.py
+== gate: layanan dashboard (fail-closed) ==
+  ok      tanpa sandi http 401
+  ok      /api/health http 200
+  layanan HIDUP
+== gate: placeholder bukti ==
+  ok      tidak ada placeholder
+== gate: bukti langkah terakhir ==
+  ok      docs/evidence/S-259.txt (S-259)
+== gate: skrip dashboard disajikan ==
+  ok      /aksi.js
+  ok      /audit.js
+  ok      /detail.js
+  ok      /driver.js
+  ok      /ekspor.js
+  ok      /ikhtisar.js
+  ok      /konsol.js
+  ok      /konten.js
+  ok      /live.js
+  ok      /monitor.js
+  ok      /recon.js
+  ok      /tanam.js
+  ok      /tautan.js
+== gate: rute api utama (hidup) ==
+  ok      /api/health -> 200
+  ok      /api/targets -> 200
+  ok      /api/teknologi-ringkas -> 200
+  ok      /api/status/ringkas -> 200
+  ok      /api/audit -> 200
+  ok      /api/driver/rules?domain=waspadaweb.com -> 200
+  ok      /api/driver/plan?domain=waspadaweb.com -> 200
+== gate: dokumen spec ==
+  ok      docs/LANDASAN.md
+  ok      docs/PROLOG-HESTIA-DASHBOARD.md
+  ok      docs/GOAL-Hestia-SEO.md
+  ok      docs/SKILL-AGENT-HESTIA.md
+  ok      docs/PROMPT-TAMBAHAN-AGENT-DASHBOARD.md
+GATE: LULUS

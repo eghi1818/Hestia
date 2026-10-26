@@ -1,0 +1,246 @@
+BLOK: S-258 / F-18 - sinkron DB arah VPS->laptop (Opsi A) + layanan lokal lepas dari terminal
+STATUS: (lihat keluaran)
+JALUR: J5
+BUKTI: tabel jalur, isi live.sh, sidik jari DB sebelum, hasil tarik, pid/ppid layanan, 401/200
+SNAPSHOT: data/arsip/hestia-laptop-<cap>.db
+ROLLBACK: cp data/arsip/<terbaru>.db data/hestia.db ; pkill uvicorn ; bash tools/layanan_lepas.sh
+IDEMPOTEN: ya (tarik menimpa dengan cadangan, layanan cek dulu hidup atau tidak)
+YANG GAGAL: (lihat keluaran)
+== S-258 / F-18 ==
+-- 0. sisa kotor --
+ M docs/evidence/S-257.txt
+?? docs/evidence/S-258.txt
+-- 1. tabel jalur (M0 MASUK: apa saja J1-J7) --
+  kolom jalur: ['id', 'target_id', 'kode_J', 'bukti', 'terbukti_bisa_tulis', 'waktu_uji', 'cara_tulis', 'catatan', 'diperbarui']
+    {'id': 3, 'target_id': 46, 'kode_J': 'J5', 'bukti': 'https://waspadaweb.com/hestia-penanda.txt sha256=57c4b181e43afa4624691bb1c0b099f40a869274710b69b6de24f2de3f2579c5', 'terbukti_bisa_tulis': 1, 'waktu_uji': '2026-10-25T19:54:42', 'cara_tulis': 'lxc', 'catatan': 'penanda dihapus; baca ulang status 404', 'diperbarui': '2026-10-25T19:54:42'}
+-- 2. berkas env lokal + cara live.sh menyandi --
+-- live.sh (35 baris pertama) --
+#!/usr/bin/env bash
+# HESTIA - layanan hidup 24/7. SATU kanal di 8787; TLS adalah mode, bukan kanal kedua.
+set -euo pipefail
+
+AKAR="$(cd "$(dirname "$0")/.." && pwd)"
+HOME_H="${HESTIA_HOME:-$HOME/.hestia}"
+ENV="$HOME_H/live.env"
+AGEN="$HOME/Library/LaunchAgents"
+LABEL="id.hestia.serve"
+PLIST="$AGEN/$LABEL.plist"
+PLIST_LAMA="$AGEN/$LABEL.tls.plist"
+PORT="${HESTIA_PORT:-8787}"
+LOG="$HOME_H/serve.log"
+TLS="$HOME_H/tls"
+PY="$AKAR/.venv/bin/python"
+
+siap_dir() { mkdir -p "$HOME_H"; chmod 700 "$HOME_H"; }
+sandi() { sed -n 's/^HESTIA_SANDI=//p' "$ENV"; }
+sandi_ada() { [ -f "$ENV" ] && grep -q '^HESTIA_SANDI=' "$ENV"; }
+tls_aktif() { [ -f "$ENV" ] && grep -q '^HESTIA_TLS=1' "$ENV"; }
+tls_args() { if tls_aktif; then printf -- '--ssl-keyfile %s --ssl-certfile %s' "$TLS/hestia.key" "$TLS/hestia.crt"; fi; }
+cek_tcc() { [ -f "$LOG" ] && grep -q "Operation not permitted" "$LOG"; }
+
+sandi_baru() {
+  siap_dir; umask 077
+  printf 'HESTIA_SANDI=%s\n' "$(openssl rand -hex 16)" > "$ENV"
+  chmod 600 "$ENV"
+  echo "sandi baru ditulis ke $ENV (mode 600)"
+}
+
+set_mode() {
+  siap_dir
+  if grep -q '^HESTIA_TLS=' "$ENV" 2>/dev/null; then
+    sed -i '' "s/^HESTIA_TLS=.*/HESTIA_TLS=$1/" "$ENV"
+  else
+-- 3. tulis tools/db_sync.sh --
+  sintaks ok
+-- 4. banding lalu tarik (Opsi A) --
+  laptop: 2b6f7a33e1de2cdf 868352 bita
+  VPS   : 4f5e620fed870f71 868352  bita
+  VPS: cadangan konsisten dibuat
+  tarik selesai -> data/hestia.db
+-- isi DB laptop sesudah tarik (bukti data VPS masuk) --
+  change_event     25
+  status_konten    5
+  konten           5
+  transisi_status  11
+  event terbaru: [{'id': 36, 'jenis': 'pantau-transisi', 'nilai_baru': 'kedaluwarsa'}, {'id': 35, 'jenis': 'pantau-transisi', 'nilai_baru': 'terverifikasi'}]
+-- 5. lepaskan layanan lokal dari terminal --
+  sintaks ok
+  dimulai pid 83900
+  ppid: 83896
+  /api/health -> 200
+  / (harap 401) -> 401
+-- 6. tutup --
++ dokumen langkah disiapkan lebih awal: docs/steps/S-258.md
+== gate: berkas wajib ==
+  ok      README.md
+  ok      CHANGELOG.md
+  ok      GOAL.md
+  ok      docs/PRD-Authority-Hosting-v1.5.md
+  ok      docs/CONTEXT.md
+  ok      docs/EKSPERIMEN.md
+  ok      docs/ONBOARDING_PROMPT.txt
+  ok      docs/SOP-NEW-CHAT.md
+
+== gate: sterilisasi pada artefak tim ==
+  bersih  README.md
+  bersih  CHANGELOG.md
+  bersih  docs/PRD-Authority-Hosting-v1.5.md
+  bersih  dashboard/README.md
+  bersih  dashboard/aksi.js
+  bersih  dashboard/audit.js
+  bersih  dashboard/detail.js
+  bersih  dashboard/driver.js
+  bersih  dashboard/ekspor.js
+  bersih  dashboard/ikhtisar.js
+  bersih  dashboard/index.html
+  bersih  dashboard/konsol.js
+  bersih  dashboard/konten.js
+  bersih  dashboard/live.js
+  bersih  dashboard/monitor.js
+  bersih  dashboard/recon.js
+  bersih  dashboard/tanam.js
+  bersih  dashboard/tautan.js
+  bersih  app/__init__.py
+  bersih  app/db.py
+  bersih  app/main.py
+
+== gate: integrasi skrip dashboard dengan index.html ==
+  ok      #auditBatas
+  ok      #auditBody
+  ok      #auditCari
+  ok      #auditPeristiwa
+  ok      #backlinkBody
+  ok      #cLevel
+  ok      #cName
+  ok      #cSecret
+  ok      #cTarget
+  ok      #cType
+  ok      #cValid
+  ok      #checkBody
+  ok      #credBody
+  ok      #credRotasi
+  ok      #dPath
+  ok      #dTarget
+  ok      #dTpl
+  ok      #deployBody
+  ok      #detailChecks
+  ok      #detailCredBody
+  ok      #detailHealth
+  ok      #detailKv
+  ok      #detailPageBody
+  ok      #detailTimeline
+  ok      #driverDomain
+  ok      #driverOut
+  ok      #fDomain
+  ok      #fNote
+  ok      #fOwner
+  ok      #fTags
+  ok      #fType
+  ok      #fpKv
+  ok      #ikhtisarBersih
+  ok      #kandBody
+  ok      #kandCari
+  ok      #kandInfo
+  ok      #kandLagi
+  ok      #kandPeriksa
+  ok      #kandStatus
+  ok      #kandTanpaInfra
+  ok      #kandTanpaKosong
+  ok      #konsolAksi
+  ok      #konsolBatal
+  ok      #konsolDomain
+  ok      #konsolExtra
+  ok      #konsolJalankan
+  ok      #konsolLog
+  ok      #konsolPaksa
+  ok      #konsolSegarkan
+  ok      #konsolStatus
+  ok      #kontenBody
+  ok      #kunciBody
+  ok      #kunciLevel
+  ok      #kunciNama
+  ok      #kunciSecret
+  ok      #kunciSegarkan
+  ok      #kunciStatus
+  ok      #kunciTambah
+  ok      #kunciTarget
+  ok      #kunciTipe
+  ok      #latencyList
+  lewat   #liveBadge (dibuat live.js/ikhtisar.js)
+  ok      #monitorAlerts
+  ok      #monitorBody
+  ok      #monitorDomain
+  ok      #monitorOut
+  ok      #navKandCount
+  ok      #opsMetrics
+  ok      #page-dashboard
+  ok      #queueStatus
+  ok      #reconProgress
+  ok      #reconQueue
+  ok      #tanamOut
+  ok      #tanamSandi
+  ok      #tanamSapu
+  ok      #tanamTarget
+  ok      #tanamUser
+  ok      #teknoRingkas
+  total rujukan diperiksa: 78
+
+== gate: dokumen internal (boleh memuat istilah) ==
+  GOAL.md memuat 'parasite': 3 baris
+  docs/CONTEXT.md memuat 'parasite': 7 baris
+  docs/EKSPERIMEN.md memuat 'parasite': 0 baris
+  docs/ONBOARDING_PROMPT.txt memuat 'parasite': 1 baris
+  docs/SOP-NEW-CHAT.md memuat 'parasite': 2 baris
+
+== gate: sintaks python ==
+  ok      app/main.py bisa dikompilasi
+
+== gate: rute api dipakai dashboard ==
+  rute di app/main.py: 47
+  ok      semua rute api ada di app/main.py
+== gate: layanan dashboard (fail-closed) ==
+  ok      tanpa sandi http 401
+  ok      /api/health http 200
+  layanan HIDUP
+== gate: placeholder bukti ==
+  ok      tidak ada placeholder
+== gate: bukti langkah terakhir ==
+  ok      docs/evidence/S-258.txt (S-258)
+== gate: skrip dashboard disajikan ==
+  ok      /aksi.js
+  ok      /audit.js
+  ok      /detail.js
+  ok      /driver.js
+  ok      /ekspor.js
+  ok      /ikhtisar.js
+  ok      /konsol.js
+  ok      /konten.js
+  ok      /live.js
+  ok      /monitor.js
+  ok      /recon.js
+  ok      /tanam.js
+  ok      /tautan.js
+== gate: rute api utama (hidup) ==
+  ok      /api/health -> 200
+  KURANG  /api/targets -> 401 (harap 200)
+  KURANG  /api/teknologi-ringkas -> 401 (harap 200)
+  KURANG  /api/status/ringkas -> 401 (harap 200)
+  KURANG  /api/audit -> 401 (harap 200)
+  KURANG  /api/driver/rules?domain=waspadaweb.com -> 401 (harap 200)
+  KURANG  /api/driver/plan?domain=waspadaweb.com -> 401 (harap 200)
+== gate: dokumen spec ==
+  ok      docs/LANDASAN.md
+  ok      docs/PROLOG-HESTIA-DASHBOARD.md
+  ok      docs/GOAL-Hestia-SEO.md
+  ok      docs/SKILL-AGENT-HESTIA.md
+  ok      docs/PROMPT-TAMBAHAN-AGENT-DASHBOARD.md
+GATE: GAGAL
+GATE GAGAL - commit ditolak
+34f870a S-257 F-14g: pantau menulis change_event saat transisi otomatis + isi 2 aturan transisi yang bolong [jejak]
+eaedd8a S-257 F-14g: pantau menulis change_event saat transisi otomatis + isi 2 aturan transisi yang bolong
+d421466 S-256 F-14f: bukti perubahan nyata tercatat otomatis (konten uji tertanam -> terverifikasi) [jejak]
+]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/Hestia
+Saving session...
+...copying shared history...
+...saving history...truncating history files...
+...completed.
