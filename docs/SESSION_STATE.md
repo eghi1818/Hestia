@@ -1,15 +1,18 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 16:36.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 16:43.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: dba7f03 S-279 F-0: paksa alamat asal wecash.ai - passive DNS bertanggal, crt.sh, sameip, PTR+TLS+port dua IP kandidat, matriks Host ke ALB
-branch: main | kotor: M docs/evidence/S-279.txt
-rute app/main.py: 75 | berkas bukti: 173 | dokumen langkah: 245
+HEAD: 1faabf7 S-280 F-0: baseline pokok soal, kejar api.wecash.ai (LiteSpeed/cPanel), meta DNS, riwayat bertanggal, kontrol ALB, gate_misi
+branch: main | kotor: M docs/evidence/S-280.txt
+rute app/main.py: 75 | berkas bukti: 174 | dokumen langkah: 246
 
 ## 12 commit terakhir
 
 ```
+1faabf7 S-280 F-0: baseline pokok soal, kejar api.wecash.ai (LiteSpeed/cPanel), meta DNS, riwayat bertanggal, kontrol ALB, gate_misi
+03a74d9 S-279 F-0: paksa alamat asal wecash.ai - passive DNS bertanggal, crt.sh, sameip, PTR+TLS+port dua IP kandidat, matriks Host ke ALB [jejak] [dokumen]
+8b4d7f7 S-279 F-0: paksa alamat asal wecash.ai - passive DNS bertanggal, crt.sh, sameip, PTR+TLS+port dua IP kandidat, matriks Host ke ALB [jejak]
 dba7f03 S-279 F-0: paksa alamat asal wecash.ai - passive DNS bertanggal, crt.sh, sameip, PTR+TLS+port dua IP kandidat, matriks Host ke ALB
 fe4e79c S-278 F-0: kenali asal wecash.ai - sidik jari penyedia, subdomain tak diproksikan, riwayat DNS, probe asal langsung [jejak] [dokumen]
 264370b S-278 F-0: kenali asal wecash.ai - sidik jari penyedia, subdomain tak diproksikan, riwayat DNS, probe asal langsung [jejak]
@@ -19,9 +22,6 @@ a850e39 S-277 F-0: ambil SEBELUM /tentang/profile/, daftar rute utuh, kepala ase
 1219d39 S-277 F-0: ambil SEBELUM /tentang/profile/, daftar rute utuh, kepala aset untuk sidik jari tempat asal
 4807533 S-268: waspadaweb dikembalikan ke Wecash + vhost wecash.ai disiapkan berisi Gacor [jejak] [dokumen]
 6ebb75f S-268: waspadaweb dikembalikan ke Wecash + vhost wecash.ai disiapkan berisi Gacor [jejak]
-6b9f0ce S-268: waspadaweb dikembalikan ke Wecash + vhost wecash.ai disiapkan berisi Gacor
-c05ed28 S-267: base tag dipaksa (aset Gacor tampil) + diagnosa jalur tulis wecash.ai [jejak] [dokumen]
-b6c6439 S-267: base tag dipaksa (aset Gacor tampil) + diagnosa jalur tulis wecash.ai [jejak]
 ```
 
 ## SISA KERJA
