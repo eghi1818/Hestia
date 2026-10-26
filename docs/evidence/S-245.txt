@@ -1,0 +1,76 @@
+== 0A. sertifikat :443 publik pada pelbagai SNI ==
+-- SNI 93.127.133.160 --
+subject= /CN=TRAEFIK DEFAULT CERT
+issuer= /CN=TRAEFIK DEFAULT CERT
+notBefore=Oct 26 01:32:35 2026 GMT
+notAfter=Oct 26 01:32:35 2027 GMT
+-- SNI waspadaweb.com --
+subject= /CN=TRAEFIK DEFAULT CERT
+issuer= /CN=TRAEFIK DEFAULT CERT
+notBefore=Oct 26 01:32:35 2026 GMT
+notAfter=Oct 26 01:32:35 2027 GMT
+-- SNI hestia.waspadaweb.com --
+subject= /CN=TRAEFIK DEFAULT CERT
+issuer= /CN=TRAEFIK DEFAULT CERT
+notBefore=Oct 26 01:32:35 2026 GMT
+notAfter=Oct 26 01:32:35 2027 GMT
+== 0B. header :443 publik ==
+HTTP/2 404 
+content-type: text/plain; charset=utf-8
+x-content-type-options: nosniff
+content-length: 19
+date: Mon, 26 Oct 2026 04:38:47 GMT
+
+== 0C. PTR / pemilik IP publik ==
+
+== 1A. ada cloudflared / tunnel / frp / ngrok? ==
+root      293908  0.4  0.9 1295768 36136 ?       Ssl  Oct12  85:08 /usr/bin/cloudflared --no-autoupdate tunnel run --token-file /etc/cloudflared/token
+-- unit systemd terkait --
+  cloud-config.service                                                                      loaded    active   exited  Cloud-init: Config Stage
+  cloud-final.service                                                                       loaded    active   exited  Cloud-init: Final Stage
+  cloud-init-hotplugd.service                                                               loaded    inactive dead    Cloud-init: Hotplug Hook
+  cloud-init-local.service                                                                  loaded    active   exited  Cloud-init: Local Stage (pre-network)
+  cloud-init.service                                                                        loaded    active   exited  Cloud-init: Network Stage
+  cloudflared-update.service                                                                loaded    inactive dead    Update cloudflared
+  cloudflared.service                                                                       loaded    active   running Cloudflare Tunnel client
+● ubuntu-advantage-cloud-id-shim.service                                                    not-found inactive dead    ubuntu-advantage-cloud-id-shim.service
+
+== 1B. berkas konfigurasi tunnel ==
+total 12
+drwxr-xr-x   2 root root 4096 Oct 12 09:16 .
+drwxr-xr-x 113 root root 4096 Oct 26 00:52 ..
+-rw-------   1 root root  184 Oct 12 09:16 token
+
+== 1C. siapa yang memanggil nginx dengan Host waspadaweb (dari mana) ==
+0
+0
+
+== 1D. vhost waspadaweb: server_name + root ==
+
+== 1E. koneksi keluar menetap (tanda tunnel) ==
+State      Recv-Q Send-Q  Local Address:Port    Peer Address:Port Process                                                   
+SYN-SENT   0      1      192.168.122.31:42280  34.101.160.26:8742  users:(("python",pid=545232,fd=22))                      
+ESTAB      0      0      192.168.122.31:42270  34.101.160.26:8742  users:(("python",pid=545232,fd=18))                      
+FIN-WAIT-1 0      1      192.168.122.31:42250  34.101.160.26:8742  users:(("python",pid=545232,fd=20))                      
+ESTAB      0      240    192.168.122.31:22     187.40.232.12:21644 users:(("sshd",pid=552414,fd=4),("sshd",pid=552356,fd=4))
+FIN-WAIT-1 0      1      192.168.122.31:42234  34.101.160.26:8742                                                           
+ESTAB      0      0      192.168.122.31:42264  34.101.160.26:8742  users:(("python",pid=545232,fd=21))                      
+ESTAB      0      0      192.168.122.31:22    187.40.232.127:26553 users:(("sshd",pid=545335,fd=4),("sshd",pid=545209,fd=4))
+
+== 1F. semua listener + proses pemegangnya ==
+State  Recv-Q Send-Q            Local Address:Port  Peer Address:PortProcess                                                                                  
+LISTEN 0      4096                 127.0.0.54:53         0.0.0.0:*    users:(("systemd-resolve",pid=393006,fd=17))                                            
+LISTEN 0      511                     0.0.0.0:8791       0.0.0.0:*    users:(("nginx",pid=549344,fd=17),("nginx",pid=549343,fd=17),("nginx",pid=461323,fd=17))
+LISTEN 0      4096                  127.0.0.1:20241      0.0.0.0:*    users:(("cloudflared",pid=293908,fd=6))                                                 
+LISTEN 0      4096                    0.0.0.0:22         0.0.0.0:*    users:(("sshd",pid=461315,fd=3),("systemd",pid=1,fd=150))                               
+LISTEN 0      511                     0.0.0.0:80         0.0.0.0:*    users:(("nginx",pid=549344,fd=7),("nginx",pid=549343,fd=7),("nginx",pid=461323,fd=7))   
+LISTEN 0      128                   127.0.0.1:27019      0.0.0.0:*    users:(("sshd",pid=545335,fd=8))                                                        
+LISTEN 0      4096                  127.0.0.1:27017      0.0.0.0:*    users:(("mongod",pid=461368,fd=14))                                                     
+LISTEN 0      32                   10.5.219.1:53         0.0.0.0:*    users:(("dnsmasq",pid=445089,fd=9))                                                     
+LISTEN 0      4096              127.0.0.53%lo:53         0.0.0.0:*    users:(("systemd-resolve",pid=393006,fd=15))                                            
+LISTEN 0      2048                  127.0.0.1:8787       0.0.0.0:*    users:(("python",pid=542517,fd=16))                                                     
+LISTEN 0      511                        [::]:8791          [::]:*    users:(("nginx",pid=549344,fd=18),("nginx",pid=549343,fd=18),("nginx",pid=461323,fd=18))
+LISTEN 0      4096                       [::]:22            [::]:*    users:(("sshd",pid=461315,fd=4),("systemd",pid=1,fd=151))                               
+LISTEN 0      511                        [::]:80            [::]:*    users:(("nginx",pid=549344,fd=8),("nginx",pid=549343,fd=8),("nginx",pid=461323,fd=8))   
+LISTEN 0      32     [fd42:6ec7:5e48:a14e::1]:53            [::]:*    users:(("dnsmasq",pid=445089,fd=11))                                                    
+LISTEN 0      128                       [::1]:27019         [::]:*    users:(("sshd",pid=545335,fd=7))                                                        
