@@ -1,0 +1,130 @@
+BLOK: S-243 / F-17g - jadikan vhost default Hestia satu-satunya default_server di nginx HOST :80
+STATUS: (lihat keluaran)
+JALUR: J5
+BUKTI: konfigurasi efektif nginx, access log, IP/NAT host, uji 401/200 dari dalam dan luar, waspadaweb 200
+SNAPSHOT: /etc/nginx/sites-available/*.asli
+ROLLBACK: kembalikan berkas .asli ke lokasi asal, hapus hestia-default, sudo nginx -t && sudo systemctl reload nginx
+IDEMPOTEN: default_server dilepas dari blok lain; vhost ditulis ulang; salinan asli dibuat sekali
+YANG GAGAL: (lihat keluaran)
+
+-- LAPTOP: akses luar SEBELUM perbaikan --
+  http://93.127.133.160/ -> 404
+  header:
+HTTP/1.1 404 Not Found
+Content-Type: text/plain; charset=utf-8
+X-Content-Type-Options: nosniff
+Date: Mon, 26 Oct 2026 04:13:57 GMT
+Content-Length: 19
+
+
+== A. apakah permintaan luar sampai ke nginx host (access log) ==
+127.0.0.1 - - [26/Oct/2026:04:03:29 +0000] "GET / HTTP/1.1" 200 615 "-" "curl/8.5.0"
+127.0.0.1 - eghi [26/Oct/2026:04:03:29 +0000] "GET / HTTP/1.1" 200 615 "-" "curl/8.5.0"
+127.0.0.1 - eghi [26/Oct/2026:04:03:29 +0000] "GET /api/targets HTTP/1.1" 200 15891 "-" "curl/8.5.0"
+127.0.0.1 - - [26/Oct/2026:04:07:15 +0000] "GET / HTTP/1.1" 401 24 "-" "curl/8.5.0"
+127.0.0.1 - eghi [26/Oct/2026:04:07:15 +0000] "GET / HTTP/1.1" 200 84802 "-" "curl/8.5.0"
+
+== B. include di nginx.conf ==
+5:include /etc/nginx/modules-enabled/*.conf;
+26:	include /etc/nginx/mime.types;
+59:	include /etc/nginx/conf.d/*.conf;
+60:	include /etc/nginx/sites-enabled/*;
+
+== C. konfigurasi efektif (blok server) ==
+24:	# server_names_hash_bucket_size 64;
+25:	# server_name_in_redirect off;
+73:#	server {
+74:#		listen     localhost:110;
+79:#	server {
+80:#		listen     localhost:143;
+190:# Vhost default: permintaan tanpa server_name yang cocok (mis. lewat IP) diarahkan ke Hestia.
+192:server {
+193:    listen 80 default_server;
+194:    listen [::]:80 default_server;
+195:    server_name _;
+200:        proxy_pass http://127.0.0.1:8787;
+212:# Tidak mengganggu vhost waspadaweb.com karena server_name berbeda (exact match menang).
+213:server {
+214:    listen 80;
+215:    listen [::]:80;
+216:    server_name 93.127.133.160;
+221:        proxy_pass http://127.0.0.1:8787;
+233:server {
+234:    listen 8791;
+235:    listen [::]:8791;
+236:    server_name _;
+241:        proxy_pass http://127.0.0.1:8787;
+252:server {
+253:    listen 80;
+254:    listen [::]:80;
+256:    server_name waspadaweb.com www.waspadaweb.com;
+258:    root /var/www/waspadaweb;
+
+== D. isi sites-enabled / conf.d ==
+total 0
+lrwxrwxrwx 1 root root 34 Oct 12 08:46 default -> /etc/nginx/sites-available/default
+lrwxrwxrwx 1 root root 41 Oct 26 00:56 hestia-ip.conf -> /etc/nginx/sites-available/hestia-ip.conf
+lrwxrwxrwx 1 root root 38 Oct 26 00:53 hestia.conf -> /etc/nginx/sites-available/hestia.conf
+lrwxrwxrwx 1 root root 41 Oct 12 08:52 waspadaweb.com -> /etc/nginx/sites-available/waspadaweb.com
+total 0
+
+== E. apakah IP publik ada di host? ==
+    inet 192.168.122.31/24 brd 192.168.122.255 scope global enp16s0
+    inet 10.5.219.1/24 scope global lxdbr0
+  (93.127.133.160 TIDAK ada di host -> di belakang NAT)
+default via 192.168.122.1 dev enp16s0 proto static 
+10.5.219.0/24 dev lxdbr0 proto kernel scope link src 10.5.219.1 
+192.168.122.0/24 dev enp16s0 proto kernel scope link src 192.168.122.31 
+
+== F. NAT / semua listener ==
+-P PREROUTING ACCEPT
+-P INPUT ACCEPT
+-P OUTPUT ACCEPT
+-P POSTROUTING ACCEPT
+State  Recv-Q Send-Q            Local Address:Port  Peer Address:PortProcess
+LISTEN 0      4096                 127.0.0.54:53         0.0.0.0:*          
+LISTEN 0      511                     0.0.0.0:8791       0.0.0.0:*          
+LISTEN 0      4096                  127.0.0.1:20241      0.0.0.0:*          
+LISTEN 0      4096                    0.0.0.0:22         0.0.0.0:*          
+LISTEN 0      511                     0.0.0.0:80         0.0.0.0:*          
+LISTEN 0      128                   127.0.0.1:27019      0.0.0.0:*          
+LISTEN 0      4096                  127.0.0.1:27017      0.0.0.0:*          
+LISTEN 0      32                   10.5.219.1:53         0.0.0.0:*          
+LISTEN 0      4096              127.0.0.53%lo:53         0.0.0.0:*          
+LISTEN 0      2048                  127.0.0.1:8787       0.0.0.0:*          
+LISTEN 0      511                        [::]:8791          [::]:*          
+LISTEN 0      4096                       [::]:22            [::]:*          
+LISTEN 0      511                        [::]:80            [::]:*          
+LISTEN 0      32     [fd42:6ec7:5e48:a14e::1]:53            [::]:*          
+LISTEN 0      128                       [::1]:27019         [::]:*          
+
+== G. cadangkan conf aktif (sekali) ==
+  cadangan: 4 berkas
+
+== H. lepas default_server dari blok lain ==
+  dilepas: /etc/nginx/sites-available/default
+
+== I. tulis vhost default Hestia ==
+  diaktifkan via sites-enabled
+
+== J. uji konfigurasi dan reload ==
+2026/10/26 04:14:06 [warn] 549335#549335: conflicting server name "_" on 0.0.0.0:80, ignored
+2026/10/26 04:14:06 [warn] 549335#549335: conflicting server name "_" on [::]:80, ignored
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+  RELOAD OK
+
+== K. bukti efektif: siapa default_server sekarang ==
+210:# configuration file /etc/nginx/sites-enabled/hestia-default:
+212:    listen 80 default_server;
+213:    listen [::]:80 default_server;
+
+== L. uji dari dalam host ==
+  http://127.0.0.1/ -> 401
+  http://127.0.0.1/api/health -> 200
+  https://waspadaweb.com/ -> 200
+
+-- LAPTOP: akses luar SESUDAH perbaikan (401 = BENAR) --
+  http://93.127.133.160/ -> 404
+  http://93.127.133.160/api/health -> 404
+  https://waspadaweb.com/ tetap: 200
