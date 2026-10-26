@@ -1,0 +1,172 @@
+== 0A. jejak langkah lokal (bukti S-246 bukan S-236) ==
+-- 14 terakhir --
+S-224.md
+S-225.md
+S-226.md
+S-227.md
+S-228.md
+S-229.md
+S-230.md
+S-231.md
+S-232.md
+S-233.md
+S-234.md
+S-235.md
+S-236.md
+arsip
+-- jumlah berkas: 212 --
+-- yang masih kosong --
+-- commit terakhir --
+e29ad93 S-246 F-17j: baca ingress tunnel cloudflared, siapkan hostname dashboard [jejak]
+9f9b826 S-246 F-17j: baca ingress tunnel cloudflared, siapkan hostname dashboard
+effa504 S-245 F-17i: tentukan jalur masuk luar nyata (tunnel Cloudflare vs tepi provider) [jejak]
+346ec49 S-245 F-17i: tentukan jalur masuk luar nyata (tunnel Cloudflare vs tepi provider)
+aec8107 S-244 F-17h: sidik jari penghadang luar :80, VPS terbukti di belakang NAT [jejak]
+3586b9d S-244 F-17h: sidik jari penghadang luar :80, VPS terbukti di belakang NAT
+== 0B. uji hostname tunnel (kalau sudah Anda buat) ==
+  https://hestia.waspadaweb.com/ -> 000
+000
+== 0C. waspadaweb.com tetap sehat ==
+  https://waspadaweb.com/ -> 200
+  https://waspadaweb.com/aksi.js -> 404
+
+== 1A. berkas vhost yang memuat waspadaweb ==
+/etc/nginx/sites-available/hestia-ip.conf.asli
+/etc/nginx/sites-available/hestia.conf.asli
+/etc/nginx/sites-available/hestia-ip.conf
+/etc/nginx/sites-available/waspadaweb.com.asli
+/etc/nginx/sites-available/waspadaweb.com
+/etc/nginx/sites-available/hestia.conf
+
+== 1B. isi lengkapnya (untuk jalan cadangan /hestia/) ==
+--- /etc/nginx/sites-available/hestia-ip.conf.asli ---
+# Hestia Dashboard lewat port 80, hanya untuk permintaan dengan Host = IP VPS.
+# Tidak mengganggu vhost waspadaweb.com karena server_name berbeda (exact match menang).
+server {
+    listen 80;
+    listen [::]:80;
+    server_name 93.127.133.160;
+
+    client_max_body_size 64m;
+
+    location / {
+        proxy_pass http://127.0.0.1:8787;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 300s;
+    }
+}
+--- /etc/nginx/sites-available/hestia.conf.asli ---
+# Hestia Dashboard -- vhost port 8791 (80/443 dipakai waspadaweb)
+server {
+    listen 8791;
+    listen [::]:8791;
+    server_name _;
+
+    client_max_body_size 64m;
+
+    location / {
+        proxy_pass http://127.0.0.1:8787;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 300s;
+    }
+}
+--- /etc/nginx/sites-available/hestia-ip.conf ---
+# Hestia Dashboard lewat port 80, hanya untuk permintaan dengan Host = IP VPS.
+# Tidak mengganggu vhost waspadaweb.com karena server_name berbeda (exact match menang).
+server {
+    listen 80;
+    listen [::]:80;
+    server_name 93.127.133.160;
+
+    client_max_body_size 64m;
+
+    location / {
+        proxy_pass http://127.0.0.1:8787;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 300s;
+    }
+}
+--- /etc/nginx/sites-available/waspadaweb.com.asli ---
+server {
+    listen 80;
+    listen [::]:80;
+
+    server_name waspadaweb.com www.waspadaweb.com;
+
+    root /var/www/waspadaweb;
+    index index.html;
+
+    access_log /var/log/nginx/waspadaweb.access.log;
+    error_log /var/log/nginx/waspadaweb.error.log;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+# >>> hestia-managed >>>
+    location = /artikel/lama { return 301 /artikel/baru; }
+    location = /halaman-mati { return 410; }
+# <<< hestia-managed <<<
+
+
+
+
+}
+--- /etc/nginx/sites-available/waspadaweb.com ---
+server {
+    listen 80;
+    listen [::]:80;
+
+    server_name waspadaweb.com www.waspadaweb.com;
+
+    root /var/www/waspadaweb;
+    index index.html;
+
+    access_log /var/log/nginx/waspadaweb.access.log;
+    error_log /var/log/nginx/waspadaweb.error.log;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+# >>> hestia-managed >>>
+    location = /artikel/lama { return 301 /artikel/baru; }
+    location = /halaman-mati { return 410; }
+# <<< hestia-managed <<<
+
+
+
+
+}
+--- /etc/nginx/sites-available/hestia.conf ---
+# Hestia Dashboard -- vhost port 8791 (80/443 dipakai waspadaweb)
+server {
+    listen 8791;
+    listen [::]:8791;
+    server_name _;
+
+    client_max_body_size 64m;
+
+    location / {
+        proxy_pass http://127.0.0.1:8787;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 300s;
+    }
+}
+
+== 1C. blok efektif dari nginx -T ==
+bash: line 12: unexpected EOF while looking for matching `''

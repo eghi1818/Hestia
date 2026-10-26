@@ -1,0 +1,231 @@
+== 1. lengkapi dokumen langkah yang hilang (dari git) ==
+  dibuat: docs/steps/S-237.md
+  dibuat: docs/steps/S-238.md
+  dibuat: docs/steps/S-239.md
+  dibuat: docs/steps/S-240.md
+  dibuat: docs/steps/S-241.md
+  dibuat: docs/steps/S-242.md
+  dibuat: docs/steps/S-243.md
+  dibuat: docs/steps/S-244.md
+  dibuat: docs/steps/S-245.md
+  dibuat: docs/steps/S-246.md
+  total dibuat: 10
+-- 14 terakhir --
+S-236.md
+S-237.md
+S-238.md
+S-239.md
+S-240.md
+S-241.md
+S-242.md
+S-243.md
+S-244.md
+S-245.md
+S-246.md
+S-247.md
+S-248.md
+arsip
+== 2. tulis artefak deploy (snippet + penyisip) ==
+-- validasi lokal (harus bersih) --
+  proxy_pass: 3
+  proxy_set_header: 9
+  baris ganda: 0
+== 3. kirim artefak ke VPS dan sisipkan ==
+-- validasi snippet di host --
+  proxy_pass: 3
+  proxy_set_header: 9
+-- snapshot --
+-- sisipkan include --
+  disisipkan pada blok server baris 1
+-- uji konfigurasi + reload --
+2026/10/26 05:23:35 [warn] 556552#556552: conflicting server name "_" on 0.0.0.0:80, ignored
+2026/10/26 05:23:35 [warn] 556552#556552: conflicting server name "_" on [::]:80, ignored
+  RELOAD OK
+-- bukti dari dalam host (Host: waspadaweb.com) --
+  /                -> 200
+  /hestia          -> 404
+  /hestia/         -> nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+404
+  /aksi.js         -> 404
+  /api/health      -> 404
+  /artikel/lama    -> 301
+  /halaman-mati    -> 410
+== 4. bukti dari LUAR (Cloudflare -> tunnel -> nginx) ==
+  /                  -> 200
+  /hestia/           -> 401
+  /aksi.js?s249=1    -> 401
+  /artikel/lama      -> 301
+  /halaman-mati      -> 410
+== 5. tutup langkah ==
++ dokumen langkah disiapkan lebih awal: docs/steps/S-249.md
+== gate: berkas wajib ==
+  ok      README.md
+  ok      CHANGELOG.md
+  ok      GOAL.md
+  ok      docs/PRD-Authority-Hosting-v1.5.md
+  ok      docs/CONTEXT.md
+  ok      docs/EKSPERIMEN.md
+  ok      docs/ONBOARDING_PROMPT.txt
+  ok      docs/SOP-NEW-CHAT.md
+
+== gate: sterilisasi pada artefak tim ==
+  bersih  README.md
+  bersih  CHANGELOG.md
+  bersih  docs/PRD-Authority-Hosting-v1.5.md
+  bersih  dashboard/README.md
+  bersih  dashboard/aksi.js
+  bersih  dashboard/audit.js
+  bersih  dashboard/detail.js
+  bersih  dashboard/driver.js
+  bersih  dashboard/ekspor.js
+  bersih  dashboard/ikhtisar.js
+  bersih  dashboard/index.html
+  bersih  dashboard/konsol.js
+  bersih  dashboard/konten.js
+  bersih  dashboard/live.js
+  bersih  dashboard/monitor.js
+  bersih  dashboard/recon.js
+  bersih  dashboard/tanam.js
+  bersih  dashboard/tautan.js
+  bersih  app/__init__.py
+  bersih  app/db.py
+  bersih  app/main.py
+
+== gate: integrasi skrip dashboard dengan index.html ==
+  ok      #auditBatas
+  ok      #auditBody
+  ok      #auditCari
+  ok      #auditPeristiwa
+  ok      #backlinkBody
+  ok      #cLevel
+  ok      #cName
+  ok      #cSecret
+  ok      #cTarget
+  ok      #cType
+  ok      #cValid
+  ok      #checkBody
+  ok      #credBody
+  ok      #credRotasi
+  ok      #dPath
+  ok      #dTarget
+  ok      #dTpl
+  ok      #deployBody
+  ok      #detailChecks
+  ok      #detailCredBody
+  ok      #detailHealth
+  ok      #detailKv
+  ok      #detailPageBody
+  ok      #detailTimeline
+  ok      #driverDomain
+  ok      #driverOut
+  ok      #fDomain
+  ok      #fNote
+  ok      #fOwner
+  ok      #fTags
+  ok      #fType
+  ok      #fpKv
+  ok      #ikhtisarBersih
+  ok      #kandBody
+  ok      #kandCari
+  ok      #kandInfo
+  ok      #kandLagi
+  ok      #kandPeriksa
+  ok      #kandStatus
+  ok      #kandTanpaInfra
+  ok      #kandTanpaKosong
+  ok      #konsolAksi
+  ok      #konsolBatal
+  ok      #konsolDomain
+  ok      #konsolExtra
+  ok      #konsolJalankan
+  ok      #konsolLog
+  ok      #konsolPaksa
+  ok      #konsolSegarkan
+  ok      #konsolStatus
+  ok      #kontenBody
+  ok      #kunciBody
+  ok      #kunciLevel
+  ok      #kunciNama
+  ok      #kunciSecret
+  ok      #kunciSegarkan
+  ok      #kunciStatus
+  ok      #kunciTambah
+  ok      #kunciTarget
+  ok      #kunciTipe
+  ok      #latencyList
+  lewat   #liveBadge (dibuat live.js/ikhtisar.js)
+  ok      #monitorAlerts
+  ok      #monitorBody
+  ok      #monitorDomain
+  ok      #monitorOut
+  ok      #navKandCount
+  ok      #opsMetrics
+  ok      #page-dashboard
+  ok      #queueStatus
+  ok      #reconProgress
+  ok      #reconQueue
+  ok      #tanamOut
+  ok      #tanamSandi
+  ok      #tanamSapu
+  ok      #tanamTarget
+  ok      #tanamUser
+  ok      #teknoRingkas
+  total rujukan diperiksa: 78
+
+== gate: dokumen internal (boleh memuat istilah) ==
+  GOAL.md memuat 'parasite': 3 baris
+  docs/CONTEXT.md memuat 'parasite': 7 baris
+  docs/EKSPERIMEN.md memuat 'parasite': 0 baris
+  docs/ONBOARDING_PROMPT.txt memuat 'parasite': 1 baris
+  docs/SOP-NEW-CHAT.md memuat 'parasite': 2 baris
+
+== gate: sintaks python ==
+  ok      app/main.py bisa dikompilasi
+
+== gate: rute api dipakai dashboard ==
+  rute di app/main.py: 47
+  ok      semua rute api ada di app/main.py
+== gate: layanan dashboard (fail-closed) ==
+  /            http 000
+  /api/health  http 000
+  layanan MATI
+== gate: placeholder bukti ==
+  ok      tidak ada placeholder
+== gate: bukti langkah terakhir ==
+  ok      docs/evidence/S-249.txt (S-249)
+== gate: skrip dashboard disajikan ==
+  ok      /aksi.js
+  ok      /audit.js
+  ok      /detail.js
+  ok      /driver.js
+  ok      /ekspor.js
+  ok      /ikhtisar.js
+  ok      /konsol.js
+  ok      /konten.js
+  ok      /live.js
+  ok      /monitor.js
+  ok      /recon.js
+  ok      /tanam.js
+  ok      /tautan.js
+== gate: rute api utama (hidup) ==
+  KURANG  /api/health -> 000 (harap 200)
+  KURANG  /api/targets -> 000 (harap 200)
+  KURANG  /api/teknologi-ringkas -> 000 (harap 200)
+  KURANG  /api/status/ringkas -> 000 (harap 200)
+  KURANG  /api/audit -> 000 (harap 200)
+  KURANG  /api/driver/rules?domain=waspadaweb.com -> 000 (harap 200)
+  KURANG  /api/driver/plan?domain=waspadaweb.com -> 000 (harap 200)
+== gate: dokumen spec ==
+  ok      docs/LANDASAN.md
+  ok      docs/PROLOG-HESTIA-DASHBOARD.md
+  ok      docs/GOAL-Hestia-SEO.md
+  ok      docs/SKILL-AGENT-HESTIA.md
+  ok      docs/PROMPT-TAMBAHAN-AGENT-DASHBOARD.md
+GATE: GAGAL
+GATE GAGAL - commit ditolak
+e29ad93 S-246 F-17j: baca ingress tunnel cloudflared, siapkan hostname dashboard [jejak]
+9f9b826 S-246 F-17j: baca ingress tunnel cloudflared, siapkan hostname dashboard
+effa504 S-245 F-17i: tentukan jalur masuk luar nyata (tunnel Cloudflare vs tepi provider) [jejak]
+346ec49 S-245 F-17i: tentukan jalur masuk luar nyata (tunnel Cloudflare vs tepi provider)
+]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/Hestia
