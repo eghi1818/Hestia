@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 07:47.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 07:53.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 63bbbec S-237 F-17a: artefak deploy VPS (systemd, vhost 8791, pasang.sh, README)
-branch: main | kotor: D docs/steps/S-237.md
-rute app/main.py: 75 | berkas bukti: 132 | dokumen langkah: 211
+HEAD: 33b9949 S-238 F-17b: pasang Hestia di VPS (systemd + nginx 8791), verifikasi
+branch: main | kotor: D docs/steps/S-238.md
+rute app/main.py: 75 | berkas bukti: 133 | dokumen langkah: 211
 
 ## 12 commit terakhir
 
 ```
+33b9949 S-238 F-17b: pasang Hestia di VPS (systemd + nginx 8791), verifikasi
+9bfd04b S-237 F-17a: artefak deploy VPS (systemd, vhost 8791, pasang.sh, README) [jejak]
 63bbbec S-237 F-17a: artefak deploy VPS (systemd, vhost 8791, pasang.sh, README)
 7a7dc2d S-236: dokumen langkah hilang dibuat ulang, kriteria bukti ekspor diperbaiki [jejak]
 8b089bb S-236: dokumen langkah hilang dibuat ulang, kriteria bukti ekspor diperbaiki
@@ -20,8 +22,6 @@ e06344c S-234 F-13: ekspor bukti siap pihak ketiga (2 vantage + MANIFEST sha256)
 85494f0 S-233 F-12: label dari docs/CHAT.md, GANTI berulang aman [jejak]
 5296929 S-233 F-12: label dari docs/CHAT.md, GANTI berulang aman
 a007bf2 S-232 F-11: label chat dari sumbernya, GANTI pada jalur dalam [jejak]
-94d4139 S-232 F-11: label chat dari sumbernya, GANTI pada jalur dalam
-dfe599e S-231 F-10: label chat V1.2, kombinasi GANTI lalu BUNUH pada satu halaman [jejak]
 ```
 
 ## SISA KERJA
