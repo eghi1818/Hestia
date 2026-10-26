@@ -1,15 +1,18 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 14:35.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 14:41.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: cfbd6b6 S-265: aset halaman inject diperbaiki via base href (gambar/logo tampil)
-branch: main | kotor: M docs/evidence/S-265.txt
-rute app/main.py: 75 | berkas bukti: 160 | dokumen langkah: 239
+HEAD: d64d43a S-266: isi halaman inject diganti dari wecash.ai ke gacor.net (base href pakai url final)
+branch: main | kotor: M docs/evidence/S-266.txt
+rute app/main.py: 75 | berkas bukti: 161 | dokumen langkah: 240
 
 ## 12 commit terakhir
 
 ```
+d64d43a S-266: isi halaman inject diganti dari wecash.ai ke gacor.net (base href pakai url final)
+6f7b0e5 S-265: aset halaman inject diperbaiki via base href (gambar/logo tampil) [jejak] [dokumen]
+8351ce6 S-265: aset halaman inject diperbaiki via base href (gambar/logo tampil) [jejak]
 cfbd6b6 S-265: aset halaman inject diperbaiki via base href (gambar/logo tampil)
 e6ce511 S-264: inject wecash.ai tanpa banner + mode auto supaya isi tampil [jejak] [dokumen]
 69cba36 S-264: inject wecash.ai tanpa banner + mode auto supaya isi tampil [jejak]
@@ -19,9 +22,6 @@ d762583 S-263: inject wecash.ai -> waspadaweb.com terbukti dari luar (jalur J5) 
 d67d274 S-263: inject wecash.ai -> waspadaweb.com terbukti dari luar (jalur J5)
 029b6b7 S-261 F-15: pemeriksa link rot (tautan mati) + tempel ke timer pemantauan [jejak] [dokumen]
 15e48e0 S-261 F-15: pemeriksa link rot (tautan mati) + tempel ke timer pemantauan [jejak]
-778dab3 S-261 F-15: pemeriksa link rot (tautan mati) + tempel ke timer pemantauan
-e4ba46f S-260 F-19: dokumen langkah bolong dipulihkan, stub tutup.sh tidak dibuang, tunggu-siap diperbaiki [jejak] [dokumen]
-71adaef S-260 F-19: dokumen langkah bolong dipulihkan, stub tutup.sh tidak dibuang, tunggu-siap diperbaiki [jejak]
 ```
 
 ## SISA KERJA
