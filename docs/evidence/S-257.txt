@@ -1,0 +1,275 @@
+BLOK: S-257 / F-14g - pantau menulis change_event saat transisi otomatis + isi aturan bolong
+STATUS: (lihat keluaran)
+JALUR: J5
+BUKTI: isi tulis_status, skema change_event, tambalan catat_event, aturan baru, change_event naik, konten 5 terpakai
+SNAPSHOT: tools/status_periksa.py versi lama ada di git
+ROLLBACK: git checkout -- tools/status_periksa.py && kirim ulang ke VPS
+IDEMPOTEN: ya (tambalan dicek, aturan insert or ignore)
+YANG GAGAL: (lihat keluaran)
+== S-257 / F-14g ==
+-- 0. sisa kotor --
+ M docs/evidence/S-256.txt
+?? docs/evidence/S-257.txt
+-- 1. tulis_status menulis apa saja --
+tools/status_periksa.py:132:def tulis_status(c, kid, tujuan, hasil, bukti_id=None):
+def tulis_status(c, kid, tujuan, hasil, bukti_id=None):
+    kol = kolom(c, "status_konten")
+    waktu = time.strftime("%Y-%m-%d %H:%M:%S")
+    ada = c.execute("select 1 from status_konten where konten_id=?", (kid,)).fetchone()
+    d = {}
+    for nama, nilai in (("status", tujuan), ("basis", "bukti" if "bukti" in kol else None),
+                        ("bukti_terakhir", bukti_id if "bukti_terakhir" in kol else None),
+                        ("diperbarui", waktu)):
+        if nama in kol and nilai is not None:
+            d[nama] = nilai
+    if ada:
+        setel = ",".join("%s=?" % k for k in d)
+        c.execute("update status_konten set %s where konten_id=?" % setel,
+                  list(d.values()) + [kid])
+        return "update"
+    d["konten_id"] = kid
+    cek_wajib(c, "status_konten", d)
+    c.execute("insert into status_konten(%s) values(%s)" % (",".join(d), ",".join("?" * len(d))),
+              list(d.values()))
+    return "insert"
+
+
+def daftar_metrik(c):
+    """metrik hanya punya nama/sumber/status_sumber/terisi_terakhir/catatan.
+
+    Angka taruh di catatan; API yang menghitung. Ini registry, bukan penyimpan nilai.
+    """
+    kol = kolom(c, "metrik")
+    waktu = time.strftime("%Y-%m-%d %H:%M:%S")
+    for nama, status in (("konten.kedaluwarsa", "kedaluwarsa"),
+                         ("konten.terverifikasi", "terverifikasi")):
+-- 2. tambal status_periksa.py (catat_event) --
+  fungsi catat_event disisipkan
+  pemanggilan disisipkan
+  py_compile ok
+  status_periksa.py terkirim
+-- 3. isi aturan bolong di DB VPS + laptop, lalu buktikan --
+-- 3A. skema change_event --
+    (0, 'id', 'INTEGER', 0, None, 1)
+    (1, 'target_id', 'INTEGER', 0, None, 0)
+    (2, 'page_id', 'INTEGER', 0, None, 0)
+    (3, 'jenis', 'TEXT', 1, None, 0)
+    (4, 'jalur', 'TEXT', 0, None, 0)
+    (5, 'nilai_lama', 'TEXT', 0, None, 0)
+    (6, 'nilai_baru', 'TEXT', 0, None, 0)
+    (7, 'penanda', 'TEXT', 0, None, 0)
+    (8, 'bukti_id', 'INTEGER', 0, None, 0)
+    (9, 'vantage', 'TEXT', 0, None, 0)
+    (10, 'waktu', 'TEXT', 0, None, 0)
+-- 3B. tambah aturan yang bolong --
+   kolom transisi_status: ['dari', 'ke', 'izin', 'catatan']
+   aturan sekarang:
+     ('belum', 'tertanam', 'otomatis', 'unggah terverifikasi')
+     ('tertanam', 'terverifikasi', 'otomatis', 'cek pasca tanam')
+     ('tertanam', 'gagal', 'otomatis', 'unggah gagal')
+     ('terverifikasi', 'ditimpa', 'otomatis', 'blok kita hilang')
+     ('terverifikasi', 'kedaluwarsa', 'otomatis', 'halaman mati di pihak host')
+     ('terverifikasi', 'dicabut', 'manusia', 'kita pensiunkan')
+     ('ditimpa', 'tertanam', 'manusia', 'tanam ulang')
+     ('gagal', 'tertanam', 'manusia', 'coba ulang')
+     ('kedaluwarsa', 'tertanam', 'manusia', 'tanam ulang')
+     ('belum', 'kedaluwarsa', 'otomatis', None)
+     ('kedaluwarsa', 'terverifikasi', 'otomatis', None)
+-- 3C. hitungan sebelum --
+   change_event 23
+-- 3D. jalankan pemantauan --
+-- 3E. ringkas dari log --
+--
+  "ringkas": {
+    "diperiksa": 4,
+    "transisi": 0,
+    "usul_manusia": 1,
+    "tidak_dapat_disimpulkan": 1,
+--
+  "ringkas": {
+    "diperiksa": 4,
+    "transisi": 0,
+    "usul_manusia": 1,
+    "tidak_dapat_disimpulkan": 1,
+-- 3F. hitungan sesudah + 4 event terbaru --
+   change_event 25
+   event: {'id': 36, 'target_id': None, 'page_id': None, 'jenis': 'pantau-transisi', 'jalur': 'pantau', 'nilai_lama': 'belum', 'nilai_baru': 'kedaluwarsa', 'penanda': None, 'bukti_id': None, 'vantage': 'vps', 'waktu': '2026-10-26T06:11:49+00:00'}
+   event: {'id': 35, 'target_id': None, 'page_id': None, 'jenis': 'pantau-transisi', 'jalur': 'pantau', 'nilai_lama': None, 'nilai_baru': 'terverifikasi', 'penanda': None, 'bukti_id': None, 'vantage': 'vps', 'waktu': '2026-10-26T06:11:49+00:00'}
+   event: {'id': 34, 'target_id': 46, 'page_id': 22, 'jenis': 'pulih-ganti', 'jalur': 'J5', 'nilai_lama': '{"status": {"vps": "200", "lokal": "200"}, "snapshot": "/Users/eghi/Documents/REPO/Hestia/data/snapshot/halaman-uji-kombinasi-20261026-073251.html"}', 'nilai_baru': '91d30ebe9a9dd5e1', 'penanda': '0', 'bukti_id': None, 'vantage': 'vps+lokal', 'waktu': '2026-10-26T07:34:03'}
+   event: {'id': 33, 'target_id': 46, 'page_id': 22, 'jenis': 'ganti', 'jalur': 'J5', 'nilai_lama': '{"status": {"vps": "200", "lokal": "200"}, "snapshot": "/Users/eghi/Documents/REPO/Hestia/data/snapshot/halaman-uji-kombinasi-20261026-073251.html"}', 'nilai_baru': '48a08423aafcc429', 'penanda': '1', 'bukti_id': None, 'vantage': 'vps+lokal', 'waktu': '2026-10-26T07:33:38'}
+-- 3G. status_konten sekarang --
+    2 terverifikasi
+    3 terverifikasi
+    4 kedaluwarsa
+    5 kedaluwarsa
+    6 terverifikasi
+-- 3H. waspadaweb sehat --
+  https://waspadaweb.com/ -> 200
+-- 4. terapkan aturan yang sama di DB laptop --
+  laptop: 11 aturan
+-- 5. tutup --
++ dokumen langkah disiapkan lebih awal: docs/steps/S-257.md
+== gate: berkas wajib ==
+  ok      README.md
+  ok      CHANGELOG.md
+  ok      GOAL.md
+  ok      docs/PRD-Authority-Hosting-v1.5.md
+  ok      docs/CONTEXT.md
+  ok      docs/EKSPERIMEN.md
+  ok      docs/ONBOARDING_PROMPT.txt
+  ok      docs/SOP-NEW-CHAT.md
+
+== gate: sterilisasi pada artefak tim ==
+  bersih  README.md
+  bersih  CHANGELOG.md
+  bersih  docs/PRD-Authority-Hosting-v1.5.md
+  bersih  dashboard/README.md
+  bersih  dashboard/aksi.js
+  bersih  dashboard/audit.js
+  bersih  dashboard/detail.js
+  bersih  dashboard/driver.js
+  bersih  dashboard/ekspor.js
+  bersih  dashboard/ikhtisar.js
+  bersih  dashboard/index.html
+  bersih  dashboard/konsol.js
+  bersih  dashboard/konten.js
+  bersih  dashboard/live.js
+  bersih  dashboard/monitor.js
+  bersih  dashboard/recon.js
+  bersih  dashboard/tanam.js
+  bersih  dashboard/tautan.js
+  bersih  app/__init__.py
+  bersih  app/db.py
+  bersih  app/main.py
+
+== gate: integrasi skrip dashboard dengan index.html ==
+  ok      #auditBatas
+  ok      #auditBody
+  ok      #auditCari
+  ok      #auditPeristiwa
+  ok      #backlinkBody
+  ok      #cLevel
+  ok      #cName
+  ok      #cSecret
+  ok      #cTarget
+  ok      #cType
+  ok      #cValid
+  ok      #checkBody
+  ok      #credBody
+  ok      #credRotasi
+  ok      #dPath
+  ok      #dTarget
+  ok      #dTpl
+  ok      #deployBody
+  ok      #detailChecks
+  ok      #detailCredBody
+  ok      #detailHealth
+  ok      #detailKv
+  ok      #detailPageBody
+  ok      #detailTimeline
+  ok      #driverDomain
+  ok      #driverOut
+  ok      #fDomain
+  ok      #fNote
+  ok      #fOwner
+  ok      #fTags
+  ok      #fType
+  ok      #fpKv
+  ok      #ikhtisarBersih
+  ok      #kandBody
+  ok      #kandCari
+  ok      #kandInfo
+  ok      #kandLagi
+  ok      #kandPeriksa
+  ok      #kandStatus
+  ok      #kandTanpaInfra
+  ok      #kandTanpaKosong
+  ok      #konsolAksi
+  ok      #konsolBatal
+  ok      #konsolDomain
+  ok      #konsolExtra
+  ok      #konsolJalankan
+  ok      #konsolLog
+  ok      #konsolPaksa
+  ok      #konsolSegarkan
+  ok      #konsolStatus
+  ok      #kontenBody
+  ok      #kunciBody
+  ok      #kunciLevel
+  ok      #kunciNama
+  ok      #kunciSecret
+  ok      #kunciSegarkan
+  ok      #kunciStatus
+  ok      #kunciTambah
+  ok      #kunciTarget
+  ok      #kunciTipe
+  ok      #latencyList
+  lewat   #liveBadge (dibuat live.js/ikhtisar.js)
+  ok      #monitorAlerts
+  ok      #monitorBody
+  ok      #monitorDomain
+  ok      #monitorOut
+  ok      #navKandCount
+  ok      #opsMetrics
+  ok      #page-dashboard
+  ok      #queueStatus
+  ok      #reconProgress
+  ok      #reconQueue
+  ok      #tanamOut
+  ok      #tanamSandi
+  ok      #tanamSapu
+  ok      #tanamTarget
+  ok      #tanamUser
+  ok      #teknoRingkas
+  total rujukan diperiksa: 78
+
+== gate: dokumen internal (boleh memuat istilah) ==
+  GOAL.md memuat 'parasite': 3 baris
+  docs/CONTEXT.md memuat 'parasite': 7 baris
+  docs/EKSPERIMEN.md memuat 'parasite': 0 baris
+  docs/ONBOARDING_PROMPT.txt memuat 'parasite': 1 baris
+  docs/SOP-NEW-CHAT.md memuat 'parasite': 2 baris
+
+== gate: sintaks python ==
+  ok      app/main.py bisa dikompilasi
+
+== gate: rute api dipakai dashboard ==
+  rute di app/main.py: 47
+  ok      semua rute api ada di app/main.py
+== gate: layanan dashboard (fail-closed) ==
+  ok      tanpa sandi http 401
+  ok      /api/health http 200
+  layanan HIDUP
+== gate: placeholder bukti ==
+  ok      tidak ada placeholder
+== gate: bukti langkah terakhir ==
+  ok      docs/evidence/S-257.txt (S-257)
+== gate: skrip dashboard disajikan ==
+  ok      /aksi.js
+  ok      /audit.js
+  ok      /detail.js
+  ok      /driver.js
+  ok      /ekspor.js
+  ok      /ikhtisar.js
+  ok      /konsol.js
+  ok      /konten.js
+  ok      /live.js
+  ok      /monitor.js
+  ok      /recon.js
+  ok      /tanam.js
+  ok      /tautan.js
+== gate: rute api utama (hidup) ==
+  ok      /api/health -> 200
+  ok      /api/targets -> 200
+  ok      /api/teknologi-ringkas -> 200
+  ok      /api/status/ringkas -> 200
+  ok      /api/audit -> 200
+  ok      /api/driver/rules?domain=waspadaweb.com -> 200
+  ok      /api/driver/plan?domain=waspadaweb.com -> 200
+== gate: dokumen spec ==
+  ok      docs/LANDASAN.md
+  ok      docs/PROLOG-HESTIA-DASHBOARD.md
+  ok      docs/GOAL-Hestia-SEO.md
+  ok      docs/SKILL-AGENT-HESTIA.md
+  ok      docs/PROMPT-TAMBAHAN-AGENT-DASHBOARD.md
+GATE: LULUS

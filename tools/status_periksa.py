@@ -193,6 +193,25 @@ def catat_clientlog(c, peristiwa, rincian):
         print("clientlog dilewati:", e)
 
 
+def catat_event(c, kid, dari, ke, mode, bid):
+    """Catat transisi otomatis pemantauan ke change_event (aman kolom)."""
+    import datetime
+    kol = [r[1] for r in c.execute("pragma table_info(change_event)")]
+    baris = {"jenis": "pantau-transisi", "jalur": "pantau", "nilai_lama": dari,
+             "nilai_baru": ke, "vantage": "vps", "konten_id": kid,
+             "catatan": "mode=%s bukti=%s" % (mode, bid)}
+    if "waktu" in kol:
+        baris["waktu"] = datetime.datetime.now().astimezone().isoformat(timespec="seconds")
+    if "id" in kol:
+        pk = [r for r in c.execute("pragma table_info(change_event)") if r[1] == "id"][0]
+        if not pk[5]:
+            baris["id"] = c.execute("select coalesce(max(id),0)+1 from change_event").fetchone()[0]
+    baris = {k: v for k, v in baris.items() if k in kol}
+    c.execute("insert into change_event (%s) values (%s)" % (", ".join(baris), ", ".join("?" * len(baris))),
+              tuple(baris.values()))
+    return c.execute("select last_insert_rowid()").fetchone()[0]
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--domain", default="")
@@ -243,6 +262,7 @@ def main():
             bid = catat_bukti(c, kid, h)
             if aksi == "transisi":
                 mode = tulis_status(c, kid, tujuan, h, bid)
+                catat_event(c, kid, status_lama, tujuan, mode, bid)
                 aksi = "terapkan:" + mode
             else:
                 tautkan_bukti(c, kid, bid)
