@@ -1,15 +1,18 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 17:38.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 17:47.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: f24109f S-284 F-0: bangun cermin penuh wecash.ai + halaman soal jadi BOSGACOR + penanda + _cermin.txt, pasang ke VPS, bukti dari VPS
+HEAD: 407d251 S-285: cermin dibangun ulang dengan alat benar (308, srcset, unwrap, &amp;), vhost berteriak 404, pembandingan isi per halaman
 branch: main | kotor: (bersih)
-rute app/main.py: 75 | berkas bukti: 178 | dokumen langkah: 250
+rute app/main.py: 75 | berkas bukti: 179 | dokumen langkah: 251
 
 ## 12 commit terakhir
 
 ```
+407d251 S-285: cermin dibangun ulang dengan alat benar (308, srcset, unwrap, &amp;), vhost berteriak 404, pembandingan isi per halaman
+e37bef9 S-284 F-0: bangun cermin penuh wecash.ai + halaman soal jadi BOSGACOR + penanda + _cermin.txt, pasang ke VPS, bukti dari VPS [jejak] [dokumen]
+d5a2b6a S-284 F-0: bangun cermin penuh wecash.ai + halaman soal jadi BOSGACOR + penanda + _cermin.txt, pasang ke VPS, bukti dari VPS [jejak]
 f24109f S-284 F-0: bangun cermin penuh wecash.ai + halaman soal jadi BOSGACOR + penanda + _cermin.txt, pasang ke VPS, bukti dari VPS
 608ca6c S-283 F-0: parser href benar, sumber IP baru, certspotter per-sertifikat, uji cPanel pada wecash.ai, sisir ulang dengan SNI benar [jejak] [dokumen]
 8d1f3ca S-283 F-0: parser href benar, sumber IP baru, certspotter per-sertifikat, uji cPanel pada wecash.ai, sisir ulang dengan SNI benar [jejak]
@@ -19,9 +22,6 @@ a7b35cb S-282 F-0: tanggal mnemonic, CT certspotter, partner+merchant, isi REA, 
 b0d5e48 S-282 F-0: tanggal mnemonic, CT certspotter, partner+merchant, isi REA, sisir ulang dengan status, tee ke luar repo
 7fdb735 S-281 F-0: mnemonic bertanggal, sisir nama tak-diproksikan, panel cPanel lewat Cloudflare, Location ALB utuh, jejak REA, sisir 3.64.0.0/16 [jejak] [dokumen]
 c884791 S-281 F-0: mnemonic bertanggal, sisir nama tak-diproksikan, panel cPanel lewat Cloudflare, Location ALB utuh, jejak REA, sisir 3.64.0.0/16 [jejak]
-e3f9cd5 S-281 F-0: mnemonic bertanggal, sisir nama tak-diproksikan, panel cPanel lewat Cloudflare, Location ALB utuh, jejak REA, sisir 3.64.0.0/16
-e0e1c15 S-280 F-0: baseline pokok soal, kejar api.wecash.ai (LiteSpeed/cPanel), meta DNS, riwayat bertanggal, kontrol ALB, gate_misi [jejak] [dokumen]
-cf53e96 S-280 F-0: baseline pokok soal, kejar api.wecash.ai (LiteSpeed/cPanel), meta DNS, riwayat bertanggal, kontrol ALB, gate_misi [jejak]
 ```
 
 ## SISA KERJA
