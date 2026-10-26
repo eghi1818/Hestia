@@ -11,6 +11,7 @@ SSH = ["ssh", "-p", "10053", "-i", os.path.expanduser("~/.ssh/wesearch_vps_key")
        "-o", "StrictHostKeyChecking=no", "administrator@93.127.133.160"]
 LOKAL = os.environ.get("HESTIA_LOKAL") == "1"
 SNAP = "data/snapshot"
+DASAR = ""
 
 
 def sh(p, masuk=None):
@@ -20,6 +21,7 @@ def sh(p, masuk=None):
 
 
 def ambil(url, t=25):
+    global DASAR
     req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept-Language": "id,en"})
     with urllib.request.urlopen(req, timeout=t) as r:
         return r.status, dict(r.headers), r.read().decode("utf-8", "replace")
@@ -103,6 +105,7 @@ def utama():
         return
 
     kode, hdr, html = ambil(a.dari)
+    a.dari = DASAR
     sha = hashlib.sha256(html.encode()).hexdigest()
     m = re.search(r"(?is)<title[^>]*>(.*?)</title>", html)
     judul = (m.group(1).strip()[:80] if m else a.dari)
