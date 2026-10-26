@@ -1,0 +1,55 @@
+BLOK: S-270 - strategi jalur J8 (DNS/tunnel) untuk wecash.ai, uji lewat dev.wecash.ai
+JALUR: J8 (DNS/Cloudflare)
+BUKTI: ingress tunnel, vhost dev, uji lokal, isi /tentang/profile/
+== 1. ingress tunnel sekarang ==
+{
+    "version": 1,
+    "config": {
+        "ingress": [
+            {
+                "hostname": "waspadaweb.com",
+                "path": null,
+                "service": "http://localhost:80",
+                "Handlers": null,
+                "originRequest": {
+                    "connectTimeout": 30,
+                    "tlsTimeout": 10,
+                    "tcpKeepAlive": 30,
+                    "noHappyEyeballs": false,
+                    "keepAliveTimeout": 90,
+                    "keepAliveConnections": 100,
+                    "httpHostHeader": "",
+                    "originServerName": "",
+                    "matchSNItoHost": false,
+                    "caPool": "",
+                    "noTLSVerify": false,
+                    "disableChunkedEncoding": false,
+                    "bastionMode": false,
+                    "proxyAddress": "127.0.0.1",
+                    "proxyPort": 0,
+== 2. tambahkan dev.wecash.ai ke vhost ==
+perl: warning: Setting locale failed.
+perl: warning: Please check that your locale settings:
+	LANGUAGE = (unset),
+	LC_ALL = (unset),
+	LC_CTYPE = "UTF-8",
+	LANG = "en_US.UTF-8"
+    are supported and installed on your system.
+perl: warning: Falling back to a fallback locale ("en_US.UTF-8").
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+NGINX-OK
+== 3. uji lokal (harus BOSGACOR untuk ketiga Host) ==
+wecash.ai          <title>BOSGACOR > Situs Terpopuler Agen Slot Gacor Resmi Gampang Menang Hari Ini
+dev.wecash.ai      <title>BOSGACOR > Situs Terpopuler Agen Slot Gacor Resmi Gampang Menang Hari Ini
+www.wecash.ai      <title>BOSGACOR > Situs Terpopuler Agen Slot Gacor Resmi Gampang Menang Hari Ini
+== 4. isi /tentang/profile/ sekarang (platform lama) ==
+<title>Profile -  Wecash
+== 5. dev & api sekarang ==
+HTTP/2 404 
+server: cloudflare
+]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/Hestia
+Saving session...
+...copying shared history...
+...saving history...truncating history files...
+...completed.

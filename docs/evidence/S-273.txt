@@ -1,0 +1,40 @@
+BLOK: S-273 - buktikan isi ingress cloudflared + mulai login tunnel
+JALUR: J8 (DNS/tunnel)
+BUKTI: isi /config mentah, ingress lokal, waspadaweb 200, URL login
+== 1. pasang config + unit ==
+perl: warning: Setting locale failed.
+perl: warning: Please check that your locale settings:
+	LANGUAGE = (unset),
+	LC_ALL = (unset),
+	LC_CTYPE = "UTF-8",
+	LANG = "en_US.UTF-8"
+    are supported and installed on your system.
+perl: warning: Falling back to a fallback locale ("en_US.UTF-8").
+active
+== 2. isi ingress EFEKTIF (grep rapat) ==
+{"version":1,"config":{"ingress":[{"hostname":"waspadaweb.com","path":null,"service":"http://localhost:80","Handlers":null,"originRequest":{"connectTimeout":30,"tlsTimeout":10,"tcpKeepAlive":30,"noHappyEyeballs":false,"keepAliveTimeout":90,"keepAliveConnections":100,"httpHostHeader":"","originServerName":"","matchSNItoHost":false,"caPool":"","noTLSVerify":false,"disableChunkedEncoding":false,"bastionMode":false,"proxyAddress":"127.0.0.1","proxyPort":0,"proxyType":"","ipRules":null,"http2Origin":false,"access":{"teamName":"","audTag":null}}},{"hostname":"","path":null,"service":"http_status:404","Handlers":null,"originRequest":{"connectTimeout":30,"tlsTimeout":10,"tcpKeepAlive":30,"noHappyEye
+"hostname":"waspadaweb.com"
+"hostname":""
+== 3. waspadaweb harus tetap 200 ==
+waspadaweb: 200
+== 4. log cloudflared ==
+Oct 26 08:33:22 vps-sedp cloudflared[585340]: 2026-10-26T08:33:22Z INF |  Cloudflare API    api.cloudflare.com:443     PASS    API is reachable              |
+Oct 26 08:33:22 vps-sedp cloudflared[585340]: 2026-10-26T08:33:22Z INF |                                                                                     |
+Oct 26 08:33:22 vps-sedp cloudflared[585340]: 2026-10-26T08:33:22Z INF |  SUMMARY: Environment is healthy. cloudflared will use 'quic' as primary protocol.  |
+Oct 26 08:33:22 vps-sedp cloudflared[585340]: 2026-10-26T08:33:22Z INF +-------------------------------------------------------------------------------------+
+Oct 26 08:33:22 vps-sedp cloudflared[585340]: 2026-10-26T08:33:22Z INF precheck component="DNS Resolution" details="DNS Resolved successfully" run_id=e74709ea-8c96-4ae2-a23a-f4b8d5e49d07 status=pass target=region1.v2.argotunnel.com
+Oct 26 08:33:22 vps-sedp cloudflared[585340]: 2026-10-26T08:33:22Z INF precheck component="DNS Resolution" details="DNS Resolved successfully" run_id=e74709ea-8c96-4ae2-a23a-f4b8d5e49d07 status=pass target=region2.v2.argotunnel.com
+Oct 26 08:33:22 vps-sedp cloudflared[585340]: 2026-10-26T08:33:22Z INF precheck component="UDP Connectivity" details="QUIC connection successful" run_id=e74709ea-8c96-4ae2-a23a-f4b8d5e49d07 status=pass target=region1.v2.argotunnel.com
+Oct 26 08:33:22 vps-sedp cloudflared[585340]: 2026-10-26T08:33:22Z INF precheck component="UDP Connectivity" details="QUIC connection successful" run_id=e74709ea-8c96-4ae2-a23a-f4b8d5e49d07 status=pass target=region2.v2.argotunnel.com
+Oct 26 08:33:22 vps-sedp cloudflared[585340]: 2026-10-26T08:33:22Z INF precheck component="TCP Connectivity" details="HTTP/2 connection successful" run_id=e74709ea-8c96-4ae2-a23a-f4b8d5e49d07 status=pass target=region1.v2.argotunnel.com
+Oct 26 08:33:22 vps-sedp cloudflared[585340]: 2026-10-26T08:33:22Z INF precheck component="TCP Connectivity" details="HTTP/2 connection successful" run_id=e74709ea-8c96-4ae2-a23a-f4b8d5e49d07 status=pass target=region2.v2.argotunnel.com
+Oct 26 08:33:22 vps-sedp cloudflared[585340]: 2026-10-26T08:33:22Z INF precheck component="Cloudflare API" details="API is reachable" run_id=e74709ea-8c96-4ae2-a23a-f4b8d5e49d07 status=pass target=api.cloudflare.com:443
+Oct 26 08:33:22 vps-sedp cloudflared[585340]: 2026-10-26T08:33:22Z INF precheck complete hard_fail=false run_id=e74709ea-8c96-4ae2-a23a-f4b8d5e49d07 suggested_protocol=quic
+== 5. mulai login tunnel (untuk menulis record DNS sendiri) ==
+]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/Hestiazsh: command not found: cloudflared
+zsh: command not found: cloudflared
+]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/Hestia
+Saving session...
+...copying shared history...
+...saving history...truncating history files...
+...completed.

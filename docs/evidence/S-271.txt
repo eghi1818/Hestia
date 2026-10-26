@@ -1,0 +1,56 @@
+BLOK: S-271 - uji ingress tunnel bisa diatur lokal (tanpa dashboard)
+JALUR: J8 (DNS/tunnel)
+BUKTI: unit asli, ingress efektif, waspadaweb tetap hidup
+== 0. cloudflared ada di laptop? ==
+cloudflared not found
+  (tidak ada)
+== 1. cadangkan unit + lihat isinya ==
+CADANGAN-OK
+[Unit]
+Description=Cloudflare Tunnel client
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+TimeoutStartSec=15
+Type=notify
+ExecStart=/usr/bin/cloudflared --no-autoupdate tunnel run --token-file /etc/cloudflared/token
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
+== 2. tulis ingress lokal ==
+perl: warning: Setting locale failed.
+perl: warning: Please check that your locale settings:
+	LANGUAGE = (unset),
+	LC_ALL = (unset),
+	LC_CTYPE = "UTF-8",
+	LANG = "en_US.UTF-8"
+    are supported and installed on your system.
+perl: warning: Falling back to a fallback locale ("en_US.UTF-8").
+9:ExecStart=/usr/bin/cloudflared --no-autoupdate tunnel run --token-file /etc/cloudflared/token --config /etc/cloudflared/config.yml
+== 3. restart + cek ingress EFEKTIF ==
+Job for cloudflared.service failed because the service did not take the steps required by its unit configuration.
+See "systemctl status cloudflared.service" and "journalctl -xeu cloudflared.service" for details.
+activating
+== 4. waspadaweb.com harus tetap hidup ==
+waspadaweb: 530
+== 5. log cloudflared ==
+Oct 26 08:27:44 vps-sedp cloudflared[584123]:   --unix-socket value                          Path to unix socket to use instead of --url [$TUNNEL_UNIX_SOCKET]
+Oct 26 08:27:44 vps-sedp cloudflared[584123]:   --origin-ca-pool --url                       Path to the CA for the certificate of your origin. This option should be used only if your certificate is not signed by Cloudflare. This flag only takes effect if you define your origin with --url and if you do not use ingress rules. The recommended way is to rely on ingress rules and define this property under `originRequest` as per https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/configuration/configuration-file/ingress [$TUNNEL_ORIGIN_CA_POOL]
+Oct 26 08:27:44 vps-sedp cloudflared[584123]:   --no-tls-verify --url                        Disables TLS verification of the certificate presented by your origin. Will allow any certificate from the origin to be accepted. Note: The connection from your machine to Cloudflare's Edge is still encrypted. This flag only takes effect if you define your origin with --url and if you do not use ingress rules. The recommended way is to rely on ingress rules and define this property under `originRequest` as per https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/configuration/configuration-file/ingress (default: false) [$NO_TLS_VERIFY]
+Oct 26 08:27:44 vps-sedp cloudflared[584123]:   --no-chunked-encoding --url                  Disables chunked transfer encoding; useful if you are running a WSGI server. This flag only takes effect if you define your origin with --url and if you do not use ingress rules. The recommended way is to rely on ingress rules and define this property under `originRequest` as per https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/configuration/configuration-file/ingress (default: false) [$TUNNEL_NO_CHUNKED_ENCODING]
+Oct 26 08:27:44 vps-sedp cloudflared[584123]:   --http2-origin                               Enables HTTP/2 origin servers. (default: false) [$TUNNEL_ORIGIN_ENABLE_HTTP2]
+Oct 26 08:27:44 vps-sedp cloudflared[584123]:   --bastion                                    Runs as jump host (default: false) [$TUNNEL_BASTION]
+Oct 26 08:27:44 vps-sedp cloudflared[584123]:   --proxy-address value                        Listen address for the proxy. (default: "127.0.0.1") [$TUNNEL_PROXY_ADDRESS]
+Oct 26 08:27:44 vps-sedp cloudflared[584123]:   --proxy-port value                           Listen port for the proxy. (default: 0) [$TUNNEL_PROXY_PORT]
+Oct 26 08:27:44 vps-sedp cloudflared[584123]:   --help, -h                                   show help (default: false)
+Oct 26 08:27:44 vps-sedp cloudflared[584123]:   
+Oct 26 08:27:44 vps-sedp systemd[1]: cloudflared.service: Failed with result 'protocol'.
+Oct 26 08:27:44 vps-sedp systemd[1]: Failed to start cloudflared.service - Cloudflare Tunnel client.
+]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/Hestia]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/Hestia
+Saving session...
+...copying shared history...
+...saving history...truncating history files...
+...completed.

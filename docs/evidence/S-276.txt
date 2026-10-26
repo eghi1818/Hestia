@@ -1,0 +1,62 @@
+BLOK: S-276 - A peta jalur lengkap, B asal wecash.ai, C kejar 522, D baca mode, E manifes halaman
+BUKTI: penanda per hostname, tanda asal, trace 522, log cloudflared, buildManifest
+===== A. PETA JALUR LENGKAP — penanda di 3 akar, diambil dari SETIAP kandidat =====
+  penanda disebar
+  waspadaweb.com           http=200  HESTIA-DI-DALAM-JALUR 1793005973
+  www.waspadaweb.com       http=404    hestia.waspadaweb.com    http=000    wecash.ai                http=404    www.wecash.ai            http=000    dev.wecash.ai            http=000  
+===== B. DI MANA wecash.ai BENAR-BENAR TINGGAL (pakai tanda) =====
+-- bagaimana dia menjawab jalur yang tidak ada --
+HTTP/2 308 
+cf-cache-status: DYNAMIC
+server: cloudflare
+-- subdomain hidup/mati --
+  www       000
+  api       404
+  dev       000
+  app       000
+  cdn       000
+  static    000
+  origin    000
+  direct    000
+  staging   000
+  mail      000
+-- riwayat nama (CT log + hostsearch) --
+dev.wecash.ai,104.21.5.216
+
+===== C. KEJAR 522 di dev =====
+104.21.5.216
+172.67.133.223
+fl=1131f51
+h=dev.wecash.ai
+ip=187.40.232.91
+ts=1793006034.000
+visit_scheme=https
+uag=curl/8.7.1
+colo=MRS
+sliver=050-tier1
+A : 188.114.97.1
+A : 188.114.96.1
+AAAA : 2a06:98c1:3121::1
+AAAA : 2a06:98c1:3120::1
+===== D. BACA mode terowongan dari KENYATAAN (log) =====
+Oct 26 09:02:36 vps-sedp cloudflared[585340]: 2026-10-26T09:02:36Z WRN Serve tunnel error error="accept stream listener error: failed to accept QUIC stream: timeout: no recent network activity" connIndex=1 event=0 ip=198.41.200.43
+Oct 26 09:02:36 vps-sedp cloudflared[585340]: 2026-10-26T09:02:36Z INF Retrying connection in up to 2s connIndex=1 event=0 ip=198.41.200.43
+Oct 26 09:02:38 vps-sedp cloudflared[585340]: 2026-10-26T09:02:38Z WRN Connection terminated error="accept stream listener error: failed to accept QUIC stream: timeout: no recent network activity" connIndex=1
+Oct 26 09:02:45 vps-sedp cloudflared[585340]: 2026-10-26T09:02:45Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=1 event=0 ip=198.41.200.33
+Oct 26 09:02:46 vps-sedp cloudflared[585340]: 2026-10-26T09:02:46Z INF Registered tunnel connection connIndex=1 connection=b5da1598-b9c1-4a2a-8149-4688124fbd17 event=0 ip=198.41.200.33 location=mci01 protocol=quic
+-- instance KEDUA melapor, yang lama tetap hidup --
+
+===== E. LENGKAPI CERMIN — ambil manifes halaman dari hasil build =====
+self.__BUILD_MANIFEST=function(s,a,c,e,t){return{__rewrites:{beforeFiles:[],afterFiles:[],fallback:[]},"/":[s,a,c,"static/chunks/pages/index-ea96027c59d0b3ce.js"],"/401":[s,e,"static/chunks/pages/401-e7acf139d2afd2e6.js"],"/404":[s,e,"static/chunks/pages/404-16abfcf89b704279.js"],"/500":[s,e,"static/chunks/pages/500-c17a74a55309977e.js"],"/_error":["static/chunks/pages/_error-54de1933a164a1ff.js"],"/artikel/[title]":[s,a,e,t,"static/chunks/345-b1aaa8103b60a12a.js",c,"static/chunks/pages/artikel/[title]-21692cb9aad88be1.js"],"/home":["static/chunks/pages/home-1f3788bd1d56e165.js"],"/keunggulan":[s,a,c,"static/chunks/pages/keunggulan-f751ada7ae06f620.js"],"/merchant":[s,a,c,"static/chunks/pages/merchant-76f12f268e977132.js"],"/privacy-policy":[s,a,t,c,"static/chunks/pages/privacy-policy-b7fd95594f9e5ab6.js"],"/produk":[s,a,c,"static/chunks/pages/produk-64df6a78a361b9c4.js"],"/qris":[s,a,c,
+self.__SSG_MANIFEST=new Set(["\u002Fartikel\u002F[title]"]);self.__SSG_MANIFEST_CB&&self.__SSG_MANIFEST_CB()
+-- apa yang sudah ada di cermin kita --
+/var/www/wecash/hestia-jalur-1793005496.txt
+/var/www/wecash/hestia-jalur-uji.txt
+/var/www/wecash/index.html
+--- jumlah berkas ---
+3
+]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/Hestia
+Saving session...
+...copying shared history...
+...saving history...truncating history files...
+...completed.

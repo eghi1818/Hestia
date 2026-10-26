@@ -1,0 +1,329 @@
+===== A. SEBELUM - URL yang jadi soal =====
+--- https://wecash.ai/tentang/profile/
+status=200 panjang=29339 lokasi=
+HTTP/2 200 
+content-type: text/html; charset=utf-8
+cf-cache-status: DYNAMIC
+server: cloudflare
+sha256 9592db89cdd30ef4
+judul: <title>Profile -  Wecash</title>
+--- https://wecash.ai/tentang/profile
+status=308 panjang=17 lokasi=https://wecash.ai/tentang/profile/
+HTTP/2 308 
+location: /tentang/profile/
+cf-cache-status: DYNAMIC
+server: cloudflare
+sha256 480e9abad2f4e68b
+judul: 
+--- https://wecash.ai/tentang/
+status=404 panjang=22625 lokasi=
+HTTP/2 404 
+content-type: text/html; charset=utf-8
+cf-cache-status: DYNAMIC
+server: cloudflare
+sha256 1d9e7775c08b0e23
+judul: <title>Wecash</title>
+--- https://wecash.ai/jalur-tidak-ada-xyz-123
+status=308 panjang=25 lokasi=https://wecash.ai/jalur-tidak-ada-xyz-123/
+HTTP/2 308 
+location: /jalur-tidak-ada-xyz-123/
+cf-cache-status: DYNAMIC
+server: cloudflare
+sha256 92fc91dea65ea028
+judul: 
+--- apakah /tentang/profile/ = halaman 404 target? ---
+BERBEDA -> ada halaman tersendiri
+
+===== B. DAFTAR RUTE UTUH + pintu mesin pencari =====
+/robots.txt status=200 panjang=1248
+# As a condition of accessing this website, you agree to abide by the following
+# content signals:
+
+# (a)  If a content-signal = yes, you may collect content for the corresponding
+#      use.
+# (b)  If a content-signal = no, you may not collect content for the
+#      corresponding use.
+# (c)  If the
+/sitemap.xml status=404 panjang=22625
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><title>Wecash</title><meta name="description" content="Wecash landing page"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="next-head-count" content="4"/><link rel="preconnect" href="https://fonts.googleapi
+/sitemap_index.xml status=404 panjang=22625
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><title>Wecash</title><meta name="description" content="Wecash landing page"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="next-head-count" content="4"/><link rel="preconnect" href="https://fonts.googleapi
+RUTE di manifes: 15
+   /
+   /401
+   /404
+   /500
+   /_app
+   /_error
+   /artikel/[title]
+   /home
+   /keunggulan
+   /merchant
+   /privacy-policy
+   /produk
+   /qris
+   /tentang/profile
+   /terms-and-conditions
+TAUTAN di beranda: 16
+   /
+   /_next/static/css/a697c4f1186e3e1c.css
+   /cdn-cgi/l/email-protection#fa898f8a8a95888eba8d9f999b8992d49b93
+   /favicon.ico
+   /images/apple-touch-icon.png
+   /privacy-policy/
+   /qris/
+   /terms-and-conditions/
+   https://facebook.com/wecash.official
+   https://fonts.googleapis.com
+   https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap
+   https://fonts.gstatic.com
+   https://twitter.com
+   https://www.instagram.com
+   https://www.linkedin.com
+   tel:+6285640440486
+
+===== C. KEPALA aset statis - siapa yang mengantar =====
+--- /
+HTTP/2 200 
+date: Mon, 26 Oct 2026 09:19:14 GMT
+content-type: text/html; charset=utf-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=2R1Ht%2FmYrnrxtuJeZ3tWNwXi07xyjTDdnUdNyJqnpbjo8FTDnJdYxV7kNs9JP%2F7oAzrGkFEHSWl5n9tak8IGajiZvv6TUZtA%2B%2B8u9xQig5EfwWMv0UL5VVeWDwc%3D"}]}
+vary: Accept-Encoding
+x-powered-by: Next.js
+cf-cache-status: DYNAMIC
+server: cloudflare
+cf-ray: a50860d4e81711c1-MRS
+alt-svc: h3=":443"; ma=86400
+
+--- /favicon.ico
+HTTP/2 200 
+date: Mon, 26 Oct 2026 09:19:15 GMT
+content-type: image/x-icon
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cache-control: public, max-age=14400
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=DUYXCPeJWfe%2BcPb7lY45mIrjg2Vj5pyjEahsOY7Z37xYrZOu0mayX7Lg4ui8y7KXYM6kKo5FxznOoHm0IZcZXYMn6LxotG4dkLz7ikgzjilZfmEM6qDcnzD9Pkc%3D"}]}
+etag: W/"3c2e-19e89d145b0"
+last-modified: Tue, 02 Jun 2026 19:30:54 GMT
+vary: Accept-Encoding
+cf-cache-status: REVALIDATED
+server: cloudflare
+cf-ray: a50860d72a5f68f5-SIN
+alt-svc: h3=":443"; ma=86400
+
+--- /_next/static/fYvk3d2HCCaFDHqB9Hr2n/_buildManifest.js
+HTTP/2 200 
+date: Mon, 26 Oct 2026 09:19:15 GMT
+content-type: application/javascript; charset=UTF-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cache-control: public, max-age=31536000, immutable
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=9plHMmKkZgFprUI2A6jEf0gUSyzAkr%2B4yqydHU6B6%2BBNiZQNul7ONlWiDqBAEAMdWa0d%2BzBgfMoU7rsxO2j0ZUluQHqWPRT3M5zXvG7%2BXoOmuS0O8%2FvNtHvCOAQ%3D"}]}
+etag: W/"651-19e89d59b10"
+last-modified: Tue, 02 Jun 2026 19:35:38 GMT
+vary: Accept-Encoding
+age: 7113
+cf-cache-status: HIT
+server: cloudflare
+cf-ray: a50860da8bf68a03-MRS
+alt-svc: h3=":443"; ma=86400
+
+--- /_next/static/chunks/pages/index-ea96027c59d0b3ce.js
+HTTP/2 200 
+date: Mon, 26 Oct 2026 09:19:16 GMT
+content-type: application/javascript; charset=UTF-8
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cache-control: public, max-age=31536000, immutable
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=wFYrUcfSi9PGOY2brQDLT%2Fl32BkJY4F8hYoiruLntttX%2BldlREcUD%2FWLiFKDf0Ylt1IjEU4DVAaqgSnQcC%2B2t5BLRXDHgf5iri2OQ7%2FxRhQ0ryzmaSDipUAGQzc%3D"}]}
+etag: W/"220b-19e89d59b10"
+last-modified: Tue, 02 Jun 2026 19:35:38 GMT
+vary: Accept-Encoding
+age: 7114
+cf-cache-status: HIT
+server: cloudflare
+cf-ray: a50860ddff7f8473-MRS
+alt-svc: h3=":443"; ma=86400
+
+--- aset sama, cache dibuang ---
+HTTP/2 200 
+content-type: application/javascript; charset=UTF-8
+cache-control: public, max-age=31536000, immutable
+age: 7122
+cf-cache-status: HIT
+server: cloudflare
+cf-ray: a50860dfdce75240-HKG
+
+===== D. SIAPA yang menjawab 404 aset =====
+status=404 panjang=22625
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><title>Wecash</title><meta name="description" content="Wecash landing page"/><meta name="viewport" content="width=device-width, initial-scal
+
+===== E. cermin kita sekarang (dari VPS) =====
+/var/www/wecash/hestia-jalur-1793005496.txt
+/var/www/wecash/hestia-jalur-uji.txt
+/var/www/wecash/index.html
+  jumlah: 3
+===== TUTUP =====
++ dokumen langkah disiapkan lebih awal: docs/steps/S-277.md
+== gate: berkas wajib ==
+  ok      README.md
+  ok      CHANGELOG.md
+  ok      GOAL.md
+  ok      docs/PRD-Authority-Hosting-v1.5.md
+  ok      docs/CONTEXT.md
+  ok      docs/EKSPERIMEN.md
+  ok      docs/ONBOARDING_PROMPT.txt
+  ok      docs/SOP-NEW-CHAT.md
+
+== gate: sterilisasi pada artefak tim ==
+  bersih  README.md
+  bersih  CHANGELOG.md
+  bersih  docs/PRD-Authority-Hosting-v1.5.md
+  bersih  dashboard/README.md
+  bersih  dashboard/aksi.js
+  bersih  dashboard/audit.js
+  bersih  dashboard/detail.js
+  bersih  dashboard/driver.js
+  bersih  dashboard/ekspor.js
+  bersih  dashboard/ikhtisar.js
+  bersih  dashboard/index.html
+  bersih  dashboard/konsol.js
+  bersih  dashboard/konten.js
+  bersih  dashboard/live.js
+  bersih  dashboard/monitor.js
+  bersih  dashboard/recon.js
+  bersih  dashboard/tanam.js
+  bersih  dashboard/tautan.js
+  bersih  app/__init__.py
+  bersih  app/db.py
+  bersih  app/main.py
+
+== gate: integrasi skrip dashboard dengan index.html ==
+  ok      #auditBatas
+  ok      #auditBody
+  ok      #auditCari
+  ok      #auditPeristiwa
+  ok      #backlinkBody
+  ok      #cLevel
+  ok      #cName
+  ok      #cSecret
+  ok      #cTarget
+  ok      #cType
+  ok      #cValid
+  ok      #checkBody
+  ok      #credBody
+  ok      #credRotasi
+  ok      #dPath
+  ok      #dTarget
+  ok      #dTpl
+  ok      #deployBody
+  ok      #detailChecks
+  ok      #detailCredBody
+  ok      #detailHealth
+  ok      #detailKv
+  ok      #detailPageBody
+  ok      #detailTimeline
+  ok      #driverDomain
+  ok      #driverOut
+  ok      #fDomain
+  ok      #fNote
+  ok      #fOwner
+  ok      #fTags
+  ok      #fType
+  ok      #fpKv
+  ok      #ikhtisarBersih
+  ok      #kandBody
+  ok      #kandCari
+  ok      #kandInfo
+  ok      #kandLagi
+  ok      #kandPeriksa
+  ok      #kandStatus
+  ok      #kandTanpaInfra
+  ok      #kandTanpaKosong
+  ok      #konsolAksi
+  ok      #konsolBatal
+  ok      #konsolDomain
+  ok      #konsolExtra
+  ok      #konsolJalankan
+  ok      #konsolLog
+  ok      #konsolPaksa
+  ok      #konsolSegarkan
+  ok      #konsolStatus
+  ok      #kontenBody
+  ok      #kunciBody
+  ok      #kunciLevel
+  ok      #kunciNama
+  ok      #kunciSecret
+  ok      #kunciSegarkan
+  ok      #kunciStatus
+  ok      #kunciTambah
+  ok      #kunciTarget
+  ok      #kunciTipe
+  ok      #latencyList
+  lewat   #liveBadge (dibuat live.js/ikhtisar.js)
+  ok      #monitorAlerts
+  ok      #monitorBody
+  ok      #monitorDomain
+  ok      #monitorOut
+  ok      #navKandCount
+  ok      #opsMetrics
+  ok      #page-dashboard
+  ok      #queueStatus
+  ok      #reconProgress
+  ok      #reconQueue
+  ok      #tanamOut
+  ok      #tanamSandi
+  ok      #tanamSapu
+  ok      #tanamTarget
+  ok      #tanamUser
+  ok      #teknoRingkas
+  total rujukan diperiksa: 78
+
+== gate: dokumen internal (boleh memuat istilah) ==
+  GOAL.md memuat 'parasite': 3 baris
+  docs/CONTEXT.md memuat 'parasite': 7 baris
+  docs/EKSPERIMEN.md memuat 'parasite': 0 baris
+  docs/ONBOARDING_PROMPT.txt memuat 'parasite': 1 baris
+  docs/SOP-NEW-CHAT.md memuat 'parasite': 2 baris
+
+== gate: sintaks python ==
+  ok      app/main.py bisa dikompilasi
+
+== gate: rute api dipakai dashboard ==
+  rute di app/main.py: 47
+  ok      semua rute api ada di app/main.py
+== gate: layanan dashboard (fail-closed) ==
+  ok      tanpa sandi http 401
+  ok      /api/health http 200
+  layanan HIDUP
+== gate: placeholder bukti ==
+  ok      tidak ada placeholder
+== gate: bukti langkah terakhir ==
+  ok      docs/evidence/S-277.txt (S-277)
+== gate: skrip dashboard disajikan ==
+  ok      /aksi.js
+  ok      /audit.js
+  ok      /detail.js
+  ok      /driver.js
+  ok      /ekspor.js
+  ok      /ikhtisar.js
+  ok      /konsol.js
+  ok      /konten.js
+  ok      /live.js
+  ok      /monitor.js
+  ok      /recon.js
+  ok      /tanam.js
+  ok      /tautan.js
+== gate: rute api utama (hidup) ==
+  ok      /api/health -> 200
+  ok      /api/targets -> 200
+  ok      /api/teknologi-ringkas -> 200
+  ok      /api/status/ringkas -> 200
+  ok      /api/audit -> 200
+  ok      /api/driver/rules?domain=waspadaweb.com -> 200
+  ok      /api/driver/plan?domain=waspadaweb.com -> 200
+== gate: dokumen spec ==
+  ok      docs/LANDASAN.md
+  ok      docs/PROLOG-HESTIA-DASHBOARD.md
+  ok      docs/GOAL-Hestia-SEO.md
+  ok      docs/SKILL-AGENT-HESTIA.md
+  ok      docs/PROMPT-TAMBAHAN-AGENT-DASHBOARD.md
+GATE: LULUS

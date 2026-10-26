@@ -1,0 +1,41 @@
+BLOK: S-272 - ulang uji ingress lokal cloudflared (urutan flag benar)
+JALUR: J8 (DNS/tunnel)
+BUKTI: ExecStart benar, ingress efektif, waspadaweb 200
+== 0. keadaan sekarang (harus aktif & 200) ==
+active
+9:ExecStart=/usr/bin/cloudflared --no-autoupdate tunnel run --token-file /etc/cloudflared/token
+waspadaweb: 200
+== 1. tulis config + unit (--config SEBELUM tunnel run) ==
+perl: warning: Setting locale failed.
+perl: warning: Please check that your locale settings:
+	LANGUAGE = (unset),
+	LC_ALL = (unset),
+	LC_CTYPE = "UTF-8",
+	LANG = "en_US.UTF-8"
+    are supported and installed on your system.
+perl: warning: Falling back to a fallback locale ("en_US.UTF-8").
+9:ExecStart=/usr/bin/cloudflared --no-autoupdate --config /etc/cloudflared/config.yml tunnel run --token-file /etc/cloudflared/token
+== 2. restart + cek ingress EFEKTIF ==
+active
+== 3. waspadaweb harus tetap 200 ==
+waspadaweb: 200
+<title>Home -  Wecash
+== 4. log: apakah ingress lokal dipakai atau remote menang ==
+== 5. apakah login punya opsi port callback ==
+NAME:
+   cloudflared tunnel login - Generate a configuration file with your login details
+
+USAGE:
+   cloudflared tunnel login [command options]  
+
+OPTIONS:
+   --loginURL value     The URL used to login (default is https://dash.cloudflare.com/argotunnel) (default: "https://dash.cloudflare.com/argotunnel")
+   --callbackURL value  The URL used for the callback (default is https://login.cloudflareaccess.org/) (default: "https://login.cloudflareaccess.org/")
+   --fedramp, -f        Login with FedRAMP High environment. (default: false)
+   --help, -h           show help (default: false)
+   
+]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/Hestia]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/Hestia
+Saving session...
+...copying shared history...
+...saving history...truncating history files...
+...completed.
