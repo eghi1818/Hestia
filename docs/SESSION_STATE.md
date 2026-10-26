@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 07:34.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 07:38.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 5296929 S-233 F-12: label dari docs/CHAT.md, GANTI berulang aman
-branch: main | kotor: D docs/steps/S-233.md
-rute app/main.py: 75 | berkas bukti: 128 | dokumen langkah: 195
+HEAD: 5db3463 S-234 F-13: ekspor bukti siap pihak ketiga (2 vantage + MANIFEST sha256)
+branch: main | kotor: D docs/steps/S-234.md
+rute app/main.py: 75 | berkas bukti: 129 | dokumen langkah: 195
 
 ## 12 commit terakhir
 
 ```
+5db3463 S-234 F-13: ekspor bukti siap pihak ketiga (2 vantage + MANIFEST sha256)
+85494f0 S-233 F-12: label dari docs/CHAT.md, GANTI berulang aman [jejak]
 5296929 S-233 F-12: label dari docs/CHAT.md, GANTI berulang aman
 a007bf2 S-232 F-11: label chat dari sumbernya, GANTI pada jalur dalam [jejak]
 94d4139 S-232 F-11: label chat dari sumbernya, GANTI pada jalur dalam
@@ -20,8 +22,6 @@ fb532f8 S-230: folder resume dilengkapi, label chat V1.2, status K1+K2 terbukti
 32dc9d4 S-229 F-9b: layanan dinyalakan, dasar rollback eksplisit, handover lengkap [jejak]
 34bb42f S-229 F-9b: layanan dinyalakan, dasar rollback eksplisit, handover lengkap
 7611e62 S-227 F-8b: perbaiki pencatatan ganti dan rollback, GANTI terbukti [jejak]
-5b16bb2 S-227 F-8b: perbaiki pencatatan ganti dan rollback, GANTI terbukti
-eb8e852 S-226 F-8: GANTI konten donor ke halaman waspadaweb dengan penanda [jejak]
 ```
 
 ## SISA KERJA
