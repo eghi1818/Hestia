@@ -1,16 +1,18 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 12:26.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 12:29.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 2fdc11b S-250 F-17n: jalur luar https://waspadaweb.com/hestia/ terbukti 401, layanan lokal dihidupkan (membawa S-247..S-249)
-branch: main | kotor: M docs/evidence/S-250.txt
- D docs/steps/S-250.md
-rute app/main.py: 75 | berkas bukti: 145 | dokumen langkah: 224
+HEAD: d3a56da S-251 F-14: pemantauan berkala di VPS via systemd timer 30 menit + rapikan sisa berkas
+branch: main | kotor: M docs/evidence/S-251.txt
+ D docs/steps/S-251.md
+rute app/main.py: 75 | berkas bukti: 146 | dokumen langkah: 224
 
 ## 12 commit terakhir
 
 ```
+d3a56da S-251 F-14: pemantauan berkala di VPS via systemd timer 30 menit + rapikan sisa berkas
+7ebf2d0 S-250 F-17n: jalur luar https://waspadaweb.com/hestia/ terbukti 401, layanan lokal dihidupkan (membawa S-247..S-249) [jejak]
 2fdc11b S-250 F-17n: jalur luar https://waspadaweb.com/hestia/ terbukti 401, layanan lokal dihidupkan (membawa S-247..S-249)
 e29ad93 S-246 F-17j: baca ingress tunnel cloudflared, siapkan hostname dashboard [jejak]
 9f9b826 S-246 F-17j: baca ingress tunnel cloudflared, siapkan hostname dashboard
@@ -21,8 +23,6 @@ aec8107 S-244 F-17h: sidik jari penghadang luar :80, VPS terbukti di belakang NA
 ddbec89 S-243 F-17g: nginx host memakai vhost default Hestia di :80 [jejak]
 beb6558 S-243 F-17g: nginx host memakai vhost default Hestia di :80
 4eee90d S-242 F-17f: lacak pemilik port 80, terapkan vhost di nginx yang benar [jejak]
-43a99aa S-242 F-17f: lacak pemilik port 80, terapkan vhost di nginx yang benar
-dfd020b S-241 F-17e: perbaiki akses luar dashboard VPS (vhost aktif) [jejak]
 ```
 
 ## SISA KERJA
