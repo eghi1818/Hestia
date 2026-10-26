@@ -1,0 +1,10 @@
+BLOK: S-242 / F-17f - lacak pemilik port 80 dan terapkan vhost di nginx yang benar
+STATUS: (lihat keluaran)
+JALUR: J5
+BUKTI: pemilik :80 di host dan container, daftar sites-enabled container, status dari container dan dari laptop
+SNAPSHOT: /etc/nginx/sites-available/default.orig di host dan di container
+ROLLBACK: kembalikan default.orig di sisi yang diubah lalu reload nginx sisi itu
+IDEMPOTEN: vhost ditulis ulang; salinan asli hanya dibuat sekali
+YANG GAGAL: vhost di nginx HOST sudah benar (dari VPS 401/200) tetapi permintaan dari luar 404, sehingga ada nginx lain yang memegang antarmuka publik
+
+Catatan: gejala dua vantage berbeda (dalam 401, luar 404) menandakan dua instance nginx.
