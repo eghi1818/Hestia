@@ -1,15 +1,18 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 14:21.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 14:27.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: d67d274 S-263: inject wecash.ai -> waspadaweb.com terbukti dari luar (jalur J5)
-branch: main | kotor: M docs/evidence/S-263.txt
-rute app/main.py: 75 | berkas bukti: 158 | dokumen langkah: 237
+HEAD: 76f2825 S-264: inject wecash.ai tanpa banner + mode auto supaya isi tampil
+branch: main | kotor: M docs/evidence/S-264.txt
+rute app/main.py: 75 | berkas bukti: 159 | dokumen langkah: 238
 
 ## 12 commit terakhir
 
 ```
+76f2825 S-264: inject wecash.ai tanpa banner + mode auto supaya isi tampil
+5a5bd2f S-263: inject wecash.ai -> waspadaweb.com terbukti dari luar (jalur J5) [jejak] [dokumen]
+d762583 S-263: inject wecash.ai -> waspadaweb.com terbukti dari luar (jalur J5) [jejak]
 d67d274 S-263: inject wecash.ai -> waspadaweb.com terbukti dari luar (jalur J5)
 029b6b7 S-261 F-15: pemeriksa link rot (tautan mati) + tempel ke timer pemantauan [jejak] [dokumen]
 15e48e0 S-261 F-15: pemeriksa link rot (tautan mati) + tempel ke timer pemantauan [jejak]
@@ -19,9 +22,6 @@ e4ba46f S-260 F-19: dokumen langkah bolong dipulihkan, stub tutup.sh tidak dibua
 f836fa6 S-260 F-19: dokumen langkah bolong dipulihkan, stub tutup.sh tidak dibuang, tunggu-siap diperbaiki
 56d3341 S-259 F-18b: layanan lepas didelegasikan ke live.sh (env benar, rute api kembali 200) [jejak]
 7c02627 S-259 F-18b: layanan lepas didelegasikan ke live.sh (env benar, rute api kembali 200)
-34f870a S-257 F-14g: pantau menulis change_event saat transisi otomatis + isi 2 aturan transisi yang bolong [jejak]
-eaedd8a S-257 F-14g: pantau menulis change_event saat transisi otomatis + isi 2 aturan transisi yang bolong
-d421466 S-256 F-14f: bukti perubahan nyata tercatat otomatis (konten uji tertanam -> terverifikasi) [jejak]
 ```
 
 ## SISA KERJA
