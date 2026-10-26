@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 07:42.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 07:45.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: bfdfa3d S-235: perbandingan vantage dinormalisasi, status otomatis di folder resume
-branch: main | kotor: M docs/steps/S-235.md
-rute app/main.py: 75 | berkas bukti: 130 | dokumen langkah: 197
+HEAD: 8b089bb S-236: dokumen langkah hilang dibuat ulang, kriteria bukti ekspor diperbaiki
+branch: main | kotor: M docs/steps/S-236.md
+rute app/main.py: 75 | berkas bukti: 131 | dokumen langkah: 211
 
 ## 12 commit terakhir
 
 ```
+8b089bb S-236: dokumen langkah hilang dibuat ulang, kriteria bukti ekspor diperbaiki
+8ea9461 S-235: perbandingan vantage dinormalisasi, status otomatis di folder resume [jejak]
 bfdfa3d S-235: perbandingan vantage dinormalisasi, status otomatis di folder resume
 e06344c S-234 F-13: ekspor bukti siap pihak ketiga (2 vantage + MANIFEST sha256) [jejak]
 5db3463 S-234 F-13: ekspor bukti siap pihak ketiga (2 vantage + MANIFEST sha256)
@@ -20,8 +22,6 @@ a007bf2 S-232 F-11: label chat dari sumbernya, GANTI pada jalur dalam [jejak]
 dfe599e S-231 F-10: label chat V1.2, kombinasi GANTI lalu BUNUH pada satu halaman [jejak]
 c74db14 S-231 F-10: label chat V1.2, kombinasi GANTI lalu BUNUH pada satu halaman
 a08cc54 S-230: folder resume dilengkapi, label chat V1.2, status K1+K2 terbukti [jejak]
-fb532f8 S-230: folder resume dilengkapi, label chat V1.2, status K1+K2 terbukti
-32dc9d4 S-229 F-9b: layanan dinyalakan, dasar rollback eksplisit, handover lengkap [jejak]
 ```
 
 ## SISA KERJA
