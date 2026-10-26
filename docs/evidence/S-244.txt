@@ -1,0 +1,107 @@
+== status jejak lokal ==
+S-95.md
+S-96.md
+S-97.md
+S-98.md
+S-99.md
+arsip
+-- SESSION_STATE --
+# SESSION STATE - Hestia
+
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 11:14.
+JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
+
+HEAD: beb6558 S-243 F-17g: nginx host memakai vhost default Hestia di :80
+
+== 0A. badan 404 dari luar (buktikan ini Go, bukan nginx) ==
+404 page not found
+== 0B. status per Host yang dikirim ke IP publik ==
+  Host: 93.127.133.160 -> 404
+  Host: waspadaweb.com -> 404
+  Host: localhost -> 404
+  Host: hestia.waspadaweb.com -> 404
+== 0C. header mentah Host waspadaweb.com ==
+HTTP/1.1 404 Not Found
+Content-Type: text/plain; charset=utf-8
+X-Content-Type-Options: nosniff
+Date: Mon, 26 Oct 2026 04:20:12 GMT
+Content-Length: 19
+
+== 0D. DNS waspadaweb.com ==
+172.67.154.247
+104.21.6.57
+== 0E. port publik: mana yang tembus ==
+  :80 -> 404
+  :8080 -> 000
+000
+  :8081 -> 000
+000
+  :8000 -> 000
+000
+  :8888 -> 000
+000
+  :8791 -> 000
+000
+  :10080 -> 000
+000
+  :10022 -> 000
+000
+  :10053 -> 000
+000
+  :443 https -> 404
+== 0F. jalur jaringan ==
+ 1  10.5.0.1  258.423 ms  39.631 ms  15.530 ms
+ 2  187.40.232.3  7.601 ms  7.340 ms  7.424 ms
+ 3  124.6.48.72  12.434 ms  32.073 ms
+    180.240.181.89  51.564 ms
+ 4  180.240.204.64  31.775 ms  9.045 ms  35.065 ms
+ 5  116.51.23.65  61.914 ms  27.926 ms *
+ 6  * * *
+ 7  * * *
+ 8  * * *
+
+== 1A. siapa saja yang pernah bicara ke nginx kita (selain 127.0.0.1) ==
+  (kosong)
+
+== 1B. tetangga LAN (ARP) ==
+10.5.219.96 dev lxdbr0 lladdr 00:16:3e:b6:d4:0d STALE 
+192.168.122.1 dev enp16s0 lladdr 52:54:00:52:17:e6 REACHABLE 
+fd42:6ec7:5e48:a14e:216:3eff:feb6:d40d dev lxdbr0 lladdr 00:16:3e:b6:d4:0d STALE 
+fe80::bae6:1bff:fe48:b30c dev enp16s0 lladdr b8:e6:1b:48:b3:0c STALE 
+fe80::216:3eff:feb6:d40d dev lxdbr0 lladdr 00:16:3e:b6:d4:0d STALE 
+fe80::fc09:ecff:fed5:6b73 dev enp16s0 lladdr fe:09:ec:d5:6b:73 STALE 
+fe80::ded4:66ff:fe10:236c dev enp16s0 lladdr dc:d4:66:10:23:6c STALE 
+fe80::a038:2dff:fe2d:19d2 dev enp16s0 lladdr a2:38:2d:2d:19:d2 STALE 
+fe80::f6cb:60ff:fedf:222c dev enp16s0 lladdr f4:cb:60:df:22:2c STALE 
+fe80::216:3eff:fe9e:c19f dev lxdbr0 lladdr 00:16:3e:9e:c1:9f router STALE 
+fe80::7a88:6dff:fe6f:2a8 dev enp16s0 lladdr 78:88:6d:6f:02:a8 STALE 
+fe80::b2b2:64ff:feb1:17e6 dev enp16s0 lladdr b0:b2:64:b1:17:e6 STALE 
+fe80::d849:a5ff:fee7:2f67 dev enp16s0 lladdr da:49:a5:e7:2f:67 STALE 
+fe80::a809:54ff:fed4:c6c9 dev enp16s0 lladdr aa:09:54:d4:c6:c9 STALE 
+fe80::c4ae:7fff:fe5c:b2ec dev enp16s0 lladdr c6:ae:7f:5c:b2:ec STALE 
+fe80::f4c2:daff:feb3:324 dev enp16s0 lladdr f6:c2:da:b3:03:24 STALE 
+fe80::b23c:5fff:feac:7fe1 dev enp16s0 lladdr b0:3c:5f:ac:7f:e1 STALE 
+
+== 1C. gateway 192.168.122.1: diakah pembalas 404 Go itu? ==
+  / -> 000
+000
+  Host waspadaweb.com -> 000
+000
+
+== 1D. daftar kontainer lxd ==
++------+---------+--------------------+-----------------------------------------------+-----------+-----------+
+| NAME |  STATE  |        IPV4        |                     IPV6                      |   TYPE    | SNAPSHOTS |
++------+---------+--------------------+-----------------------------------------------+-----------+-----------+
+| hx   | RUNNING | 10.5.219.96 (eth0) | fd42:6ec7:5e48:a14e:216:3eff:feb6:d40d (eth0) | CONTAINER | 0         |
++------+---------+--------------------+-----------------------------------------------+-----------+-----------+
+
+== 1E. proses penghadang yang mungkin jalan di host ==
+root      461323  0.0  0.0  12084  3488 ?        Ss   Oct24   0:00 nginx: master process /usr/sbin/nginx -g daemon on; master_process on;
+www-data  549343  0.0  0.1  13436  4512 ?        S    04:14   0:00 nginx: worker process
+www-data  549344  0.0  0.1  13436  5024 ?        S    04:14   0:00 nginx: worker process
+
+== 1F. sapuan LAN :80 (cari pembalas 404 Go) ==
+  192.168.122.31 -> 401
+
+== 1G. sapuan LAN :8787 dan :8791 ==
+  192.168.122.31:8791 -> 401
