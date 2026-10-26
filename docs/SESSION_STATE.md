@@ -1,15 +1,18 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 17:10.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 17:31.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: b0d5e48 S-282 F-0: tanggal mnemonic, CT certspotter, partner+merchant, isi REA, sisir ulang dengan status, tee ke luar repo
+HEAD: e4015aa S-283 F-0: parser href benar, sumber IP baru, certspotter per-sertifikat, uji cPanel pada wecash.ai, sisir ulang dengan SNI benar
 branch: main | kotor: (bersih)
-rute app/main.py: 75 | berkas bukti: 176 | dokumen langkah: 248
+rute app/main.py: 75 | berkas bukti: 177 | dokumen langkah: 249
 
 ## 12 commit terakhir
 
 ```
+e4015aa S-283 F-0: parser href benar, sumber IP baru, certspotter per-sertifikat, uji cPanel pada wecash.ai, sisir ulang dengan SNI benar
+d7faa54 S-282 F-0: tanggal mnemonic, CT certspotter, partner+merchant, isi REA, sisir ulang dengan status, tee ke luar repo [jejak] [dokumen]
+a7b35cb S-282 F-0: tanggal mnemonic, CT certspotter, partner+merchant, isi REA, sisir ulang dengan status, tee ke luar repo [jejak]
 b0d5e48 S-282 F-0: tanggal mnemonic, CT certspotter, partner+merchant, isi REA, sisir ulang dengan status, tee ke luar repo
 7fdb735 S-281 F-0: mnemonic bertanggal, sisir nama tak-diproksikan, panel cPanel lewat Cloudflare, Location ALB utuh, jejak REA, sisir 3.64.0.0/16 [jejak] [dokumen]
 c884791 S-281 F-0: mnemonic bertanggal, sisir nama tak-diproksikan, panel cPanel lewat Cloudflare, Location ALB utuh, jejak REA, sisir 3.64.0.0/16 [jejak]
@@ -19,9 +22,6 @@ cf53e96 S-280 F-0: baseline pokok soal, kejar api.wecash.ai (LiteSpeed/cPanel), 
 1faabf7 S-280 F-0: baseline pokok soal, kejar api.wecash.ai (LiteSpeed/cPanel), meta DNS, riwayat bertanggal, kontrol ALB, gate_misi
 03a74d9 S-279 F-0: paksa alamat asal wecash.ai - passive DNS bertanggal, crt.sh, sameip, PTR+TLS+port dua IP kandidat, matriks Host ke ALB [jejak] [dokumen]
 8b4d7f7 S-279 F-0: paksa alamat asal wecash.ai - passive DNS bertanggal, crt.sh, sameip, PTR+TLS+port dua IP kandidat, matriks Host ke ALB [jejak]
-dba7f03 S-279 F-0: paksa alamat asal wecash.ai - passive DNS bertanggal, crt.sh, sameip, PTR+TLS+port dua IP kandidat, matriks Host ke ALB
-fe4e79c S-278 F-0: kenali asal wecash.ai - sidik jari penyedia, subdomain tak diproksikan, riwayat DNS, probe asal langsung [jejak] [dokumen]
-264370b S-278 F-0: kenali asal wecash.ai - sidik jari penyedia, subdomain tak diproksikan, riwayat DNS, probe asal langsung [jejak]
 ```
 
 ## SISA KERJA
