@@ -1,16 +1,16 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 07:27.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 07:28.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: dfe599e S-231 F-10: label chat V1.2, kombinasi GANTI lalu BUNUH pada satu halaman [jejak]
-branch: main | kotor: M tools/handoff_pack.sh
- M tools/siapkan_newchat.sh
-rute app/main.py: 75 | berkas bukti: 126 | dokumen langkah: 195
+HEAD: 94d4139 S-232 F-11: label chat dari sumbernya, GANTI pada jalur dalam
+branch: main | kotor: D docs/steps/S-232.md
+rute app/main.py: 75 | berkas bukti: 127 | dokumen langkah: 195
 
 ## 12 commit terakhir
 
 ```
+94d4139 S-232 F-11: label chat dari sumbernya, GANTI pada jalur dalam
 dfe599e S-231 F-10: label chat V1.2, kombinasi GANTI lalu BUNUH pada satu halaman [jejak]
 c74db14 S-231 F-10: label chat V1.2, kombinasi GANTI lalu BUNUH pada satu halaman
 a08cc54 S-230: folder resume dilengkapi, label chat V1.2, status K1+K2 terbukti [jejak]
@@ -22,7 +22,6 @@ fb532f8 S-230: folder resume dilengkapi, label chat V1.2, status K1+K2 terbukti
 eb8e852 S-226 F-8: GANTI konten donor ke halaman waspadaweb dengan penanda [jejak]
 aafd5c4 S-226 F-8: GANTI konten donor ke halaman waspadaweb dengan penanda
 71d658d S-225 F-7: mesin pengambil donor (M1 AMBIL) [jejak]
-12529e1 S-225 F-7: mesin pengambil donor (M1 AMBIL)
 ```
 
 ## SISA KERJA
