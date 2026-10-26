@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 11:07.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 11:10.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 5b571b9 S-241 F-17e: perbaiki akses luar dashboard VPS (vhost aktif)
-branch: main | kotor: D docs/steps/S-241.md
-rute app/main.py: 75 | berkas bukti: 136 | dokumen langkah: 211
+HEAD: 43a99aa S-242 F-17f: lacak pemilik port 80, terapkan vhost di nginx yang benar
+branch: main | kotor: D docs/steps/S-242.md
+rute app/main.py: 75 | berkas bukti: 137 | dokumen langkah: 211
 
 ## 12 commit terakhir
 
 ```
+43a99aa S-242 F-17f: lacak pemilik port 80, terapkan vhost di nginx yang benar
+dfd020b S-241 F-17e: perbaiki akses luar dashboard VPS (vhost aktif) [jejak]
 5b571b9 S-241 F-17e: perbaiki akses luar dashboard VPS (vhost aktif)
 8fa0981 S-240 F-17d: dashboard dapat diakses dari luar lewat vhost default [jejak]
 da9fae2 S-240 F-17d: dashboard dapat diakses dari luar lewat vhost default
@@ -20,8 +22,6 @@ da9fae2 S-240 F-17d: dashboard dapat diakses dari luar lewat vhost default
 9bfd04b S-237 F-17a: artefak deploy VPS (systemd, vhost 8791, pasang.sh, README) [jejak]
 63bbbec S-237 F-17a: artefak deploy VPS (systemd, vhost 8791, pasang.sh, README)
 7a7dc2d S-236: dokumen langkah hilang dibuat ulang, kriteria bukti ekspor diperbaiki [jejak]
-8b089bb S-236: dokumen langkah hilang dibuat ulang, kriteria bukti ekspor diperbaiki
-8ea9461 S-235: perbandingan vantage dinormalisasi, status otomatis di folder resume [jejak]
 ```
 
 ## SISA KERJA
