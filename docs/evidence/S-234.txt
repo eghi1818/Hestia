@@ -1,0 +1,10 @@
+BLOK: S-234 / F-13 (Fase 4, M4 BUKTI) - ekspor bukti siap pihak ketiga
+STATUS: (lihat keluaran)
+JALUR: J5
+BUKTI: bundel berisi meta.json, header + sha256 badan dari 2 vantage, cuplikan DB, MANIFEST berisi sha256 tiap berkas, dan sha256 bundel
+SNAPSHOT: data/bukti/<slug>-<cap>/ (bundel utuh)
+ROLLBACK: hapus direktori bundel
+IDEMPOTEN: nama bundel memakai cap waktu
+YANG GAGAL: dicatat apa adanya
+
+Tujuan: bukti GANTI/BUNUH bisa dibawa keluar dan diverifikasi orang lain tanpa akses ke DB.
