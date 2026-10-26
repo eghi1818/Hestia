@@ -1,0 +1,289 @@
+BLOK: S-255 / F-14e - aturan transisi, skema konten, lebarkan sapuan pantau
+STATUS: (lihat keluaran)
+JALUR: J5
+BUKTI: kode PETA/ambil_daftar, isi transisi_status, skema dan isi konten, status_konten, log pantau setelah sapuan luas
+SNAPSHOT: tools/pantau.sh versi lama ada di git
+ROLLBACK: git checkout -- tools/pantau.sh && kirim ulang ke VPS
+IDEMPOTEN: ya
+YANG GAGAL: (lihat keluaran)
+== S-255 / F-14e ==
+-- 0. sisa kotor --
+ M docs/evidence/S-254.txt
+?? docs/evidence/S-255.txt
+-- 1. kode penentu (PETA, TIDAK_PASTI, ambil_daftar) --
+14:PETA = {"tidak_ada": "kedaluwarsa", "nyata": "terverifikasi"}
+15:TIDAK_PASTI = ("blokir", "tantangan", "tidak_dapat_disimpulkan")
+224:        tujuan = PETA.get(kls)
+226:        if kls in TIDAK_PASTI:
+def pilih(kol, *kandidat):
+    for k in kandidat:
+        if k in kol:
+            return k
+    return None
+
+
+def aturan(c):
+    """Baca lewat NAMA kolom, bukan urutan - kolom id di depan pernah bikin bug senyap."""
+    kol = kolom(c, "transisi_status")
+    d = pilih(kol, "dari", "dari_status", "status_dari")
+    k = pilih(kol, "ke", "ke_status", "status_ke", "tujuan")
+    i = pilih(kol, "izin", "mode", "tipe")
+    assert d and k and i, ("kolom transisi_status tak dikenali", kol)
+    return {(a, b): z for a, b, z in c.execute(
+        "select %s,%s,%s from transisi_status" % (d, k, i))}
+
+
+def ambil_daftar(c, domain, batas):
+    kk = kolom(c, "konten")
+    k_url = pilih(kk, "url", "tautan", "alamat")
+    k_id = pilih(kk, "id", "konten_id")
+    k_peran = pilih(kk, "peran")
+    if not k_url or not k_id:
+        return []
+    sql = "select %s, %s from konten" % (k_id, k_url)
+    if k_peran:
+        sql += " where %s='tanam'" % k_peran
+    if domain:
+        sql += (" and " if k_peran else " where ") + "%s like ?" % k_url
+        baris = c.execute(sql + " limit ?", ("%" + domain + "%", batas)).fetchall()
+    else:
+        baris = c.execute(sql + " limit ?", (batas,)).fetchall()
+    return baris
+
+
+def tautkan_bukti(c, kid, bid):
+-- 2. lebarkan sapuan di pantau.sh --
+  diubah
+11:  if [ -f tools/status_periksa.py ]; then
+12:    timeout 900 "$PY" tools/status_periksa.py --batas 500 --jeda 0.2 --terapkan > "$OUT" 2>&1
+16:    echo "  tools/status_periksa.py tidak ada"
+  sintaks ok
+  terkirim
+-- 3. VPS: aturan, skema, lalu jalankan sapuan luas --
+-- 3A. aturan transisi_status (dari, ke, izin) --
+    ('belum', 'tertanam', 'otomatis', 'unggah terverifikasi')
+    ('tertanam', 'terverifikasi', 'otomatis', 'cek pasca tanam')
+    ('tertanam', 'gagal', 'otomatis', 'unggah gagal')
+    ('terverifikasi', 'ditimpa', 'otomatis', 'blok kita hilang')
+    ('terverifikasi', 'kedaluwarsa', 'otomatis', 'halaman mati di pihak host')
+    ('terverifikasi', 'dicabut', 'manusia', 'kita pensiunkan')
+    ('ditimpa', 'tertanam', 'manusia', 'tanam ulang')
+    ('gagal', 'tertanam', 'manusia', 'coba ulang')
+    ('kedaluwarsa', 'tertanam', 'manusia', 'tanam ulang')
+-- 3B. skema tabel konten --
+    (0, 'id', 'INTEGER', 0, None, 1)
+    (1, 'url', 'TEXT', 0, None, 0)
+    (2, 'target', 'TEXT', 0, None, 0)
+    (3, 'kata_kunci', 'TEXT', 0, None, 0)
+    (4, 'template', 'TEXT', 0, None, 0)
+    (5, 'status_indeks', 'TEXT', 0, None, 0)
+    (6, 'posisi', 'REAL', 0, None, 0)
+    (7, 'peran', 'TEXT', 1, "'tanam'", 0)
+-- 3C. isi konten --
+    {'id': 2, 'url': 'https://semarangkota.go.id/id/news?category=berita', 'target': 'semarangkota.go.id', 'kata_kunci': '', 'template': 'Artikel standar', 'status_indeks': 'menunggu', 'posisi': 0.0, 'peran': 'tanam'}
+    {'id': 3, 'url': 'https://badungkab.go.id/', 'target': 'badungkab.go.id', 'kata_kunci': '', 'template': 'Artikel standar', 'status_indeks': 'menunggu', 'posisi': 0.0, 'peran': 'tanam'}
+    {'id': 4, 'url': 'https://waspadaweb.com/uji-otomatis-404', 'target': 'waspadaweb.com', 'kata_kunci': None, 'template': None, 'status_indeks': 'menunggu', 'posisi': 0.0, 'peran': 'tanam'}
+    {'id': 5, 'url': 'https://waspadaweb.com/uji-usul-404', 'target': 'waspadaweb.com', 'kata_kunci': None, 'template': None, 'status_indeks': 'menunggu', 'posisi': 0.0, 'peran': 'tanam'}
+-- 3D. isi status_konten --
+    {'konten_id': 2, 'status': 'terverifikasi', 'basis': 'bukti', 'bukti_terakhir': 90, 'diperbarui': '2026-10-26 05:45:52'}
+    {'konten_id': 4, 'status': 'kedaluwarsa', 'basis': 'bukti', 'bukti_terakhir': 92, 'diperbarui': '2026-10-26 05:46:19'}
+    {'konten_id': 5, 'status': 'belum', 'basis': 'bukti', 'bukti_terakhir': 93, 'diperbarui': '2026-10-26 05:46:27'}
+-- 3E. hitungan sebelum --
+   change_event 23 | bukti 93
+-- 3F. jalankan lewat systemd (sapuan luas) --
+-- 3G. log pantau 25 baris terakhir --
+      "url": "https://waspadaweb.com/uji-usul-404",
+      "kode": 404,
+      "kelas": "tidak_ada",
+      "aksi": "usul",
+      "bukti": 97
+    }
+  ],
+  "dorong": [],
+  "usul": [
+    {
+      "konten_id": 5,
+      "url": "https://waspadaweb.com/uji-usul-404",
+      "dari": "belum",
+      "ke": "kedaluwarsa"
+    }
+  ],
+  "tak_pasti": [
+    {
+      "konten_id": 3,
+      "url": "https://badungkab.go.id/",
+      "kelas": "tidak_dapat_disimpulkan"
+    }
+  ]
+}
+=== 2026-10-26T05:50:47+00:00 selesai
+-- 3H. hitungan sesudah --
+   change_event 23 | bukti 97
+-- 3I. waspadaweb tetap sehat --
+  https://waspadaweb.com/ -> 200
+-- 4. tutup --
++ dokumen langkah disiapkan lebih awal: docs/steps/S-255.md
+== gate: berkas wajib ==
+  ok      README.md
+  ok      CHANGELOG.md
+  ok      GOAL.md
+  ok      docs/PRD-Authority-Hosting-v1.5.md
+  ok      docs/CONTEXT.md
+  ok      docs/EKSPERIMEN.md
+  ok      docs/ONBOARDING_PROMPT.txt
+  ok      docs/SOP-NEW-CHAT.md
+
+== gate: sterilisasi pada artefak tim ==
+  bersih  README.md
+  bersih  CHANGELOG.md
+  bersih  docs/PRD-Authority-Hosting-v1.5.md
+  bersih  dashboard/README.md
+  bersih  dashboard/aksi.js
+  bersih  dashboard/audit.js
+  bersih  dashboard/detail.js
+  bersih  dashboard/driver.js
+  bersih  dashboard/ekspor.js
+  bersih  dashboard/ikhtisar.js
+  bersih  dashboard/index.html
+  bersih  dashboard/konsol.js
+  bersih  dashboard/konten.js
+  bersih  dashboard/live.js
+  bersih  dashboard/monitor.js
+  bersih  dashboard/recon.js
+  bersih  dashboard/tanam.js
+  bersih  dashboard/tautan.js
+  bersih  app/__init__.py
+  bersih  app/db.py
+  bersih  app/main.py
+
+== gate: integrasi skrip dashboard dengan index.html ==
+  ok      #auditBatas
+  ok      #auditBody
+  ok      #auditCari
+  ok      #auditPeristiwa
+  ok      #backlinkBody
+  ok      #cLevel
+  ok      #cName
+  ok      #cSecret
+  ok      #cTarget
+  ok      #cType
+  ok      #cValid
+  ok      #checkBody
+  ok      #credBody
+  ok      #credRotasi
+  ok      #dPath
+  ok      #dTarget
+  ok      #dTpl
+  ok      #deployBody
+  ok      #detailChecks
+  ok      #detailCredBody
+  ok      #detailHealth
+  ok      #detailKv
+  ok      #detailPageBody
+  ok      #detailTimeline
+  ok      #driverDomain
+  ok      #driverOut
+  ok      #fDomain
+  ok      #fNote
+  ok      #fOwner
+  ok      #fTags
+  ok      #fType
+  ok      #fpKv
+  ok      #ikhtisarBersih
+  ok      #kandBody
+  ok      #kandCari
+  ok      #kandInfo
+  ok      #kandLagi
+  ok      #kandPeriksa
+  ok      #kandStatus
+  ok      #kandTanpaInfra
+  ok      #kandTanpaKosong
+  ok      #konsolAksi
+  ok      #konsolBatal
+  ok      #konsolDomain
+  ok      #konsolExtra
+  ok      #konsolJalankan
+  ok      #konsolLog
+  ok      #konsolPaksa
+  ok      #konsolSegarkan
+  ok      #konsolStatus
+  ok      #kontenBody
+  ok      #kunciBody
+  ok      #kunciLevel
+  ok      #kunciNama
+  ok      #kunciSecret
+  ok      #kunciSegarkan
+  ok      #kunciStatus
+  ok      #kunciTambah
+  ok      #kunciTarget
+  ok      #kunciTipe
+  ok      #latencyList
+  lewat   #liveBadge (dibuat live.js/ikhtisar.js)
+  ok      #monitorAlerts
+  ok      #monitorBody
+  ok      #monitorDomain
+  ok      #monitorOut
+  ok      #navKandCount
+  ok      #opsMetrics
+  ok      #page-dashboard
+  ok      #queueStatus
+  ok      #reconProgress
+  ok      #reconQueue
+  ok      #tanamOut
+  ok      #tanamSandi
+  ok      #tanamSapu
+  ok      #tanamTarget
+  ok      #tanamUser
+  ok      #teknoRingkas
+  total rujukan diperiksa: 78
+
+== gate: dokumen internal (boleh memuat istilah) ==
+  GOAL.md memuat 'parasite': 3 baris
+  docs/CONTEXT.md memuat 'parasite': 7 baris
+  docs/EKSPERIMEN.md memuat 'parasite': 0 baris
+  docs/ONBOARDING_PROMPT.txt memuat 'parasite': 1 baris
+  docs/SOP-NEW-CHAT.md memuat 'parasite': 2 baris
+
+== gate: sintaks python ==
+  ok      app/main.py bisa dikompilasi
+
+== gate: rute api dipakai dashboard ==
+  rute di app/main.py: 47
+  ok      semua rute api ada di app/main.py
+== gate: layanan dashboard (fail-closed) ==
+  ok      tanpa sandi http 401
+  ok      /api/health http 200
+  layanan HIDUP
+== gate: placeholder bukti ==
+  ok      tidak ada placeholder
+== gate: bukti langkah terakhir ==
+  ok      docs/evidence/S-255.txt (S-255)
+== gate: skrip dashboard disajikan ==
+  ok      /aksi.js
+  ok      /audit.js
+  ok      /detail.js
+  ok      /driver.js
+  ok      /ekspor.js
+  ok      /ikhtisar.js
+  ok      /konsol.js
+  ok      /konten.js
+  ok      /live.js
+  ok      /monitor.js
+  ok      /recon.js
+  ok      /tanam.js
+  ok      /tautan.js
+== gate: rute api utama (hidup) ==
+  ok      /api/health -> 200
+  ok      /api/targets -> 200
+  ok      /api/teknologi-ringkas -> 200
+  ok      /api/status/ringkas -> 200
+  ok      /api/audit -> 200
+  ok      /api/driver/rules?domain=waspadaweb.com -> 200
+  ok      /api/driver/plan?domain=waspadaweb.com -> 200
+== gate: dokumen spec ==
+  ok      docs/LANDASAN.md
+  ok      docs/PROLOG-HESTIA-DASHBOARD.md
+  ok      docs/GOAL-Hestia-SEO.md
+  ok      docs/SKILL-AGENT-HESTIA.md
+  ok      docs/PROMPT-TAMBAHAN-AGENT-DASHBOARD.md
+GATE: LULUS

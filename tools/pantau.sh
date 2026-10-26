@@ -9,7 +9,7 @@ for c in .venv/bin/python venv/bin/python; do [ -x "$c" ] && PY="$c" && break; d
 {
   echo "=== $(date -Is) mulai (py=$PY)"
   if [ -f tools/status_periksa.py ]; then
-    timeout 900 "$PY" tools/status_periksa.py --terapkan > "$OUT" 2>&1
+    timeout 900 "$PY" tools/status_periksa.py --batas 500 --jeda 0.2 --terapkan > "$OUT" 2>&1
     echo "  rc=$?"
     tail -60 "$OUT"
   else
