@@ -1,16 +1,18 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 12:46.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 12:51.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 23a14f0 S-254 F-14d: pahami logika dorong/usul/kontrol + jalankan pemantauan luas --batas 120 --terapkan
-branch: main | kotor: M docs/evidence/S-254.txt
- D docs/steps/S-254.md
-rute app/main.py: 75 | berkas bukti: 149 | dokumen langkah: 224
+HEAD: 141f860 S-255 F-14e: baca aturan transisi + skema konten, lebarkan sapuan pantau ke --batas 500
+branch: main | kotor: M docs/evidence/S-255.txt
+ D docs/steps/S-255.md
+rute app/main.py: 75 | berkas bukti: 150 | dokumen langkah: 224
 
 ## 12 commit terakhir
 
 ```
+141f860 S-255 F-14e: baca aturan transisi + skema konten, lebarkan sapuan pantau ke --batas 500
+ab2fa05 S-254 F-14d: pahami logika dorong/usul/kontrol + jalankan pemantauan luas --batas 120 --terapkan [jejak]
 23a14f0 S-254 F-14d: pahami logika dorong/usul/kontrol + jalankan pemantauan luas --batas 120 --terapkan
 dbc3313 S-253 F-14c: bukti jalur timer ujung-ke-ujung + kenali opsi --terapkan [jejak]
 480e2fd S-253 F-14c: bukti jalur timer ujung-ke-ujung + kenali opsi --terapkan
@@ -21,8 +23,6 @@ d3a56da S-251 F-14: pemantauan berkala di VPS via systemd timer 30 menit + rapik
 7ebf2d0 S-250 F-17n: jalur luar https://waspadaweb.com/hestia/ terbukti 401, layanan lokal dihidupkan (membawa S-247..S-249) [jejak]
 2fdc11b S-250 F-17n: jalur luar https://waspadaweb.com/hestia/ terbukti 401, layanan lokal dihidupkan (membawa S-247..S-249)
 e29ad93 S-246 F-17j: baca ingress tunnel cloudflared, siapkan hostname dashboard [jejak]
-9f9b826 S-246 F-17j: baca ingress tunnel cloudflared, siapkan hostname dashboard
-effa504 S-245 F-17i: tentukan jalur masuk luar nyata (tunnel Cloudflare vs tepi provider) [jejak]
 ```
 
 ## SISA KERJA
