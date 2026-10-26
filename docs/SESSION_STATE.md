@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-25 21:37.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 07:15.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 34bb42f S-229 F-9b: layanan dinyalakan, dasar rollback eksplisit, handover lengkap
-branch: main | kotor: D docs/steps/S-229.md
-rute app/main.py: 75 | berkas bukti: 124 | dokumen langkah: 193
+HEAD: 32dc9d4 S-229 F-9b: layanan dinyalakan, dasar rollback eksplisit, handover lengkap [jejak]
+branch: main | kotor: M docs/ONBOARDING_PROMPT.txt
+?? docs/steps/S-229.md
+rute app/main.py: 75 | berkas bukti: 124 | dokumen langkah: 194
 
 ## 12 commit terakhir
 
 ```
+32dc9d4 S-229 F-9b: layanan dinyalakan, dasar rollback eksplisit, handover lengkap [jejak]
 34bb42f S-229 F-9b: layanan dinyalakan, dasar rollback eksplisit, handover lengkap
 7611e62 S-227 F-8b: perbaiki pencatatan ganti dan rollback, GANTI terbukti [jejak]
 5b16bb2 S-227 F-8b: perbaiki pencatatan ganti dan rollback, GANTI terbukti
@@ -21,7 +23,6 @@ aafd5c4 S-226 F-8: GANTI konten donor ke halaman waspadaweb dengan penanda
 4f92a12 S-224 F-5/F-6: BUNUH 410 + idempoten dan rollback teruji
 576bd89 S-223 F-4b: reload nginx lewat host, BUNUH 404 terbukti [jejak]
 4b2f840 S-223 F-4b: reload nginx lewat host, BUNUH 404 terbukti
-ed36908 S-222 F-4: BUNUH 404 halaman uji lewat jalur J5, snapshot + rollback [jejak]
 ```
 
 ## SISA KERJA

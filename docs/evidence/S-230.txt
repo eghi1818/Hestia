@@ -1,0 +1,12 @@
+BLOK: S-230 - folder resume dilengkapi, label chat jadi V1.2
+STATUS: (lihat keluaran)
+JALUR: tidak menyentuh jalur
+BUKTI: daftar isi folder, label chat, HEAD, DIRTY
+SNAPSHOT: -
+ROLLBACK: folder resume bisa diregenerasi dengan tools/sync_jejak.py --resume
+IDEMPOTEN: skrip hanya menaikkan label bila "SEO V1.2" belum ada
+YANG GAGAL: -
+
+perubahan: 0-CARA-PAKAI.txt, 10-DAFTAR-BERKAS.txt, dan 9-LANJUTKAN.txt ditulis/diperbarui
+di ~/Desktop/HESTIA-RESUME; label chat dinaikkan ke V1.2 di tools/sync_jejak.py; folder
+resume diregenerasi.

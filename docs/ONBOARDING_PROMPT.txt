@@ -8,7 +8,7 @@ Buktinya penanda. Tanpa penanda, belum selesai.
 STATUS: GOAL BELUM TERCAPAI. M2 GANTI BELUM PERNAH. Mulai dari F-1.
 === AKHIR LANDASAN ===
 
-Chat: SEO V1.1 (lanjutkan dari SESSION_STATE, jangan menebak)
+Chat: SEO V1.2 (lanjutkan dari SESSION_STATE, jangan menebak)
 
 # ONBOARDING PROMPT - HESTIA
 > Sumber tunggal untuk prompt pembuka chat baru.
