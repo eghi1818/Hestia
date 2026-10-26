@@ -1,0 +1,25 @@
+# cermin Hestia
+sumber: https://wecash.ai
+dibuat: 2026-10-26T17:37:20
+halaman: 1
+berkas: 19
+
+_next/image/?url=%2Fassets%2Fimages%2Flanding%2Fheader%2Fpolkadot.png&amp;w=1920&amp;q=75
+_next/image/?url=%2Fassets%2Fimages%2Flanding%2Fheader%2Frect.png&amp;w=1920&amp;q=75
+_next/image/?url=%2Fassets%2Fvideos%2Fwebp%2Fheader2.webp&amp;w=1920&amp;q=75
+_next/static/chunks/250-aee9aa5e16d19e88.js
+_next/static/chunks/664-8af8765c6fed5950.js
+_next/static/chunks/769-9e1ba79a71eeac7a.js
+_next/static/chunks/framework-2c79e2a64abdb08b.js
+_next/static/chunks/main-81fa9cced5cdea31.js
+_next/static/chunks/pages/_app-e75e9954a61875c4.js
+_next/static/chunks/pages/index-ea96027c59d0b3ce.js
+_next/static/chunks/polyfills-c67a75d1b6f99dc8.js
+_next/static/chunks/webpack-bd65c8f53bc5b33a.js
+_next/static/css/a697c4f1186e3e1c.css
+_next/static/fYvk3d2HCCaFDHqB9Hr2n/_buildManifest.js
+_next/static/fYvk3d2HCCaFDHqB9Hr2n/_ssgManifest.js
+favicon.ico
+index.html
+robots.txt
+tentang/profile/index.html

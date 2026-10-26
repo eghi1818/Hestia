@@ -1,0 +1,46 @@
+===== A. BANGUN CERMIN PENUH (lokal) =====
+rute target: 15
+halaman tersimpan: 1 | gagal: [('/401', 'HTTP Error 308: Permanent Redirect'), ('/404', 'HTTP Error 308: Permanent Redirect'), ('/500', 'HTTP Error 308: Permanent Redirect'), ('/_app', 'HTTP Error 308: Permanent Redirect'), ('/_error', 'HTTP Error 308: Permanent Redirect'), ('/artikel/[title]', 'HTTP Error 308: Permanent Redirect'), ('/home', 'HTTP Error 308: Permanent Redirect'), ('/keunggulan', 'HTTP Error 308: Permanent Redirect'), ('/merchant', 'HTTP Error 308: Permanent Redirect'), ('/privacy-policy', 'HTTP Error 308: Permanent Redirect'), ('/produk', 'HTTP Error 308: Permanent Redirect'), ('/qris', 'HTTP Error 308: Permanent Redirect'), ('/tentang/profile', 'HTTP Error 308: Permanent Redirect'), ('/terms-and-conditions', 'HTTP Error 308: Permanent Redirect'), ('/404', 'HTTP Error 308: Permanent Redirect')]
+  aset GAGAL /_next/image/?url=%2Fassets%2Fimages%2Flanding%2Fheader%2Fpolkadot.png&amp;w=750&amp;q=75 1x, /_next/image/?url=%2Fassets%2Fimages%2Flanding%2Fheader%2Fpolkadot.png&amp;w=1920&amp;q=75 2x URL can't contain control characters. '/_next/image/?url=%2Fassets%2Fimages%2Flanding%2Fheader%2Fpolkadot.png&amp;w=750&amp;q=75 1x, /_next/image/?url=%2Fassets%2Fimages%2Flanding%2Fheader%2Fpolkadot.png&amp;w=1920&amp;q=75 2x' (found at least ' ')
+  aset GAGAL /_next/image/?url=%2Fassets%2Fimages%2Flanding%2Fheader%2Frect.png&amp;w=750&amp;q=75 1x, /_next/image/?url=%2Fassets%2Fimages%2Flanding%2Fheader%2Frect.png&amp;w=1920&amp;q=75 2x URL can't contain control characters. '/_next/image/?url=%2Fassets%2Fimages%2Flanding%2Fheader%2Frect.png&amp;w=750&amp;q=75 1x, /_next/image/?url=%2Fassets%2Fimages%2Flanding%2Fheader%2Frect.png&amp;w=1920&amp;q=75 2x' (found at least ' ')
+  aset GAGAL /_next/image/?url=%2Fassets%2Fvideos%2Fwebp%2Fheader2.webp&amp;w=750&amp;q=75 1x, /_next/image/?url=%2Fassets%2Fvideos%2Fwebp%2Fheader2.webp&amp;w=1920&amp;q=75 2x URL can't contain control characters. '/_next/image/?url=%2Fassets%2Fvideos%2Fwebp%2Fheader2.webp&amp;w=750&amp;q=75 1x, /_next/image/?url=%2Fassets%2Fvideos%2Fwebp%2Fheader2.webp&amp;w=1920&amp;q=75 2x' (found at least ' ')
+aset _next: 18 | aset dari css: 0
+  ekstra GAGAL /apple-touch-icon.png HTTP Error 404: Not Found
+  ekstra GAGAL /manifest.json HTTP Error 404: Not Found
+halaman soal DIGANTI - panjang: 613670 donor sha256: 17827c82e2d8
+judul halaman soal: BOSGACOR > Situs Terpopuler Agen Slot Gacor Resmi Gampang Me
+total berkas cermin: 20
+
+===== B. PERIKSA LOKAL =====
+      20
+8.0M	mirror/wecash
+<title>BOSGACOR > Situs Terpopuler Agen Slot Gacor Resmi Gampang Menang Hari Ini</title>
+<title>angle-down</title>
+<title>search</title>
+<title>bars</title>
+hestia-cermin / asli-sha256 ad91f2ff3f15 --
+hestia-cermin /tentang/profile/ donor=https://gacor.net/ donor-sha256 17827c82e2d8 --
+
+===== C. PASANG KE VPS (cadangkan dulu) =====
+berkas terpasang: 20
+total 8
+drwxr-xr-x 2 root root 4096 Oct 26 07:51 .
+drwxr-xr-x 8 root root 4096 Oct 12 08:46 ..
+lrwxrwxrwx 1 root root   34 Oct 12 08:46 default -> /etc/nginx/sites-available/default
+lrwxrwxrwx 1 root root   41 Oct 26 04:14 hestia-default -> /etc/nginx/sites-available/hestia-default
+lrwxrwxrwx 1 root root   41 Oct 26 00:56 hestia-ip.conf -> /etc/nginx/sites-available/hestia-ip.conf
+lrwxrwxrwx 1 root root   38 Oct 26 00:53 hestia.conf -> /etc/nginx/sites-available/hestia.conf
+lrwxrwxrwx 1 root root   41 Oct 12 08:52 waspadaweb.com -> /etc/nginx/sites-available/waspadaweb.com
+lrwxrwxrwx 1 root root   36 Oct 26 07:51 wecash.ai -> /etc/nginx/sites-available/wecash.ai
+
+===== D. BUKTI DARI VPS (Host: wecash.ai) =====
+root=200
+soal=200
+cermin=200
+<title>BOSGACOR > Situs Terpopuler Agen Slot Gacor Resmi Gampang Menang Hari Ini</title>
+hestia-cermin / asli-sha256 ad91f2ff3f15 --
+404=200
+
+===== E. waspadaweb.com masih utuh? =====
+waspadaweb=200
+hestia=401
