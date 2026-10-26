@@ -1,15 +1,18 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 17:31.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 17:38.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: e4015aa S-283 F-0: parser href benar, sumber IP baru, certspotter per-sertifikat, uji cPanel pada wecash.ai, sisir ulang dengan SNI benar
+HEAD: f24109f S-284 F-0: bangun cermin penuh wecash.ai + halaman soal jadi BOSGACOR + penanda + _cermin.txt, pasang ke VPS, bukti dari VPS
 branch: main | kotor: (bersih)
-rute app/main.py: 75 | berkas bukti: 177 | dokumen langkah: 249
+rute app/main.py: 75 | berkas bukti: 178 | dokumen langkah: 250
 
 ## 12 commit terakhir
 
 ```
+f24109f S-284 F-0: bangun cermin penuh wecash.ai + halaman soal jadi BOSGACOR + penanda + _cermin.txt, pasang ke VPS, bukti dari VPS
+608ca6c S-283 F-0: parser href benar, sumber IP baru, certspotter per-sertifikat, uji cPanel pada wecash.ai, sisir ulang dengan SNI benar [jejak] [dokumen]
+8d1f3ca S-283 F-0: parser href benar, sumber IP baru, certspotter per-sertifikat, uji cPanel pada wecash.ai, sisir ulang dengan SNI benar [jejak]
 e4015aa S-283 F-0: parser href benar, sumber IP baru, certspotter per-sertifikat, uji cPanel pada wecash.ai, sisir ulang dengan SNI benar
 d7faa54 S-282 F-0: tanggal mnemonic, CT certspotter, partner+merchant, isi REA, sisir ulang dengan status, tee ke luar repo [jejak] [dokumen]
 a7b35cb S-282 F-0: tanggal mnemonic, CT certspotter, partner+merchant, isi REA, sisir ulang dengan status, tee ke luar repo [jejak]
@@ -19,9 +22,6 @@ c884791 S-281 F-0: mnemonic bertanggal, sisir nama tak-diproksikan, panel cPanel
 e3f9cd5 S-281 F-0: mnemonic bertanggal, sisir nama tak-diproksikan, panel cPanel lewat Cloudflare, Location ALB utuh, jejak REA, sisir 3.64.0.0/16
 e0e1c15 S-280 F-0: baseline pokok soal, kejar api.wecash.ai (LiteSpeed/cPanel), meta DNS, riwayat bertanggal, kontrol ALB, gate_misi [jejak] [dokumen]
 cf53e96 S-280 F-0: baseline pokok soal, kejar api.wecash.ai (LiteSpeed/cPanel), meta DNS, riwayat bertanggal, kontrol ALB, gate_misi [jejak]
-1faabf7 S-280 F-0: baseline pokok soal, kejar api.wecash.ai (LiteSpeed/cPanel), meta DNS, riwayat bertanggal, kontrol ALB, gate_misi
-03a74d9 S-279 F-0: paksa alamat asal wecash.ai - passive DNS bertanggal, crt.sh, sameip, PTR+TLS+port dua IP kandidat, matriks Host ke ALB [jejak] [dokumen]
-8b4d7f7 S-279 F-0: paksa alamat asal wecash.ai - passive DNS bertanggal, crt.sh, sameip, PTR+TLS+port dua IP kandidat, matriks Host ke ALB [jejak]
 ```
 
 ## SISA KERJA
