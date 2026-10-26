@@ -1,15 +1,18 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 16:30.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 16:36.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 5d34b5d S-278 F-0: kenali asal wecash.ai - sidik jari penyedia, subdomain tak diproksikan, riwayat DNS, probe asal langsung
-branch: main | kotor: M docs/evidence/S-278.txt
-rute app/main.py: 75 | berkas bukti: 172 | dokumen langkah: 244
+HEAD: dba7f03 S-279 F-0: paksa alamat asal wecash.ai - passive DNS bertanggal, crt.sh, sameip, PTR+TLS+port dua IP kandidat, matriks Host ke ALB
+branch: main | kotor: M docs/evidence/S-279.txt
+rute app/main.py: 75 | berkas bukti: 173 | dokumen langkah: 245
 
 ## 12 commit terakhir
 
 ```
+dba7f03 S-279 F-0: paksa alamat asal wecash.ai - passive DNS bertanggal, crt.sh, sameip, PTR+TLS+port dua IP kandidat, matriks Host ke ALB
+fe4e79c S-278 F-0: kenali asal wecash.ai - sidik jari penyedia, subdomain tak diproksikan, riwayat DNS, probe asal langsung [jejak] [dokumen]
+264370b S-278 F-0: kenali asal wecash.ai - sidik jari penyedia, subdomain tak diproksikan, riwayat DNS, probe asal langsung [jejak]
 5d34b5d S-278 F-0: kenali asal wecash.ai - sidik jari penyedia, subdomain tak diproksikan, riwayat DNS, probe asal langsung
 0ee09be S-277 F-0: ambil SEBELUM /tentang/profile/, daftar rute utuh, kepala aset untuk sidik jari tempat asal [jejak] [dokumen]
 a850e39 S-277 F-0: ambil SEBELUM /tentang/profile/, daftar rute utuh, kepala aset untuk sidik jari tempat asal [jejak]
@@ -19,9 +22,6 @@ a850e39 S-277 F-0: ambil SEBELUM /tentang/profile/, daftar rute utuh, kepala ase
 6b9f0ce S-268: waspadaweb dikembalikan ke Wecash + vhost wecash.ai disiapkan berisi Gacor
 c05ed28 S-267: base tag dipaksa (aset Gacor tampil) + diagnosa jalur tulis wecash.ai [jejak] [dokumen]
 b6c6439 S-267: base tag dipaksa (aset Gacor tampil) + diagnosa jalur tulis wecash.ai [jejak]
-0da7b16 S-267: base tag dipaksa (aset Gacor tampil) + diagnosa jalur tulis wecash.ai
-6c157e7 S-266: isi halaman inject diganti dari wecash.ai ke gacor.net (base href pakai url final) [jejak] [dokumen]
-0ce48cc S-266: isi halaman inject diganti dari wecash.ai ke gacor.net (base href pakai url final) [jejak]
 ```
 
 ## SISA KERJA
