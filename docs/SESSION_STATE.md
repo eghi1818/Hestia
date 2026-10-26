@@ -1,15 +1,18 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 11:42.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 12:26.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 9f9b826 S-246 F-17j: baca ingress tunnel cloudflared, siapkan hostname dashboard
-branch: main | kotor: D docs/steps/S-246.md
-rute app/main.py: 75 | berkas bukti: 141 | dokumen langkah: 211
+HEAD: 2fdc11b S-250 F-17n: jalur luar https://waspadaweb.com/hestia/ terbukti 401, layanan lokal dihidupkan (membawa S-247..S-249)
+branch: main | kotor: M docs/evidence/S-250.txt
+ D docs/steps/S-250.md
+rute app/main.py: 75 | berkas bukti: 145 | dokumen langkah: 224
 
 ## 12 commit terakhir
 
 ```
+2fdc11b S-250 F-17n: jalur luar https://waspadaweb.com/hestia/ terbukti 401, layanan lokal dihidupkan (membawa S-247..S-249)
+e29ad93 S-246 F-17j: baca ingress tunnel cloudflared, siapkan hostname dashboard [jejak]
 9f9b826 S-246 F-17j: baca ingress tunnel cloudflared, siapkan hostname dashboard
 effa504 S-245 F-17i: tentukan jalur masuk luar nyata (tunnel Cloudflare vs tepi provider) [jejak]
 346ec49 S-245 F-17i: tentukan jalur masuk luar nyata (tunnel Cloudflare vs tepi provider)
@@ -20,8 +23,6 @@ beb6558 S-243 F-17g: nginx host memakai vhost default Hestia di :80
 4eee90d S-242 F-17f: lacak pemilik port 80, terapkan vhost di nginx yang benar [jejak]
 43a99aa S-242 F-17f: lacak pemilik port 80, terapkan vhost di nginx yang benar
 dfd020b S-241 F-17e: perbaiki akses luar dashboard VPS (vhost aktif) [jejak]
-5b571b9 S-241 F-17e: perbaiki akses luar dashboard VPS (vhost aktif)
-8fa0981 S-240 F-17d: dashboard dapat diakses dari luar lewat vhost default [jejak]
 ```
 
 ## SISA KERJA
