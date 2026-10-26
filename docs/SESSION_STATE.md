@@ -1,16 +1,18 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 12:29.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 12:34.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: d3a56da S-251 F-14: pemantauan berkala di VPS via systemd timer 30 menit + rapikan sisa berkas
-branch: main | kotor: M docs/evidence/S-251.txt
- D docs/steps/S-251.md
-rute app/main.py: 75 | berkas bukti: 146 | dokumen langkah: 224
+HEAD: 9ac24f2 S-252 F-14b: pantau.sh menulis nyata (log + --terapkan), izin log dibereskan, bukti hitungan tabel
+branch: main | kotor: M docs/evidence/S-252.txt
+ D docs/steps/S-252.md
+rute app/main.py: 75 | berkas bukti: 147 | dokumen langkah: 224
 
 ## 12 commit terakhir
 
 ```
+9ac24f2 S-252 F-14b: pantau.sh menulis nyata (log + --terapkan), izin log dibereskan, bukti hitungan tabel
+481e096 S-251 F-14: pemantauan berkala di VPS via systemd timer 30 menit + rapikan sisa berkas [jejak]
 d3a56da S-251 F-14: pemantauan berkala di VPS via systemd timer 30 menit + rapikan sisa berkas
 7ebf2d0 S-250 F-17n: jalur luar https://waspadaweb.com/hestia/ terbukti 401, layanan lokal dihidupkan (membawa S-247..S-249) [jejak]
 2fdc11b S-250 F-17n: jalur luar https://waspadaweb.com/hestia/ terbukti 401, layanan lokal dihidupkan (membawa S-247..S-249)
@@ -21,8 +23,6 @@ effa504 S-245 F-17i: tentukan jalur masuk luar nyata (tunnel Cloudflare vs tepi 
 aec8107 S-244 F-17h: sidik jari penghadang luar :80, VPS terbukti di belakang NAT [jejak]
 3586b9d S-244 F-17h: sidik jari penghadang luar :80, VPS terbukti di belakang NAT
 ddbec89 S-243 F-17g: nginx host memakai vhost default Hestia di :80 [jejak]
-beb6558 S-243 F-17g: nginx host memakai vhost default Hestia di :80
-4eee90d S-242 F-17f: lacak pemilik port 80, terapkan vhost di nginx yang benar [jejak]
 ```
 
 ## SISA KERJA
