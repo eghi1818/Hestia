@@ -1,15 +1,18 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 16:19.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 16:30.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 1219d39 S-277 F-0: ambil SEBELUM /tentang/profile/, daftar rute utuh, kepala aset untuk sidik jari tempat asal
-branch: main | kotor: M docs/evidence/S-277.txt
-rute app/main.py: 75 | berkas bukti: 171 | dokumen langkah: 243
+HEAD: 5d34b5d S-278 F-0: kenali asal wecash.ai - sidik jari penyedia, subdomain tak diproksikan, riwayat DNS, probe asal langsung
+branch: main | kotor: M docs/evidence/S-278.txt
+rute app/main.py: 75 | berkas bukti: 172 | dokumen langkah: 244
 
 ## 12 commit terakhir
 
 ```
+5d34b5d S-278 F-0: kenali asal wecash.ai - sidik jari penyedia, subdomain tak diproksikan, riwayat DNS, probe asal langsung
+0ee09be S-277 F-0: ambil SEBELUM /tentang/profile/, daftar rute utuh, kepala aset untuk sidik jari tempat asal [jejak] [dokumen]
+a850e39 S-277 F-0: ambil SEBELUM /tentang/profile/, daftar rute utuh, kepala aset untuk sidik jari tempat asal [jejak]
 1219d39 S-277 F-0: ambil SEBELUM /tentang/profile/, daftar rute utuh, kepala aset untuk sidik jari tempat asal
 4807533 S-268: waspadaweb dikembalikan ke Wecash + vhost wecash.ai disiapkan berisi Gacor [jejak] [dokumen]
 6ebb75f S-268: waspadaweb dikembalikan ke Wecash + vhost wecash.ai disiapkan berisi Gacor [jejak]
@@ -19,9 +22,6 @@ b6c6439 S-267: base tag dipaksa (aset Gacor tampil) + diagnosa jalur tulis wecas
 0da7b16 S-267: base tag dipaksa (aset Gacor tampil) + diagnosa jalur tulis wecash.ai
 6c157e7 S-266: isi halaman inject diganti dari wecash.ai ke gacor.net (base href pakai url final) [jejak] [dokumen]
 0ce48cc S-266: isi halaman inject diganti dari wecash.ai ke gacor.net (base href pakai url final) [jejak]
-d64d43a S-266: isi halaman inject diganti dari wecash.ai ke gacor.net (base href pakai url final)
-6f7b0e5 S-265: aset halaman inject diperbaiki via base href (gambar/logo tampil) [jejak] [dokumen]
-8351ce6 S-265: aset halaman inject diperbaiki via base href (gambar/logo tampil) [jejak]
 ```
 
 ## SISA KERJA
