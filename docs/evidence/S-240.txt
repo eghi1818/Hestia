@@ -1,0 +1,11 @@
+BLOK: S-240 / F-17d - akses luar lewat vhost default, kolom kandidat
+STATUS: (lihat keluaran)
+JALUR: J5
+BUKTI: status dari VPS (401 tanpa sandi, 200 dengan sandi), status dari laptop, waspadaweb.com tetap 200
+SNAPSHOT: /etc/nginx/sites-available/default.orig (salinan vhost default asli)
+ROLLBACK: cp default.orig ke default && systemctl reload nginx
+IDEMPOTEN: vhost ditulis ulang; salinan asli hanya dibuat bila belum ada
+YANG GAGAL: vhost server_name = IP tidak terpilih (permintaan ke IP tetap ke vhost default); kandidat tidak punya kolom id
+
+perubahan: vhost default dijadikan proxy Hestia (port 80); salinan asli dicadangkan;
+dokumen langkah dan LANJUTKAN diperbarui.

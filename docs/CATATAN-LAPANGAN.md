@@ -48,3 +48,9 @@ server_name menang atas default_server). Berkas: deploy/nginx-hestia-ip.conf.
 ## S-239 -- DB di VPS adalah SALINAN, bukan kanonik
 Repo di-rsync ke /opt/hestia termasuk data/hestia.db. Sampai ada sinkronisasi, DB di laptop
 adalah sumber kebenaran dan DB di VPS bisa menyimpang. Catat sebagai butir lanjutan.
+
+## S-240 -- server_name = IP tidak menang; pakai vhost default
+Menambah vhost dengan server_name = IP TIDAK cukup: permintaan ke IP tetap dilayani vhost
+"default" (bukti: dari VPS balas 200 tanpa sandi, dari laptop 404). Yang bekerja: jadikan
+vhost default sebagai proxy ke 127.0.0.1:8787. Salinan asli dicadangkan di
+/etc/nginx/sites-available/default.orig.
