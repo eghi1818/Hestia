@@ -3,18 +3,14 @@
 Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 07:23.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: a08cc54 S-230: folder resume dilengkapi, label chat V1.2, status K1+K2 terbukti [jejak]
-branch: main | kotor: M docs/evidence/S-131.txt
- M docs/steps/S-64.md
- M docs/steps/arsip/H-06.md
- M docs/steps/arsip/H-07.md
- M docs/steps/arsip/H-08.md
- M docs/steps/arsip/S-49.md
-rute app/main.py: 75 | berkas bukti: 125 | dokumen langkah: 195
+HEAD: c74db14 S-231 F-10: label chat V1.2, kombinasi GANTI lalu BUNUH pada satu halaman
+branch: main | kotor: D docs/steps/S-231.md
+rute app/main.py: 75 | berkas bukti: 126 | dokumen langkah: 195
 
 ## 12 commit terakhir
 
 ```
+c74db14 S-231 F-10: label chat V1.2, kombinasi GANTI lalu BUNUH pada satu halaman
 a08cc54 S-230: folder resume dilengkapi, label chat V1.2, status K1+K2 terbukti [jejak]
 fb532f8 S-230: folder resume dilengkapi, label chat V1.2, status K1+K2 terbukti
 32dc9d4 S-229 F-9b: layanan dinyalakan, dasar rollback eksplisit, handover lengkap [jejak]
@@ -26,7 +22,6 @@ aafd5c4 S-226 F-8: GANTI konten donor ke halaman waspadaweb dengan penanda
 71d658d S-225 F-7: mesin pengambil donor (M1 AMBIL) [jejak]
 12529e1 S-225 F-7: mesin pengambil donor (M1 AMBIL)
 3dd8106 S-224 F-5/F-6: BUNUH 410 + idempoten dan rollback teruji [jejak]
-4f92a12 S-224 F-5/F-6: BUNUH 410 + idempoten dan rollback teruji
 ```
 
 ## SISA KERJA
