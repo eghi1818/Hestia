@@ -106,7 +106,7 @@ def utama():
         return
 
     kode, hdr, html = ambil(a.dari)
-    a.dari = DASAR
+    a.dari = DASAR or a.dari
     sha = hashlib.sha256(html.encode()).hexdigest()
     m = re.search(r"(?is)<title[^>]*>(.*?)</title>", html)
     judul = (m.group(1).strip()[:80] if m else a.dari)
