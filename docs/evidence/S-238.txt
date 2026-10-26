@@ -1,0 +1,12 @@
+BLOK: S-238 / F-17b - Hestia dipasang di VPS
+STATUS: (lihat keluaran)
+JALUR: J5 (ssh ke host yang sama)
+BUKTI: systemctl is-active, status 401 tanpa sandi / 200 dengan sandi lewat nginx 8791, status dari luar
+SNAPSHOT: data/backup/hestia-<cap>.db (backup.py jalan di VPS via cron 03:17)
+ROLLBACK: deploy/README.md bagian Rollback (systemctl disable --now, hapus vhost, hapus cron)
+IDEMPOTEN: pasang.sh tidak menimpa user, venv, dan /etc/hestia/live.env bila sudah ada
+YANG GAGAL: recon S-237 gagal karena SSH disimpan sebagai string lalu dipakai tanpa array (zsh tidak memecah kata)
+
+Isi: rsync repo ke ~/hestia-src, lalu deploy/pasang.sh sebagai root (user hestia, /opt/hestia,
+unit systemd hestia.service, vhost nginx 8791 -> 127.0.0.1:8787, sandi di /etc/hestia/live.env,
+cron backup 03:17, ufw allow 8791).

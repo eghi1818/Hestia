@@ -23,7 +23,12 @@ chown -R "$USER_H:$USER_H" "$AKAR"
 
 echo "== 3. venv & dependensi =="
 if [ ! -x "$AKAR/.venv/bin/python" ]; then
-  python3 -m venv "$AKAR/.venv"
+  python3 -m venv "$AKAR/.venv" 2>/dev/null || {
+    echo "  venv tidak ada, memasang python3-venv lewat apt"
+    apt-get update -qq
+    apt-get install -y -qq python3-venv python3-pip
+    python3 -m venv "$AKAR/.venv"
+  }
 fi
 "$AKAR/.venv/bin/python" -m pip install --upgrade pip >/dev/null
 if [ -f "$AKAR/requirements.txt" ]; then
