@@ -1,0 +1,10 @@
+BLOK: S-233 / F-12 - label chat dari docs/CHAT.md + GANTI dua kali tanpa menimpa snapshot asli
+STATUS: (lihat keluaran)
+JALUR: J5
+BUKTI: donor aktif berubah setelah GANTI kedua; snapshot asli tetap berisi ISI ASLI; rollback kembali ke ISI ASLI
+SNAPSHOT: snapshot asli dari ganti.py asli, TIDAK ditimpa oleh pasang berikutnya
+ROLLBACK: pulih -> ISI ASLI kembali, penanda hilang
+IDEMPOTEN: pasang ulang donor yang sama -> sha berkas identik (diuji S-228/S-229)
+YANG GAGAL: label chat sebelumnya tetap 1.0 karena sumbernya docs/CHAT.md, bukan berkas .sh/.md biasa
+
+Poin F-12: membuktikan GANTI berulang aman dan dasar rollback tetap keadaan asli.
