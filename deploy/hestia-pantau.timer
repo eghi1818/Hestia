@@ -1,0 +1,10 @@
+[Unit]
+Description=Hestia - pemantauan tiap 30 menit
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=30min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

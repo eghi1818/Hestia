@@ -1,0 +1,11 @@
+[Unit]
+Description=Hestia - pemantauan berkala
+After=network-online.target hestia.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=hestia
+WorkingDirectory=/opt/hestia
+RuntimeDirectory=hestia
+ExecStart=/usr/bin/flock -n /run/hestia/pantau.lock /opt/hestia/tools/pantau.sh

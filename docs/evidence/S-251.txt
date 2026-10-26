@@ -1,0 +1,260 @@
+BLOK: S-251 / F-14 - pemantauan berkala di VPS (systemd timer 30 menit)
+STATUS: (lihat keluaran)
+JALUR: J5
+BUKTI: sisa git, unit hestia, DB, CLI alat, jalannya unit sekali, isi log pantau, timer aktif
+SNAPSHOT: tidak ada berkas nginx disentuh
+ROLLBACK: systemctl disable --now hestia-pantau.timer && rm /etc/systemd/system/hestia-pantau.* && systemctl daemon-reload
+IDEMPOTEN: ya (unit ditulis ulang, enable aman)
+YANG GAGAL: (lihat keluaran)
+== S-251 / F-14 ==
+-- 0. sisa berkas kotor (dibawa tutup di akhir) --
+ M docs/evidence/S-250.txt
+?? docs/evidence/S-251.txt
+-- 1. tulis tools/pantau.sh + unit deploy --
+  sintaks pantau.sh ok
+  unit deploy ok
+-- 2. kirim ke VPS --
+  pantau.sh terkirim
+  service terkirim
+  timer terkirim
+-- 3. kenali VPS + pasang + jalankan sekali --
+-- 3A. layanan dan DB --
+# /etc/systemd/system/hestia.service
+[Unit]
+Description=Hestia Dashboard
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=hestia
+Group=hestia
+WorkingDirectory=/opt/hestia
+EnvironmentFile=/etc/hestia/live.env
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/hestia/.venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8787
+Restart=always
+RestartSec=3
+StandardOutput=append:/var/log/hestia/serve.log
+StandardError=append:/var/log/hestia/serve.log
+
+[Install]
+WantedBy=multi-user.target
+-- env --
+total 4
+-rw-r----- 1 root hestia 59 Oct 26 00:52 live.env
+-- data --
+total 4668
+drwxrwxr-x 2 hestia hestia   4096 Oct 26 03:17 backup
+drwxr-xr-x 5 hestia hestia   4096 Oct 26 00:44 bukti
+-rw-r--r-- 1 hestia hestia 868352 Oct 26 00:44 hestia.db
+-rw-r--r-- 1 hestia hestia  32768 Oct 26 00:52 hestia.db-shm
+-rw-r--r-- 1 hestia hestia      0 Oct 26 00:52 hestia.db-wal
+-rw-r--r-- 1 hestia hestia 380928 Oct 23 11:27 hestia.db.bak.20261023-182744
+-rw-r--r-- 1 hestia hestia 380928 Oct 23 11:27 hestia.db.bak.20261023-182744-2
+-- venv --
+/opt/hestia/.venv
+  (tanpa venv)
+-- CLI status_periksa --
+usage: status_periksa.py [-h] [--domain DOMAIN] [--batas BATAS] [--jeda JEDA]
+                         [--kontrol KONTROL] [--terapkan] [--db DB]
+                         [posisi_domain]
+
+positional arguments:
+  posisi_domain
+
+options:
+  -h, --help         show this help message and exit
+  --domain DOMAIN
+  --batas BATAS
+  --jeda JEDA
+  --kontrol KONTROL
+  --terapkan
+  --db DB
+-- timer/cron yang sudah ada --
+NEXT                            LEFT LAST                              PASSED UNIT                           ACTIVATES
+Mon 2026-10-26 05:30:00 UTC 1min 11s Mon 2026-10-26 05:20:01 UTC     8min ago sysstat-collect.timer          sysstat-collect.service
+Mon 2026-10-26 06:01:37 UTC    32min Mon 2026-10-26 05:04:35 UTC    24min ago fwupd-refresh.timer            fwupd-refresh.service
+Mon 2026-10-26 06:57:37 UTC 1h 28min Sun 2026-10-25 06:13:50 UTC      23h ago apt-daily-upgrade.timer        apt-daily-upgrade.service
+Mon 2026-10-26 07:18:21 UTC 1h 49min Sun 2026-10-25 02:02:43 UTC 1 day 3h ago mdcheck_continue.timer         mdcheck_continue.service
+Mon 2026-10-26 10:57:35 UTC 5h 28min Sun 2026-10-25 10:57:35 UTC      18h ago update-notifier-download.timer update-notifier-download.service
+
+-- 3B. pasang + nyalakan timer --
+Created symlink /etc/systemd/system/timers.target.wants/hestia-pantau.timer → /etc/systemd/system/hestia-pantau.timer.
+-- 3C. jalankan sekali sekarang --
+  status unit: inactive
+-- 3D. 25 baris log pantau terakhir --
+  (log belum ada)
+-- 3E. jadwal berikutnya --
+NEXT                         LEFT LAST                         PASSED UNIT                ACTIVATES
+Mon 2026-10-26 05:58:49 UTC 29min Mon 2026-10-26 05:28:49 UTC 10s ago hestia-pantau.timer hestia-pantau.service
+
+1 timers listed.
+-- 3F. nginx + waspadaweb tetap sehat --
+  https://waspadaweb.com/ -> 200
+-- 4. tutup --
++ dokumen langkah disiapkan lebih awal: docs/steps/S-251.md
+== gate: berkas wajib ==
+  ok      README.md
+  ok      CHANGELOG.md
+  ok      GOAL.md
+  ok      docs/PRD-Authority-Hosting-v1.5.md
+  ok      docs/CONTEXT.md
+  ok      docs/EKSPERIMEN.md
+  ok      docs/ONBOARDING_PROMPT.txt
+  ok      docs/SOP-NEW-CHAT.md
+
+== gate: sterilisasi pada artefak tim ==
+  bersih  README.md
+  bersih  CHANGELOG.md
+  bersih  docs/PRD-Authority-Hosting-v1.5.md
+  bersih  dashboard/README.md
+  bersih  dashboard/aksi.js
+  bersih  dashboard/audit.js
+  bersih  dashboard/detail.js
+  bersih  dashboard/driver.js
+  bersih  dashboard/ekspor.js
+  bersih  dashboard/ikhtisar.js
+  bersih  dashboard/index.html
+  bersih  dashboard/konsol.js
+  bersih  dashboard/konten.js
+  bersih  dashboard/live.js
+  bersih  dashboard/monitor.js
+  bersih  dashboard/recon.js
+  bersih  dashboard/tanam.js
+  bersih  dashboard/tautan.js
+  bersih  app/__init__.py
+  bersih  app/db.py
+  bersih  app/main.py
+
+== gate: integrasi skrip dashboard dengan index.html ==
+  ok      #auditBatas
+  ok      #auditBody
+  ok      #auditCari
+  ok      #auditPeristiwa
+  ok      #backlinkBody
+  ok      #cLevel
+  ok      #cName
+  ok      #cSecret
+  ok      #cTarget
+  ok      #cType
+  ok      #cValid
+  ok      #checkBody
+  ok      #credBody
+  ok      #credRotasi
+  ok      #dPath
+  ok      #dTarget
+  ok      #dTpl
+  ok      #deployBody
+  ok      #detailChecks
+  ok      #detailCredBody
+  ok      #detailHealth
+  ok      #detailKv
+  ok      #detailPageBody
+  ok      #detailTimeline
+  ok      #driverDomain
+  ok      #driverOut
+  ok      #fDomain
+  ok      #fNote
+  ok      #fOwner
+  ok      #fTags
+  ok      #fType
+  ok      #fpKv
+  ok      #ikhtisarBersih
+  ok      #kandBody
+  ok      #kandCari
+  ok      #kandInfo
+  ok      #kandLagi
+  ok      #kandPeriksa
+  ok      #kandStatus
+  ok      #kandTanpaInfra
+  ok      #kandTanpaKosong
+  ok      #konsolAksi
+  ok      #konsolBatal
+  ok      #konsolDomain
+  ok      #konsolExtra
+  ok      #konsolJalankan
+  ok      #konsolLog
+  ok      #konsolPaksa
+  ok      #konsolSegarkan
+  ok      #konsolStatus
+  ok      #kontenBody
+  ok      #kunciBody
+  ok      #kunciLevel
+  ok      #kunciNama
+  ok      #kunciSecret
+  ok      #kunciSegarkan
+  ok      #kunciStatus
+  ok      #kunciTambah
+  ok      #kunciTarget
+  ok      #kunciTipe
+  ok      #latencyList
+  lewat   #liveBadge (dibuat live.js/ikhtisar.js)
+  ok      #monitorAlerts
+  ok      #monitorBody
+  ok      #monitorDomain
+  ok      #monitorOut
+  ok      #navKandCount
+  ok      #opsMetrics
+  ok      #page-dashboard
+  ok      #queueStatus
+  ok      #reconProgress
+  ok      #reconQueue
+  ok      #tanamOut
+  ok      #tanamSandi
+  ok      #tanamSapu
+  ok      #tanamTarget
+  ok      #tanamUser
+  ok      #teknoRingkas
+  total rujukan diperiksa: 78
+
+== gate: dokumen internal (boleh memuat istilah) ==
+  GOAL.md memuat 'parasite': 3 baris
+  docs/CONTEXT.md memuat 'parasite': 7 baris
+  docs/EKSPERIMEN.md memuat 'parasite': 0 baris
+  docs/ONBOARDING_PROMPT.txt memuat 'parasite': 1 baris
+  docs/SOP-NEW-CHAT.md memuat 'parasite': 2 baris
+
+== gate: sintaks python ==
+  ok      app/main.py bisa dikompilasi
+
+== gate: rute api dipakai dashboard ==
+  rute di app/main.py: 47
+  ok      semua rute api ada di app/main.py
+== gate: layanan dashboard (fail-closed) ==
+  ok      tanpa sandi http 401
+  ok      /api/health http 200
+  layanan HIDUP
+== gate: placeholder bukti ==
+  ok      tidak ada placeholder
+== gate: bukti langkah terakhir ==
+  ok      docs/evidence/S-251.txt (S-251)
+== gate: skrip dashboard disajikan ==
+  ok      /aksi.js
+  ok      /audit.js
+  ok      /detail.js
+  ok      /driver.js
+  ok      /ekspor.js
+  ok      /ikhtisar.js
+  ok      /konsol.js
+  ok      /konten.js
+  ok      /live.js
+  ok      /monitor.js
+  ok      /recon.js
+  ok      /tanam.js
+  ok      /tautan.js
+== gate: rute api utama (hidup) ==
+  ok      /api/health -> 200
+  ok      /api/targets -> 200
+  ok      /api/teknologi-ringkas -> 200
+  ok      /api/status/ringkas -> 200
+  ok      /api/audit -> 200
+  ok      /api/driver/rules?domain=waspadaweb.com -> 200
+  ok      /api/driver/plan?domain=waspadaweb.com -> 200
+== gate: dokumen spec ==
+  ok      docs/LANDASAN.md
+  ok      docs/PROLOG-HESTIA-DASHBOARD.md
+  ok      docs/GOAL-Hestia-SEO.md
+  ok      docs/SKILL-AGENT-HESTIA.md
+  ok      docs/PROMPT-TAMBAHAN-AGENT-DASHBOARD.md
+GATE: LULUS
