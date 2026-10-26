@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Bukti A->B: ambil konten situs A, tulis ke berkas situs B lewat jalur J5.
-Jalankan di VPS dengan HESTIA_LOKAL=1, atau di laptop (memakai ssh)."""
+Mode auto: salin (HTML) / bingkai (iframe) / teks (bersih). Jalankan di VPS dengan HESTIA_LOKAL=1."""
 import argparse, datetime, hashlib, os, re, sqlite3, subprocess, urllib.request
 
 DB = "data/hestia.db"
@@ -18,10 +18,56 @@ def sh(p, masuk=None):
     return r.returncode, r.stdout, r.stderr
 
 
-def baca(url, t=25):
+def ambil(url, t=25):
     req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept-Language": "id,en"})
     with urllib.request.urlopen(req, timeout=t) as r:
-        return r.status, r.read().decode("utf-8", "replace")
+        return r.status, dict(r.headers), r.read().decode("utf-8", "replace")
+
+
+def teks_terlihat(html):
+    b = re.search(r"(?is)<body.*?>(.*)</body>", html)
+    isi = b.group(1) if b else html
+    isi = re.sub(r"(?is)<(script|style|noscript).*?</\1>", " ", isi)
+    return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", isi)).strip()
+
+
+def boleh_bingkai(hdr):
+    xfo = str(hdr.get("X-Frame-Options", "")).lower()
+    csp = str(hdr.get("Content-Security-Policy", "")).lower()
+    if "deny" in xfo or "sameorigin" in xfo:
+        return False
+    if "frame-ancestors" in csp and "*" not in csp:
+        return False
+    return True
+
+
+def rapikan(html, dasar):
+    d = dasar.rstrip("/")
+    html = re.sub(r'((?:href|src)=")//', r"\1@@", html)
+    html = re.sub(r'((?:href|src|srcset|action)=")/', r"\1" + d + "/", html)
+    html = re.sub(r"url\((/[^)]*)\)", r"url(" + d + r"\1)", html)
+    html = html.replace('"/_next', '"' + d + '/_next').replace("'/_next", "'" + d + "/_next")
+    return html.replace("@@", "//")
+
+
+def halaman_bingkai(dasar, judul):
+    return ('<!doctype html><html lang="id"><head><meta charset="utf-8"><title>%s</title>'
+            '<meta name="viewport" content="width=device-width,initial-scale=1">'
+            '<style>html,body{margin:0;height:100%%;background:#fff}'
+            'iframe{border:0;position:fixed;inset:0;width:100%%;height:100%%}</style></head>'
+            '<body><iframe src="%s" referrerpolicy="no-referrer-when-downgrade"></iframe></body></html>'
+            % (judul, dasar))
+
+
+def halaman_teks(dasar, judul, html):
+    t = teks_terlihat(html)
+    par = "\n".join("<p>%s</p>" % p.strip() for p in re.split(r"(?<=[.!?])\s+", t)[:60] if p.strip())
+    return ('<!doctype html><html lang="id"><head><meta charset="utf-8"><title>%s</title>'
+            '<meta name="viewport" content="width=device-width,initial-scale=1">'
+            '<style>body{margin:0;font:17px/1.7 -apple-system,Segoe UI,sans-serif;color:#222}'
+            'main{max-width:760px;margin:0 auto;padding:32px 20px}h1{font-size:26px}a{color:#0a6}'
+            '</style></head><body><main><h1>%s</h1><p><a href="%s">%s</a></p>%s</main></body></html>'
+            % (judul, judul, dasar, dasar, par))
 
 
 def utama():
@@ -30,6 +76,8 @@ def utama():
     ap.add_argument("--ke", required=True)
     ap.add_argument("--berkas", default="/var/www/waspadaweb/index.html")
     ap.add_argument("--penanda", default="HESTIA-INJECT")
+    ap.add_argument("--mode", default="auto", choices=["auto", "salin", "bingkai", "teks"])
+    ap.add_argument("--banner", default="off", choices=["on", "off"])
     ap.add_argument("--db", default=DB)
     ap.add_argument("--terapkan", action="store_true")
     ap.add_argument("--pulih", action="store_true")
@@ -42,50 +90,64 @@ def utama():
         if not os.path.exists(fsnap):
             raise SystemExit("snapshot tidak ada: " + fsnap)
         rc, _, err = sh("sudo tee %s >/dev/null" % a.berkas, open(fsnap).read())
-        print("  pulih rc=%s %s" % (rc, err.strip()[:90]))
+        print("  pulih rc=%s %s" % (rc, err.strip()[:80]))
         return
 
-    kode_a, isi_a = baca(a.dari)
-    sha_a = hashlib.sha256(isi_a.encode()).hexdigest()
-    print("  A %s -> http %s | sha256=%s | panjang=%d" % (a.dari, kode_a, sha_a[:16], len(isi_a)))
+    kode, hdr, html = ambil(a.dari)
+    sha = hashlib.sha256(html.encode()).hexdigest()
+    m = re.search(r"(?is)<title[^>]*>(.*?)</title>", html)
+    judul = (m.group(1).strip()[:80] if m else a.dari)
+    teks = teks_terlihat(html)
+    print("  A %s http=%s sha256=%s panjang=%d teks_terlihat=%d judul=%r"
+          % (a.dari, kode, sha[:16], len(html), len(teks), judul))
+
+    mode = a.mode
+    if mode == "auto":
+        mode = "salin" if len(teks) >= 300 else ("bingkai" if boleh_bingkai(hdr) else "teks")
+    print("  mode dipakai: %s | boleh dibingkai: %s" % (mode, boleh_bingkai(hdr)))
+
+    if mode == "salin":
+        isi = rapikan(html, a.dari)
+    elif mode == "bingkai":
+        isi = halaman_bingkai(a.dari, judul)
+    else:
+        isi = halaman_teks(a.dari, judul, html)
+
+    if a.banner == "on":
+        bar = ('<div id="hestia-penanda" style="font:14px/1.5 -apple-system,sans-serif;'
+               'background:#111;color:#eee;padding:10px 14px"><b>%s</b> &middot; %s &middot; sha256 %s</div>'
+               % (a.penanda, a.dari, sha[:16]))
+        isi = isi.replace("</body>", bar + "</body>") if mode == "bingkai" else isi.replace("<body>", "<body>" + bar, 1)
+
+    isi = ("<!-- %s sumber=%s sha256=%s mode=%s waktu=%s -->\n"
+           % (a.penanda, a.dari, sha, mode,
+              datetime.datetime.now().astimezone().isoformat(timespec="seconds"))) + isi
 
     rc, asli, _ = sh("sudo cat %s" % a.berkas)
     ada = asli.strip() != "" and "No such file" not in asli
-    sha_asli = hashlib.sha256(asli.encode()).hexdigest()
-    print("  B %s -> %s | sha256_asli=%s | panjang=%d" % (a.ke, a.berkas, sha_asli[:16], len(asli)))
 
-    if a.terapkan and a.penanda in asli and sha_a[:16] in asli:
-        print("  sudah terpasang (idempoten) - tidak menulis ulang")
+    if a.terapkan and a.penanda in asli and sha in asli:
+        print("  sudah terpasang (idempoten) - dilewati")
         return
-
-    isi = re.sub(r'(href|src)="/', r'\1="%s/' % a.dari.rstrip("/"), isi_a)
-    cap = ('<!-- %s sumber=%s sha256=%s waktu=%s -->'
-           % (a.penanda, a.dari, sha_a, datetime.datetime.now().astimezone().isoformat(timespec="seconds")))
-    banner = ('<div id="hestia-penanda" style="font:14px/1.5 -apple-system,Segoe UI,sans-serif;'
-              'background:#111;color:#eee;padding:10px 14px">'
-              '<b>%s</b> &middot; sumber: <a style="color:#8cf" href="%s">%s</a> &middot; sha256 %s'
-              '</div>' % (a.penanda, a.dari, a.dari, sha_a[:16]))
-    baru = cap + "\n" + banner + "\n" + isi
-
     if not a.terapkan:
-        print("  (belum --terapkan) cuplikan:", baru[:120].replace("\n", " "))
+        print("  cuplikan:", isi[:160].replace("\n", " "))
         return
 
-    if ada:
+    if ada and a.penanda not in asli:
         open(fsnap, "w").write(asli)
-        print("  snapshot asli disimpan: %s" % fsnap)
-    rc, _, err = sh("sudo tee %s >/dev/null" % a.berkas, baru)
-    print("  tulis ke B rc=%s %s" % (rc, err.strip()[:90]))
+        print("  snapshot asli disimpan:", fsnap)
+    rc, _, err = sh("sudo tee %s >/dev/null" % a.berkas, isi)
+    print("  tulis ke B rc=%s %s" % (rc, err.strip()[:80]))
 
     c = sqlite3.connect(a.db)
     kols = [r[1] for r in c.execute("pragma table_info(change_event)")]
-    b = {"jenis": "inject-a-b", "jalur": "J5", "nilai_lama": sha_asli[:16], "nilai_baru": sha_a[:16],
-         "vantage": "lokal+vps", "catatan": "%s -> %s" % (a.dari, a.ke),
+    b = {"jenis": "inject-a-b", "jalur": "J5", "nilai_lama": hashlib.sha256(asli.encode()).hexdigest()[:16],
+         "nilai_baru": sha[:16], "vantage": "lokal+vps", "catatan": "%s -> %s (mode %s)" % (a.dari, a.ke, mode),
          "waktu": datetime.datetime.now().astimezone().isoformat(timespec="seconds")}
     b = {k: v for k, v in b.items() if k in kols}
     c.execute("insert into change_event (%s) values (%s)" % (", ".join(b), ", ".join("?" * len(b))), tuple(b.values()))
     c.commit()
-    print("  change_event dicatat (jenis inject-a-b)")
+    print("  change_event dicatat")
 
 
 if __name__ == "__main__":
