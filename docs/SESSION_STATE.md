@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 11:03.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 11:07.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: da9fae2 S-240 F-17d: dashboard dapat diakses dari luar lewat vhost default
-branch: main | kotor: D docs/steps/S-240.md
-rute app/main.py: 75 | berkas bukti: 135 | dokumen langkah: 211
+HEAD: 5b571b9 S-241 F-17e: perbaiki akses luar dashboard VPS (vhost aktif)
+branch: main | kotor: D docs/steps/S-241.md
+rute app/main.py: 75 | berkas bukti: 136 | dokumen langkah: 211
 
 ## 12 commit terakhir
 
 ```
+5b571b9 S-241 F-17e: perbaiki akses luar dashboard VPS (vhost aktif)
+8fa0981 S-240 F-17d: dashboard dapat diakses dari luar lewat vhost default [jejak]
 da9fae2 S-240 F-17d: dashboard dapat diakses dari luar lewat vhost default
 08efa77 S-239 F-17c: akses dashboard dari luar lewat port 80, bukti data scrape di VPS [jejak]
 853389f S-239 F-17c: akses dashboard dari luar lewat port 80, bukti data scrape di VPS
@@ -20,8 +22,6 @@ da9fae2 S-240 F-17d: dashboard dapat diakses dari luar lewat vhost default
 7a7dc2d S-236: dokumen langkah hilang dibuat ulang, kriteria bukti ekspor diperbaiki [jejak]
 8b089bb S-236: dokumen langkah hilang dibuat ulang, kriteria bukti ekspor diperbaiki
 8ea9461 S-235: perbandingan vantage dinormalisasi, status otomatis di folder resume [jejak]
-bfdfa3d S-235: perbandingan vantage dinormalisasi, status otomatis di folder resume
-e06344c S-234 F-13: ekspor bukti siap pihak ketiga (2 vantage + MANIFEST sha256) [jejak]
 ```
 
 ## SISA KERJA
