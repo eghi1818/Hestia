@@ -1,16 +1,18 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 13:00.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 13:12.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 3bb72ce S-256 F-14f: bukti perubahan nyata tercatat otomatis (konten uji tertanam -> terverifikasi)
-branch: main | kotor: M docs/evidence/S-256.txt
- D docs/steps/S-256.md
-rute app/main.py: 75 | berkas bukti: 151 | dokumen langkah: 224
+HEAD: eaedd8a S-257 F-14g: pantau menulis change_event saat transisi otomatis + isi 2 aturan transisi yang bolong
+branch: main | kotor: M docs/evidence/S-257.txt
+ D docs/steps/S-257.md
+rute app/main.py: 75 | berkas bukti: 152 | dokumen langkah: 224
 
 ## 12 commit terakhir
 
 ```
+eaedd8a S-257 F-14g: pantau menulis change_event saat transisi otomatis + isi 2 aturan transisi yang bolong
+d421466 S-256 F-14f: bukti perubahan nyata tercatat otomatis (konten uji tertanam -> terverifikasi) [jejak]
 3bb72ce S-256 F-14f: bukti perubahan nyata tercatat otomatis (konten uji tertanam -> terverifikasi)
 69a071d S-255 F-14e: baca aturan transisi + skema konten, lebarkan sapuan pantau ke --batas 500 [jejak]
 141f860 S-255 F-14e: baca aturan transisi + skema konten, lebarkan sapuan pantau ke --batas 500
@@ -21,8 +23,6 @@ dbc3313 S-253 F-14c: bukti jalur timer ujung-ke-ujung + kenali opsi --terapkan [
 0120204 S-252 F-14b: pantau.sh menulis nyata (log + --terapkan), izin log dibereskan, bukti hitungan tabel [jejak]
 9ac24f2 S-252 F-14b: pantau.sh menulis nyata (log + --terapkan), izin log dibereskan, bukti hitungan tabel
 481e096 S-251 F-14: pemantauan berkala di VPS via systemd timer 30 menit + rapikan sisa berkas [jejak]
-d3a56da S-251 F-14: pemantauan berkala di VPS via systemd timer 30 menit + rapikan sisa berkas
-7ebf2d0 S-250 F-17n: jalur luar https://waspadaweb.com/hestia/ terbukti 401, layanan lokal dihidupkan (membawa S-247..S-249) [jejak]
 ```
 
 ## SISA KERJA
