@@ -1,0 +1,227 @@
+BLOK: S-253 / F-14c - bukti jalur timer ujung-ke-ujung + kenali opsi --terapkan
+STATUS: (lihat keluaran)
+JALUR: J5
+BUKTI: opsi argparse, help alat, log bertambah lewat systemd, jurnal bersih, 5 baris change_event terakhir
+SNAPSHOT: tidak ada
+ROLLBACK: tidak berlaku
+IDEMPOTEN: ya
+YANG GAGAL: (lihat keluaran)
+== S-253 / F-14c ==
+-- 0. sisa kotor --
+ M docs/evidence/S-252.txt
+?? docs/evidence/S-253.txt
+-- 1. opsi alat pemantau (menentukan arti --terapkan) --
+198:    ap.add_argument("--domain", default="")
+199:    ap.add_argument("posisi_domain", nargs="?", default="")
+200:    ap.add_argument("--batas", type=int, default=5)
+201:    ap.add_argument("--jeda", type=float, default=uji_probe.JEDA)
+202:    ap.add_argument("--kontrol", default=None)
+203:    ap.add_argument("--terapkan", action="store_true")
+204:    ap.add_argument("--db", default=DB)
+-- help --
+usage: status_periksa.py [-h] [--domain DOMAIN] [--batas BATAS] [--jeda JEDA]
+                         [--kontrol KONTROL] [--terapkan] [--db DB]
+                         [posisi_domain]
+
+positional arguments:
+  posisi_domain
+
+optional arguments:
+  -h, --help         show this help message and exit
+  --domain DOMAIN
+  --batas BATAS
+  --jeda JEDA
+  --kontrol KONTROL
+  --terapkan
+  --db DB
+-- 2. jalur timer ujung-ke-ujung --
+  baris log sebelum: 62
+-- picu lewat systemd --
+  baris log sesudah: 124
+-- jurnal unit (harus tanpa galat) --
+Oct 26 05:28:49 vps-sedp systemd[1]: Finished hestia-pantau.service - Hestia - pemantauan berkala.
+Oct 26 05:28:49 vps-sedp systemd[1]: Starting hestia-pantau.service - Hestia - pemantauan berkala...
+Oct 26 05:28:49 vps-sedp flock[559199]: /opt/hestia/tools/pantau.sh: line 16: /var/log/hestia/pantau.log: Permission denied
+Oct 26 05:28:49 vps-sedp systemd[1]: hestia-pantau.service: Deactivated successfully.
+Oct 26 05:28:49 vps-sedp systemd[1]: Finished hestia-pantau.service - Hestia - pemantauan berkala.
+Oct 26 05:43:26 vps-sedp systemd[1]: Starting hestia-pantau.service - Hestia - pemantauan berkala...
+Oct 26 05:44:04 vps-sedp systemd[1]: hestia-pantau.service: Deactivated successfully.
+Oct 26 05:44:04 vps-sedp systemd[1]: Finished hestia-pantau.service - Hestia - pemantauan berkala.
+-- jadwal berikutnya --
+NEXT                         LEFT LAST                           PASSED UNIT                ACTIVATES
+Mon 2026-10-26 06:13:26 UTC 29min Mon 2026-10-26 05:28:49 UTC 15min ago hestia-pantau.timer hestia-pantau.service
+
+-- 5 baris change_event terakhir --
+    {'id': 34, 'target_id': 46, 'page_id': 22, 'jenis': 'pulih-ganti', 'jalur': 'J5', 'nilai_lama': '{"status": {"vps": "200", "lokal": "200"}, "snapshot": "/Users/eghi/Documents/REPO/Hestia/data/snapshot/halaman-uji-kombinasi-20261026-073251.html"}', 'nilai_baru': '91d30ebe9a9dd5e1', 'penanda': '0', 'bukti_id': None, 'vantage': 'vps+lokal', 'waktu': '2026-10-26T07:34:03'}
+    {'id': 33, 'target_id': 46, 'page_id': 22, 'jenis': 'ganti', 'jalur': 'J5', 'nilai_lama': '{"status": {"vps": "200", "lokal": "200"}, "snapshot": "/Users/eghi/Documents/REPO/Hestia/data/snapshot/halaman-uji-kombinasi-20261026-073251.html"}', 'nilai_baru': '48a08423aafcc429', 'penanda': '1', 'bukti_id': None, 'vantage': 'vps+lokal', 'waktu': '2026-10-26T07:33:38'}
+    {'id': 32, 'target_id': 46, 'page_id': 22, 'jenis': 'ganti', 'jalur': 'J5', 'nilai_lama': '{"status": {"vps": "200", "lokal": "200"}, "snapshot": "/Users/eghi/Documents/REPO/Hestia/data/snapshot/halaman-uji-kombinasi-20261026-073259.html"}', 'nilai_baru': '07f4708b9f200b98', 'penanda': '1', 'bukti_id': None, 'vantage': 'vps+lokal', 'waktu': '2026-10-26T07:33:17'}
+    {'id': 31, 'target_id': 46, 'page_id': 22, 'jenis': 'ganti-asli', 'jalur': 'J5', 'nilai_lama': '{"snapshot": "/Users/eghi/Documents/REPO/Hestia/data/snapshot/halaman-uji-kombinasi-20261026-073251.html"}', 'nilai_baru': '91d30ebe9a9dd5e1', 'penanda': '0', 'bukti_id': None, 'vantage': 'lokal', 'waktu': '2026-10-26T07:32:51'}
+    {'id': 30, 'target_id': 46, 'page_id': 27, 'jenis': 'pulih-ganti', 'jalur': 'J5', 'nilai_lama': '{"status": {"vps": "200", "lokal": "200"}, "snapshot": "/Users/eghi/Documents/REPO/Hestia/data/snapshot/halaman-uji-dalam-sub-halaman-20261026-072625.html"}', 'nilai_baru': '1f5b8c59d61e7445', 'penanda': '0', 'bukti_id': None, 'vantage': 'vps+lokal', 'waktu': '2026-10-26T07:27:41'}
+-- waspadaweb tetap sehat --
+  https://waspadaweb.com/ -> 200
+-- 3. tutup --
++ dokumen langkah disiapkan lebih awal: docs/steps/S-253.md
+== gate: berkas wajib ==
+  ok      README.md
+  ok      CHANGELOG.md
+  ok      GOAL.md
+  ok      docs/PRD-Authority-Hosting-v1.5.md
+  ok      docs/CONTEXT.md
+  ok      docs/EKSPERIMEN.md
+  ok      docs/ONBOARDING_PROMPT.txt
+  ok      docs/SOP-NEW-CHAT.md
+
+== gate: sterilisasi pada artefak tim ==
+  bersih  README.md
+  bersih  CHANGELOG.md
+  bersih  docs/PRD-Authority-Hosting-v1.5.md
+  bersih  dashboard/README.md
+  bersih  dashboard/aksi.js
+  bersih  dashboard/audit.js
+  bersih  dashboard/detail.js
+  bersih  dashboard/driver.js
+  bersih  dashboard/ekspor.js
+  bersih  dashboard/ikhtisar.js
+  bersih  dashboard/index.html
+  bersih  dashboard/konsol.js
+  bersih  dashboard/konten.js
+  bersih  dashboard/live.js
+  bersih  dashboard/monitor.js
+  bersih  dashboard/recon.js
+  bersih  dashboard/tanam.js
+  bersih  dashboard/tautan.js
+  bersih  app/__init__.py
+  bersih  app/db.py
+  bersih  app/main.py
+
+== gate: integrasi skrip dashboard dengan index.html ==
+  ok      #auditBatas
+  ok      #auditBody
+  ok      #auditCari
+  ok      #auditPeristiwa
+  ok      #backlinkBody
+  ok      #cLevel
+  ok      #cName
+  ok      #cSecret
+  ok      #cTarget
+  ok      #cType
+  ok      #cValid
+  ok      #checkBody
+  ok      #credBody
+  ok      #credRotasi
+  ok      #dPath
+  ok      #dTarget
+  ok      #dTpl
+  ok      #deployBody
+  ok      #detailChecks
+  ok      #detailCredBody
+  ok      #detailHealth
+  ok      #detailKv
+  ok      #detailPageBody
+  ok      #detailTimeline
+  ok      #driverDomain
+  ok      #driverOut
+  ok      #fDomain
+  ok      #fNote
+  ok      #fOwner
+  ok      #fTags
+  ok      #fType
+  ok      #fpKv
+  ok      #ikhtisarBersih
+  ok      #kandBody
+  ok      #kandCari
+  ok      #kandInfo
+  ok      #kandLagi
+  ok      #kandPeriksa
+  ok      #kandStatus
+  ok      #kandTanpaInfra
+  ok      #kandTanpaKosong
+  ok      #konsolAksi
+  ok      #konsolBatal
+  ok      #konsolDomain
+  ok      #konsolExtra
+  ok      #konsolJalankan
+  ok      #konsolLog
+  ok      #konsolPaksa
+  ok      #konsolSegarkan
+  ok      #konsolStatus
+  ok      #kontenBody
+  ok      #kunciBody
+  ok      #kunciLevel
+  ok      #kunciNama
+  ok      #kunciSecret
+  ok      #kunciSegarkan
+  ok      #kunciStatus
+  ok      #kunciTambah
+  ok      #kunciTarget
+  ok      #kunciTipe
+  ok      #latencyList
+  lewat   #liveBadge (dibuat live.js/ikhtisar.js)
+  ok      #monitorAlerts
+  ok      #monitorBody
+  ok      #monitorDomain
+  ok      #monitorOut
+  ok      #navKandCount
+  ok      #opsMetrics
+  ok      #page-dashboard
+  ok      #queueStatus
+  ok      #reconProgress
+  ok      #reconQueue
+  ok      #tanamOut
+  ok      #tanamSandi
+  ok      #tanamSapu
+  ok      #tanamTarget
+  ok      #tanamUser
+  ok      #teknoRingkas
+  total rujukan diperiksa: 78
+
+== gate: dokumen internal (boleh memuat istilah) ==
+  GOAL.md memuat 'parasite': 3 baris
+  docs/CONTEXT.md memuat 'parasite': 7 baris
+  docs/EKSPERIMEN.md memuat 'parasite': 0 baris
+  docs/ONBOARDING_PROMPT.txt memuat 'parasite': 1 baris
+  docs/SOP-NEW-CHAT.md memuat 'parasite': 2 baris
+
+== gate: sintaks python ==
+  ok      app/main.py bisa dikompilasi
+
+== gate: rute api dipakai dashboard ==
+  rute di app/main.py: 47
+  ok      semua rute api ada di app/main.py
+== gate: layanan dashboard (fail-closed) ==
+  ok      tanpa sandi http 401
+  ok      /api/health http 200
+  layanan HIDUP
+== gate: placeholder bukti ==
+  ok      tidak ada placeholder
+== gate: bukti langkah terakhir ==
+  ok      docs/evidence/S-253.txt (S-253)
+== gate: skrip dashboard disajikan ==
+  ok      /aksi.js
+  ok      /audit.js
+  ok      /detail.js
+  ok      /driver.js
+  ok      /ekspor.js
+  ok      /ikhtisar.js
+  ok      /konsol.js
+  ok      /konten.js
+  ok      /live.js
+  ok      /monitor.js
+  ok      /recon.js
+  ok      /tanam.js
+  ok      /tautan.js
+== gate: rute api utama (hidup) ==
+  ok      /api/health -> 200
+  ok      /api/targets -> 200
+  ok      /api/teknologi-ringkas -> 200
+  ok      /api/status/ringkas -> 200
+  ok      /api/audit -> 200
+  ok      /api/driver/rules?domain=waspadaweb.com -> 200
+  ok      /api/driver/plan?domain=waspadaweb.com -> 200
+== gate: dokumen spec ==
+  ok      docs/LANDASAN.md
+  ok      docs/PROLOG-HESTIA-DASHBOARD.md
+  ok      docs/GOAL-Hestia-SEO.md
+  ok      docs/SKILL-AGENT-HESTIA.md
+  ok      docs/PROMPT-TAMBAHAN-AGENT-DASHBOARD.md
+GATE: LULUS
