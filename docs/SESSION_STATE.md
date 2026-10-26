@@ -1,15 +1,18 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 13:52.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 14:21.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 778dab3 S-261 F-15: pemeriksa link rot (tautan mati) + tempel ke timer pemantauan
-branch: main | kotor: M docs/evidence/S-261.txt
-rute app/main.py: 75 | berkas bukti: 156 | dokumen langkah: 236
+HEAD: d67d274 S-263: inject wecash.ai -> waspadaweb.com terbukti dari luar (jalur J5)
+branch: main | kotor: M docs/evidence/S-263.txt
+rute app/main.py: 75 | berkas bukti: 158 | dokumen langkah: 237
 
 ## 12 commit terakhir
 
 ```
+d67d274 S-263: inject wecash.ai -> waspadaweb.com terbukti dari luar (jalur J5)
+029b6b7 S-261 F-15: pemeriksa link rot (tautan mati) + tempel ke timer pemantauan [jejak] [dokumen]
+15e48e0 S-261 F-15: pemeriksa link rot (tautan mati) + tempel ke timer pemantauan [jejak]
 778dab3 S-261 F-15: pemeriksa link rot (tautan mati) + tempel ke timer pemantauan
 e4ba46f S-260 F-19: dokumen langkah bolong dipulihkan, stub tutup.sh tidak dibuang, tunggu-siap diperbaiki [jejak] [dokumen]
 71adaef S-260 F-19: dokumen langkah bolong dipulihkan, stub tutup.sh tidak dibuang, tunggu-siap diperbaiki [jejak]
@@ -19,9 +22,6 @@ f836fa6 S-260 F-19: dokumen langkah bolong dipulihkan, stub tutup.sh tidak dibua
 34f870a S-257 F-14g: pantau menulis change_event saat transisi otomatis + isi 2 aturan transisi yang bolong [jejak]
 eaedd8a S-257 F-14g: pantau menulis change_event saat transisi otomatis + isi 2 aturan transisi yang bolong
 d421466 S-256 F-14f: bukti perubahan nyata tercatat otomatis (konten uji tertanam -> terverifikasi) [jejak]
-3bb72ce S-256 F-14f: bukti perubahan nyata tercatat otomatis (konten uji tertanam -> terverifikasi)
-69a071d S-255 F-14e: baca aturan transisi + skema konten, lebarkan sapuan pantau ke --batas 500 [jejak]
-141f860 S-255 F-14e: baca aturan transisi + skema konten, lebarkan sapuan pantau ke --batas 500
 ```
 
 ## SISA KERJA
