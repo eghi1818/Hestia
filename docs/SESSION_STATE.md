@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 07:53.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 07:56.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 33b9949 S-238 F-17b: pasang Hestia di VPS (systemd + nginx 8791), verifikasi
-branch: main | kotor: D docs/steps/S-238.md
-rute app/main.py: 75 | berkas bukti: 133 | dokumen langkah: 211
+HEAD: 853389f S-239 F-17c: akses dashboard dari luar lewat port 80, bukti data scrape di VPS
+branch: main | kotor: D docs/steps/S-239.md
+rute app/main.py: 75 | berkas bukti: 134 | dokumen langkah: 211
 
 ## 12 commit terakhir
 
 ```
+853389f S-239 F-17c: akses dashboard dari luar lewat port 80, bukti data scrape di VPS
+7c03f1e S-238 F-17b: pasang Hestia di VPS (systemd + nginx 8791), verifikasi [jejak]
 33b9949 S-238 F-17b: pasang Hestia di VPS (systemd + nginx 8791), verifikasi
 9bfd04b S-237 F-17a: artefak deploy VPS (systemd, vhost 8791, pasang.sh, README) [jejak]
 63bbbec S-237 F-17a: artefak deploy VPS (systemd, vhost 8791, pasang.sh, README)
@@ -20,8 +22,6 @@ bfdfa3d S-235: perbandingan vantage dinormalisasi, status otomatis di folder res
 e06344c S-234 F-13: ekspor bukti siap pihak ketiga (2 vantage + MANIFEST sha256) [jejak]
 5db3463 S-234 F-13: ekspor bukti siap pihak ketiga (2 vantage + MANIFEST sha256)
 85494f0 S-233 F-12: label dari docs/CHAT.md, GANTI berulang aman [jejak]
-5296929 S-233 F-12: label dari docs/CHAT.md, GANTI berulang aman
-a007bf2 S-232 F-11: label chat dari sumbernya, GANTI pada jalur dalam [jejak]
 ```
 
 ## SISA KERJA
