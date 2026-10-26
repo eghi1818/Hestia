@@ -1,15 +1,18 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 14:41.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 14:46.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: d64d43a S-266: isi halaman inject diganti dari wecash.ai ke gacor.net (base href pakai url final)
-branch: main | kotor: M docs/evidence/S-266.txt
-rute app/main.py: 75 | berkas bukti: 161 | dokumen langkah: 240
+HEAD: 0da7b16 S-267: base tag dipaksa (aset Gacor tampil) + diagnosa jalur tulis wecash.ai
+branch: main | kotor: M docs/evidence/S-267.txt
+rute app/main.py: 75 | berkas bukti: 162 | dokumen langkah: 241
 
 ## 12 commit terakhir
 
 ```
+0da7b16 S-267: base tag dipaksa (aset Gacor tampil) + diagnosa jalur tulis wecash.ai
+6c157e7 S-266: isi halaman inject diganti dari wecash.ai ke gacor.net (base href pakai url final) [jejak] [dokumen]
+0ce48cc S-266: isi halaman inject diganti dari wecash.ai ke gacor.net (base href pakai url final) [jejak]
 d64d43a S-266: isi halaman inject diganti dari wecash.ai ke gacor.net (base href pakai url final)
 6f7b0e5 S-265: aset halaman inject diperbaiki via base href (gambar/logo tampil) [jejak] [dokumen]
 8351ce6 S-265: aset halaman inject diperbaiki via base href (gambar/logo tampil) [jejak]
@@ -19,9 +22,6 @@ e6ce511 S-264: inject wecash.ai tanpa banner + mode auto supaya isi tampil [jeja
 76f2825 S-264: inject wecash.ai tanpa banner + mode auto supaya isi tampil
 5a5bd2f S-263: inject wecash.ai -> waspadaweb.com terbukti dari luar (jalur J5) [jejak] [dokumen]
 d762583 S-263: inject wecash.ai -> waspadaweb.com terbukti dari luar (jalur J5) [jejak]
-d67d274 S-263: inject wecash.ai -> waspadaweb.com terbukti dari luar (jalur J5)
-029b6b7 S-261 F-15: pemeriksa link rot (tautan mati) + tempel ke timer pemantauan [jejak] [dokumen]
-15e48e0 S-261 F-15: pemeriksa link rot (tautan mati) + tempel ke timer pemantauan [jejak]
 ```
 
 ## SISA KERJA
