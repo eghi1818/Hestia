@@ -1,0 +1,50 @@
+BLOK: S-262 / F-15b + Fase0 M0 - link_rot diperbaiki + peta jalur 4 target
+STATUS: lihat keluaran
+JALUR: J5
+BUKTI: jalan link_rot, peta jalur 4 domain, isi tabel jalur
+SNAPSHOT: tools/*.py ada di git
+ROLLBACK: git checkout -- tools/peta_jalur.py tools/link_rot.py
+IDEMPOTEN: ya
+YANG GAGAL: lihat keluaran
+== S-262 ==
+ M docs/evidence/S-261.txt
+ M tools/link_rot.py
+?? docs/evidence/S-262.txt
+-- skema jalur --
+['id', 'target_id', 'kode_J', 'bukti', 'terbukti_bisa_tulis', 'waktu_uji', 'cara_tulis', 'catatan', 'diperbarui']
+-- jalur sekarang --
+  (3, 46, 'J5', 1, 'https://waspadaweb.com/hestia-penanda.txt sha256=57c4b181e43afa4624691bb1c0b099f40a869274710b69b6de24f2de3f2579c5')
+]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/HestiaPETA-OK
+]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/Hestia]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/Hestia]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/Hestia]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/Hestia]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/HestiaTERKIRIM
+]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/Hestia
+Saving session...
+...copying shared history...
+...saving history...truncating history files...
+...completed.
+== S-262 verifikasi lanjut ==
+-- rantai A->B yang sudah ada --
+donor: ['id', 'url', 'target_id', 'diambil', 'status_http', 'tipe_konten', 'sha256', 'panjang_mentah', 'panjang_bersih', 'judul', 'isi_mentah', 'isi_bersih', 'catatan']
+   (1, 'https://persaudaraan.com/', None, '2026-10-25T20:07:02', 200, 'text/html; charset=UTF-8', '5697d0b2148111d7d60f50643ec43c85eaeecd6bfae2277eafa91046e073b0e3')
+   (2, 'https://juraganit.com/', None, '2026-10-25T20:07:03', 200, 'text/html; charset=utf-8', '21aadba03bd4c7b5a64f57b8ecc45a6dba768d8ed2ad880a946440ec60170909')
+   (3, 'https://waspadaweb.com/', None, '2026-10-25T20:07:04', 200, 'text/html', 'd8503bbf2f8f671daed3c0d1bce06a48364fc868dd9b63e195a3a167651fae04')
+blok: ['id', 'berkas_rea_id', 'urutan', 'jenis', 'asli', 'normalisasi', 'sha256', 'kunci_json', 'catatan']
+   (7, 2, 1, 'judul', '# REA waspadaweb.com', 'REA waspadaweb.com')
+   (8, 2, 2, 'field', 'target: waspadaweb.com', 'waspadaweb.com')
+   (9, 2, 3, 'field', 'kode_j: J5', 'J5')
+page: ['id', 'target_id', 'url', 'judul', 'status_http', 'penanda_ada', 'sha256_konten', 'diambil', 'vantage', 'catatan']
+   (1, 46, 'https://waspadaweb.com/hestia-penanda.txt', None, 200, 1)
+   (4, 46, 'https://waspadaweb.com/uji-hestia/', None, 404, 0)
+   (9, 46, 'https://waspadaweb.com/uji-hestia-gone/', None, None, 0)
+  event: (4, 'bunuh-404', 'J5', '404', 'vps+lokal')
+  event: (5, 'bunuh-404', 'J5', '404', 'vps+lokal')
+  event: (6, 'bunuh-404', 'J5', '404', 'vps+lokal')
+  event: (7, 'bunuh-404', 'J5', '404', 'vps+lokal')
+  event: (8, 'bunuh-404', 'J5', '404', 'vps+lokal')
+  event: (9, 'bunuh-410', 'J5', '410', 'vps+lokal')
+]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/Hestia]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/Hestia]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/Hestia-- pastikan alat di VPS sehat --
+]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/HestiaVPS-SYNTAX-OK
+]7;file://Eghis-MacBook-Pro-2.local/Users/eghi/Documents/REPO/Hestia
+Saving session...
+...copying shared history...
+...saving history...truncating history files...
+...completed.

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Periksa tautan (link rot): probe tautan lalu catat kode/kelas ke tabel tautan_rot."""
+"""Periksa tautan (link rot). Kolom bisa URL penuh atau hostname; hostname diberi https://."""
 import argparse, datetime, sqlite3
 
 import uji_probe
@@ -7,6 +7,7 @@ import uji_probe
 DB = "data/hestia.db"
 PETA = {200: "hidup", 301: "pindah", 302: "pindah", 307: "pindah", 308: "pindah",
         401: "terkunci", 403: "terkunci", 404: "mati", 410: "mati", 0: "tak_jawab"}
+KANDIDAT = ("url", "tautan", "ke", "dari", "alamat", "href", "link", "target")
 
 
 def kelas(kode):
@@ -15,14 +16,17 @@ def kelas(kode):
 
 def kolom_url(c):
     kol = [r[1] for r in c.execute("pragma table_info(tautan)")]
-    for k in ("url", "tautan", "alamat", "href", "link", "target"):
+    for k in KANDIDAT:
         if k in kol:
-            return k, kol
-    for k in kol:
-        v = c.execute("select %s from tautan where %s is not null limit 1" % (k, k)).fetchone()
-        if v and isinstance(v[0], str) and v[0].startswith("http"):
-            return k, kol
+            return k
     raise SystemExit("kolom url tidak ketemu; kolom: %s" % kol)
+
+
+def rapikan(v):
+    v = str(v or "").strip()
+    if not v:
+        return ""
+    return v if v.startswith("http") else "https://" + v
 
 
 def siap(c):
@@ -41,12 +45,15 @@ def main():
     c = sqlite3.connect(a.db)
     c.row_factory = sqlite3.Row
     siap(c)
-    ukol, kol = kolom_url(c)
-    print("  kolom tautan:", kol, "| url dipakai:", ukol)
+    ukol = kolom_url(c)
+    print("  kolom url dipakai:", ukol)
 
-    sql = "select id, %s as u from tautan where %s is not null" % (ukol, ukol)
     sudah = set(r[0] for r in c.execute("select tautan_id from tautan_rot"))
-    semua = [r for r in c.execute(sql) if r["u"] and str(r["u"]).startswith("http")]
+    semua = []
+    for r in c.execute("select id, %s as u from tautan where %s is not null" % (ukol, ukol)):
+        u = rapikan(r["u"])
+        if u:
+            semua.append({"id": r["id"], "u": u})
     baris = [r for r in semua if r["id"] not in sudah][:a.batas] or semua[:a.batas]
 
     hit = {}
@@ -62,7 +69,7 @@ def main():
         if a.terapkan:
             c.execute("insert into tautan_rot (tautan_id,kode,kelas,vantage,waktu) values (?,?,?,?,?)",
                       (r["id"], kode, k, "vps", datetime.datetime.now().astimezone().isoformat(timespec="seconds")))
-        print("   %-4s %-10s %s" % (kode, k, str(r["u"])[:70]))
+        print("   %-4s %-10s %s" % (kode, k, r["u"][:70]))
     if a.terapkan:
         c.commit()
     print("  ringkas:", hit, "| diperiksa:", len(baris))
