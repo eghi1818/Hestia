@@ -46,6 +46,7 @@ def boleh_bingkai(hdr):
 
 def rapikan(html, dasar):
     d = dasar.rstrip("/")
+    html = re.sub(r"(?is)<base[^>]*>", "", html)
     sisip = ""
     if "<base" not in html.lower():
         sisip += '<base href="%s/">' % d
