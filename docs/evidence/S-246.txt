@@ -1,0 +1,91 @@
+== 0A. apakah DNS hestia/dashboard sudah ada ==
+== 0B. waspadaweb.com tetap hidup ==
+  https://waspadaweb.com/ -> 200
+
+== 1A. ingress tunnel yang berlaku sekarang (metrics lokal cloudflared) ==
+{
+    "version": 1,
+    "config": {
+        "ingress": [
+            {
+                "hostname": "waspadaweb.com",
+                "path": null,
+                "service": "http://localhost:80",
+                "Handlers": null,
+                "originRequest": {
+                    "connectTimeout": 30,
+                    "tlsTimeout": 10,
+                    "tcpKeepAlive": 30,
+                    "noHappyEyeballs": false,
+                    "keepAliveTimeout": 90,
+                    "keepAliveConnections": 100,
+                    "httpHostHeader": "",
+                    "originServerName": "",
+                    "matchSNItoHost": false,
+                    "caPool": "",
+                    "noTLSVerify": false,
+                    "disableChunkedEncoding": false,
+                    "bastionMode": false,
+                    "proxyAddress": "127.0.0.1",
+                    "proxyPort": 0,
+                    "proxyType": "",
+                    "ipRules": null,
+                    "http2Origin": false,
+                    "access": {
+                        "teamName": "",
+                        "audTag": null
+                    }
+                }
+            },
+            {
+                "hostname": "",
+                "path": null,
+                "service": "http_status:404",
+                "Handlers": null,
+                "originRequest": {
+                    "connectTimeout": 30,
+                    "tlsTimeout": 10,
+                    "tcpKeepAlive": 30,
+                    "noHappyEyeballs": false,
+                    "keepAliveTimeout": 90,
+                    "keepAliveConnections": 100,
+                    "httpHostHeader": "",
+                    "originServerName": "",
+                    "matchSNItoHost": false,
+                    "caPool": "",
+                    "noTLSVerify": false,
+                    "disableChunkedEncoding": false,
+                    "bastionMode": false,
+                    "proxyAddress": "127.0.0.1",
+                    "proxyPort": 0,
+                    "proxyType": "",
+                    "ipRules": null,
+                    "http2Origin": false,
+                    "access": {
+                        "teamName": "",
+
+== 1B. versi + status unit cloudflared ==
+cloudflared version 2026.10.0 (built 2026-10-05-17:37 UTC)
+active
+● cloudflared.service - Cloudflare Tunnel client
+     Loaded: loaded (/etc/systemd/system/cloudflared.service; enabled; preset: enabled)
+     Active: active (running) since Mon 2026-10-12 09:16:57 UTC; 1 week 6 days ago
+   Main PID: 293908 (cloudflared)
+      Tasks: 10 (limit: 4614)
+     Memory: 34.6M (peak: 40.8M)
+        CPU: 1h 25min 9.346s
+     CGroup: /system.slice/cloudflared.service
+             └─293908 /usr/bin/cloudflared --no-autoupdate tunnel run --token-file /etc/cloudflared/token
+
+Oct 23 06:26:41 vps-sedp cloudflared[293908]: 2026-10-23T06:26:41Z INF Registered tunnel connection connIndex=2 connection=41e3f8ef-60f1-425a-9bb5-d8f210e45aab event=0 ip=198.41.192.57 location=ord02 protocol=quic
+Oct 23 08:27:34 vps-sedp cloudflared[293908]: 2026-10-23T08:27:34Z WRN Serve tunnel error error="accept stream listener error: failed to accept QUIC stream: timeout: no recent network activity" connIndex=3 event=0 ip=198.41.200.73
+
+== 1C. identitas tunnel (dari token) ==
+{"a":"05baa5444471b6e52178aedf054fbe48","t":"60117270-f7ef-4090-ad15-b1a622433c0d","s":"***"}
+== 1D. apa yang didengar cloudflared secara lokal ==
+LISTEN 0      4096                  127.0.0.1:20241      0.0.0.0:*    users:(("cloudflared",pid=293908,fd=6))                                                 
+
+== 1E. uji lokal: cloudflared bisa menjangkau dashboard ==
+  127.0.0.1:8787 tanpa sandi -> 401
+  127.0.0.1:8787 /api/health -> 200
+  127.0.0.1:8791 tanpa sandi -> 401
