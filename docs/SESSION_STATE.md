@@ -1,15 +1,18 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 13:48.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 13:52.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: f836fa6 S-260 F-19: dokumen langkah bolong dipulihkan, stub tutup.sh tidak dibuang, tunggu-siap diperbaiki
-branch: main | kotor: M docs/evidence/S-260.txt
-rute app/main.py: 75 | berkas bukti: 155 | dokumen langkah: 235
+HEAD: 778dab3 S-261 F-15: pemeriksa link rot (tautan mati) + tempel ke timer pemantauan
+branch: main | kotor: M docs/evidence/S-261.txt
+rute app/main.py: 75 | berkas bukti: 156 | dokumen langkah: 236
 
 ## 12 commit terakhir
 
 ```
+778dab3 S-261 F-15: pemeriksa link rot (tautan mati) + tempel ke timer pemantauan
+e4ba46f S-260 F-19: dokumen langkah bolong dipulihkan, stub tutup.sh tidak dibuang, tunggu-siap diperbaiki [jejak] [dokumen]
+71adaef S-260 F-19: dokumen langkah bolong dipulihkan, stub tutup.sh tidak dibuang, tunggu-siap diperbaiki [jejak]
 f836fa6 S-260 F-19: dokumen langkah bolong dipulihkan, stub tutup.sh tidak dibuang, tunggu-siap diperbaiki
 56d3341 S-259 F-18b: layanan lepas didelegasikan ke live.sh (env benar, rute api kembali 200) [jejak]
 7c02627 S-259 F-18b: layanan lepas didelegasikan ke live.sh (env benar, rute api kembali 200)
@@ -19,9 +22,6 @@ d421466 S-256 F-14f: bukti perubahan nyata tercatat otomatis (konten uji tertana
 3bb72ce S-256 F-14f: bukti perubahan nyata tercatat otomatis (konten uji tertanam -> terverifikasi)
 69a071d S-255 F-14e: baca aturan transisi + skema konten, lebarkan sapuan pantau ke --batas 500 [jejak]
 141f860 S-255 F-14e: baca aturan transisi + skema konten, lebarkan sapuan pantau ke --batas 500
-ab2fa05 S-254 F-14d: pahami logika dorong/usul/kontrol + jalankan pemantauan luas --batas 120 --terapkan [jejak]
-23a14f0 S-254 F-14d: pahami logika dorong/usul/kontrol + jalankan pemantauan luas --batas 120 --terapkan
-dbc3313 S-253 F-14c: bukti jalur timer ujung-ke-ujung + kenali opsi --terapkan [jejak]
 ```
 
 ## SISA KERJA
