@@ -1,15 +1,17 @@
 # SESSION STATE - Hestia
 
-Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 11:34.
+Dibuat otomatis oleh tools/sync_jejak.py pada 2026-10-26 11:39.
 JANGAN sunting berkas ini untuk sisa kerja - sunting docs/SISA-KERJA.md.
 
-HEAD: 3586b9d S-244 F-17h: sidik jari penghadang luar :80, VPS terbukti di belakang NAT
-branch: main | kotor: D docs/steps/S-244.md
-rute app/main.py: 75 | berkas bukti: 139 | dokumen langkah: 211
+HEAD: 346ec49 S-245 F-17i: tentukan jalur masuk luar nyata (tunnel Cloudflare vs tepi provider)
+branch: main | kotor: D docs/steps/S-245.md
+rute app/main.py: 75 | berkas bukti: 140 | dokumen langkah: 211
 
 ## 12 commit terakhir
 
 ```
+346ec49 S-245 F-17i: tentukan jalur masuk luar nyata (tunnel Cloudflare vs tepi provider)
+aec8107 S-244 F-17h: sidik jari penghadang luar :80, VPS terbukti di belakang NAT [jejak]
 3586b9d S-244 F-17h: sidik jari penghadang luar :80, VPS terbukti di belakang NAT
 ddbec89 S-243 F-17g: nginx host memakai vhost default Hestia di :80 [jejak]
 beb6558 S-243 F-17g: nginx host memakai vhost default Hestia di :80
@@ -20,8 +22,6 @@ dfd020b S-241 F-17e: perbaiki akses luar dashboard VPS (vhost aktif) [jejak]
 8fa0981 S-240 F-17d: dashboard dapat diakses dari luar lewat vhost default [jejak]
 da9fae2 S-240 F-17d: dashboard dapat diakses dari luar lewat vhost default
 08efa77 S-239 F-17c: akses dashboard dari luar lewat port 80, bukti data scrape di VPS [jejak]
-853389f S-239 F-17c: akses dashboard dari luar lewat port 80, bukti data scrape di VPS
-7c03f1e S-238 F-17b: pasang Hestia di VPS (systemd + nginx 8791), verifikasi [jejak]
 ```
 
 ## SISA KERJA
