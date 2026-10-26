@@ -1,0 +1,174 @@
+===== A. rapiddns dibaca ULANG (href + tag) =====
+s=200 panjang=41861
+subdomain=200 panjang=41994
+
+===== B. sumber lain yang memberi IP / tanggal =====
+subdomain.center=200 panjang=68
+dnslookup=200 panjang=504
+reverseiplookup=200 panjang=11606
+whois=200 panjang=51
+otx=429 panjang=80
+bufferover=000 panjang=0
+
+===== C. certspotter per-sertifikat =====
+certspotter=200 panjang=3225
+
+===== D. apakah wecash.ai duduk di server cPanel yang sama? =====
+/cpanel                            status=308 panjang=8 tipe= lokasi=https://wecash.ai/cpanel/
+location: /cpanel/ 
+/webmail                           status=308 panjang=9 tipe= lokasi=https://wecash.ai/webmail/
+location: /webmail/ 
+/whm                               status=308 panjang=5 tipe= lokasi=https://wecash.ai/whm/
+location: /whm/ 
+/cgi-sys/defaultwebpage.cgi        status=404 panjang=22625 tipe=text/html; charset=utf-8 lokasi=
+
+/icons/                            status=404 panjang=22625 tipe=text/html; charset=utf-8 lokasi=
+
+/server-status                     status=308 panjang=15 tipe= lokasi=https://wecash.ai/server-status/
+location: /server-status/ 
+/phpmyadmin                        status=308 panjang=12 tipe= lokasi=https://wecash.ai/phpmyadmin/
+location: /phpmyadmin/ 
+/.well-known/acme-challenge/       status=404 panjang=22625 tipe=text/html; charset=utf-8 lokasi=
+
+/404.html                          status=404 panjang=22625 tipe=text/html; charset=utf-8 lokasi=
+
+/index.html                        status=404 panjang=22625 tipe=text/html; charset=utf-8 lokasi=
+
+-- panel api lewat port 2083/2096 dengan SNI benar:
+HTTP/2 522 
+date: Mon, 26 Oct 2026 10:29:55 GMT
+content-type: text/plain; charset=UTF-8
+content-length: 16
+cache-control: private, max-age=0, no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+expires: Thu, 01 Jan 1970 00:00:01 GMT
+referrer-policy: same-origin
+x-frame-options: SAMEORIGIN
+HTTP/2 522 
+date: Mon, 26 Oct 2026 10:30:15 GMT
+content-type: text/plain; charset=UTF-8
+content-length: 16
+cache-control: private, max-age=0, no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+expires: Thu, 01 Jan 1970 00:00:01 GMT
+referrer-policy: same-origin
+x-frame-options: SAMEORIGIN
+
+===== E. AAAA dan A sekarang =====
+A    104.21.5.216 172.67.133.223 
+AAAA 2606:4700:3033::ac43:85df 2606:4700:3032::6815:5d8 
+AAAA dev 2606:4700:3033::ac43:85df 2606:4700:3032::6815:5d8 
+
+===== F. SISIR ULANG 3.64.0.0/16 - SNI benar lewat --resolve =====
+sasaran:     2470
+baris hasil:     2470
+
+===== G. catatan: isi tutup.sh (untuk urusan 3-commit) =====
+      96 tools/tutup.sh
+=== A. rapiddns dibaca ulang ===
+-- s: panjang=41861 ip_unik=9 nama_unik=0
+   IP : 104.21.5.216 129.134.0.0 172.64.80.1 172.67.133.223 188.114.96.9 188.114.97.9 3.64.163.50 52.128.23.153 52.74.223.119
+   NAMA: 
+   baris: | 1 | | wecash.ai | | | alt1.aspmx.l.google.com | | | MX | | 2025-10-10 |
+   baris: | 2 | | wecash.ai | | | aspmx.l.google.com | | | MX | | 2025-10-10 |
+   baris: | 3 | | wecash.ai | | | alt2.aspmx.l.google.com | | | MX | | 2025-10-10 |
+   baris: | 4 | | wecash.ai | | | alt4.aspmx.l.google.com | | | MX | | 2025-10-10 |
+   baris: | 5 | | wecash.ai | | | alt3.aspmx.l.google.com | | | MX | | 2025-10-10 |
+   baris: | 6 | | wecash.ai | | | 2606:4700:130:436c:6f75:6466:6c61:7265 | | | AAAA | | 2025-10-09 |
+   baris: | 7 | | wecash.ai | | | 104.21.5.216 | | | A | | 2025-09-23 |
+   baris: | 8 | | wecash.ai | | | 172.67.133.223 | | | A | | 2025-09-23 |
+   baris: | 9 | | wecash.ai | | | 188.114.96.9 | | | A | | 2025-09-16 |
+   baris: | 10 | | wecash.ai | | | 188.114.97.9 | | | A | | 2025-09-16 |
+   baris: | 11 | | wecash.ai | | | 2606:4700:3036::6815:5d8 | | | AAAA | | 2025-09-08 |
+   baris: | 12 | | wecash.ai | | | 2606:4700:3031::ac43:85df | | | AAAA | | 2025-09-08 |
+   baris: | 13 | | wecash.ai | | | 172.64.80.1 | | | A | | 2025-08-24 |
+   baris: | 14 | | wecash.ai | | | 2a06:98c1:3121::3 | | | AAAA | | 2025-08-10 |
+   baris: | 15 | | wecash.ai | | | 2a06:98c1:3120::3 | | | AAAA | | 2025-08-10 |
+   baris: | 16 | | wecash.ai | | | 3.64.163.50 | | | A | | 2023-07-24 |
+   baris: | 17 | | wecash.ai | | | 52.128.23.153 | | | A | | 2023-02-18 |
+-- subdomain: panjang=41994 ip_unik=7 nama_unik=0
+   IP : 104.21.5.216 172.64.80.1 172.67.133.223 188.114.96.9 188.114.97.9 3.64.163.50 52.128.23.153
+   NAMA: 
+   baris: | 1 | | wecash.ai | | | alt1.aspmx.l.google.com | | | MX | | 2025-10-10 |
+   baris: | 2 | | wecash.ai | | | aspmx.l.google.com | | | MX | | 2025-10-10 |
+   baris: | 3 | | wecash.ai | | | alt2.aspmx.l.google.com | | | MX | | 2025-10-10 |
+   baris: | 4 | | wecash.ai | | | alt4.aspmx.l.google.com | | | MX | | 2025-10-10 |
+   baris: | 5 | | wecash.ai | | | alt3.aspmx.l.google.com | | | MX | | 2025-10-10 |
+   baris: | 6 | | wecash.ai | | | 2606:4700:130:436c:6f75:6466:6c61:7265 | | | AAAA | | 2025-10-09 |
+   baris: | 7 | | wecash.ai | | | 104.21.5.216 | | | A | | 2025-09-23 |
+   baris: | 8 | | wecash.ai | | | 172.67.133.223 | | | A | | 2025-09-23 |
+   baris: | 9 | | wecash.ai | | | 188.114.96.9 | | | A | | 2025-09-16 |
+   baris: | 10 | | wecash.ai | | | 188.114.97.9 | | | A | | 2025-09-16 |
+   baris: | 11 | | wecash.ai | | | 2606:4700:3036::6815:5d8 | | | AAAA | | 2025-09-08 |
+   baris: | 12 | | wecash.ai | | | 2606:4700:3031::ac43:85df | | | AAAA | | 2025-09-08 |
+   baris: | 13 | | wecash.ai | | | 172.64.80.1 | | | A | | 2025-08-24 |
+   baris: | 14 | | wecash.ai | | | 2a06:98c1:3121::3 | | | AAAA | | 2025-08-10 |
+   baris: | 15 | | wecash.ai | | | 2a06:98c1:3120::3 | | | AAAA | | 2025-08-10 |
+   baris: | 16 | | wecash.ai | | | 3.64.163.50 | | | A | | 2023-07-24 |
+   baris: | 17 | | wecash.ai | | | 52.128.23.153 | | | A | | 2023-02-18 |
+=== B. sumber lain ===
+-- subdomain.center: ["wecash.ai", "www.dev.wecash.ai", "dev.wecash.ai", "www.wecash.ai"]
+-- dnslookup: A : 188.114.97.1
+A : 188.114.96.1
+AAAA : 2a06:98c1:3120::1
+AAAA : 2a06:98c1:3121::1
+MX : 5 alt2.aspmx.l.google.com.
+MX : 5 alt1.aspmx.l.google.com.
+MX : 10 alt3.aspmx.l.google.com.
+MX : 1 aspmx.l.google.com.
+MX : 10 alt4.aspmx.l.google.com.
+NS : dilbert.ns.cloudflare.com.
+NS : eve.ns.cloudflare.com.
+TXT : v=spf1 include:_spf.google.com -all
+TXT : google-site-verification=G6_g0w9jehAvoXLB06Ud_0iqnS
+-- reverseiplookup: 022317.2317.workers.dev
+03betoficial.com
+072wincom.com
+0f9bed91988e6bba.diyihanman.com
+0m7sdhxjjxkjyxgs.ozybkmo.cn
+100.org.il
+10000hits.net
+1111.ana23.workers.dev
+1128.pw
+12981962.cn.cdn.cloudflare.net
+12owwkjwhyxgs.amghhzj.cn
+1bet-it.org
+1l.tokowifi.com
+1win-bb7.top
+1win-kazinos.sbs
+1xbetreal.shop
+1xgrowth.xyz
+1xwin.bio
+2021bruceala.com
+2119446.gtuyhhj.dpdns.org
+217103.co
+220-host.spectretek.com
+
+-- whois: API count exceeded - Increase Quota with Membership
+-- bufferover: 
+-- otx jumlah: 0
+=== C. certspotter per-sertifikat ===
+   2026-08-01 -> 2026-10-30 | C=US, O=Let's Encrypt, CN=YE2 | ['*.wecash.ai', 'wecash.ai']
+   2026-09-07 -> 2026-12-06 | C=US, O=Google Trust Services, CN=WE1 | ['*.wecash.ai', 'wecash.ai']
+   2026-09-11 -> 2026-12-10 | C=US, O=Google Trust Services, CN=WE1 | ['*.dev.wecash.ai', '*.wecash.ai', 'wecash.ai']
+   2026-09-11 -> 2026-12-10 | C=US, O=Google Trust Services, CN=WR1 | ['*.dev.wecash.ai', '*.wecash.ai', 'wecash.ai']
+   2026-09-30 -> 2026-12-29 | C=US, O=Let's Encrypt, CN=YE2 | ['*.wecash.ai', 'wecash.ai']
+=== F. ringkasan sisir (SNI benar) ===
+baris: 2470 | sebaran: {'404': 27, '301': 18, '000': 2396, '403': 10, '401': 9, '200': 4, '308': 2, '503': 4}
+awselb: 30 | contoh: [('3.64.0.18', '80', '301'), ('3.64.0.8', '80', '404'), ('3.64.3.56', '80', '301'), ('3.64.19.246', '80', '301'), ('3.64.34.149', '80', '403'), ('3.64.42.108', '80', '301'), ('3.64.37.227', '443', '404'), ('3.64.48.252', '80', '301')]
+200 panjang>20000: 1
+    3.64.24.197 443 200 59547
+kandidat IP non-Cloudflare dari riwayat: ['129.134.0.0', '3.64.163.50', '52.128.23.153', '52.74.223.119']
+
+===== H. internetdb untuk kandidat =====
+--- 129.134.0.0
+{"detail":"No information available"}
+--- 3.64.163.50
+{"cpes":["cpe:/a:amazon:elastic_load_balancing"],"hostnames":["precision-portal.bayer.com","ec2-3-64-163-50.eu-central-1.compute.amazonaws.com","cba-qa.precision-portal.bayer.com","cba.precision-portal.bayer.com"],"ip":"3.64.163.50","ports":[80,443],"tags":["cloud"],"vulns":[]}
+--- 52.128.23.153
+{"detail":"No information available"}
+--- 52.74.223.119
+{"cpes":["cpe:/a:amazon:elastic_load_balancing"],"hostnames":["ec2-52-74-223-119.ap-southeast-1.compute.amazonaws.com"],"ip":"52.74.223.119","ports":[443],"tags":["cloud"],"vulns":[]}
+
+===== I. uji sidik jari kandidat 200 =====
+shasum: /tmp/k2.html: No such file or directory
+zsh: no such file or directory: /tmp/k2.html
+beda  3.64.24.197 port 443 sha= panjang=
