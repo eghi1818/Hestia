@@ -1,0 +1,150 @@
+===== A. TANGGAL mnemonic - kunci yang benar =====
+mnemonic wecash.ai=200 panjang=391
+mnemonic partner.wecash.ai=200 panjang=221
+mnemonic merchant.wecash.ai=200 panjang=221
+mnemonic dev.wecash.ai=200 panjang=221
+mnemonic api.wecash.ai=200 panjang=221
+mnemonic ip1=200 panjang=284348
+
+===== B. rapiddns: sameip IP1 sepuluh halaman + semua sel /s/ =====
+sameip-hal1=200 panjang=92913
+sameip-hal2=200 panjang=92913
+sameip-hal3=200 panjang=92913
+sameip-hal4=200 panjang=92913
+sameip-hal5=200 panjang=92913
+sameip-hal6=200 panjang=92913
+sameip-hal7=200 panjang=92913
+sameip-hal8=200 panjang=92913
+sameip-hal9=200 panjang=92913
+sameip-hal10=200 panjang=92913
+rapiddns-sub=200 panjang=41861
+
+===== C. CT yang tidak rewel (certspotter) =====
+certspotter=200 panjang=3225
+
+===== D. partner dan merchant - apa isinya =====
+--- partner.wecash.ai
+status=404 panjang=1249
+HTTP/2 404 
+date: Mon, 26 Oct 2026 10:09:42 GMT
+content-type: text/html
+cache-control: private, no-cache, max-age=0
+pragma: no-cache
+server: cloudflare
+x-turbo-charged-by: LiteSpeed
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=1KFuGN9dWbEXKvOyjLJaOqynf897AwcpR24qVCIROdcCum7GZj4geqFgU%2FlzOF8NDf1%2FW7%2BAKt4opTr0EDPoyv4D8sT17CMUCSk653KowtWY5Zah%2BQoCQagRJiUNmaa3IjkNRA%3D%3D"}]}
+vary: Accept-Encoding
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-cache-status: DYNAMIC
+cf-ray: a508aabf6b3b4487-SIN
+alt-svc: h3=":443"; ma=86400
+
+<!DOCTYPE html>
+<html style="height:100%">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title> 404 N
+--- merchant.wecash.ai
+status=404 panjang=1249
+HTTP/2 404 
+date: Mon, 26 Oct 2026 10:09:43 GMT
+content-type: text/html
+cache-control: private, no-cache, max-age=0
+pragma: no-cache
+server: cloudflare
+x-turbo-charged-by: LiteSpeed
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=3ou640SmiBs8PS9yxELFNyDSGPkEN%2FL22M4KOmKROyS8nHkcyuFw%2FdsNlWDj%2B6tVcWlVz21l9gQKYB7Ai9nzxSn7kGkU%2Bc3XOQwAClukOjZhkfz0dbgmE7IoUBQca0vSrM3B2fc%3D"}]}
+vary: Accept-Encoding
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-cache-status: DYNAMIC
+cf-ray: a508aac45888fce4-SIN
+alt-svc: h3=":443"; ma=86400
+
+<!DOCTYPE html>
+<html style="height:100%">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title> 404 N
+
+===== E. REA - baca isinya =====
+--- docs/intel/wecash.ai/REA-DeepLab-export-wecash.ai-2026okt22-145008.json (   24590 bita)
+  62 https://wecash.ai
+   1 https://fonts.gstatic.com
+--- docs/intel/wecash.ai/REA-DeepLab-export-wecash.ai-2026okt22-144957.md (   23047 bita)
+  62 https://wecash.ai
+   1 https://fonts.gstatic.com
+
+===== F. ULANG SISIR - catat STATUS, bukan hanya 200 =====
+sasaran:     2470
+baris hasil:     2470
+=== A. mnemonic BERTANGGAL ===
+--- /tmp/mn3-api_wecash_ai.json jumlah: 0
+--- /tmp/mn3-dev_wecash_ai.json jumlah: 0
+--- /tmp/mn3-ip1.json jumlah: 1000
+    001117.xyz -> 3.64.163.50 a | sejak 1970-01-01 00:00 | sampai 1970-01-01 00:00 | diperbarui 2024-09-25 00:54
+    001118.xyz -> 3.64.163.50 a | sejak 1970-01-01 00:00 | sampai 1970-01-01 00:00 | diperbarui 2024-09-22 17:03
+    0042.xyz -> 3.64.163.50 a | sejak 1970-01-01 00:00 | sampai 1970-01-01 00:00 | diperbarui 2024-04-18 08:22
+    001616.com -> 3.64.163.50 a | sejak 1970-01-01 00:00 | sampai 1970-01-01 00:00 | diperbarui 2024-04-18 00:34
+    0.wales -> 3.64.163.50 a | sejak 1970-01-01 00:00 | sampai 1970-01-01 00:00 | diperbarui 2024-04-17 22:55
+    0057.xyz -> 3.64.163.50 a | sejak 1970-01-01 00:00 | sampai 1970-01-01 00:00 | diperbarui 2024-04-17 19:54
+    0034.xyz -> 3.64.163.50 a | sejak 1970-01-01 00:00 | sampai 1970-01-01 00:00 | diperbarui 2024-04-17 17:45
+    002.kr -> 3.64.163.50 a | sejak 1970-01-01 00:00 | sampai 1970-01-01 00:00 | diperbarui 2024-04-17 05:13
+    003.kr -> 3.64.163.50 a | sejak 1970-01-01 00:00 | sampai 1970-01-01 00:00 | diperbarui 2024-04-17 05:13
+    0016.site -> 3.64.163.50 a | sejak 1970-01-01 00:00 | sampai 1970-01-01 00:00 | diperbarui 2024-04-16 22:24
+    0.reise -> 3.64.163.50 a | sejak 1970-01-01 00:00 | sampai 1970-01-01 00:00 | diperbarui 2024-04-16 20:44
+    005.kr -> 3.64.163.50 a | sejak 1970-01-01 00:00 | sampai 1970-01-01 00:00 | diperbarui 2024-04-16 18:16
+    004.kr -> 3.64.163.50 a | sejak 1970-01-01 00:00 | sampai 1970-01-01 00:00 | diperbarui 2024-04-16 18:16
+    001.vc -> 3.64.163.50 a | sejak 1970-01-01 00:00 | sampai 1970-01-01 00:00 | diperbarui 2024-04-16 18:04
+    000sales.com -> 3.64.163.50 a | sejak 1970-01-01 00:00 | sampai 1970-01-01 00:00 | diperbarui 2024-04-16 10:20
+    001.fund -> 3.64.163.50 a | sejak 1970-01-01 00:00 | sampai 1970-01-01 00:00 | diperbarui 2024-04-16 02:53
+    004u.com -> 3.64.163.50 a | sejak 1970-01-01 00:00 | sampai 1970-01-01 00:00 | diperbarui 2024-04-16 02:23
+    0-1s.com -> 3.64.163.50 a | sejak 1970-01-01 00:00 | sampai 1970-01-01 00:00 | diperbarui 2024-04-16 01:51
+    001.ai -> 3.64.163.50 a | sejak 1970-01-01 00:00 | sampai 1970-01-01 00:00 | diperbarui 2024-04-15 21:30
+    000equity.com -> 3.64.163.50 a | sejak 1970-01-01 00:00 | sampai 1970-01-01 00:00 | diperbarui 2024-04-15 18:39
+--- /tmp/mn3-merchant_wecash_ai.json jumlah: 0
+--- /tmp/mn3-partner_wecash_ai.json jumlah: 0
+--- /tmp/mn3-wecash_ai.json jumlah: 1
+    wecash.ai -> 3.64.163.50 a | sejak 2023-07-02 04:41 | sampai 2024-03-12 06:03 | diperbarui 2024-03-12 06:50
+=== B. rapiddns ===
+  sameip hal1: sel=300 wecash=[]
+  sameip hal2: sel=300 wecash=[]
+  sameip hal3: sel=300 wecash=[]
+  sameip hal4: sel=300 wecash=[]
+  sameip hal5: sel=300 wecash=[]
+  sameip hal6: sel=300 wecash=[]
+  sameip hal7: sel=300 wecash=[]
+  sameip hal8: sel=300 wecash=[]
+  sameip hal9: sel=300 wecash=[]
+  sameip hal10: sel=300 wecash=[]
+  /s/wecash.ai sel: 51
+    wecash.ai | MX | 2025-10-10 | wecash.ai | MX | 2025-10-10 | wecash.ai | MX | 2025-10-10 | wecash.ai | MX | 2025-10-10 | wecash.ai | MX | 2025-10-10 | wecash.ai | AAAA | 2025-10-09 | wecash.ai | A | 2025-09-23 | wecash.ai | A | 2025-09-23 | wecash.ai | A | 2025-09-16 | wecash.ai | A | 2025-09-16 | wecash.ai | AAAA | 2025-09-08 | wecash.ai | AAAA | 2025-09-08 | wecash.ai | A | 2025-08-24 | wecash.ai | AAAA | 2025-08-10 | wecash.ai | AAAA | 2025-08-10 | wecash.ai | A | 2023-07-24 | wecash.ai | A | 2023-02-18
+=== C. certspotter ===
+jumlah sertifikat: 5
+nama: ['*.dev.wecash.ai', '*.wecash.ai', 'wecash.ai']
+IP di dalam sertifikat: []
+penerbit: ['C=US, O=Google Trust Services, CN=WE1', 'C=US, O=Google Trust Services, CN=WR1', "C=US, O=Let's Encrypt, CN=YE2"]
+tanggal: ['2026-08-01', '2026-09-07', '2026-09-11', '2026-09-30']
+=== F. ringkasan sisir ===
+baris: 2470
+sebaran status: {'404': 39, '301': 17, '000': 2386, '401': 6, '200': 4, '308': 1, '403': 9, '421': 1, '503': 4, '302': 1, '400': 1, '502': 1}
+host ber-server awselb: 34
+    3.64.0.8 80 404 Server: awselb/2.0
+    3.64.5.74 80 301 Server: awselb/2.0
+    3.64.0.80 443 404 server: awselb/2.0
+    3.64.0.18 80 301 Server: awselb/2.0
+    3.64.19.135 80 301 Server: awselb/2.0
+    3.64.37.227 443 404 server: awselb/2.0
+    3.64.30.81 443 404 server: awselb/2.0
+    3.64.34.149 80 403 Server: awselb/2.0
+    3.64.45.219 443 200 server: awselb/2.0
+    3.64.48.207 443 404 server: awselb/2.0
+    3.64.52.88 80 301 Server: awselb/2.0
+    3.64.77.174 80 301 Server: awselb/2.0
+    3.64.74.193 80 503 Server: awselb/2.0
+    3.64.110.95 80 301 Server: awselb/2.0
+    3.64.110.239 80 301 Server: awselb/2.0
+200 dengan panjang > 20000: 1
+    3.64.24.197 443 200 59547
+
+===== G. uji sidik jari kandidat (kalau ada) =====
+beda  3.64.24.197 port 443 sha=38d7954b800149d8 panjang=   59547
