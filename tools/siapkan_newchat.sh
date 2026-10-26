@@ -19,7 +19,7 @@ cp docs/HANDOFF.md            "$TUJUAN/4-SERAH-TERIMA-lengkap.md"
 VER=$(sed -n 's/^versi_terakhir:[[:space:]]*//p' docs/CHAT.md 2>/dev/null | head -1)
 NAMA=$(sed -n 's/^nama_chat:[[:space:]]*//p' docs/CHAT.md 2>/dev/null | head -1)
 NAMA=${NAMA:-SEO}
-VER_NEXT=$(python3 -c "v='${VER:-1.0}'.split('.');print('%s.%d'%(v[0],int(v[1])+1))")
+VER_NEXT=$(python3 -c "v='${VER:-1.1}'.split('.');print('%s.%d'%(v[0],int(v[1])+1))")
 
 cat > "$TUJUAN/0-CARA-PAKAI.txt" <<TXT
 CARA PAKAI - dipakai saat chat Hestia keluar "Response failed. Please try again."
@@ -49,4 +49,4 @@ TXT
 
 echo "folder: $TUJUAN"
 ls -l "$TUJUAN"
-echo "chat ini: $NAMA V${VER:-1.0}  ->  buat chat baru bernama: $NAMA V$VER_NEXT"
+echo "chat ini: $NAMA V${VER:-1.1}  ->  buat chat baru bernama: $NAMA V$VER_NEXT"

@@ -1,0 +1,10 @@
+BLOK: S-232 / F-11 - label chat dari sumbernya + GANTI pada jalur dalam
+STATUS: (lihat keluaran)
+JALUR: J5
+BUKTI: penanda donor ketiga terlihat publik; ISI ASLI hilang saat ganti; kembali setelah pulih; idempoten
+SNAPSHOT: dari ganti.py asli
+ROLLBACK: pulih -> isi asli kembali, penanda hilang
+IDEMPOTEN: pasang dua kali -> sha berkas identik
+YANG GAGAL: label chat sebelumnya tidak berubah karena template memakai variabel di tools/*.sh (bukan berkas .md/.txt)
+
+Poin F-11: membuktikan jalur dalam (tiga tingkat) tertangani dan donor mana pun bisa dipakai.

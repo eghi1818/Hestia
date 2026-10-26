@@ -6,7 +6,7 @@ mkdir -p docs
 CHAT="docs/CHAT.md"; OUT="docs/HANDOFF.md"
 
 NAMA=$(sed -n 's/^nama_chat:[[:space:]]*//p' "$CHAT" 2>/dev/null | head -1); NAMA=${NAMA:-SEO}
-VER=$(sed -n 's/^versi_terakhir:[[:space:]]*//p' "$CHAT" 2>/dev/null | head -1); VER=${VER:-1.0}
+VER=$(sed -n 's/^versi_terakhir:[[:space:]]*//p' "$CHAT" 2>/dev/null | head -1); VER=${VER:-1.1}
 VER_NEXT=$(python3 -c "v='$VER'.split('.');print('%s.%d'%(v[0],int(v[1])+1))")
 
 if [ "${1:-}" = "--naik" ]; then
